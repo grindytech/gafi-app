@@ -46,7 +46,9 @@
     "react-scripts": "^5.0.0",
     "semantic-ui-css": "Semantic-Org/Semantic-UI-CSS#master",
     "semantic-ui-react": "^2.1.2",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "use-wallet": "^0.13.4",
+    "web3": "^1.7.1"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
@@ -58,9 +60,9 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.3",
     "eslint": "^8.10.0",
-    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.4.0",
-    "eslint-config-react-app": "^7.0.0",
+    "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-only-warn": "^1.0.3",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",

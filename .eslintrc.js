@@ -59,7 +59,7 @@ const shareConfig = {
 };
 
 module.exports = {
-  extends: ['react-app', 'airbnb', 'plugin:jsx-a11y/recommended', 'prettier'],
+  extends: ['airbnb', 'plugin:jsx-a11y/recommended', 'prettier'],
   parser: 'babel-eslint',
   plugins: ['jsx-a11y', 'prettier', 'only-warn'],
   rules: shareConfig.rules,
@@ -68,7 +68,6 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       extends: [
-        'react-app',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'airbnb',
