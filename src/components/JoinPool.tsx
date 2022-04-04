@@ -1,11 +1,12 @@
-import { Box, HStack, Text, useToast, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
 import { Balance } from '@polkadot/types/interfaces';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Button } from 'semantic-ui-react';
 
 import { useSubstrateState } from '../substrate-lib';
 
+import Card from './card/Card';
+import CardHeader from './card/CardHeader';
 import { getFromAcct } from './utils';
 
 interface PoolJoinedInfo {
@@ -14,18 +15,59 @@ interface PoolJoinedInfo {
   service: string;
 }
 
+interface PoolInfo {
+  basic: {
+    txLimit: number;
+    discount: number;
+    service: number;
+  };
+  medium: {
+    txLimit: number;
+    discount: number;
+    service: number;
+  };
+  max: {
+    txLimit: number;
+    discount: number;
+    service: number;
+  };
+}
+
 const JoinPool = () => {
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async () => {
+    async (): Promise<PoolJoinedInfo> => {
       const res = await api.query.pool.players(currentAccount.address);
       return res.toJSON();
     },
     {
       enabled: !!currentAccount,
+    }
+  );
+
+  const { data: poolInfo } = useQuery(
+    'getPoolInfo',
+    async (): Promise<PoolInfo> => {
+      const basic = await api.query.pool.services('Basic');
+      const medium = await api.query.pool.services('Medium');
+      const max = await api.query.pool.services('Max');
+      return {
+        basic: {
+          ...basic.toJSON(),
+          service: basic.get('service').toString(),
+        },
+        medium: {
+          ...medium.toJSON(),
+          service: medium.get('service').toString(),
+        },
+        max: {
+          ...max.toJSON(),
+          service: max.get('service').toString(),
+        },
+      };
     }
   );
 
@@ -62,7 +104,9 @@ const JoinPool = () => {
 
   return (
     <Box>
-      JoinPool
+      <Text fontWeight="bold" fontSize="2xl" mb={5}>
+        JoinPool
+      </Text>
       {joinedPoolInfo && (
         <VStack>
           <Text>Joined pool type: {joinedPoolInfo.service}</Text>
@@ -71,25 +115,69 @@ const JoinPool = () => {
           </Text>
         </VStack>
       )}
-      <HStack>
-        <Button
-          onClick={() => onJoinPool('Basic')}
-          disabled={joinedPoolInfo?.service === 'Basic'}
-        >
-          Basic
-        </Button>
-        <Button
-          onClick={() => onJoinPool('Medium')}
-          disabled={joinedPoolInfo?.service === 'Medium'}
-        >
-          Medium
-        </Button>
-        <Button
-          onClick={() => onJoinPool('Max')}
-          disabled={joinedPoolInfo?.service === 'Max'}
-        >
-          Max
-        </Button>
+      <HStack p={5}>
+        <Card justifyContent="center">
+          <Text fontWeight="bold" mb={5}>
+            Basic
+          </Text>
+          <VStack>
+            {poolInfo?.basic?.txLimit && (
+              <Text>Transaction per minute: {poolInfo.basic.txLimit}</Text>
+            )}
+            {poolInfo?.basic?.discount && (
+              <Text>Discount fee: {poolInfo.basic.discount} %</Text>
+            )}
+
+            <Button
+              color="primary"
+              variant="solid"
+              onClick={() => onJoinPool('Basic')}
+              disabled={joinedPoolInfo?.service === 'Basic'}
+            >
+              Join
+            </Button>
+          </VStack>
+        </Card>
+        <Card>
+          <CardHeader mb={4}>
+            <Text fontWeight="bold">Medium</Text>
+          </CardHeader>
+          <VStack>
+            {poolInfo?.medium?.txLimit && (
+              <Text>Transaction per minute: {poolInfo.medium.txLimit}</Text>
+            )}
+            {poolInfo?.medium?.discount && (
+              <Text>Discount fee: {poolInfo.medium.discount} %</Text>
+            )}
+
+            <Button
+              onClick={() => onJoinPool('Medium')}
+              disabled={joinedPoolInfo?.service === 'Medium'}
+            >
+              Join
+            </Button>
+          </VStack>
+        </Card>
+        <Card>
+          <CardHeader mb={4}>
+            <Text fontWeight="bold">Max</Text>
+          </CardHeader>
+          <VStack>
+            {poolInfo?.max?.txLimit && (
+              <Text>Transaction per minute: {poolInfo.max.txLimit}</Text>
+            )}
+            {poolInfo?.max?.discount && (
+              <Text>Discount fee: {poolInfo.max.discount} %</Text>
+            )}
+
+            <Button
+              onClick={() => onJoinPool('Max')}
+              disabled={joinedPoolInfo?.service === 'Max'}
+            >
+              Join
+            </Button>
+          </VStack>
+        </Card>
       </HStack>
     </Box>
   );
