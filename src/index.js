@@ -4,8 +4,19 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { ChakraProvider } from '@chakra-ui/react';
 import { UseWalletProvider } from 'use-wallet';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 ReactDOM.render(
+  <QueryClientProvider client={queryClient}>
     <UseWalletProvider
       connectors={{
         walletconnect: {
@@ -20,6 +31,7 @@ ReactDOM.render(
       <ChakraProvider>
         <App />
       </ChakraProvider>
-  </UseWalletProvider>,
+    </UseWalletProvider>
+  </QueryClientProvider>,
   document.getElementById('root')
 )

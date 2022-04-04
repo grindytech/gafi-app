@@ -1,31 +1,16 @@
 import { Box, Button, HStack, Input, Text, VStack } from '@chakra-ui/react';
-import { web3FromSource } from '@polkadot/extension-dapp';
 import React, { useState } from 'react';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 
 import { useSubstrateState } from '../substrate-lib';
 
+import { getFromAcct } from './utils';
+
 function MappingAccount() {
   const { account, connect, isConnected, reset, ethereum } = useWallet();
   const [status, setStatus] = useState('');
   const { api, currentAccount } = useSubstrateState();
-
-  const getFromAcct = async () => {
-    const {
-      address,
-      meta: { source, isInjected },
-    } = currentAccount;
-
-    if (!isInjected) {
-      return [currentAccount];
-    }
-
-    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
-    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
-    const injector = await web3FromSource(source);
-    return [address, { signer: injector.signer }];
-  };
 
   // @ts-ignore
   const txResHandler = ({ status }) =>
@@ -39,7 +24,7 @@ function MappingAccount() {
 
   const onWithdraw = async () => {
     if (account && ethereum) {
-      const fromAcct = await getFromAcct();
+      const fromAcct = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
       const buffer = currentAccount?.publicKey.buffer;
       const data = Array.prototype.map

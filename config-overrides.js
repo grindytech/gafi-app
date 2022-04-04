@@ -5,6 +5,7 @@ module.exports = function override(config, env) {
     fallback: {
       stream: require.resolve('stream-browserify'),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   }
   config.plugins.push(new NodePolyfillPlugin())
   return config

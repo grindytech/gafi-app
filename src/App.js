@@ -22,7 +22,8 @@ import NodeInfo from './NodeInfo'
 import TemplateModule from './TemplateModule'
 // import Transfer from './Transfer'
 // import Upgrade from './Upgrade'
-import MappingAccount from './components/MappingAccount.tsx'
+import MappingAccount from './components/MappingAccount'
+import JoinPool from './components/JoinPool'
 
 function Main() {
   const { apiState, apiError, keyringState } = useSubstrateState()
@@ -87,6 +88,7 @@ function Main() {
           </Grid.Row>
         </Grid>
         <MappingAccount /> 
+        <JoinPool/>
       </Container>
       <DeveloperConsole />
     </div>
