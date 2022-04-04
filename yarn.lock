@@ -20608,6 +20608,7 @@ __metadata:
     "@chakra-ui/react": ^1.8.7
     "@emotion/react": ^11
     "@emotion/styled": ^11
+    "@ethersproject/bignumber": ^5.6.0
     "@polkadot/api": ^7.10.1
     "@polkadot/extension-dapp": ^0.42.7
     "@polkadot/keyring": ^8.4.1

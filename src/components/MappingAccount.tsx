@@ -46,7 +46,9 @@ function MappingAccount() {
 
   return (
     <Box>
-      MappingAccount
+      <Text fontWeight="bold" fontSize="2xl" mb={5}>
+        MappingAccount
+      </Text>
       <VStack width="full" gap={2}>
         <HStack gap={2} width="full">
           <VStack width="full">

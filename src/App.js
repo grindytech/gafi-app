@@ -7,7 +7,7 @@ import {
   Message,
 } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
-import {Container} from '@chakra-ui/react'
+import {Container, Stack} from '@chakra-ui/react'
 
 import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
 import { DeveloperConsole } from './substrate-lib/components'
@@ -24,6 +24,7 @@ import TemplateModule from './TemplateModule'
 // import Upgrade from './Upgrade'
 import MappingAccount from './components/MappingAccount'
 import JoinPool from './components/JoinPool'
+import DeployContract from './components/DeployContract'
 
 function Main() {
   const { apiState, apiError, keyringState } = useSubstrateState()
@@ -64,7 +65,7 @@ function Main() {
       <Sticky context={contextRef}>
         <AccountSelector />
       </Sticky>
-      <Container maxW='container.xl'>
+      <Container maxW='container.xl' pb={5}>
         <Grid stackable columns="equal">
           <Grid.Row stretched>
             <NodeInfo />
@@ -87,8 +88,11 @@ function Main() {
             <TemplateModule />
           </Grid.Row>
         </Grid>
-        <MappingAccount /> 
-        <JoinPool/>
+        <Stack direction="column" width="full" gap={4}>
+          <MappingAccount /> 
+          <JoinPool/>
+          <DeployContract/>
+        </Stack>
       </Container>
       <DeveloperConsole />
     </div>
