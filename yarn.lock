@@ -3412,6 +3412,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdi/js@npm:^6.6.96":
+  version: 6.6.96
+  resolution: "@mdi/js@npm:6.6.96"
+  checksum: e08976435a83d7ac49a606533eae941ca0b271396a1dfac06862edc131e71354c9fccd63ba4a6a0afceed96b135df6e08e4bdf2d92eae62653db8aa583ac0860
+  languageName: node
+  linkType: hard
+
+"@mdi/react@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@mdi/react@npm:1.5.0"
+  checksum: bf79b881cd87611179b02e004f1a4155f9bee0ccbc465b18da13a6387bc08a3fa42f8686c9d9678a27ad74016ab0c3a6779ba4d86416f9fb0048e980f2d0a6e2
+  languageName: node
+  linkType: hard
+
 "@metamask/obs-store@npm:^7.0.0":
   version: 7.0.0
   resolution: "@metamask/obs-store@npm:7.0.0"
@@ -20609,6 +20623,8 @@ __metadata:
     "@emotion/react": ^11
     "@emotion/styled": ^11
     "@ethersproject/bignumber": ^5.6.0
+    "@mdi/js": ^6.6.96
+    "@mdi/react": ^1.5.0
     "@polkadot/api": ^7.10.1
     "@polkadot/extension-dapp": ^0.42.7
     "@polkadot/keyring": ^8.4.1

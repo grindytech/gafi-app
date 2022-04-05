@@ -16,8 +16,9 @@ const Card: ComponentStyleConfig = {
     panel: (props: StyleFunctionProps) => ({
       bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
       width: '100%',
-      boxShadow: '0px 3.5px 5.5px rgba(0, 0, 0, 0.02)',
-      borderRadius: '10px',
+      boxShadow: 'var(--chakra-shadows-2xl)',
+      borderRadius: 'var(--chakra-radii-lg)',
+      borderWidth: '1px',
     }),
   },
   defaultProps: {

@@ -81,10 +81,6 @@ function Main() {
             <Upgrade />
           </Grid.Row> */}
           <Grid.Row>
-            {/* <Interactor /> */}
-            <Events />
-          </Grid.Row>
-          <Grid.Row>
             <TemplateModule />
           </Grid.Row>
         </Grid>
@@ -93,6 +89,10 @@ function Main() {
           <JoinPool/>
           <DeployContract/>
         </Stack>
+          <Grid.Row>
+            {/* <Interactor /> */}
+            <Events />
+          </Grid.Row>
       </Container>
       <DeveloperConsole />
     </div>
