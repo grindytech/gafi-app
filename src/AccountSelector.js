@@ -119,8 +119,9 @@ function BalanceAnnotation(props) {
     // If the user has selected an address, create a new subscription
     currentAccount &&
       api.query.system
-        .account(acctAddr(currentAccount), balance =>
-          setAccountBalance(balance.data.free.toHuman())
+      .account(acctAddr(currentAccount), balance => {
+        setAccountBalance(Number(balance.data.free.toJSON()) / 10 ** 18)
+        }
         )
         .then(unsub => (unsubscribe = unsub))
         .catch(console.error)
@@ -131,7 +132,7 @@ function BalanceAnnotation(props) {
   return currentAccount ? (
     <Label pointing="left">
       <Icon name="money" color="green" />
-      {accountBalance}
+      {parseFloat(accountBalance).toLocaleString()}
     </Label>
   ) : null
 }

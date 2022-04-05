@@ -36,6 +36,7 @@ interface PoolInfo {
 const JoinPool = () => {
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
+  const [selectedPool, setSelectedPool] = useState('');
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
@@ -72,34 +73,37 @@ const JoinPool = () => {
   );
 
   const onJoinPool = async (poolPackage: string) => {
+    setSelectedPool(poolPackage);
     const fromAcct = await getFromAcct(currentAccount);
     const txExecute = api.tx.pool.join(poolPackage);
-    await txExecute
-      // Temporary using any. Define type later.
-      .signAndSend(...fromAcct, ({ status }: any) => {
-        if (status.isFinalized) {
-          toast({
-            description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
-            isClosable: true,
-            status: 'success',
-          });
-          refetch();
-        } else {
-          toast({
-            description: `Current transaction status: ${status.type}`,
-            isClosable: true,
-            status: 'info',
-          });
-        }
-      })
-      // Temporary using any. Define type later.
-      .catch((err: any) =>
-        toast({
-          description: `😞 Transaction Failed: ${err.toString()}`,
-          isClosable: true,
-          status: 'error',
-        })
-      );
+    try {
+      await txExecute
+        // Temporary using any. Define type later.
+        .signAndSend(...fromAcct, ({ status }: any) => {
+          if (status.isFinalized) {
+            toast({
+              description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+              isClosable: true,
+              status: 'success',
+            });
+            refetch();
+          } else {
+            toast({
+              description: `Current transaction status: ${status.type}`,
+              isClosable: true,
+              status: 'info',
+            });
+          }
+        });
+    } catch (err: any) {
+      toast({
+        description: `😞 Transaction Failed: ${err.toString()}`,
+        isClosable: true,
+        status: 'error',
+      });
+    } finally {
+      setSelectedPool('');
+    }
   };
 
   return (
@@ -116,8 +120,8 @@ const JoinPool = () => {
         </VStack>
       )}
       <HStack p={5}>
-        <Card justifyContent="center">
-          <Text fontWeight="bold" mb={5}>
+        <Card>
+          <Text textAlign="center" fontWeight="bold" mb={5}>
             Basic
           </Text>
           <VStack>
@@ -133,15 +137,16 @@ const JoinPool = () => {
               variant="solid"
               onClick={() => onJoinPool('Basic')}
               disabled={joinedPoolInfo?.service === 'Basic'}
+              isLoading={selectedPool === 'Basic'}
             >
               Join
             </Button>
           </VStack>
         </Card>
         <Card>
-          <CardHeader mb={4}>
-            <Text fontWeight="bold">Medium</Text>
-          </CardHeader>
+          <Text textAlign="center" fontWeight="bold" mb={5}>
+            Medium
+          </Text>
           <VStack>
             {poolInfo?.medium?.txLimit && (
               <Text>Transaction per minute: {poolInfo.medium.txLimit}</Text>
@@ -151,17 +156,20 @@ const JoinPool = () => {
             )}
 
             <Button
+              color="primary"
+              variant="solid"
               onClick={() => onJoinPool('Medium')}
               disabled={joinedPoolInfo?.service === 'Medium'}
+              isLoading={selectedPool === 'Medium'}
             >
               Join
             </Button>
           </VStack>
         </Card>
         <Card>
-          <CardHeader mb={4}>
-            <Text fontWeight="bold">Max</Text>
-          </CardHeader>
+          <Text textAlign="center" fontWeight="bold" mb={5}>
+            Max
+          </Text>
           <VStack>
             {poolInfo?.max?.txLimit && (
               <Text>Transaction per minute: {poolInfo.max.txLimit}</Text>
@@ -171,8 +179,11 @@ const JoinPool = () => {
             )}
 
             <Button
+              color="primary"
+              variant="solid"
               onClick={() => onJoinPool('Max')}
               disabled={joinedPoolInfo?.service === 'Max'}
+              isLoading={selectedPool === 'Max'}
             >
               Join
             </Button>
