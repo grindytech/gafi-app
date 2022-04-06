@@ -41,7 +41,7 @@ const JoinPool = () => {
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
     async (): Promise<PoolJoinedInfo> => {
-      const res = await api.query.pool.players(currentAccount.address);
+      const res = await api.query.optionPool.players(currentAccount.address);
       return res.toJSON();
     },
     {
@@ -52,9 +52,9 @@ const JoinPool = () => {
   const { data: poolInfo } = useQuery(
     'getPoolInfo',
     async (): Promise<PoolInfo> => {
-      const basic = await api.query.pool.services('Basic');
-      const medium = await api.query.pool.services('Medium');
-      const max = await api.query.pool.services('Max');
+      const basic = await api.query.optionPool.services('Basic');
+      const medium = await api.query.optionPool.services('Medium');
+      const max = await api.query.optionPool.services('Max');
       return {
         basic: {
           ...basic.toJSON(),
@@ -75,7 +75,7 @@ const JoinPool = () => {
   const onJoinPool = async (poolPackage: string) => {
     setSelectedPool(poolPackage);
     const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.pool.join(poolPackage);
+    const txExecute = api.tx.optionPool.join(poolPackage);
     try {
       await txExecute
         // Temporary using any. Define type later.

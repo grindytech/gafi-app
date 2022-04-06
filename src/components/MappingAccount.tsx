@@ -47,7 +47,11 @@ function MappingAccount() {
         ''
       );
 
-      const txExecute = api.tx.txHandler.bond(signature, account, isWithdraw);
+      const txExecute = api.tx.addressMapping.bond(
+        signature,
+        account,
+        isWithdraw
+      );
 
       const unsub = await txExecute
         .signAndSend(...fromAcct, txResHandler)
