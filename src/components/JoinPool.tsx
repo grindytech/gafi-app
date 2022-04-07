@@ -85,6 +85,42 @@ const JoinPool = () => {
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
               isClosable: true,
               status: 'success',
+              position: 'top-right',
+            });
+            refetch();
+            setSelectedPool('');
+          } else {
+            toast({
+              description: `Current transaction status: ${status.type}`,
+              isClosable: true,
+              status: 'info',
+              position: 'top-right',
+            });
+          }
+        });
+    } catch (err: any) {
+      toast({
+        description: `😞 Transaction Failed: ${err.toString()}`,
+        isClosable: true,
+        status: 'error',
+        position: 'top-right',
+      });
+      setSelectedPool('');
+    }
+  };
+
+  const onLeavePool = async () => {
+    const fromAcct = await getFromAcct(currentAccount);
+    const txExecute = api.tx.optionPool.leave();
+    try {
+      await txExecute
+        // Temporary using any. Define type later.
+        .signAndSend(...fromAcct, ({ status }: any) => {
+          if (status.isFinalized) {
+            toast({
+              description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+              isClosable: true,
+              status: 'success',
             });
             refetch();
           } else {
@@ -102,7 +138,6 @@ const JoinPool = () => {
         status: 'error',
       });
     } finally {
-      setSelectedPool('');
     }
   };
 
@@ -132,15 +167,20 @@ const JoinPool = () => {
               <Text>Discount fee: {poolInfo.basic.discount} %</Text>
             )}
 
-            <Button
-              color="primary"
-              variant="solid"
-              onClick={() => onJoinPool('Basic')}
-              disabled={joinedPoolInfo?.service === 'Basic'}
-              isLoading={selectedPool === 'Basic'}
-            >
-              Join
-            </Button>
+            {joinedPoolInfo?.service === 'Basic' ? (
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+                Leave
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="solid"
+                onClick={() => onJoinPool('Basic')}
+                isLoading={selectedPool === 'Basic'}
+              >
+                Join
+              </Button>
+            )}
           </VStack>
         </Card>
         <Card>
@@ -155,15 +195,20 @@ const JoinPool = () => {
               <Text>Discount fee: {poolInfo.medium.discount} %</Text>
             )}
 
-            <Button
-              color="primary"
-              variant="solid"
-              onClick={() => onJoinPool('Medium')}
-              disabled={joinedPoolInfo?.service === 'Medium'}
-              isLoading={selectedPool === 'Medium'}
-            >
-              Join
-            </Button>
+            {joinedPoolInfo?.service === 'Medium' ? (
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+                Leave
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="solid"
+                onClick={() => onJoinPool('Medium')}
+                isLoading={selectedPool === 'Medium'}
+              >
+                Join
+              </Button>
+            )}
           </VStack>
         </Card>
         <Card>
@@ -178,15 +223,20 @@ const JoinPool = () => {
               <Text>Discount fee: {poolInfo.max.discount} %</Text>
             )}
 
-            <Button
-              color="primary"
-              variant="solid"
-              onClick={() => onJoinPool('Max')}
-              disabled={joinedPoolInfo?.service === 'Max'}
-              isLoading={selectedPool === 'Max'}
-            >
-              Join
-            </Button>
+            {joinedPoolInfo?.service === 'Max' ? (
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+                Leave
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="solid"
+                onClick={() => onJoinPool('Max')}
+                isLoading={selectedPool === 'Max'}
+              >
+                Join
+              </Button>
+            )}
           </VStack>
         </Card>
       </HStack>
