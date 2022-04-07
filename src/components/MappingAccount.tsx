@@ -8,6 +8,7 @@ import {
   Icon,
   Input,
   Text,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { mdiArrowLeftRight } from '@mdi/js';
@@ -21,22 +22,43 @@ import { useSubstrateState } from '../substrate-lib';
 import { getFromAcct } from './utils';
 
 function MappingAccount() {
+  const toast = useToast();
   const { account, connect, isConnected, reset, ethereum } = useWallet();
-  const [status, setStatus] = useState('');
   const { api, currentAccount } = useSubstrateState();
   const [isWithdraw, setIsWithdraw] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // @ts-ignore
-  const txResHandler = ({ status }) =>
+  const txResHandler = ({ status }) => {
     status.isFinalized
-      ? setStatus(`😉 Finalized. Block hash: ${status.asFinalized.toString()}`)
-      : setStatus(`Current transaction status: ${status.type}`);
+      ? toast({
+          description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+          isClosable: true,
+          status: 'success',
+          position: 'top-right',
+        })
+      : toast({
+          description: `Current transaction status: ${status.type}`,
+          isClosable: true,
+          status: 'info',
+          position: 'top-right',
+        });
+    setIsLoading(false);
+  };
 
   // @ts-ignore
-  const txErrHandler = err =>
-    setStatus(`😞 Transaction Failed: ${err.toString()}`);
+  const txErrHandler = err => {
+    toast({
+      description: `😞 Transaction Failed: ${err.toString()}`,
+      isClosable: true,
+      status: 'error',
+      position: 'top-right',
+    });
+    setIsLoading(false);
+  };
 
   const onWithdraw = async () => {
+    setIsLoading(true);
     if (account && ethereum) {
       const fromAcct = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
@@ -106,8 +128,9 @@ function MappingAccount() {
             </FormControl>
           </VStack>
         </HStack>
-        <Button onClick={onWithdraw}>Map</Button>
-        <Text>{status}</Text>
+        <Button onClick={onWithdraw} isLoading={isLoading}>
+          Map
+        </Button>
       </VStack>
     </Box>
   );
