@@ -6,6 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { UseWalletProvider } from 'use-wallet';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { theme } from "./theme";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +31,9 @@ ReactDOM.render(
       autoConnect
     >
       <ChakraProvider theme={theme}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ChakraProvider>
     </UseWalletProvider>
   </QueryClientProvider>,
