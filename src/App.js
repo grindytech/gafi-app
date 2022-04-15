@@ -23,7 +23,8 @@ import TemplateModule from './TemplateModule'
 // import Transfer from './Transfer'
 // import Upgrade from './Upgrade'
 import MappingAccount from './components/MappingAccount'
-import JoinPool from './components/JoinPool'
+import UpfrontPool from './components/UpfrontPool'
+import StakingPool from './components/StakingPool'
 import DeployContract from './components/DeployContract'
 
 function Main() {
@@ -86,7 +87,8 @@ function Main() {
         </Grid>
         <Stack direction="column" width="full" gap={4}>
           <MappingAccount /> 
-          <JoinPool/>
+          <UpfrontPool />
+          <StakingPool />
           <DeployContract/>
         </Stack>
           <Grid.Row>

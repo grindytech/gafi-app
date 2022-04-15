@@ -9,10 +9,15 @@ import Card from './card/Card';
 import CardHeader from './card/CardHeader';
 import { getFromAcct } from './utils';
 
+interface TicketType {
+  upfront?: string;
+  staking?: string;
+}
+
 interface PoolJoinedInfo {
   address: string;
   joinTime: string;
-  service: string;
+  ticketType: TicketType;
 }
 
 interface PoolInfo {
@@ -39,9 +44,9 @@ const JoinPool = () => {
   const [selectedPool, setSelectedPool] = useState('');
 
   const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedPool', currentAccount],
+    ['getJoinedUpfrontPool', currentAccount],
     async (): Promise<PoolJoinedInfo> => {
-      const res = await api.query.optionPool.players(currentAccount.address);
+      const res = await api.query.upfrontPool.tickets(currentAccount.address);
       return res.toJSON();
     },
     {
@@ -52,21 +57,21 @@ const JoinPool = () => {
   const { data: poolInfo } = useQuery(
     'getPoolInfo',
     async (): Promise<PoolInfo> => {
-      const basic = await api.query.optionPool.services('Basic');
-      const medium = await api.query.optionPool.services('Medium');
-      const max = await api.query.optionPool.services('Max');
+      const basic = await api.query.upfrontPool.services('Basic');
+      const medium = await api.query.upfrontPool.services('Medium');
+      const max = await api.query.upfrontPool.services('Advance');
       return {
         basic: {
           ...basic.toJSON(),
-          service: basic.get('service').toString(),
+          service: basic.get('value').toString(),
         },
         medium: {
           ...medium.toJSON(),
-          service: medium.get('service').toString(),
+          service: medium.get('value').toString(),
         },
         max: {
           ...max.toJSON(),
-          service: max.get('service').toString(),
+          service: max.get('value').toString(),
         },
       };
     }
@@ -142,32 +147,32 @@ const JoinPool = () => {
   };
 
   return (
-    <Box>
+    <Box pt={{ base: '120px', md: '75px' }}>
       <Text fontWeight="bold" fontSize="2xl" mb={5}>
-        JoinPool
+        Upfront Pool
       </Text>
       {joinedPoolInfo && (
         <VStack>
-          <Text>Joined pool type: {joinedPoolInfo.service}</Text>
+          <Text>Joined pool type: {joinedPoolInfo.ticketType.upfront}</Text>
           <Text>
             Time: {new Date(Number(joinedPoolInfo.joinTime)).toLocaleString()}
           </Text>
         </VStack>
       )}
-      <HStack p={5}>
+      <HStack p={5} gap={5}>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
             Basic
           </Text>
           <VStack>
             {poolInfo?.basic?.txLimit && (
-              <Text>Transaction per minute: {poolInfo.basic.txLimit}</Text>
+              <Text>Transactions per minute: {poolInfo.basic.txLimit}</Text>
             )}
             {poolInfo?.basic?.discount && (
               <Text>Discount fee: {poolInfo.basic.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.service === 'Basic' ? (
+            {joinedPoolInfo?.ticketType.upfront === 'Basic' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -189,13 +194,13 @@ const JoinPool = () => {
           </Text>
           <VStack>
             {poolInfo?.medium?.txLimit && (
-              <Text>Transaction per minute: {poolInfo.medium.txLimit}</Text>
+              <Text>Transactions per minute: {poolInfo.medium.txLimit}</Text>
             )}
             {poolInfo?.medium?.discount && (
               <Text>Discount fee: {poolInfo.medium.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.service === 'Medium' ? (
+            {joinedPoolInfo?.ticketType.upfront === 'Medium' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -217,13 +222,13 @@ const JoinPool = () => {
           </Text>
           <VStack>
             {poolInfo?.max?.txLimit && (
-              <Text>Transaction per minute: {poolInfo.max.txLimit}</Text>
+              <Text>Transactions per minute: Maximum</Text>
             )}
             {poolInfo?.max?.discount && (
               <Text>Discount fee: {poolInfo.max.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.service === 'Max' ? (
+            {joinedPoolInfo?.ticketType.upfront === 'Advance' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
