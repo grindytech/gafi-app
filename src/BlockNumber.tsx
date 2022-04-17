@@ -1,11 +1,15 @@
-import { HStack, VStack, Text } from '@chakra-ui/react';
+import { HStack, VStack, Text, Icon, Divider } from '@chakra-ui/react';
 import { mdiClock } from '@mdi/js';
-import Card from './components/card/Card';
 import React, { useEffect, useState } from 'react';
 
+import Card from './components/card/Card';
 import { useSubstrateState } from './substrate-lib';
 
-function Main(props) {
+interface IProps {
+  finalized?: boolean;
+}
+
+const Main: React.FC<IProps> = props => {
   const { api } = useSubstrateState();
   const { finalized } = props;
   const [blockNumber, setBlockNumber] = useState(0);
@@ -16,14 +20,17 @@ function Main(props) {
     : api.derive.chain.bestNumber;
 
   useEffect(() => {
-    let unsubscribeAll = null;
+    // Temporary use any. Define type later.
+    let unsubscribeAll: any = null;
 
-    bestNumber(number => {
+    // Temporary use any. Define type later.
+    bestNumber((number: any) => {
       // Append `.toLocaleString('en-US')` to display a nice thousand-separated digit.
       setBlockNumber(number.toNumber().toLocaleString('en-US'));
       setBlockNumberTimer(0);
     })
-      .then(unsub => {
+      // Temporary use any. Define type later.
+      .then((unsub: any) => {
         unsubscribeAll = unsub;
       })
       .catch(console.error);
@@ -42,26 +49,26 @@ function Main(props) {
 
   return (
     <Card>
-      <VStack textAlign="center">
-        <Text>blockNumber</Text>
-        <Text>
-        {(finalized ? 'Finalized' : 'Current') + ' Block'}
-        </Text>
+      <VStack textAlign="center" pb={5}>
+        <Text fontSize="xx-large">{blockNumber}</Text>
+        <Text textTransform="uppercase" fontWeight="bold">{`${
+          finalized ? 'Finalized' : 'Current'
+        } Block`}</Text>
       </VStack>
-      <HStack>
+      <Divider />
+      <HStack pt={5}>
         <Icon color="gray.500">
           <path fill="currentColor" d={mdiClock} />
         </Icon>
         <Text as="span" color="gray.500">
-        {blockNumberTimer}
+          {blockNumberTimer}
         </Text>
       </HStack>
-   
     </Card>
   );
-}
+};
 
-export default function BlockNumber(props) {
+export default function BlockNumber(props: IProps) {
   const { api } = useSubstrateState();
   return api.derive &&
     api.derive.chain &&

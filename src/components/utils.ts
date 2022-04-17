@@ -16,3 +16,8 @@ export const getFromAcct = async (currentAccount: any) => {
   const injector = await web3FromSource(source);
   return [address, { signer: injector.signer }];
 };
+
+export const shorten = (hash: string) => {
+  const n = hash.length;
+  return `${hash.substr(0, 10)}...${hash.substr(n - 6)}`;
+};

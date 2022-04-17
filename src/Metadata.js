@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   ModalCloseButton,
   ModalBody,
+  Divider,
 } from '@chakra-ui/react';
 import CardHeader from './components/card/CardHeader';
 import React, { useEffect, useState } from 'react';
@@ -33,12 +34,13 @@ function Main(props) {
   }, [api.rpc.state]);
 
   return (
-    <Card>
+    <Card justifyContent="space-between">
       <CardHeader>
-        <Text fontWeight="bold">Metadata</Text>
+        <Text fontSize="xl" fontWeight="bold">Metadata</Text>
       </CardHeader>
-      <Text color="gray.500">v{metadata.version}</Text>
-      <Button onClick={onOpen}>Show Metadata</Button>
+      <Text mb={5} color="gray.500">v{metadata.version}</Text>
+      <Divider />
+      <Button mt={5} onClick={onOpen}>Show Metadata</Button>
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">
         <ModalOverlay />
         <ModalContent>

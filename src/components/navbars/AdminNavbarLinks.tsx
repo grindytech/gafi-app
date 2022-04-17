@@ -4,6 +4,8 @@
 import {
   Button,
   Flex,
+  HStack,
+  Icon,
   IconButton,
   Input,
   InputGroup,
@@ -14,20 +16,26 @@ import {
   MenuList,
   Text,
   useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
+import { mdiAccount, mdiWallet } from '@mdi/js';
 // Assets
 import avatar1 from 'assets/img/avatars/avatar1.png';
 import avatar2 from 'assets/img/avatars/avatar2.png';
 import avatar3 from 'assets/img/avatars/avatar3.png';
+
 // Custom Icons
 // import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
 // Custom Components
 // import { ItemContent } from "components/Menu/ItemContent";
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { NavLink } from 'react-router-dom';
 
 import routes from '../../routes';
+import { useSubstrate } from '../../substrate-lib';
 import { SidebarResponsive } from '../sideBar/SideBar';
+import { shorten } from '../utils';
 
 interface IProps {
   variant?: string;
@@ -37,8 +45,52 @@ interface IProps {
   logoText: string;
 }
 
+const acctAddr = (acct: any) => (acct ? acct.address : '');
+
 const AdminNavbarLinks: FC<IProps> = props => {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
+  const {
+    setCurrentAccount,
+    state: { keyring, currentAccount, api },
+  } = useSubstrate();
+  const [accountBalance, setAccountBalance] = useState(0);
+  console.log('keyring :>> ', keyring.getPairs());
+
+  // When account address changes, update subscriptions
+  useEffect(() => {
+    let unsubscribe: any;
+
+    // If the user has selected an address, create a new subscription
+    currentAccount &&
+      api.query.system
+        .account(acctAddr(currentAccount), (balance: any) => {
+          setAccountBalance(Number(balance.data.free.toJSON()) / 10 ** 18);
+        })
+        .then((unsub: any) => (unsubscribe = unsub))
+        .catch(console.error);
+
+    return () => unsubscribe && unsubscribe();
+  }, [api, currentAccount]);
+
+  // Get the list of accounts we possess the private key for
+  // Temporary use any. Define type later
+  const keyringOptions = keyring.getPairs().map((account: any) => ({
+    key: account.address,
+    value: account.address,
+    text: account.meta.name.toUpperCase(),
+    icon: 'user',
+  }));
+
+  const initialAddress =
+    keyringOptions.length > 0 ? keyringOptions[0].value : '';
+
+  // Set the initial address
+  useEffect(() => {
+    // `setCurrentAccount()` is called only when currentAccount is null (uninitialized)
+    !currentAccount &&
+      initialAddress.length > 0 &&
+      setCurrentAccount(keyring.getPair(initialAddress));
+  }, [currentAccount, setCurrentAccount, keyring, initialAddress]);
 
   // Chakra Color Mode
   const mainTeal = useColorModeValue('teal.300', 'teal.300');
@@ -100,31 +152,57 @@ const AdminNavbarLinks: FC<IProps> = props => {
           borderRadius="inherit"
         />
       </InputGroup> */}
-      <NavLink to="/auth/signin">
+      {currentAccount ? (
+        <VStack alignItems="flex-end">
+          <CopyToClipboard text={acctAddr(currentAccount)}>
+            <Button
+              color="green"
+              leftIcon={
+                <Icon>
+                  <path d={mdiAccount} />
+                </Icon>
+              }
+            >
+              {shorten(acctAddr(currentAccount))}
+            </Button>
+          </CopyToClipboard>
+          <HStack alignItems="flex-end">
+            <Icon w={5} h={5}>
+              <path d={mdiWallet} />
+            </Icon>
+            <Text>{accountBalance.toLocaleString()}</Text>
+          </HStack>
+        </VStack>
+      ) : (
         <Button
           ms="0px"
           px="0px"
           me={{ sm: '2px', md: '16px' }}
           color={navbarIcon}
           variant="transparent-with-icon"
-          // rightIcon={
-          //   document.documentElement.dir ? (
-          //     <></>
-          //   ) : (
-          //     <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
-          //   )
-          // }
-          // leftIcon={
-          //   document.documentElement.dir ? (
-          //     <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
-          //   ) : (
-          //     <></>
-          //   )
-          // }
+          rightIcon={
+            document.documentElement.dir ? (
+              <></>
+            ) : (
+              <Icon w="22px" h="22px" me="0px">
+                <path d={mdiAccount} />
+              </Icon>
+            )
+          }
+          leftIcon={
+            document.documentElement.dir ? (
+              <Icon w="22px" h="22px" me="0px">
+                <path d={mdiAccount} />
+              </Icon>
+            ) : (
+              <></>
+            )
+          }
         >
-          <Text display={{ sm: 'none', md: 'flex' }}>Sign In</Text>
+          <Text display={{ sm: 'none', md: 'flex' }}>Connect wallet</Text>
         </Button>
-      </NavLink>
+      )}
+
       <SidebarResponsive
         secondary={props.secondary}
         routes={routes}

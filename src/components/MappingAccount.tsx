@@ -64,7 +64,7 @@ function MappingAccount() {
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount.publicKey, undefined, false);
       const signature = await web3.eth.personal.sign(
-        `Bond Aurora Network account:${data.toString()}`,
+        `Bond Gafi Network account:${data.toString()}`,
         account,
         ''
       );
@@ -82,7 +82,7 @@ function MappingAccount() {
   };
 
   return (
-    <Box>
+    <Box pt={{ base: '120px', md: '75px' }}>
       <Text fontWeight="bold" fontSize="2xl" mb={5}>
         Mapping Account
       </Text>

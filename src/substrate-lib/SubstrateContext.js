@@ -116,7 +116,7 @@ const loadAccounts = (state, dispatch) => {
         systemChainType.isLocal ||
         isTestChain(systemChain)
 
-      Keyring.loadAll({ isDevelopment }, allAccounts)
+      Keyring.loadAll({}, allAccounts)
 
       dispatch({ type: 'SET_KEYRING', payload: Keyring })
     } catch (e) {

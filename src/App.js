@@ -213,7 +213,7 @@ function Main() {
         </Stack>
           <Grid.Row>
             <Interactor />
-            <Events />
+           
           </Grid.Row>
       </Container> */}
       <DeveloperConsole />

@@ -23,6 +23,7 @@ import Separator from "../separator/Separator";
 // import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React, { useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import Faucet from "../Faucet";
 
 interface IProps {
   logoText: string;
@@ -268,6 +269,7 @@ const Sidebar: React.FC<IProps> = (props) => {
             <Box>{links}</Box>
           </Stack>
           {/* <SidebarHelp></SidebarHelp> */}
+          <Faucet/>
         </Box>
       </Box>
     </Box>

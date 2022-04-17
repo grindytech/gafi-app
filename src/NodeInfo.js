@@ -1,4 +1,4 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { Divider, HStack, Icon, Text } from '@chakra-ui/react';
 import { mdiCog } from '@mdi/js';
 import Card from './components/card/Card';
 import CardHeader from './components/card/CardHeader';
@@ -27,15 +27,22 @@ function Main(props) {
   }, [api.rpc.system]);
 
   return (
-    <Card>
-      <CardHeader><Text fontWeight="bold">{nodeInfo.nodeName}</Text></CardHeader>
+    <Card justifyContent="space-between">
+      <CardHeader>
+        <Text fontWeight="bold" fontSize="xl">
+          {nodeInfo.nodeName}
+        </Text>
+      </CardHeader>
       <Text color="gray.500">{nodeInfo.chain}</Text>
-      {socket}
+      <Text pb={5}>{socket}</Text>
+      <Divider />
       <HStack>
-
-      <Icon color="gray.500">
-        <path fill='currentColor' d={mdiCog} />
-      </Icon><Text as="span" color="gray.500">v{nodeInfo.nodeVersion}</Text>
+        <Icon color="gray.500">
+          <path fill="currentColor" d={mdiCog} />
+        </Icon>
+        <Text as="span" color="gray.500">
+          v{nodeInfo.nodeVersion}
+        </Text>
       </HStack>
     </Card>
   );

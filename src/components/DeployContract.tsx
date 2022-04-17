@@ -158,7 +158,7 @@ const DeployContract = () => {
   };
 
   return (
-    <Box>
+    <Box pt={{ base: '120px', md: '75px' }}>
       <Text fontWeight="bold" fontSize="2xl" mb={5}>
         Deploy Contract
       </Text>
