@@ -9,7 +9,7 @@ import Card from './card/Card';
 import CardHeader from './card/CardHeader';
 import { getFromAcct } from './utils';
 
-interface TicketType {
+export interface TicketType {
   upfront?: string;
   staking?: string;
 }
@@ -31,7 +31,7 @@ interface PoolInfo {
     discount: number;
     service: number;
   };
-  max: {
+  advance: {
     txLimit: number;
     discount: number;
     service: number;
@@ -69,7 +69,7 @@ const JoinPool = () => {
           ...medium.toJSON(),
           service: medium.get('value').toString(),
         },
-        max: {
+        advance: {
           ...max.toJSON(),
           service: max.get('value').toString(),
         },
@@ -80,7 +80,7 @@ const JoinPool = () => {
   const onJoinPool = async (poolPackage: string) => {
     setSelectedPool(poolPackage);
     const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.optionPool.join(poolPackage);
+    const txExecute = api.tx.pool.join({ upfront: poolPackage });
     try {
       await txExecute
         // Temporary using any. Define type later.
@@ -90,7 +90,6 @@ const JoinPool = () => {
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
               isClosable: true,
               status: 'success',
-              position: 'top-right',
             });
             refetch();
             setSelectedPool('');
@@ -99,7 +98,6 @@ const JoinPool = () => {
               description: `Current transaction status: ${status.type}`,
               isClosable: true,
               status: 'info',
-              position: 'top-right',
             });
           }
         });
@@ -108,7 +106,6 @@ const JoinPool = () => {
         description: `😞 Transaction Failed: ${err.toString()}`,
         isClosable: true,
         status: 'error',
-        position: 'top-right',
       });
       setSelectedPool('');
     }
@@ -116,7 +113,7 @@ const JoinPool = () => {
 
   const onLeavePool = async () => {
     const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.optionPool.leave();
+    const txExecute = api.tx.pool.leave();
     try {
       await txExecute
         // Temporary using any. Define type later.
@@ -221,11 +218,11 @@ const JoinPool = () => {
             Max
           </Text>
           <VStack>
-            {poolInfo?.max?.txLimit && (
+            {poolInfo?.advance?.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
-            {poolInfo?.max?.discount && (
-              <Text>Discount fee: {poolInfo.max.discount} %</Text>
+            {poolInfo?.advance?.discount && (
+              <Text>Discount fee: {poolInfo.advance.discount} %</Text>
             )}
 
             {joinedPoolInfo?.ticketType.upfront === 'Advance' ? (
@@ -236,8 +233,8 @@ const JoinPool = () => {
               <Button
                 color="primary"
                 variant="solid"
-                onClick={() => onJoinPool('Max')}
-                isLoading={selectedPool === 'Max'}
+                onClick={() => onJoinPool('Advance')}
+                isLoading={selectedPool === 'Advance'}
               >
                 Join
               </Button>

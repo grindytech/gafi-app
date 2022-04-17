@@ -53,8 +53,8 @@ const dashRoutes = [
     layout: '/admin',
   },
   {
-    path: '/stacking-pool',
-    name: 'Stacking Pool',
+    path: '/staking-pool',
+    name: 'Staking Pool',
     component: StakingPool,
     layout: '/admin',
   },

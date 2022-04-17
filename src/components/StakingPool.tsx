@@ -7,12 +7,13 @@ import { useSubstrateState } from '../substrate-lib';
 
 import Card from './card/Card';
 import CardHeader from './card/CardHeader';
+import { TicketType } from './UpfrontPool';
 import { getFromAcct } from './utils';
 
 interface PoolTicketInfo {
   address: string;
   joinTime: string;
-  ticketType: string;
+  ticketType: TicketType;
 }
 
 interface PoolInfo {
@@ -26,7 +27,7 @@ interface PoolInfo {
     discount: number;
     service: number;
   };
-  max: {
+  advance: {
     txLimit: number;
     discount: number;
     service: number;
@@ -50,7 +51,7 @@ const StakingPool = () => {
   );
 
   const { data: poolInfo } = useQuery(
-    'getStackingPoolInfo',
+    'getStakingPoolInfo',
     async (): Promise<PoolInfo> => {
       const basic = await api.query.stakingPool.services('Basic');
       const medium = await api.query.stakingPool.services('Medium');
@@ -64,7 +65,7 @@ const StakingPool = () => {
           ...medium.toJSON(),
           service: medium.get('value').toString(),
         },
-        max: {
+        advance: {
           ...max.toJSON(),
           service: max.get('value').toString(),
         },
@@ -75,7 +76,7 @@ const StakingPool = () => {
   const onJoinPool = async (poolPackage: string) => {
     setSelectedPool(poolPackage);
     const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.optionPool.join(poolPackage);
+    const txExecute = api.tx.pool.join({ staking: poolPackage });
     try {
       await txExecute
         // Temporary using any. Define type later.
@@ -85,7 +86,6 @@ const StakingPool = () => {
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
               isClosable: true,
               status: 'success',
-              position: 'top-right',
             });
             refetch();
             setSelectedPool('');
@@ -94,7 +94,6 @@ const StakingPool = () => {
               description: `Current transaction status: ${status.type}`,
               isClosable: true,
               status: 'info',
-              position: 'top-right',
             });
           }
         });
@@ -103,7 +102,6 @@ const StakingPool = () => {
         description: `😞 Transaction Failed: ${err.toString()}`,
         isClosable: true,
         status: 'error',
-        position: 'top-right',
       });
       setSelectedPool('');
     }
@@ -111,7 +109,7 @@ const StakingPool = () => {
 
   const onLeavePool = async () => {
     const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.optionPool.leave();
+    const txExecute = api.tx.pool.leave();
     try {
       await txExecute
         // Temporary using any. Define type later.
@@ -148,7 +146,7 @@ const StakingPool = () => {
       </Text>
       {joinedPoolInfo && (
         <VStack>
-          <Text>Joined pool type: {joinedPoolInfo.ticketType}</Text>
+          <Text>Joined pool type: {joinedPoolInfo.ticketType.staking}</Text>
           <Text>
             Time: {new Date(Number(joinedPoolInfo.joinTime)).toLocaleString()}
           </Text>
@@ -167,7 +165,7 @@ const StakingPool = () => {
               <Text>Discount fee: {poolInfo.basic.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType === 'Basic' ? (
+            {joinedPoolInfo?.ticketType.staking === 'Basic' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -195,7 +193,7 @@ const StakingPool = () => {
               <Text>Discount fee: {poolInfo.medium.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType === 'Medium' ? (
+            {joinedPoolInfo?.ticketType.staking === 'Medium' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -213,17 +211,17 @@ const StakingPool = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Max
+            Advance
           </Text>
           <VStack>
-            {poolInfo?.max?.txLimit && (
+            {poolInfo?.advance?.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
-            {poolInfo?.max?.discount && (
-              <Text>Discount fee: {poolInfo.max.discount} %</Text>
+            {poolInfo?.advance?.discount && (
+              <Text>Discount fee: {poolInfo.advance.discount} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType === 'Advance' ? (
+            {joinedPoolInfo?.ticketType.staking === 'Advance' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -231,8 +229,8 @@ const StakingPool = () => {
               <Button
                 color="primary"
                 variant="solid"
-                onClick={() => onJoinPool('Max')}
-                isLoading={selectedPool === 'Max'}
+                onClick={() => onJoinPool('Advance')}
+                isLoading={selectedPool === 'Advance'}
               >
                 Join
               </Button>

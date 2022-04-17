@@ -35,13 +35,11 @@ function MappingAccount() {
           description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
           isClosable: true,
           status: 'success',
-          position: 'top-right',
         })
       : toast({
           description: `Current transaction status: ${status.type}`,
           isClosable: true,
           status: 'info',
-          position: 'top-right',
         });
     setIsLoading(false);
   };
@@ -52,7 +50,6 @@ function MappingAccount() {
       description: `😞 Transaction Failed: ${err.toString()}`,
       isClosable: true,
       status: 'error',
-      position: 'top-right',
     });
     setIsLoading(false);
   };

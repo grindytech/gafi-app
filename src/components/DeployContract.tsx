@@ -146,7 +146,6 @@ const DeployContract = () => {
               description: `Deploy new contract success!`,
               isClosable: true,
               status: 'success',
-              position: 'top-right',
             });
           } catch (error) {
             console.log('error :>> ', error);
