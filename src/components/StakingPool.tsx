@@ -80,7 +80,31 @@ const StakingPool = () => {
     try {
       await txExecute
         // Temporary using any. Define type later.
-        .signAndSend(...fromAcct, ({ status }: any) => {
+        .signAndSend(...fromAcct, ({ status, events }: any) => {
+          events.forEach(({ event }: any) => {
+            if (api.events.system.ExtrinsicFailed.is(event)) {
+              // extract the data for this event
+              const [dispatchError, dispatchInfo] = event.data;
+              let errorInfo;
+
+              // decode the error
+              if (dispatchError.isModule) {
+                // for module errors, we have the section indexed, lookup
+                // (For specific known errors, we can also do a check against the
+                // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+                const decoded = api.registry.findMetaError(
+                  dispatchError.asModule
+                );
+
+                errorInfo = `${decoded.section}.${decoded.name}`;
+              } else {
+                // Other, CannotLookup, BadOrigin, no extra info
+                errorInfo = dispatchError.toString();
+              }
+
+              console.log(` ExtrinsicFailed:: ${errorInfo}`);
+            }
+          });
           if (status.isFinalized) {
             toast({
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
