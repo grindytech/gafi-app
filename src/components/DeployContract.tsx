@@ -133,6 +133,7 @@ const DeployContract = () => {
             from: account,
             data: contractData.encodeABI(),
             gas: await addAdditionalGas(contractData, account),
+            gasPrice: await web3.eth.getGasPrice(),
           };
           try {
             const result = await web3.eth.sendTransaction(options);
