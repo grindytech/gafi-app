@@ -9,7 +9,7 @@
 // } from "components/Icons/Icons";
 // import Billing from "views/Dashboard/Billing.js";
 import { Icon } from '@chakra-ui/react';
-import { mdiAccountSwitch, mdiHome } from '@mdi/js';
+import { mdiAccountSwitch, mdiHome, mdiRocketLaunch } from '@mdi/js';
 
 import DeployContract from './components/DeployContract';
 import MappingAccount from './components/MappingAccount';
@@ -61,6 +61,11 @@ const dashRoutes = [
   {
     path: '/deploy-contract',
     name: 'Deploy Contract',
+    icon: (
+      <Icon>
+        <path d={mdiRocketLaunch} />
+      </Icon>
+    ),
     component: DeployContract,
     layout: '/admin',
   },

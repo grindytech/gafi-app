@@ -1,13 +1,11 @@
 import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
-import { Balance } from '@polkadot/types/interfaces';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { useSubstrateState } from '../substrate-lib';
 
 import Card from './card/Card';
-import CardHeader from './card/CardHeader';
-import { getFromAcct } from './utils';
+import { getFromAcct, handleTxError } from './utils';
 
 export interface TicketType {
   upfront?: string;
@@ -84,8 +82,9 @@ const JoinPool = () => {
     try {
       await txExecute
         // Temporary using any. Define type later.
-        .signAndSend(...fromAcct, ({ status }: any) => {
+        .signAndSend(...fromAcct, ({ status, events }: any) => {
           if (status.isFinalized) {
+            handleTxError(events, api, toast);
             toast({
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
               isClosable: true,

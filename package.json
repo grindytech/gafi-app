@@ -1,11 +1,11 @@
 {
-  "name": "substrate-front-end-template",
+  "name": "GAFI Dashboard",
   "version": "monthly-2022-01",
   "private": true,
   "author": "Parity Technologies <admin@parity.io>",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/substrate-developer-hub/substrate-front-end-template/issues"
+    "url": "https://github.com/cryptoviet/gafi-app/issues"
   },
   "keywords": [
     "substrate",

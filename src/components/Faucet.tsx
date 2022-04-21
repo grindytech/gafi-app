@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { useSubstrateState } from '../substrate-lib';
 
-import { getFromAcct } from './utils';
+import { getFromAcct, handleTxError } from './utils';
 
 const Faucet = () => {
   const { api, currentAccount } = useSubstrateState();
@@ -12,19 +12,22 @@ const Faucet = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // @ts-ignore
-  const txResHandler = ({ status }) => {
-    status.isFinalized
-      ? toast({
-          description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
-          isClosable: true,
-          status: 'success',
-        })
-      : toast({
-          description: `Current transaction status: ${status.type}`,
-          isClosable: true,
-          status: 'info',
-        });
-    setIsLoading(false);
+  const txResHandler = ({ status, events }) => {
+    if (status.isFinalized) {
+      handleTxError(events, api, toast);
+      toast({
+        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        isClosable: true,
+        status: 'success',
+      });
+      setIsLoading(false);
+    } else {
+      toast({
+        description: `Current transaction status: ${status.type}`,
+        isClosable: true,
+        status: 'info',
+      });
+    }
   };
 
   // @ts-ignore

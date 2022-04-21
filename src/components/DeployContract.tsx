@@ -1,4 +1,4 @@
-import { Box, Button, Text, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -7,6 +7,9 @@ import Web3 from 'web3';
 import { ContractSendMethod } from 'web3-eth-contract';
 
 import { useSubstrateState } from '../substrate-lib';
+
+import Card from './card/Card';
+import { shorten } from './utils';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;
@@ -17,15 +20,16 @@ const baseStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   padding: '20px',
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: '#eeeeee',
+  borderColor: '#A0AEC0',
   borderStyle: 'dashed',
   backgroundColor: '#fafafa',
-  color: '#bdbdbd',
   outline: 'none',
   transition: 'border .24s ease-in-out',
+  height: '200px',
 };
 
 const focusedStyle = {
@@ -88,12 +92,14 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <Text color="gray.500">Drop the files here ...</Text>
         ) : (
-          <p>Drag and drop contract files here, or click to select files</p>
+          <Text color="gray.500">
+            Drag and drop contract files here, or click to select files
+          </Text>
         )}
       </div>
-      <Text pt={4}>Files</Text>
+      {fileList.length > 0 && <Text pt={4}>Files</Text>}
       {React.Children.toArray(fileList)}
     </>
   );
@@ -159,23 +165,44 @@ const DeployContract = () => {
 
   return (
     <Box pt={{ base: '120px', md: '75px' }}>
-      <Text fontWeight="bold" fontSize="2xl" mb={5}>
-        Deploy Contract
-      </Text>
-      <Dropzone
-        onUploadFile={files =>
-          setContractFiles((prevContractFiles: any) => [
-            ...prevContractFiles,
-            ...files,
-          ])
-        }
-      />
-      <VStack gap={2}>
-        {txnFee && <Text>Total transaction fee: {txnFee / 10 ** 18}</Text>}
-        <Button onClick={onDeploy} isLoading={isLoading}>
-          Deploy contract
-        </Button>
-      </VStack>
+      <HStack justifyContent="space-between" mb={5}>
+        <Text fontWeight="bold" fontSize="2xl">
+          Deploy Contract
+        </Text>
+        {isConnected() ? (
+          <HStack>
+            <Text id="metamask">{shorten(account || '')}</Text>
+            <Button onClick={() => reset()}>Disconnect Metamask</Button>
+          </HStack>
+        ) : (
+          <Button onClick={() => connect('injected')}>Connect Metamask</Button>
+        )}
+      </HStack>
+      <Card>
+        <VStack minW="400px" gap={4}>
+          <Box>
+            <Dropzone
+              onUploadFile={files =>
+                setContractFiles((prevContractFiles: any) => [
+                  ...prevContractFiles,
+                  ...files,
+                ])
+              }
+            />
+          </Box>
+          <VStack gap={2}>
+            {txnFee && <Text>Total transaction fee: {txnFee / 10 ** 18}</Text>}
+            <Button
+              colorScheme="teal"
+              onClick={onDeploy}
+              isLoading={isLoading}
+              disabled={contractFiles.length === 0 || !isConnected()}
+            >
+              Deploy contract
+            </Button>
+          </VStack>
+        </VStack>
+      </Card>
     </Box>
   );
 };

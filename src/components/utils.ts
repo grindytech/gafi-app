@@ -21,3 +21,32 @@ export const shorten = (hash: string) => {
   const n = hash.length;
   return `${hash.substr(0, 10)}...${hash.substr(n - 6)}`;
 };
+
+export const handleTxError = (events: any, api: any, toast: any) => {
+  events.forEach(({ event }: any) => {
+    if (api.events.system.ExtrinsicFailed.is(event)) {
+      // extract the data for this event
+      const [dispatchError, dispatchInfo] = event.data;
+      let errorInfo;
+
+      // decode the error
+      if (dispatchError.isModule) {
+        // for module errors, we have the section indexed, lookup
+        // (For specific known errors, we can also do a check against the
+        // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+        const decoded = api.registry.findMetaError(dispatchError.asModule);
+
+        errorInfo = `${decoded.name}`;
+      } else {
+        // Other, CannotLookup, BadOrigin, no extra info
+        errorInfo = dispatchError.toString();
+      }
+
+      toast({
+        description: errorInfo,
+        isClosable: true,
+        status: 'error',
+      });
+    }
+  });
+};

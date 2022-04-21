@@ -137,7 +137,7 @@ function Main() {
     <>
        <SideBar
         routes={routes}
-        logoText={"DASHBOARD"}
+        logoText={"GAFI DASHBOARD"}
         display="none"
         sidebarVariant={sidebarVariant}
         // {...rest}
@@ -155,7 +155,7 @@ function Main() {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
-            logoText={"HE_DASHBOARD"}
+            logoText={"GAFI DASHBOARD"}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
@@ -168,6 +168,7 @@ function Main() {
               <Switch>
                 {getRoutes(routes)}
                 <Redirect from="/admin" to="/admin/dashboard" />
+                <Redirect from="/" to="/admin/dashboard" />
               </Switch>
             </PanelContainer>
           </PanelContent>

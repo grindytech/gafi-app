@@ -1,14 +1,12 @@
 import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
-import { Balance } from '@polkadot/types/interfaces';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { useSubstrateState } from '../substrate-lib';
 
 import Card from './card/Card';
-import CardHeader from './card/CardHeader';
 import { TicketType } from './UpfrontPool';
-import { getFromAcct } from './utils';
+import { getFromAcct, handleTxError } from './utils';
 
 interface PoolTicketInfo {
   address: string;
@@ -81,31 +79,8 @@ const StakingPool = () => {
       await txExecute
         // Temporary using any. Define type later.
         .signAndSend(...fromAcct, ({ status, events }: any) => {
-          events.forEach(({ event }: any) => {
-            if (api.events.system.ExtrinsicFailed.is(event)) {
-              // extract the data for this event
-              const [dispatchError, dispatchInfo] = event.data;
-              let errorInfo;
-
-              // decode the error
-              if (dispatchError.isModule) {
-                // for module errors, we have the section indexed, lookup
-                // (For specific known errors, we can also do a check against the
-                // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
-                const decoded = api.registry.findMetaError(
-                  dispatchError.asModule
-                );
-
-                errorInfo = `${decoded.section}.${decoded.name}`;
-              } else {
-                // Other, CannotLookup, BadOrigin, no extra info
-                errorInfo = dispatchError.toString();
-              }
-
-              console.log(` ExtrinsicFailed:: ${errorInfo}`);
-            }
-          });
           if (status.isFinalized) {
+            handleTxError(events, api, toast);
             toast({
               description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
               isClosable: true,
