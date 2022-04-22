@@ -1,6 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import './interfaces/augment-api';
+import './interfaces/augment-types';
+import "./interfaces/types-lookup";
+
 import App from './App'
 import { ChakraProvider } from '@chakra-ui/react';
 import { UseWalletProvider } from 'use-wallet';
