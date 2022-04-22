@@ -1,4 +1,7 @@
 import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
+import { Option } from '@polkadot/types';
+import { GafiPrimitivesPoolService, GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
+import { Callback, ISubmittableResult } from '@polkadot/types/types';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -12,28 +15,10 @@ export interface TicketType {
   staking?: string;
 }
 
-interface PoolJoinedInfo {
-  address: string;
-  joinTime: string;
-  ticketType: TicketType;
-}
-
 interface PoolInfo {
-  basic: {
-    txLimit: number;
-    discount: number;
-    service: number;
-  };
-  medium: {
-    txLimit: number;
-    discount: number;
-    service: number;
-  };
-  advance: {
-    txLimit: number;
-    discount: number;
-    service: number;
-  };
+  basic: GafiPrimitivesPoolService;
+  medium: GafiPrimitivesPoolService;
+  advance:GafiPrimitivesPoolService;
 }
 
 const JoinPool = () => {
@@ -43,9 +28,14 @@ const JoinPool = () => {
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedUpfrontPool', currentAccount],
-    async (): Promise<PoolJoinedInfo> => {
-      const res = await api.query.upfrontPool.tickets(currentAccount.address);
-      return res.toJSON();
+    async (): Promise<GafiPrimitivesPoolTicket | undefined > => {
+      if (api) {
+        const res = await api.query.upfrontPool.tickets(currentAccount.address as string);
+        if (res.isSome) {
+          return res.unwrap();
+        }
+        return undefined;
+      }
     },
     {
       enabled: !!currentAccount,
@@ -54,91 +44,103 @@ const JoinPool = () => {
 
   const { data: poolInfo } = useQuery(
     'getPoolInfo',
-    async (): Promise<PoolInfo> => {
-      const basic = await api.query.upfrontPool.services('Basic');
-      const medium = await api.query.upfrontPool.services('Medium');
-      const max = await api.query.upfrontPool.services('Advance');
-      return {
-        basic: {
-          ...basic.toJSON(),
-          service: basic.get('value').toString(),
-        },
-        medium: {
-          ...medium.toJSON(),
-          service: medium.get('value').toString(),
-        },
-        advance: {
-          ...max.toJSON(),
-          service: max.get('value').toString(),
-        },
-      };
+    async (): Promise<PoolInfo| undefined> => {
+      if (api) {
+        const basic = await api.query.upfrontPool.services('Basic');
+        const medium = await api.query.upfrontPool.services('Medium');
+        const advance = await api.query.upfrontPool.services('Advance');
+        return {
+          basic,
+          medium,
+          advance,
+        };
+      }
     }
   );
 
+  const txCallback = ({ status, events }: ISubmittableResult) => {
+    if (status.isFinalized) {
+      handleTxError(events, api, toast);
+      toast({
+        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        isClosable: true,
+        status: 'success',
+      });
+      refetch();
+      setSelectedPool('');
+    } else {
+      toast({
+        description: `Current transaction status: ${status.type}`,
+        isClosable: true,
+        status: 'info',
+      });
+    }
+  }
+
   const onJoinPool = async (poolPackage: string) => {
     setSelectedPool(poolPackage);
-    const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.pool.join({ upfront: poolPackage });
-    try {
-      await txExecute
-        // Temporary using any. Define type later.
-        .signAndSend(...fromAcct, ({ status, events }: any) => {
-          if (status.isFinalized) {
-            handleTxError(events, api, toast);
-            toast({
-              description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
-              isClosable: true,
-              status: 'success',
-            });
-            refetch();
-            setSelectedPool('');
-          } else {
-            toast({
-              description: `Current transaction status: ${status.type}`,
-              isClosable: true,
-              status: 'info',
-            });
-          }
-        });
-    } catch (err: any) {
-      toast({
-        description: `😞 Transaction Failed: ${err.toString()}`,
-        isClosable: true,
-        status: 'error',
-      });
-      setSelectedPool('');
+    const [account, options] = await getFromAcct(currentAccount);
+
+    if (api && account) {
+      const txExecute = api.tx.pool.join({ Upfront: poolPackage });
+      if (options) {
+        try {
+          await txExecute
+            .signAndSend(account, options, txCallback);
+        } catch (err: any) {
+          toast({
+            description: `😞 Transaction Failed: ${err.toString()}`,
+            isClosable: true,
+            status: 'error',
+          });
+          setSelectedPool('');
+        }
+      } else {
+        try {
+          await txExecute
+            .signAndSend(account, txCallback);
+        } catch (err: any) {
+          toast({
+            description: `😞 Transaction Failed: ${err.toString()}`,
+            isClosable: true,
+            status: 'error',
+          });
+          setSelectedPool('');
+        }
+      }
     }
   };
 
   const onLeavePool = async () => {
-    const fromAcct = await getFromAcct(currentAccount);
-    const txExecute = api.tx.pool.leave();
-    try {
-      await txExecute
-        // Temporary using any. Define type later.
-        .signAndSend(...fromAcct, ({ status }: any) => {
-          if (status.isFinalized) {
-            toast({
-              description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
-              isClosable: true,
-              status: 'success',
-            });
-            refetch();
-          } else {
-            toast({
-              description: `Current transaction status: ${status.type}`,
-              isClosable: true,
-              status: 'info',
-            });
-          }
-        });
-    } catch (err: any) {
-      toast({
-        description: `😞 Transaction Failed: ${err.toString()}`,
-        isClosable: true,
-        status: 'error',
-      });
-    } finally {
+    const [account, options] = await getFromAcct(currentAccount);
+    if (api) {
+      
+      const txExecute = api.tx.pool.leave();
+      if (options) {
+        try {
+          await txExecute
+          .signAndSend(account, options, txCallback);
+        } catch (err: any) {
+          toast({
+            description: `😞 Transaction Failed: ${err.toString()}`,
+            isClosable: true,
+            status: 'error',
+          });
+        } finally {
+        }
+      } else {
+        try {
+          await txExecute
+          .signAndSend(account, txCallback);
+        } catch (err: any) {
+          toast({
+            description: `😞 Transaction Failed: ${err.toString()}`,
+            isClosable: true,
+            status: 'error',
+          });
+        } finally {
+        }
+      }
     }
   };
 
@@ -149,9 +151,9 @@ const JoinPool = () => {
       </Text>
       {joinedPoolInfo && (
         <VStack>
-          <Text>Joined pool type: {joinedPoolInfo.ticketType.upfront}</Text>
+          {/* <Text>Joined pool type: {joinedPoolInfo.ticketType.upfront}</Text> */}
           <Text>
-            Time: {new Date(Number(joinedPoolInfo.joinTime)).toLocaleString()}
+            Time: {new Date(joinedPoolInfo.joinTime.toNumber()).toLocaleString()}
           </Text>
         </VStack>
       )}
@@ -162,13 +164,13 @@ const JoinPool = () => {
           </Text>
           <VStack>
             {poolInfo?.basic?.txLimit && (
-              <Text>Transactions per minute: {poolInfo.basic.txLimit}</Text>
+              <Text>Transactions per minute: {poolInfo.basic.txLimit.toNumber()}</Text>
             )}
             {poolInfo?.basic?.discount && (
-              <Text>Discount fee: {poolInfo.basic.discount} %</Text>
+              <Text>Discount fee: {poolInfo.basic.discount.toNumber()} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType.upfront === 'Basic' ? (
+            {joinedPoolInfo?.ticketType.asUpfront.isBasic ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -190,13 +192,13 @@ const JoinPool = () => {
           </Text>
           <VStack>
             {poolInfo?.medium?.txLimit && (
-              <Text>Transactions per minute: {poolInfo.medium.txLimit}</Text>
+              <Text>Transactions per minute: {poolInfo.medium.txLimit.toNumber()}</Text>
             )}
             {poolInfo?.medium?.discount && (
-              <Text>Discount fee: {poolInfo.medium.discount} %</Text>
+              <Text>Discount fee: {poolInfo.medium.discount.toNumber()} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType.upfront === 'Medium' ? (
+            {joinedPoolInfo?.ticketType.asUpfront.isMedium ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -214,17 +216,17 @@ const JoinPool = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Max
+            Advance
           </Text>
           <VStack>
             {poolInfo?.advance?.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
             {poolInfo?.advance?.discount && (
-              <Text>Discount fee: {poolInfo.advance.discount} %</Text>
+              <Text>Discount fee: {poolInfo.advance.discount.toNumber()} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType.upfront === 'Advance' ? (
+            {joinedPoolInfo?.ticketType.asUpfront.isAdvance ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>

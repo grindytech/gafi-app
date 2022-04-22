@@ -43,12 +43,23 @@ const Faucet = () => {
   const onFaucet = async () => {
     setIsLoading(true);
     if (currentAccount) {
-      const fromAcct = await getFromAcct(currentAccount);
-      const txExecute = api.tx.faucet.faucet();
+      const [account, options]= await getFromAcct(currentAccount);
+     
 
-      await txExecute
-        .signAndSend(...fromAcct, txResHandler)
-        .catch(txErrHandler);
+        if (api) {
+          const txExecute = api.tx.faucet.faucet();
+    
+          if (options) {
+            
+            const unsub = await txExecute
+              .signAndSend(account, options, txResHandler)
+              .catch(txErrHandler);
+          } else {
+            const unsub = await txExecute
+              .signAndSend(account, txResHandler)
+              .catch(txErrHandler); 
+          }
+  }
     }
   };
 

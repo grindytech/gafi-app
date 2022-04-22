@@ -62,7 +62,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
 
     // If the user has selected an address, create a new subscription
     currentAccount &&
-      api.query.system
+      api?.query.system
         .account(acctAddr(currentAccount), (balance: any) => {
           setAccountBalance(Number(balance.data.free.toJSON()) / 10 ** 18);
         })

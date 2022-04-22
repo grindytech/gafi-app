@@ -1,7 +1,10 @@
+import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { web3FromSource } from '@polkadot/extension-dapp';
 
 // Temporary using any. Define type later.
-export const getFromAcct = async (currentAccount: any) => {
+export const getFromAcct = async (
+  currentAccount: any
+): Promise<[AddressOrPair, Partial<SignerOptions>?]> => {
   const {
     address,
     meta: { source, isInjected },

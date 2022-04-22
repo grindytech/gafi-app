@@ -60,7 +60,7 @@ function MappingAccount() {
   const onWithdraw = async () => {
     setIsLoading(true);
     if (account && ethereum) {
-      const fromAcct = await getFromAcct(currentAccount);
+      const [accountAddress, options]= await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount.publicKey, undefined, false);
       const signature = await web3.eth.personal.sign(
@@ -68,16 +68,24 @@ function MappingAccount() {
         account,
         ''
       );
-
-      const txExecute = api.tx.addressMapping.bond(
-        signature,
-        account,
-        isWithdraw
-      );
-
-      const unsub = await txExecute
-        .signAndSend(...fromAcct, txResHandler)
-        .catch(txErrHandler);
+      if (api) {
+        const txExecute = api.tx.addressMapping.bond(
+          signature,
+          account,
+          isWithdraw
+        );
+  
+        if (options) {
+          
+          const unsub = await txExecute
+            .signAndSend(accountAddress, options, txResHandler)
+            .catch(txErrHandler);
+        } else {
+          const unsub = await txExecute
+            .signAndSend(accountAddress, txResHandler)
+            .catch(txErrHandler); 
+        }
+}
     }
   };
 

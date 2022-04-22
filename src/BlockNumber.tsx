@@ -1,5 +1,6 @@
 import { HStack, VStack, Text, Icon, Divider } from '@chakra-ui/react';
 import { mdiClock } from '@mdi/js';
+import { BlockNumber as GafiBlockNumber } from '@polkadot/types/interfaces';
 import React, { useEffect, useState } from 'react';
 
 import Card from './components/card/Card';
@@ -12,19 +13,19 @@ interface IProps {
 const Main: React.FC<IProps> = props => {
   const { api } = useSubstrateState();
   const { finalized } = props;
-  const [blockNumber, setBlockNumber] = useState(0);
+  const [blockNumber, setBlockNumber] = useState("0");
   const [blockNumberTimer, setBlockNumberTimer] = useState(0);
 
   const bestNumber = finalized
-    ? api.derive.chain.bestNumberFinalized
-    : api.derive.chain.bestNumber;
+    ? api?.derive.chain.bestNumberFinalized
+    : api?.derive.chain.bestNumber;
 
   useEffect(() => {
     // Temporary use any. Define type later.
     let unsubscribeAll: any = null;
 
     // Temporary use any. Define type later.
-    bestNumber((number: any) => {
+    bestNumber && bestNumber((number: GafiBlockNumber) => {
       // Append `.toLocaleString('en-US')` to display a nice thousand-separated digit.
       setBlockNumber(number.toNumber().toLocaleString('en-US'));
       setBlockNumberTimer(0);
@@ -70,7 +71,7 @@ const Main: React.FC<IProps> = props => {
 
 export default function BlockNumber(props: IProps) {
   const { api } = useSubstrateState();
-  return api.derive &&
+  return api?.derive &&
     api.derive.chain &&
     api.derive.chain.bestNumber &&
     api.derive.chain.bestNumberFinalized ? (
