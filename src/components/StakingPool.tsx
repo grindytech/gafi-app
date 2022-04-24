@@ -1,5 +1,8 @@
 import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
-import { GafiPrimitivesPoolService, GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
+import {
+  GafiPrimitivesPoolService,
+  GafiPrimitivesPoolTicket,
+} from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -19,7 +22,7 @@ interface PoolTicketInfo {
 interface PoolInfo {
   basic: GafiPrimitivesPoolService;
   medium: GafiPrimitivesPoolService;
-  advance:GafiPrimitivesPoolService;
+  advance: GafiPrimitivesPoolService;
 }
 
 const StakingPool = () => {
@@ -29,10 +32,11 @@ const StakingPool = () => {
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedStakingPool', currentAccount],
-    async (): Promise<GafiPrimitivesPoolTicket| undefined> => {
+    async (): Promise<GafiPrimitivesPoolTicket | undefined> => {
       if (api) {
-        
-        const res = await api.query.stakingPool.tickets(currentAccount.address as string);
+        const res = await api.query.stakingPool.tickets(
+          currentAccount.address as string
+        );
         if (res.isSome) {
           return res.unwrap();
         }
@@ -46,15 +50,13 @@ const StakingPool = () => {
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
-    async (): Promise<PoolInfo| undefined> => {
+    async (): Promise<PoolInfo | undefined> => {
       if (api) {
-        
         const basic = await api.query.stakingPool.services('Basic');
         const medium = await api.query.stakingPool.services('Medium');
         const advance = await api.query.stakingPool.services('Advance');
         return {
-          basic
-          ,
+          basic,
           medium,
           advance,
         };
@@ -79,7 +81,7 @@ const StakingPool = () => {
         status: 'info',
       });
     }
-  }
+  };
 
   const onJoinPool = async (poolPackage: string) => {
     setSelectedPool(poolPackage);
@@ -88,8 +90,7 @@ const StakingPool = () => {
       const txExecute = api.tx.pool.join({ Staking: poolPackage });
       if (options) {
         try {
-          await txExecute
-            .signAndSend(account, options, txCallback)
+          await txExecute.signAndSend(account, options, txCallback);
         } catch (err: any) {
           toast({
             description: `😞 Transaction Failed: ${err.toString()}`,
@@ -100,8 +101,7 @@ const StakingPool = () => {
         }
       } else {
         try {
-          await txExecute
-            .signAndSend(account, txCallback)
+          await txExecute.signAndSend(account, txCallback);
         } catch (err: any) {
           toast({
             description: `😞 Transaction Failed: ${err.toString()}`,
@@ -119,28 +119,25 @@ const StakingPool = () => {
     if (api && account) {
       const txExecute = api.tx.pool.leave();
       if (options) {
-        
         try {
-          await txExecute
-            .signAndSend(account, options, txCallback);
+          await txExecute.signAndSend(account, options, txCallback);
         } catch (err: any) {
           toast({
             description: `😞 Transaction Failed: ${err.toString()}`,
             isClosable: true,
             status: 'error',
           });
-        } 
+        }
       } else {
         try {
-          await txExecute
-            .signAndSend(account, txCallback);
+          await txExecute.signAndSend(account, txCallback);
         } catch (err: any) {
           toast({
             description: `😞 Transaction Failed: ${err.toString()}`,
             isClosable: true,
             status: 'error',
           });
-        }  
+        }
       }
     }
   };
@@ -152,7 +149,9 @@ const StakingPool = () => {
       </Text>
       {joinedPoolInfo && (
         <VStack>
-          <Text>Joined pool type: {joinedPoolInfo.ticketType.asStaking.type}</Text>
+          <Text>
+            Joined pool type: {joinedPoolInfo.ticketType.asStaking.type}
+          </Text>
           <Text>
             Time: {new Date(Number(joinedPoolInfo.joinTime)).toLocaleString()}
           </Text>
@@ -165,13 +164,15 @@ const StakingPool = () => {
           </Text>
           <VStack>
             {poolInfo?.basic?.txLimit && (
-              <Text>Transactions per minute: {poolInfo.basic.txLimit.toNumber()}</Text>
+              <Text>
+                Transactions per minute: {poolInfo.basic.txLimit.toNumber()}
+              </Text>
             )}
             {poolInfo?.basic?.discount && (
               <Text>Discount fee: {poolInfo.basic.discount.toNumber()} %</Text>
             )}
 
-            {joinedPoolInfo?.ticketType.asStaking.isBasic ? (
+            {joinedPoolInfo?.ticketType.asStaking.type === 'Basic' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
@@ -193,7 +194,9 @@ const StakingPool = () => {
           </Text>
           <VStack>
             {poolInfo?.medium?.txLimit && (
-              <Text>Transactions per minute: {poolInfo.medium.txLimit.toNumber()}</Text>
+              <Text>
+                Transactions per minute: {poolInfo.medium.txLimit.toNumber()}
+              </Text>
             )}
             {poolInfo?.medium?.discount && (
               <Text>Discount fee: {poolInfo.medium.discount.toNumber()} %</Text>
@@ -224,7 +227,9 @@ const StakingPool = () => {
               <Text>Transactions per minute: Maximum</Text>
             )}
             {poolInfo?.advance?.discount && (
-              <Text>Discount fee: {poolInfo.advance.discount.toNumber()} %</Text>
+              <Text>
+                Discount fee: {poolInfo.advance.discount.toNumber()} %
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.isAdvance ? (

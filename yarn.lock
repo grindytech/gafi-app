@@ -12741,6 +12741,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.4.0
     framer-motion: ^6
     gh-pages: ^3.2.3
+    lodash: ^4.17.21
     node-polyfill-webpack-plugin: ^1.1.4
     prettier: 2.5.1
     prop-types: ^15.8.1
