@@ -518,7 +518,7 @@ export const SidebarResponsive: React.FC<ISidebarResponseProps> = (props)=> {
             <Box maxW="100%" h="100vh">
               <Box>{brand}</Box>
               <Stack direction="column" mb="40px">
-                <Box>{links}</Box>
+                <Box>{React.Children.toArray(links)}</Box>
               </Stack>
               {/* <SidebarHelp></SidebarHelp> */}
             </Box>

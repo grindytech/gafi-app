@@ -3,15 +3,15 @@
   "compilerOptions": {
     "paths": {
       // this is the package name we use (in the interface imports, --package for generators)
-      "gafi-dashboard/*": ["./src/*"],
+      "gafi-dashboard/*": ["./*"],
       // here we replace the @polkadot/api augmentation with our own, generated from chain
-      "@polkadot/api/augment": ["src/interfaces/augment-api.ts"],
+      "@polkadot/api/augment": ["interfaces/augment-api.ts"],
       // replace the augmented types with our own, as generated from definitions
-      "@polkadot/types/augment": ["src/interfaces/augment-types.ts"],
-      "@polkadot/types/lookup": ["src/interfaces/types-lookup.ts"]
+      "@polkadot/types/augment": ["interfaces/augment-types.ts"],
+      "@polkadot/types/lookup": ["interfaces/types-lookup.ts"]
     },
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,

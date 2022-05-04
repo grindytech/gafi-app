@@ -84,7 +84,7 @@ function Main() {
   
   // TODO: Define type for route
   const getRoutes = (routes) =>
-    routes.map((prop, key) => {
+    routes.map((prop) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -96,7 +96,6 @@ function Main() {
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
-            key={key}
           />
         );
       }
@@ -166,7 +165,7 @@ function Main() {
           <PanelContent>
             <PanelContainer>
               <Switch>
-                {getRoutes(routes)}
+                {React.Children.toArray(getRoutes(routes))}
                 <Redirect from="/admin" to="/admin/dashboard" />
                 <Redirect from="/" to="/admin/dashboard" />
               </Switch>
