@@ -16,6 +16,7 @@ import MappingAccount from './components/MappingAccount';
 import StakingPool from './components/StakingPool';
 import UpfrontPool from './components/UpfrontPool';
 import Dashboard from './pages/Dashboard';
+import SponsoredPool from './pages/SponsoredPool';
 // import Profile from "views/Dashboard/Profile.js";
 // import Tables from "views/Dashboard/Tables.js";
 // import SignUp from "views/Pages/SignUp.js";
@@ -56,6 +57,12 @@ const dashRoutes = [
     path: '/staking-pool',
     name: 'Staking Pool',
     component: StakingPool,
+    layout: '/admin',
+  },
+  {
+    path: '/sponsored-pool',
+    name: 'Sponsored Pool',
+    component: SponsoredPool,
     layout: '/admin',
   },
   {

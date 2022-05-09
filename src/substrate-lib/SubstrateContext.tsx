@@ -6,7 +6,6 @@ import { DefinitionRpcExt } from '@polkadot/types/types';
 import { keyring as Keyring } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
 import { set, get } from 'lodash';
-import PropTypes from 'prop-types';
 import React, { useReducer, useContext, useEffect } from 'react';
 
 import config from '../config';
@@ -27,6 +26,7 @@ interface SubstrateContextState {
   apiError: any;
   apiState: string | null;
   currentAccount: any;
+  chainDecimal: number;
 }
 
 interface Action {
@@ -44,6 +44,7 @@ const initialState: SubstrateContextState = {
   apiError: null,
   apiState: null,
   currentAccount: null,
+  chainDecimal: 18,
 };
 
 const registry = new TypeRegistry();
@@ -51,7 +52,10 @@ const registry = new TypeRegistry();
 ///
 // Reducer function for `useReducer`
 
-const reducer = (state: SubstrateContextState, action: Action) => {
+const reducer = (
+  state: SubstrateContextState,
+  action: Action
+): SubstrateContextState => {
   switch (action.type) {
     case 'CONNECT_INIT':
       return { ...state, apiState: 'CONNECT_INIT' };
@@ -69,6 +73,8 @@ const reducer = (state: SubstrateContextState, action: Action) => {
       return { ...state, keyring: null, keyringState: 'ERROR' };
     case 'SET_CURRENT_ACCOUNT':
       return { ...state, currentAccount: action.payload };
+    case 'SET_CHAIN_DECIMAL':
+      return { ...state, chainDecimal: action.payload };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }
@@ -94,6 +100,7 @@ const connect = (
   // Set listeners for disconnection and reconnection event.
   _api.on('connected', () => {
     dispatch({ type: 'CONNECT', payload: _api });
+
     // `ready` event is not emitted upon reconnection and is checked explicitly here.
     _api.isReady.then(_api => dispatch({ type: 'CONNECT_SUCCESS' }));
   });
@@ -137,6 +144,12 @@ const loadAccounts = (
       // Logics to check if the connecting chain is a dev chain, coming from polkadot-js Apps
       // ref: https://github.com/polkadot-js/apps/blob/15b8004b2791eced0dde425d5dc7231a5f86c682/packages/react-api/src/Api.tsx?_pjax=div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20%3E%20main#L101-L110
       const { systemChain, systemChainType } = await retrieveChainInfo(api);
+      if (api?.registry.chainDecimals) {
+        dispatch({
+          type: 'SET_CHAIN_DECIMAL',
+          payload: api.registry.chainDecimals[0],
+        });
+      }
       const isDevelopment =
         systemChainType.isDevelopment ||
         systemChainType.isLocal ||
@@ -190,11 +203,6 @@ const SubstrateContextProvider = (props: any) => {
       {props.children}
     </SubstrateContext.Provider>
   );
-};
-
-// prop typechecking
-SubstrateContextProvider.propTypes = {
-  socket: PropTypes.string,
 };
 
 const useSubstrate = () => useContext(SubstrateContext);

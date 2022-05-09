@@ -19,6 +19,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { mdiAccount, mdiWallet } from '@mdi/js';
+import { BN, formatBalance } from '@polkadot/util';
 // Assets
 import avatar1 from 'assets/img/avatars/avatar1.png';
 import avatar2 from 'assets/img/avatars/avatar2.png';
@@ -51,10 +52,9 @@ const AdminNavbarLinks: FC<IProps> = props => {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
   const {
     setCurrentAccount,
-    state: { keyring, currentAccount, api },
+    state: { keyring, currentAccount, api, chainDecimal },
   } = useSubstrate();
-  const [accountBalance, setAccountBalance] = useState(0);
-  console.log('keyring :>> ', keyring.getPairs());
+  const [accountBalance, setAccountBalance] = useState(new BN(0));
 
   // When account address changes, update subscriptions
   useEffect(() => {
@@ -64,7 +64,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
     currentAccount &&
       api?.query.system
         .account(acctAddr(currentAccount), (balance: any) => {
-          setAccountBalance(Number(balance.data.free.toJSON()) / 10 ** 18);
+          setAccountBalance(balance.data.free);
         })
         .then((unsub: any) => (unsubscribe = unsub))
         .catch(console.error);
@@ -170,7 +170,13 @@ const AdminNavbarLinks: FC<IProps> = props => {
             <Icon w={5} h={5}>
               <path d={mdiWallet} />
             </Icon>
-            <Text>{accountBalance.toLocaleString()}</Text>
+            <Text>
+              {formatBalance(
+                accountBalance,
+                { withSi: false, forceUnit: '-' },
+                chainDecimal
+              )}
+            </Text>
           </HStack>
         </VStack>
       ) : (
