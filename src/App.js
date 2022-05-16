@@ -29,8 +29,10 @@ import MainPanel from './components/layout/MainPanel'
 import PanelContainer from './components/layout/PanelContainer'
 import PanelContent from './components/layout/PanelContent'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function Main() {
+  const { t } = useTranslation();
   const { apiState, apiError, keyringState } = useSubstrateState()
   const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const mainPanel = useRef(null);
@@ -136,7 +138,7 @@ function Main() {
     <>
        <SideBar
         routes={routes}
-        logoText={"GAFI DASHBOARD"}
+        logoText={t("GAFI_DASHBOARD")}
         display="none"
         sidebarVariant={sidebarVariant}
         // {...rest}
@@ -154,7 +156,7 @@ function Main() {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
-            logoText={"GAFI DASHBOARD"}
+            logoText={t("GAFI_DASHBOARD")}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}

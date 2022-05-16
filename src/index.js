@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 
 import './interfaces/augment-api';
@@ -11,6 +11,7 @@ import { UseWalletProvider } from 'use-wallet';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { theme } from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
+import './i18n';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,7 +37,9 @@ ReactDOM.render(
     >
       <ChakraProvider theme={theme}>
         <Router>
+          <Suspense fallback={"..."}>
           <App />
+        </Suspense>
         </Router>
       </ChakraProvider>
     </UseWalletProvider>
