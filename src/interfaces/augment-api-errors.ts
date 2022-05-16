@@ -5,15 +5,6 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 
 declare module '@polkadot/api-base/types/errors' {
   export interface AugmentedErrors<ApiType extends ApiTypes> {
-    addressMapping: {
-      AlreadyBond: AugmentedError<ApiType>;
-      NonbondAccount: AugmentedError<ApiType>;
-      SignatureOrAddressNotCorrect: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     balances: {
       /**
        * Beneficiary account must pre-exist
@@ -105,6 +96,15 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    gameCreator: {
+      ContractClaimed: AugmentedError<ApiType>;
+      ContractNotFound: AugmentedError<ApiType>;
+      NotContractOwner: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     grandpa: {
       /**
        * Attempt to signal GRANDPA change with one already pending.
@@ -141,6 +141,12 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    palletCache: {
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     player: {
       PlayerExisted: AugmentedError<ApiType>;
       PlayerIdUsed: AugmentedError<ApiType>;
@@ -153,6 +159,60 @@ declare module '@polkadot/api-base/types/errors' {
       AlreadyJoined: AugmentedError<ApiType>;
       ComingSoon: AugmentedError<ApiType>;
       NotFoundInPool: AugmentedError<ApiType>;
+      TicketNotFound: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    poolName: {
+      /**
+       * A name is too long.
+       **/
+      TooLong: AugmentedError<ApiType>;
+      /**
+       * A name is too short.
+       **/
+      TooShort: AugmentedError<ApiType>;
+      /**
+       * A pool isn't named.
+       **/
+      Unnamed: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    proofAddressMapping: {
+      AlreadyBond: AugmentedError<ApiType>;
+      NonbondAccount: AugmentedError<ApiType>;
+      SignatureOrAddressNotCorrect: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    sponsoredPool: {
+      /**
+       * Can not convert u128 to balance
+       **/
+      ConvertBalanceFail: AugmentedError<ApiType>;
+      ExceedMaxPoolOwned: AugmentedError<ApiType>;
+      ExceedPoolTarget: AugmentedError<ApiType>;
+      /**
+       * Can not convert pool id to account
+       **/
+      IntoAccountFail: AugmentedError<ApiType>;
+      IntoU32Fail: AugmentedError<ApiType>;
+      /**
+       * Origin not the owner
+       **/
+      NotTheOwner: AugmentedError<ApiType>;
+      /**
+       * Generate the pool id that duplicated
+       **/
+      PoolIdExisted: AugmentedError<ApiType>;
+      PoolNotExist: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -160,6 +220,7 @@ declare module '@polkadot/api-base/types/errors' {
     };
     stakingPool: {
       IntoBalanceFail: AugmentedError<ApiType>;
+      LevelNotFound: AugmentedError<ApiType>;
       PlayerNotStake: AugmentedError<ApiType>;
       StakeCountOverflow: AugmentedError<ApiType>;
       /**
@@ -211,21 +272,9 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    template: {
-      /**
-       * Error names should be descriptive.
-       **/
-      NoneValue: AugmentedError<ApiType>;
-      /**
-       * Errors should have helpful documentation associated with them.
-       **/
-      StorageOverflow: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     txHandler: {
+      IntoAccountFail: AugmentedError<ApiType>;
+      IntoBalanceFail: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -235,6 +284,7 @@ declare module '@polkadot/api-base/types/errors' {
       CanNotClearNewPlayers: AugmentedError<ApiType>;
       ExceedMaxPlayer: AugmentedError<ApiType>;
       IntoBalanceFail: AugmentedError<ApiType>;
+      LevelNotFound: AugmentedError<ApiType>;
       PlayerCountOverflow: AugmentedError<ApiType>;
       PlayerNotFound: AugmentedError<ApiType>;
       /**

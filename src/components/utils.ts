@@ -1,6 +1,8 @@
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { web3FromSource } from '@polkadot/extension-dapp';
+import Web3 from 'web3';
 
+const { fromWei } = Web3.utils;
 // Temporary using any. Define type later.
 export const getFromAcct = async (
   currentAccount: any
@@ -53,3 +55,5 @@ export const handleTxError = (events: any, api: any, toast: any) => {
     }
   });
 };
+
+export const weiToEther = (wei: string) => fromWei(wei, 'ether');

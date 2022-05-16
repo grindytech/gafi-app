@@ -9,10 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { mdiPlus } from '@mdi/js';
-import {
-  GafiPrimitivesPoolService,
-  GafiPrimitivesPoolTicket,
-} from '@polkadot/types/lookup';
+import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -23,12 +20,7 @@ import Table from './Table';
 import Card from 'components/card/Card';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-
-interface PoolInfo {
-  basic: GafiPrimitivesPoolService;
-  medium: GafiPrimitivesPoolService;
-  advance: GafiPrimitivesPoolService;
-}
+import { PoolInfo } from 'gafi-dashboard/interfaces';
 
 export const tablesTableData = [
   {
@@ -112,10 +104,11 @@ const SponsoredPool: React.FC = () => {
         const basic = await api.query.stakingPool.services('Basic');
         const medium = await api.query.stakingPool.services('Medium');
         const advance = await api.query.stakingPool.services('Advance');
+
         return {
-          basic,
-          medium,
-          advance,
+          basic: basic.unwrap(),
+          medium: medium.unwrap(),
+          advance: advance.unwrap(),
         };
       }
     }
@@ -240,13 +233,16 @@ const SponsoredPool: React.FC = () => {
             Basic
           </Text>
           <VStack>
-            {poolInfo?.basic?.txLimit && (
+            {poolInfo?.basic?.service.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.basic.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo.basic.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.basic?.discount && (
-              <Text>Discount fee: {poolInfo.basic.discount.toNumber()} %</Text>
+            {poolInfo?.basic?.service.discount && (
+              <Text>
+                Discount fee: {poolInfo.basic.service.discount.toNumber()} %
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.type === 'Basic' ? (
@@ -270,13 +266,16 @@ const SponsoredPool: React.FC = () => {
             Medium
           </Text>
           <VStack>
-            {poolInfo?.medium?.txLimit && (
+            {poolInfo?.medium?.service.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.medium.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo.medium.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.medium?.discount && (
-              <Text>Discount fee: {poolInfo.medium.discount.toNumber()} %</Text>
+            {poolInfo?.medium?.service.discount && (
+              <Text>
+                Discount fee: {poolInfo.medium.service.discount.toNumber()} %
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.isMedium ? (
@@ -300,12 +299,12 @@ const SponsoredPool: React.FC = () => {
             Advance
           </Text>
           <VStack>
-            {poolInfo?.advance?.txLimit && (
+            {poolInfo?.advance?.service.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
-            {poolInfo?.advance?.discount && (
+            {poolInfo?.advance?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.advance.discount.toNumber()} %
+                Discount fee: {poolInfo.advance.service.discount.toNumber()} %
               </Text>
             )}
 

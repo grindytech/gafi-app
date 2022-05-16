@@ -1,9 +1,7 @@
 import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
-import {
-  GafiPrimitivesPoolService,
-  GafiPrimitivesPoolTicket,
-} from '@polkadot/types/lookup';
+import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
+import { PoolInfo } from 'gafi-dashboard/interfaces';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -11,20 +9,13 @@ import { useSubstrateState } from '../substrate-lib';
 
 import Card from './card/Card';
 import { TicketType } from './UpfrontPool';
-import { getFromAcct, handleTxError } from './utils';
+import { getFromAcct, handleTxError, weiToEther } from './utils';
 
 interface PoolTicketInfo {
   address: string;
   joinTime: string;
   ticketType: TicketType;
 }
-
-interface PoolInfo {
-  basic: GafiPrimitivesPoolService;
-  medium: GafiPrimitivesPoolService;
-  advance: GafiPrimitivesPoolService;
-}
-
 const StakingPool = () => {
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
@@ -56,9 +47,9 @@ const StakingPool = () => {
         const medium = await api.query.stakingPool.services('Medium');
         const advance = await api.query.stakingPool.services('Advance');
         return {
-          basic,
-          medium,
-          advance,
+          basic: basic.unwrap(),
+          medium: medium.unwrap(),
+          advance: advance.unwrap(),
         };
       }
     }
@@ -163,13 +154,22 @@ const StakingPool = () => {
             Basic
           </Text>
           <VStack>
-            {poolInfo?.basic?.txLimit && (
+            {poolInfo?.basic?.service.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.basic.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo.basic.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.basic?.discount && (
-              <Text>Discount fee: {poolInfo.basic.discount.toNumber()} %</Text>
+            {poolInfo?.basic?.service.discount && (
+              <Text>
+                Discount fee: {poolInfo.basic.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.basic.value && (
+              <Text>
+                Fee: {weiToEther(poolInfo?.basic.value.toString())} GAKI / 30
+                minute
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.type === 'Basic' ? (
@@ -193,13 +193,22 @@ const StakingPool = () => {
             Medium
           </Text>
           <VStack>
-            {poolInfo?.medium?.txLimit && (
+            {poolInfo?.medium?.service.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.medium.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo.medium.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.medium?.discount && (
-              <Text>Discount fee: {poolInfo.medium.discount.toNumber()} %</Text>
+            {poolInfo?.medium?.service.discount && (
+              <Text>
+                Discount fee: {poolInfo.medium.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.medium.value && (
+              <Text>
+                Fee: {weiToEther(poolInfo?.medium.value.toString())} GAKI / 30
+                minute
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.isMedium ? (
@@ -223,12 +232,18 @@ const StakingPool = () => {
             Advance
           </Text>
           <VStack>
-            {poolInfo?.advance?.txLimit && (
+            {poolInfo?.advance?.service.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
-            {poolInfo?.advance?.discount && (
+            {poolInfo?.advance?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.advance.discount.toNumber()} %
+                Discount fee: {poolInfo.advance.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.advance.value && (
+              <Text>
+                Fee: {weiToEther(poolInfo?.advance.value.toString())} GAKI / 30
+                minute
               </Text>
             )}
 
