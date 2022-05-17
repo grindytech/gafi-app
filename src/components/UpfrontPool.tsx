@@ -105,8 +105,7 @@ const JoinPool = () => {
     }
   };
 
-  const onLeavePool = async (poolPackage: string) => {
-    setSelectedPool(poolPackage);
+  const onLeavePool = async () => {
     const [account, options] = await getFromAcct(currentAccount);
     if (api) {
       const txExecute = api.tx.pool.leave();
@@ -120,7 +119,6 @@ const JoinPool = () => {
             status: 'error',
           });
         } finally {
-          setSelectedPool('');
         }
       } else {
         try {
@@ -132,7 +130,6 @@ const JoinPool = () => {
             status: 'error',
           });
         } finally {
-          setSelectedPool('');
         }
       }
     }
@@ -182,12 +179,7 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.type === 'Basic' ? (
-              <Button
-                variant="solid"
-                color="red.300"
-                onClick={() => onLeavePool('Basic')}
-                isLoading={selectedPool === 'Basic'}
-              >
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
             ) : (
@@ -231,12 +223,7 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.isMedium ? (
-              <Button
-                variant="solid"
-                color="red.300"
-                onClick={() => onLeavePool('Medium')}
-                isLoading={selectedPool === 'Medium'}
-              >
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
             ) : (
@@ -277,12 +264,7 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.isAdvance ? (
-              <Button
-                variant="solid"
-                color="red.300"
-                onClick={() => onLeavePool('Advance')}
-                isLoading={selectedPool === 'Advance'}
-              >
+              <Button variant="solid" color="red.300" onClick={onLeavePool}>
                 Leave
               </Button>
             ) : (
