@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start:prod": "env-cmd -f .env.production react-app-rewired start",
+    "build": "env-cmd -f .env.production react-app-rewired build",
     "typegen": "yarn generate:defs && yarn generate:meta",
     "mainnet:typegen": "yarn mainnet:generate:defs && yarn mainnet:generate:meta",
     "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package gafi-dashboard/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
@@ -78,6 +79,7 @@
     "@typescript-eslint/parser": "^5.17.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.3",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.4.0",
