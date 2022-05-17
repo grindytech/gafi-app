@@ -22,6 +22,8 @@ import Table from './Table';
 
 import Card from 'components/card/Card';
 import { getFromAcct, handleTxError } from 'components/utils';
+import client from 'graphQL/client';
+import { sponsoredPoolQuery } from 'graphQL/query';
 import { useSubstrateState } from 'substrate-lib';
 
 interface PoolInfo {
@@ -104,6 +106,12 @@ const SponsoredPool: React.FC = () => {
       enabled: !!currentAccount,
     }
   );
+
+  // Example for query data from graphql.
+  const { data: sponsoredPool } = useQuery('getSponsoredPools', async () => {
+    const { sponsoredPools } = await client.request(sponsoredPoolQuery);
+    return sponsoredPools;
+  });
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
