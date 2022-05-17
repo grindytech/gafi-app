@@ -35,8 +35,6 @@ interface SponsoredPoolForm {
 }
 
 const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
-  const [loading, setLoading] = useState(false);
-
   const toast = useToast();
   const {
     register,
@@ -81,7 +79,6 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
         isClosable: true,
         status: 'success',
       });
-      setLoading(false);
     } else {
       toast({
         description: `Current transaction status: ${status.type}`,
@@ -92,7 +89,6 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   };
 
   const onSubmit = async (data: SponsoredPoolForm) => {
-    setLoading(true);
     const [account, options] = await getFromAcct(currentAccount);
     const bytes = [];
     for (let i = 0; i < data.name.length; ++i) {
@@ -121,8 +117,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
             isClosable: true,
             status: 'error',
           });
-          setLoading(false);
-        } 
+        }
       } else {
         try {
           await txExecute.signAndSend(account, txCallback);
@@ -132,7 +127,6 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
             isClosable: true,
             status: 'error',
           });
-          setLoading(false);
         }
       }
     }
@@ -210,7 +204,6 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
               color="white"
               background="primary"
               variant="solid"
-              isLoading={loading}
             >
               Save
             </Button>
