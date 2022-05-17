@@ -9,14 +9,6 @@ import type { EthereumLog, EvmCoreErrorExitReason, FrameSupportTokensMiscBalance
 
 declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
-    addressMapping: {
-      Bonded: AugmentedEvent<ApiType, [AccountId32, H160]>;
-      Unbonded: AugmentedEvent<ApiType, [AccountId32, H160]>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
     balances: {
       /**
        * A balance was set by root.
@@ -126,6 +118,12 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    gameCreator: {
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     grandpa: {
       /**
        * New authority set has been applied.
@@ -144,6 +142,12 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    palletCache: {
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     player: {
       NewPlayerCreated: AugmentedEvent<ApiType, [AccountId32, U8aFixed]>;
       /**
@@ -154,6 +158,48 @@ declare module '@polkadot/api-base/types/events' {
     pool: {
       Joined: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
       Leaved: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    poolName: {
+      /**
+       * A name was changed.
+       **/
+      NameChanged: AugmentedEvent<ApiType, [U8aFixed]>;
+      /**
+       * A name was cleared, and the given balance returned.
+       **/
+      NameCleared: AugmentedEvent<ApiType, [U8aFixed, u128]>;
+      /**
+       * A name was forcibly set.
+       **/
+      NameForced: AugmentedEvent<ApiType, [U8aFixed]>;
+      /**
+       * A name was removed and the given balance slashed.
+       **/
+      NameKilled: AugmentedEvent<ApiType, [U8aFixed, u128]>;
+      /**
+       * A name was set.
+       **/
+      NameSet: AugmentedEvent<ApiType, [U8aFixed]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    proofAddressMapping: {
+      Bonded: AugmentedEvent<ApiType, [AccountId32, H160]>;
+      Unbonded: AugmentedEvent<ApiType, [AccountId32, H160]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    sponsoredPool: {
+      CreatedPool: AugmentedEvent<ApiType, [U8aFixed]>;
+      Withdrew: AugmentedEvent<ApiType, [U8aFixed]>;
       /**
        * Generic event
        **/
@@ -214,18 +260,8 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
-    template: {
-      /**
-       * Event documentation should end with an array that provides descriptive names for event
-       * parameters. [something, who]
-       **/
-      SomethingStored: AugmentedEvent<ApiType, [u32, AccountId32]>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
     txHandler: {
+      SetGasPrice: AugmentedEvent<ApiType, [U256]>;
       /**
        * Generic event
        **/

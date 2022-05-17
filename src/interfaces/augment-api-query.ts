@@ -5,20 +5,11 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Bytes, Option, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { AnyNumber, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H160, H256, Permill } from '@polkadot/types/interfaces/runtime';
-import type { EthereumBlock, EthereumReceiptReceiptV3, EthereumTransactionTransactionV2, FpRpcTransactionStatus, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, GafiPrimitivesPoolLevel, GafiPrimitivesPoolService, GafiPrimitivesPoolTicket, GafiPrimitivesPoolTicketType, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesReleases, PalletBalancesReserveData, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletPlayerPlayer, PalletTransactionPaymentReleases, SpRuntimeDigest } from '@polkadot/types/lookup';
+import type { EthereumBlock, EthereumReceiptReceiptV3, EthereumTransactionTransactionV2, FpRpcTransactionStatus, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, GafiPrimitivesPlayerTicketInfo, GafiPrimitivesPoolFlexService, GafiPrimitivesPoolLevel, GafiPrimitivesPoolTicket, GafiPrimitivesPoolTicketType, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesReleases, PalletBalancesReserveData, PalletCacheFlag, PalletCacheWrapData, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletPlayerPlayer, PalletTransactionPaymentReleases, SpRuntimeDigest, SponsoredPool } from '@polkadot/types/lookup';
 import type { Observable } from '@polkadot/types/types';
 
 declare module '@polkadot/api-base/types/storage' {
   export interface AugmentedQueries<ApiType extends ApiTypes> {
-    addressMapping: {
-      bondExistentialDeposit: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
-      h160Mapping: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Option<AccountId32>>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
-      id32Mapping: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<H160>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
-      /**
-       * Generic query
-       **/
-      [key: string]: QueryableStorageEntry<ApiType>;
-    };
     balances: {
       /**
        * The Balances pallet example of storing the balance of an account.
@@ -115,13 +106,27 @@ declare module '@polkadot/api-base/types/storage' {
       accountCodes: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Bytes>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
       accountStorages: AugmentedQuery<ApiType, (arg1: H160 | string | Uint8Array, arg2: H256 | string | Uint8Array) => Observable<H256>, [H160, H256]> & QueryableStorageEntry<ApiType, [H160, H256]>;
       /**
+       * Holding the contract creator when the contract is created succeed
+       **/
+      creators: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Option<H160>>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
+      /**
        * Generic query
        **/
       [key: string]: QueryableStorageEntry<ApiType>;
     };
     faucet: {
       faucetAmount: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Holding all the accounts
+       **/
       genesisAccounts: AugmentedQuery<ApiType, () => Observable<Vec<AccountId32>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    gameCreator: {
+      contractOwner: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Option<AccountId32>>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
       /**
        * Generic query
        **/
@@ -161,6 +166,23 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       [key: string]: QueryableStorageEntry<ApiType>;
     };
+    palletCache: {
+      cleanTime: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
+      dataFlag: AugmentedQuery<ApiType, () => Observable<PalletCacheFlag>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Holding the data that insert in Cache by keys AccountId and Action
+       **/
+      dataLeft: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: GafiPrimitivesPoolTicketType | { Upfront: any } | { Staking: any } | { Sponsored: any } | string | Uint8Array) => Observable<Option<PalletCacheWrapData>>, [AccountId32, GafiPrimitivesPoolTicketType]> & QueryableStorageEntry<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
+      /**
+       * Holding the data that insert in Cache by keys AccountId and Action
+       **/
+      dataRight: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: GafiPrimitivesPoolTicketType | { Upfront: any } | { Staking: any } | { Sponsored: any } | string | Uint8Array) => Observable<Option<PalletCacheWrapData>>, [AccountId32, GafiPrimitivesPoolTicketType]> & QueryableStorageEntry<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
+      markTime: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
     player: {
       playerOwned: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<U8aFixed>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
       players: AugmentedQuery<ApiType, (arg: U8aFixed | string | Uint8Array) => Observable<Option<PalletPlayerPlayer>>, [U8aFixed]> & QueryableStorageEntry<ApiType, [U8aFixed]>;
@@ -170,7 +192,30 @@ declare module '@polkadot/api-base/types/storage' {
       [key: string]: QueryableStorageEntry<ApiType>;
     };
     pool: {
-      tickets: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<GafiPrimitivesPoolTicketType>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
+      markTime: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Holding all the tickets in the network
+       **/
+      tickets: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<GafiPrimitivesPlayerTicketInfo>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
+      timeService: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    poolName: {
+      /**
+       * The lookup table for names.
+       **/
+      nameOf: AugmentedQuery<ApiType, (arg: U8aFixed | string | Uint8Array) => Observable<Option<ITuple<[Bytes, u128]>>>, [U8aFixed]> & QueryableStorageEntry<ApiType, [U8aFixed]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    proofAddressMapping: {
+      h160Mapping: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Option<AccountId32>>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
+      id32Mapping: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<H160>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
       /**
        * Generic query
        **/
@@ -188,6 +233,24 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       [key: string]: QueryableStorageEntry<ApiType>;
     };
+    sponsoredPool: {
+      /**
+       * Holding the pool owned
+       **/
+      poolOwned: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Vec<U8aFixed>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
+      /**
+       * Holding the all the pool data
+       **/
+      pools: AugmentedQuery<ApiType, (arg: U8aFixed | string | Uint8Array) => Observable<Option<SponsoredPool>>, [U8aFixed]> & QueryableStorageEntry<ApiType, [U8aFixed]>;
+      /**
+       * Holding the contract addresses
+       **/
+      targets: AugmentedQuery<ApiType, (arg: U8aFixed | string | Uint8Array) => Observable<Vec<H160>>, [U8aFixed]> & QueryableStorageEntry<ApiType, [U8aFixed]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
     stakingPool: {
       /**
        * Holding the number of maximum player can join the staking pool
@@ -200,7 +263,7 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * Holding the services to serve to players, means service detail can change on runtime
        **/
-      services: AugmentedQuery<ApiType, (arg: GafiPrimitivesPoolLevel | 'Basic' | 'Medium' | 'Advance' | number | Uint8Array) => Observable<GafiPrimitivesPoolService>, [GafiPrimitivesPoolLevel]> & QueryableStorageEntry<ApiType, [GafiPrimitivesPoolLevel]>;
+      services: AugmentedQuery<ApiType, (arg: GafiPrimitivesPoolLevel | 'Basic' | 'Medium' | 'Advance' | number | Uint8Array) => Observable<Option<GafiPrimitivesPoolFlexService>>, [GafiPrimitivesPoolLevel]> & QueryableStorageEntry<ApiType, [GafiPrimitivesPoolLevel]>;
       /**
        * Holding the tickets detail
        **/
@@ -303,13 +366,6 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       [key: string]: QueryableStorageEntry<ApiType>;
     };
-    template: {
-      something: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []> & QueryableStorageEntry<ApiType, []>;
-      /**
-       * Generic query
-       **/
-      [key: string]: QueryableStorageEntry<ApiType>;
-    };
     timestamp: {
       /**
        * Did the timestamp get updated in this block?
@@ -333,6 +389,9 @@ declare module '@polkadot/api-base/types/storage' {
       [key: string]: QueryableStorageEntry<ApiType>;
     };
     txHandler: {
+      /**
+       * Holding gas price value
+       **/
       gasPrice: AugmentedQuery<ApiType, () => Observable<U256>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Generic query
@@ -344,7 +403,6 @@ declare module '@polkadot/api-base/types/storage' {
        * Holing players, who stay in the pool longer than TimeService
        **/
       ingamePlayers: AugmentedQuery<ApiType, () => Observable<Vec<AccountId32>>, []> & QueryableStorageEntry<ApiType, []>;
-      markTime: AugmentedQuery<ApiType, () => Observable<u64>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Holding the number of Max Player can join the Upfront Pool
        **/
@@ -360,12 +418,11 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * Holding the services to serve to players, means service detail can change on runtime
        **/
-      services: AugmentedQuery<ApiType, (arg: GafiPrimitivesPoolLevel | 'Basic' | 'Medium' | 'Advance' | number | Uint8Array) => Observable<GafiPrimitivesPoolService>, [GafiPrimitivesPoolLevel]> & QueryableStorageEntry<ApiType, [GafiPrimitivesPoolLevel]>;
+      services: AugmentedQuery<ApiType, (arg: GafiPrimitivesPoolLevel | 'Basic' | 'Medium' | 'Advance' | number | Uint8Array) => Observable<Option<GafiPrimitivesPoolFlexService>>, [GafiPrimitivesPoolLevel]> & QueryableStorageEntry<ApiType, [GafiPrimitivesPoolLevel]>;
       /**
        * Holding the tickets that player used to join the pool
        **/
       tickets: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<GafiPrimitivesPoolTicket>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
-      timeService: AugmentedQuery<ApiType, () => Observable<u128>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Generic query
        **/

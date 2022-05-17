@@ -103,7 +103,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
     if (api && account) {
       const txExecute = api.tx.sponsoredPool.createPool(
         ['0x560050700ae0733594F03762bAE68DaB9F50ae28'],
-        convertedName,
+        // convertedName,
         new BN(data.poolAmount, 10).mul(base).toString(),
         data.discount,
         data.txLimit
