@@ -1,3 +1,18 @@
 {
-  "GAFI_DASHBOARD": "GAFI DASHBOARD"
+  "GAFI_DASHBOARD": "GAFI DASHBOARD",
+  "TRANSACTIONS_PER_MINUTE": "Transactions per minute",
+  "DISCOUNT_FEE": "Discount fee",
+  "FEE": "Fee",
+  "MINUTE": "minute",
+  "MAXIMUM": "Maximum",
+  "POOL": {
+    "UPFRONT_POOL": "Upfront pool",
+    "STACKING_POOL": "Stacking pool",
+    "SPONSORED_POOL": "Sponsored pool"
+  },
+  "POOL_TYPE": {
+    "BASIC": "Basic",
+    "MEDIUM": "Medium",
+    "ADVANCE": "Advance"
+  }
 }
