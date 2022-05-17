@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { DevnetRuntime, EthbloomBloom, EthereumBlock, EthereumHeader, EthereumLog, EthereumReceiptEip658ReceiptData, EthereumReceiptReceiptV3, EthereumTransactionAccessListItem, EthereumTransactionEip1559Transaction, EthereumTransactionEip2930Transaction, EthereumTransactionLegacyTransaction, EthereumTransactionTransactionAction, EthereumTransactionTransactionSignature, EthereumTransactionTransactionV2, EthereumTypesHashH64, EvmCoreErrorExitError, EvmCoreErrorExitFatal, EvmCoreErrorExitReason, EvmCoreErrorExitRevert, EvmCoreErrorExitSucceed, FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FpRpcTransactionStatus, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchClass, FrameSupportWeightsDispatchInfo, FrameSupportWeightsPays, FrameSupportWeightsPerDispatchClassU32, FrameSupportWeightsPerDispatchClassU64, FrameSupportWeightsPerDispatchClassWeightsPerClass, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiPrimitivesPoolLevel, GafiPrimitivesPoolService, GafiPrimitivesPoolTicket, GafiPrimitivesPoolTicketType, GafiTxCall, GafiTxError, GafiTxEvent, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReleases, PalletBalancesReserveData, PalletBaseFeeCall, PalletBaseFeeEvent, PalletDynamicFeeCall, PalletEthereumCall, PalletEthereumError, PalletEthereumEvent, PalletEvmCall, PalletEvmError, PalletEvmEvent, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletPlayerCall, PalletPlayerError, PalletPlayerEvent, PalletPlayerPlayer, PalletPoolCall, PalletPoolError, PalletPoolEvent, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTemplateCall, PalletTemplateError, PalletTemplateEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentReleases, ProofAddressMappingCall, ProofAddressMappingError, ProofAddressMappingEvent, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeArithmeticError, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpVersionRuntimeVersion, StakingPoolCall, StakingPoolError, StakingPoolEvent, UpfrontPoolCall, UpfrontPoolError, UpfrontPoolEvent } from '@polkadot/types/lookup';
+import type { DevnetRuntime, EthbloomBloom, EthereumBlock, EthereumHeader, EthereumLog, EthereumReceiptEip658ReceiptData, EthereumReceiptReceiptV3, EthereumTransactionAccessListItem, EthereumTransactionEip1559Transaction, EthereumTransactionEip2930Transaction, EthereumTransactionLegacyTransaction, EthereumTransactionTransactionAction, EthereumTransactionTransactionSignature, EthereumTransactionTransactionV2, EthereumTypesHashH64, EvmCoreErrorExitError, EvmCoreErrorExitFatal, EvmCoreErrorExitReason, EvmCoreErrorExitRevert, EvmCoreErrorExitSucceed, FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FpRpcTransactionStatus, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchClass, FrameSupportWeightsDispatchInfo, FrameSupportWeightsPays, FrameSupportWeightsPerDispatchClassU32, FrameSupportWeightsPerDispatchClassU64, FrameSupportWeightsPerDispatchClassWeightsPerClass, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiPrimitivesPlayerTicketInfo, GafiPrimitivesPoolFlexService, GafiPrimitivesPoolLevel, GafiPrimitivesPoolService, GafiPrimitivesPoolTicket, GafiPrimitivesPoolTicketType, GafiTxCall, GafiTxError, GafiTxEvent, GameCreatorCall, GameCreatorError, GameCreatorEvent, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReleases, PalletBalancesReserveData, PalletBaseFeeCall, PalletBaseFeeEvent, PalletCacheCall, PalletCacheError, PalletCacheEvent, PalletCacheFlag, PalletCacheWrapData, PalletDynamicFeeCall, PalletEthereumCall, PalletEthereumError, PalletEthereumEvent, PalletEvmCall, PalletEvmError, PalletEvmEvent, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletPlayerCall, PalletPlayerError, PalletPlayerEvent, PalletPlayerPlayer, PalletPoolCall, PalletPoolError, PalletPoolEvent, PalletPoolNamesCall, PalletPoolNamesError, PalletPoolNamesEvent, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentReleases, ProofAddressMappingCall, ProofAddressMappingError, ProofAddressMappingEvent, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeArithmeticError, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SponsoredPool, SponsoredPoolCall, SponsoredPoolError, SponsoredPoolEvent, StakingPoolCall, StakingPoolError, StakingPoolEvent, UpfrontPoolCall, UpfrontPoolError, UpfrontPoolEvent } from '@polkadot/types/lookup';
 
 declare module '@polkadot/types/types/registry' {
   export interface InterfaceTypes {
@@ -45,6 +45,7 @@ declare module '@polkadot/types/types/registry' {
     FrameSystemEvent: FrameSystemEvent;
     FrameSystemEventRecord: FrameSystemEventRecord;
     FrameSystemExtensionsCheckGenesis: FrameSystemExtensionsCheckGenesis;
+    FrameSystemExtensionsCheckNonZeroSender: FrameSystemExtensionsCheckNonZeroSender;
     FrameSystemExtensionsCheckNonce: FrameSystemExtensionsCheckNonce;
     FrameSystemExtensionsCheckSpecVersion: FrameSystemExtensionsCheckSpecVersion;
     FrameSystemExtensionsCheckTxVersion: FrameSystemExtensionsCheckTxVersion;
@@ -54,6 +55,8 @@ declare module '@polkadot/types/types/registry' {
     FrameSystemLimitsBlockWeights: FrameSystemLimitsBlockWeights;
     FrameSystemLimitsWeightsPerClass: FrameSystemLimitsWeightsPerClass;
     FrameSystemPhase: FrameSystemPhase;
+    GafiPrimitivesPlayerTicketInfo: GafiPrimitivesPlayerTicketInfo;
+    GafiPrimitivesPoolFlexService: GafiPrimitivesPoolFlexService;
     GafiPrimitivesPoolLevel: GafiPrimitivesPoolLevel;
     GafiPrimitivesPoolService: GafiPrimitivesPoolService;
     GafiPrimitivesPoolTicket: GafiPrimitivesPoolTicket;
@@ -61,6 +64,9 @@ declare module '@polkadot/types/types/registry' {
     GafiTxCall: GafiTxCall;
     GafiTxError: GafiTxError;
     GafiTxEvent: GafiTxEvent;
+    GameCreatorCall: GameCreatorCall;
+    GameCreatorError: GameCreatorError;
+    GameCreatorEvent: GameCreatorEvent;
     PalletBalancesAccountData: PalletBalancesAccountData;
     PalletBalancesBalanceLock: PalletBalancesBalanceLock;
     PalletBalancesCall: PalletBalancesCall;
@@ -71,6 +77,11 @@ declare module '@polkadot/types/types/registry' {
     PalletBalancesReserveData: PalletBalancesReserveData;
     PalletBaseFeeCall: PalletBaseFeeCall;
     PalletBaseFeeEvent: PalletBaseFeeEvent;
+    PalletCacheCall: PalletCacheCall;
+    PalletCacheError: PalletCacheError;
+    PalletCacheEvent: PalletCacheEvent;
+    PalletCacheFlag: PalletCacheFlag;
+    PalletCacheWrapData: PalletCacheWrapData;
     PalletDynamicFeeCall: PalletDynamicFeeCall;
     PalletEthereumCall: PalletEthereumCall;
     PalletEthereumError: PalletEthereumError;
@@ -93,12 +104,12 @@ declare module '@polkadot/types/types/registry' {
     PalletPoolCall: PalletPoolCall;
     PalletPoolError: PalletPoolError;
     PalletPoolEvent: PalletPoolEvent;
+    PalletPoolNamesCall: PalletPoolNamesCall;
+    PalletPoolNamesError: PalletPoolNamesError;
+    PalletPoolNamesEvent: PalletPoolNamesEvent;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;
-    PalletTemplateCall: PalletTemplateCall;
-    PalletTemplateError: PalletTemplateError;
-    PalletTemplateEvent: PalletTemplateEvent;
     PalletTimestampCall: PalletTimestampCall;
     PalletTransactionPaymentChargeTransactionPayment: PalletTransactionPaymentChargeTransactionPayment;
     PalletTransactionPaymentReleases: PalletTransactionPaymentReleases;
@@ -121,7 +132,12 @@ declare module '@polkadot/types/types/registry' {
     SpRuntimeModuleError: SpRuntimeModuleError;
     SpRuntimeMultiSignature: SpRuntimeMultiSignature;
     SpRuntimeTokenError: SpRuntimeTokenError;
+    SpRuntimeTransactionalError: SpRuntimeTransactionalError;
     SpVersionRuntimeVersion: SpVersionRuntimeVersion;
+    SponsoredPool: SponsoredPool;
+    SponsoredPoolCall: SponsoredPoolCall;
+    SponsoredPoolError: SponsoredPoolError;
+    SponsoredPoolEvent: SponsoredPoolEvent;
     StakingPoolCall: StakingPoolCall;
     StakingPoolError: StakingPoolError;
     StakingPoolEvent: StakingPoolEvent;

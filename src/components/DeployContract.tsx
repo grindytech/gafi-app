@@ -143,7 +143,6 @@ const DeployContract = () => {
           };
           try {
             const result = await web3.eth.sendTransaction(options);
-            console.log('result', result);
             const newBalance = await web3.eth.getBalance(account);
             setTxnFee(
               prevTxnFee =>

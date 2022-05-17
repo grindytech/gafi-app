@@ -1,34 +1,25 @@
-import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
-import { Option } from '@polkadot/types';
-import {
-  GafiPrimitivesPoolService,
-  GafiPrimitivesPoolTicket,
-} from '@polkadot/types/lookup';
-import { Callback, ISubmittableResult } from '@polkadot/types/types';
+import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
+import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
+import { ISubmittableResult } from '@polkadot/types/types';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
-import { useSubstrateState } from '../substrate-lib';
+import { useSubstrate, useSubstrateState } from '../substrate-lib';
 
+import { PoolInfo } from 'gafi-dashboard/interfaces';
 import Card from './card/Card';
 import { getFromAcct, handleTxError } from './utils';
+import { BN, formatBalance } from '@polkadot/util';
 
 export interface TicketType {
   upfront?: string;
   staking?: string;
 }
 
-interface PoolInfo {
-  basic: GafiPrimitivesPoolService;
-  medium: GafiPrimitivesPoolService;
-  advance: GafiPrimitivesPoolService;
-}
-
 const JoinPool = () => {
   const toast = useToast();
-  const { api, currentAccount } = useSubstrateState();
+  const { api, currentAccount, chainDecimal } = useSubstrateState();
   const [selectedPool, setSelectedPool] = useState('');
-
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedUpfrontPool', currentAccount],
     async (): Promise<GafiPrimitivesPoolTicket | undefined> => {
@@ -55,9 +46,9 @@ const JoinPool = () => {
         const medium = await api.query.upfrontPool.services('Medium');
         const advance = await api.query.upfrontPool.services('Advance');
         return {
-          basic,
-          medium,
-          advance,
+          basic: basic.unwrap(),
+          medium: medium.unwrap(),
+          advance: advance.unwrap(),
         };
       }
     }
@@ -164,13 +155,27 @@ const JoinPool = () => {
             Basic
           </Text>
           <VStack>
-            {poolInfo?.basic?.txLimit && (
+            {poolInfo?.basic?.service?.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.basic.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo.basic.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.basic?.discount && (
-              <Text>Discount fee: {poolInfo.basic.discount.toNumber()} %</Text>
+            {poolInfo?.basic?.service?.discount && (
+              <Text>
+                Discount fee: {poolInfo.basic.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.basic.value && (
+              <Text>
+                Fee:{' '}
+                {formatBalance(
+                  poolInfo?.basic.value.toString(),
+                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                  chainDecimal
+                )}{' '}
+                / 30 minute
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.type === 'Basic' ? (
@@ -194,13 +199,27 @@ const JoinPool = () => {
             Medium
           </Text>
           <VStack>
-            {poolInfo?.medium?.txLimit && (
+            {poolInfo?.medium.service.txLimit && (
               <Text>
-                Transactions per minute: {poolInfo.medium.txLimit.toNumber()}
+                Transactions per minute:{' '}
+                {poolInfo?.medium.service.txLimit.toNumber()}
               </Text>
             )}
-            {poolInfo?.medium?.discount && (
-              <Text>Discount fee: {poolInfo.medium.discount.toNumber()} %</Text>
+            {poolInfo?.medium.service.discount && (
+              <Text>
+                Discount fee: {poolInfo?.medium.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.medium.value && (
+              <Text>
+                Fee:{' '}
+                {formatBalance(
+                  poolInfo?.medium.value.toString(),
+                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                  chainDecimal
+                )}{' '}
+                / 30 minute
+              </Text>
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.isMedium ? (
@@ -224,12 +243,23 @@ const JoinPool = () => {
             Advance
           </Text>
           <VStack>
-            {poolInfo?.advance?.txLimit && (
+            {poolInfo?.advance?.service.txLimit && (
               <Text>Transactions per minute: Maximum</Text>
             )}
-            {poolInfo?.advance?.discount && (
+            {poolInfo?.advance?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.advance.discount.toNumber()} %
+                Discount fee: {poolInfo.advance.service.discount.toNumber()} %
+              </Text>
+            )}
+            {poolInfo?.advance.value && (
+              <Text>
+                Fee:{' '}
+                {formatBalance(
+                  poolInfo?.advance.value.toString(),
+                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                  chainDecimal
+                )}{' '}
+                / 30 minute
               </Text>
             )}
 
