@@ -1,7 +1,15 @@
 import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
 
-function TimelineRow(props) {
+export interface ITimelineRowProps {
+  logo: any;
+  title: string;
+  date: Date;
+  color: string;
+  index: number;
+  arrLength: number;
+}
+
+function TimelineRow(props: ITimelineRowProps) {
   const { logo, title, date, color, index, arrLength } = props;
   const textColor = useColorModeValue("gray.700", "white.300");
   const bgIconColor = useColorModeValue("white.300", "gray.700");

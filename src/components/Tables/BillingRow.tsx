@@ -6,10 +6,16 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { mdiLeadPencil, mdiTrashCan } from '@mdi/js';
 
-function BillingRow(props) {
+export interface IBillingRowProps {
+  name: string;
+  company: string;
+  email: string;
+  number: string;
+}
+
+function BillingRow(props: IBillingRowProps) {
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("#F8F9FA", "gray.800");
   const nameColor = useColorModeValue("gray.500", "white");
@@ -53,7 +59,7 @@ function BillingRow(props) {
             me={{ md: "12px" }}
           >
             <Flex color="red.500" cursor="pointer" align="center" p="12px">
-              <Icon as={FaTrashAlt} me="4px" />
+              <Icon path={mdiTrashCan} />
               <Text fontSize="sm" fontWeight="semibold">
                 DELETE
               </Text>
@@ -61,7 +67,7 @@ function BillingRow(props) {
           </Button>
           <Button p="0px" bg="transparent">
             <Flex color={textColor} cursor="pointer" align="center" p="12px">
-              <Icon as={FaPencilAlt} me="4px" />
+              <Icon path={mdiLeadPencil} />
               <Text fontSize="sm" fontWeight="semibold">
                 EDIT
               </Text>

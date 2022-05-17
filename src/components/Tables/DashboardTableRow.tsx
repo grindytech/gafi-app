@@ -1,24 +1,32 @@
-import React from "react";
 import {
-  Tr,
-  Td,
+  Avatar,
+  AvatarGroup,
   Flex,
-  Text,
-  Progress,
   Icon,
-  Button,
+  Progress,
+  Td,
+  Text,
+  Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaEllipsisV } from "react-icons/fa";
+import React from "react";
 
-function DashboardTableRow(props) {
-  const { logo, name, status, budget, progression } = props;
+export interface IDashboardTableRowProps {
+  logo: any;
+  name: string;
+  members: string[];
+  budget: string;
+  progression: number;
+}
+
+function DashboardTableRow(props: IDashboardTableRowProps) {
+  const { logo, name, members, budget, progression } = props;
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
-        <Flex alignItems="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Icon as={logo} h={"24px"} w={"24px"} me="18px" />
+        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+          <Icon as={logo} h={"24px"} w={"24px"} pe="5px" />
           <Text
             fontSize="md"
             color={textColor}
@@ -29,14 +37,22 @@ function DashboardTableRow(props) {
           </Text>
         </Flex>
       </Td>
+
       <Td>
-        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {budget}
-        </Text>
+        <AvatarGroup size="sm">
+          {members.map((member) => (
+              <Avatar
+                name="Ryan Florence"
+                key={member}
+                src={member}
+                _hover={{ zIndex: "3", cursor: "pointer" }}
+              />
+            ))}
+        </AvatarGroup>
       </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {status}
+          {budget}
         </Text>
       </Td>
       <Td>
@@ -54,11 +70,6 @@ function DashboardTableRow(props) {
             borderRadius="15px"
           />
         </Flex>
-      </Td>
-      <Td>
-        <Button p="0px" bg="transparent">
-          <Icon as={FaEllipsisV} color="gray.400" cursor="pointer" />
-        </Button>
       </Td>
     </Tr>
   );

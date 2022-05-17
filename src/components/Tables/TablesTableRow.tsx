@@ -8,9 +8,18 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 
-function TablesTableRow(props) {
+export interface ITablesTableRowProps {
+  logo: any;
+  name: string;
+  email: string;
+  subdomain: string;
+  domain: string;
+  status: string;
+  date: Date;
+}
+
+function TablesTableRow(props: ITablesTableRowProps) {
   const { logo, name, email, subdomain, domain, status, date } = props;
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
