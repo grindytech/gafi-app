@@ -7,9 +7,16 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 
-function InvoicesRow(props) {
+export interface IInvoicesRowProps {
+  date: Date;
+  code: string;
+  price: number;
+  format: string;
+  logo: any;
+}
+
+function InvoicesRow(props: IInvoicesRowProps) {
   const textColor = useColorModeValue("gray.700", "white");
   const { date, code, price, format, logo } = props;
 

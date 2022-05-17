@@ -1,24 +1,31 @@
 import {
-  Avatar,
-  AvatarGroup,
-  Flex,
-  Icon,
-  Progress,
-  Td,
-  Text,
   Tr,
+  Td,
+  Flex,
+  Text,
+  Progress,
+  Icon,
+  Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import { mdiDotsVertical } from '@mdi/js';
 
-function DashboardTableRow(props) {
-  const { logo, name, members, budget, progression } = props;
+export interface IDashboardTableRowProps {
+  logo: any;
+  name: string;
+  status: string;
+  budget: string;
+  progression: number;
+}
+
+function DashboardTableRow(props: IDashboardTableRowProps) {
+  const { logo, name, status, budget, progression } = props;
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Icon as={logo} h={"24px"} w={"24px"} pe="5px" />
+        <Flex alignItems="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+          <Icon as={logo} h={"24px"} w={"24px"} me="18px" />
           <Text
             fontSize="md"
             color={textColor}
@@ -29,24 +36,14 @@ function DashboardTableRow(props) {
           </Text>
         </Flex>
       </Td>
-
-      <Td>
-        <AvatarGroup size="sm">
-          {members.map((member) => {
-            return (
-              <Avatar
-                name="Ryan Florence"
-                key={member}
-                src={member}
-                _hover={{ zIndex: "3", cursor: "pointer" }}
-              />
-            );
-          })}
-        </AvatarGroup>
-      </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {budget}
+        </Text>
+      </Td>
+      <Td>
+        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+          {status}
         </Text>
       </Td>
       <Td>
@@ -64,6 +61,11 @@ function DashboardTableRow(props) {
             borderRadius="15px"
           />
         </Flex>
+      </Td>
+      <Td>
+        <Button p="0px" bg="transparent">
+          <Icon path={mdiDotsVertical} color="gray.400" />
+        </Button>
       </Td>
     </Tr>
   );
