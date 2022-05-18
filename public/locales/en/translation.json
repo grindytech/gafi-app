@@ -2,7 +2,7 @@
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
   "TRANSACTIONS_PER_MINUTE": "Transactions per minute: {{transactionAmount}}",
   "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
-  "POOL_FEE": "Fee: {{poolFee}} / 30 minute",
+  "POOL_FEE": "Fee: {{poolFee}} / 30 minutes",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
     "STACKING_POOL": "Stacking pool",
@@ -12,5 +12,13 @@
     "BASIC": "Basic",
     "MEDIUM": "Medium",
     "ADVANCE": "Advance"
-  }
+  },
+  "OWNER": "owner",
+  "DISCOUNT": "Discount",
+  "TRANSACTION_LIMIT": "Transaction limit",
+  "BALANCE": "Balance",
+  "SPONSORED_POOL_TABLE": "Sponsored Pool table",
+  "SPONSORED_POOLS": "Sponsored Pools",
+  "ADD_POOL": "Add pool",
+  "JOIN": "Join"
 }

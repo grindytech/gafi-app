@@ -212,7 +212,7 @@ const StakingPool = () => {
             {poolInfo?.medium?.service.discount && (
               <Text>
                 {t('DISCOUNT_FEE', {
-                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                  discountPercent: poolInfo.medium.service.discount.toNumber(),
                 })}
               </Text>
             )}
@@ -260,7 +260,7 @@ const StakingPool = () => {
             {poolInfo?.advance?.service.discount && (
               <Text>
                 {t('DISCOUNT_FEE', {
-                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                  discountPercent: poolInfo.advance.service.discount.toNumber(),
                 })}
               </Text>
             )}
