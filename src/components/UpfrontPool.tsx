@@ -160,24 +160,39 @@ const JoinPool = () => {
           <VStack>
             {poolInfo?.basic?.service?.txLimit && (
               <Text>
-                {t("TRANSACTIONS_PER_MINUTE")}:{' '}
-                {poolInfo.basic.service.txLimit.toNumber()}
+                <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
+                  Transactions per minute:{' '}
+                  {{
+                    transactionAmount:
+                      poolInfo.basic.service.txLimit.toNumber(),
+                  }}
+                </Trans>
               </Text>
             )}
             {poolInfo?.basic?.service?.discount && (
               <Text>
-                {t("DISCOUNT_FEE")}: {poolInfo.basic.service.discount.toNumber()} %
+                <Trans i18nKey="DISCOUNT_FEE">
+                  Discount fee:{' '}
+                  {{
+                    discountPercent: poolInfo.basic.service.discount.toNumber(),
+                  }}{' '}
+                  %
+                </Trans>
               </Text>
             )}
             {poolInfo?.basic.value && (
               <Text>
-                {t("FEE")}:{' '}
-                {formatBalance(
-                  poolInfo?.basic.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 {t("MINUTE")}
+                <Trans i18nKey="POOL_FEE">
+                  Fee:{' '}
+                  {{
+                    poolFee: formatBalance(
+                      poolInfo?.basic.value.toString(),
+                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                      chainDecimal
+                    ),
+                  }}{' '}
+                  / 30 minute
+                </Trans>
               </Text>
             )}
 
@@ -204,24 +219,40 @@ const JoinPool = () => {
           <VStack>
             {poolInfo?.medium.service.txLimit && (
               <Text>
-                {t("TRANSACTIONS_PER_MINUTE")}:{' '}
-                {poolInfo?.medium.service.txLimit.toNumber()}
+                <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
+                  Transactions per minute:{' '}
+                  {{
+                    transactionAmount:
+                      poolInfo.medium.service.txLimit.toNumber(),
+                  }}
+                </Trans>
               </Text>
             )}
             {poolInfo?.medium.service.discount && (
               <Text>
-                {t("DISCOUNT_FEE")}: {poolInfo?.medium.service.discount.toNumber()} %
+                <Trans i18nKey="DISCOUNT_FEE">
+                  Discount fee:{' '}
+                  {{
+                    discountPercent:
+                      poolInfo.medium.service.discount.toNumber(),
+                  }}{' '}
+                  %
+                </Trans>
               </Text>
             )}
             {poolInfo?.medium.value && (
               <Text>
-                {t("FEE")}:{' '}
-                {formatBalance(
-                  poolInfo?.medium.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 {t("MINUTE")}
+                <Trans i18nKey="POOL_FEE">
+                  Fee:{' '}
+                  {{
+                    poolFee: formatBalance(
+                      poolInfo?.medium.value.toString(),
+                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                      chainDecimal
+                    ),
+                  }}{' '}
+                  / 30 minute
+                </Trans>
               </Text>
             )}
 
@@ -247,22 +278,38 @@ const JoinPool = () => {
           </Text>
           <VStack>
             {poolInfo?.advance?.service.txLimit && (
-              <Text>{t("TRANSACTIONS_PER_MINUTE")}: {t("MAXIMUM")}</Text>
+              <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
+                Transactions per minute:{' '}
+                {{
+                  transactionAmount:
+                    poolInfo.advance.service.txLimit.toNumber(),
+                }}
+              </Trans>
             )}
             {poolInfo?.advance?.service.discount && (
               <Text>
-                {t("DISCOUNT_FEE")}: {poolInfo.advance.service.discount.toNumber()} %
+                <Trans i18nKey="DISCOUNT_FEE">
+                  Discount fee:{' '}
+                  {{
+                    discountPercent: poolInfo.advance.service.discount.toNumber(),
+                  }}{' '}
+                  %
+                </Trans>
               </Text>
             )}
             {poolInfo?.advance.value && (
               <Text>
-                {t("FEE")}:{' '}
-                {formatBalance(
-                  poolInfo?.advance.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 {t("MINUTE")}
+               <Trans i18nKey="POOL_FEE">
+                  Fee:{' '}
+                  {{
+                    poolFee: formatBalance(
+                      poolInfo?.advance.value.toString(),
+                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                      chainDecimal
+                    ),
+                  }}{' '}
+                  / 30 minute
+                </Trans>
               </Text>
             )}
 

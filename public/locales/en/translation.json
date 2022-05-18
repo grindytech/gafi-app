@@ -1,10 +1,8 @@
 {
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
-  "TRANSACTIONS_PER_MINUTE": "Transactions per minute",
-  "DISCOUNT_FEE": "Discount fee",
-  "FEE": "Fee",
-  "MINUTE": "minute",
-  "MAXIMUM": "Maximum",
+  "TRANSACTIONS_PER_MINUTE": "Transactions per minute: {{transactionAmount}}",
+  "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
+  "POOL_FEE": "Fee: {{poolFee}} / 30 minute",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
     "STACKING_POOL": "Stacking pool",
