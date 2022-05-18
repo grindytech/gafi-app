@@ -23,7 +23,7 @@ import Table from './Table';
 import Card from 'components/card/Card';
 import { getFromAcct, handleTxError } from 'components/utils';
 import client from 'graphQL/client';
-import { sponsoredPoolQuery } from 'graphQL/query';
+import { useSponsoredPoolsQuery } from 'graphQL/generates';
 import { useSubstrateState } from 'substrate-lib';
 
 interface PoolInfo {
@@ -108,10 +108,7 @@ const SponsoredPool: React.FC = () => {
   );
 
   // Example for query data from graphql.
-  const { data: sponsoredPool } = useQuery('getSponsoredPools', async () => {
-    const { sponsoredPools } = await client.request(sponsoredPoolQuery);
-    return sponsoredPools;
-  });
+  const { data: sponsoredPool } = useSponsoredPoolsQuery(client);
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
