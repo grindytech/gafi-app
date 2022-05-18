@@ -1,4 +1,5 @@
 {
   "APP_NAME": "gafi-dashboard",
-  "PROVIDER_SOCKET": "wss://ws.gafi.network"
+  "PROVIDER_SOCKET": "wss://ws.gafi.network",
+  "GRAPHQL_ENDPOINT": ""
 }
