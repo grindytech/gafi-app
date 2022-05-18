@@ -19,6 +19,8 @@ import Table from './Table';
 
 import Card from 'components/card/Card';
 import { getFromAcct, handleTxError } from 'components/utils';
+import client from 'graphQL/client';
+import { useSponsoredPoolsQuery } from 'graphQL/generates';
 import { useSubstrateState } from 'substrate-lib';
 import { PoolInfo } from 'gafi-dashboard/interfaces';
 import { useTranslation } from 'react-i18next'
@@ -99,6 +101,9 @@ const SponsoredPool: React.FC = () => {
       enabled: !!currentAccount,
     }
   );
+
+  // Example for query data from graphql.
+  const { data: sponsoredPool } = useSponsoredPoolsQuery(client);
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
