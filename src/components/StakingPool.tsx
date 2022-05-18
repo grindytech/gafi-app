@@ -11,10 +11,6 @@ import Card from './card/Card';
 import { TicketType } from './UpfrontPool';
 import { getFromAcct, handleTxError } from './utils';
 
-
-
-
-
 interface PoolTicketInfo {
   address: string;
   joinTime: string;

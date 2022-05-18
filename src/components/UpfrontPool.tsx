@@ -10,9 +10,6 @@ import { useSubstrateState } from '../substrate-lib';
 import Card from './card/Card';
 import { getFromAcct, handleTxError } from './utils';
 
-
-
-
 export interface TicketType {
   upfront?: string;
   staking?: string;
