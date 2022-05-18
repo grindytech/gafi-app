@@ -1,18 +1,18 @@
-import { Box, HStack, Text, useToast, VStack, Button } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
 import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { formatBalance } from '@polkadot/util';
 import { PoolInfo } from 'gafi-dashboard/interfaces';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { Trans, useTranslation } from 'react-i18next'
-
-
 import { useSubstrateState } from '../substrate-lib';
-
 import Card from './card/Card';
 import { TicketType } from './UpfrontPool';
 import { getFromAcct, handleTxError } from './utils';
+
+
+
 
 
 interface PoolTicketInfo {
@@ -161,39 +161,27 @@ const StakingPool = () => {
           <VStack>
             {poolInfo?.basic?.service.txLimit && (
               <Text>
-                <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
-                  Transactions per minute:{' '}
-                  {{
-                    transactionAmount:
-                      poolInfo.basic.service.txLimit.toNumber(),
-                  }}
-                </Trans>
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount: poolInfo.basic.service.txLimit.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.basic?.service.discount && (
               <Text>
-                <Trans i18nKey="DISCOUNT_FEE">
-                  Discount fee:{' '}
-                  {{
-                    discountPercent: poolInfo.basic.service.discount.toNumber(),
-                  }}{' '}
-                  %
-                </Trans>
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.basic.value && (
               <Text>
-                <Trans i18nKey="POOL_FEE">
-                  Fee:{' '}
-                  {{
-                    poolFee: formatBalance(
-                      poolInfo?.basic.value.toString(),
-                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                      chainDecimal
-                    ),
-                  }}{' '}
-                  / 30 minute
-                </Trans>
+                {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.basic.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
@@ -220,40 +208,27 @@ const StakingPool = () => {
           <VStack>
             {poolInfo?.medium?.service.txLimit && (
               <Text>
-                <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
-                  Transactions per minute:{' '}
-                  {{
-                    transactionAmount:
-                      poolInfo.medium.service.txLimit.toNumber(),
-                  }}
-                </Trans>
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount: poolInfo.medium.service.txLimit.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.medium?.service.discount && (
               <Text>
-                <Trans i18nKey="DISCOUNT_FEE">
-                  Discount fee:{' '}
-                  {{
-                    discountPercent:
-                      poolInfo.medium.service.discount.toNumber(),
-                  }}{' '}
-                  %
-                </Trans>
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.medium.value && (
               <Text>
-                <Trans i18nKey="POOL_FEE">
-                  Fee:{' '}
-                  {{
-                    poolFee: formatBalance(
-                      poolInfo?.medium.value.toString(),
-                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                      chainDecimal
-                    ),
-                  }}{' '}
-                  / 30 minute
-                </Trans>
+                {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.medium.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
@@ -280,40 +255,28 @@ const StakingPool = () => {
           <VStack>
             {poolInfo?.advance?.service.txLimit && (
               <Text>
-                <Trans i18nKey="TRANSACTIONS_PER_MINUTE">
-                  Transactions per minute:{' '}
-                  {{
-                    transactionAmount:
-                      poolInfo.advance.service.txLimit.toNumber(),
-                  }}
-                </Trans>
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount:
+                    poolInfo.advance.service.txLimit.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.advance?.service.discount && (
               <Text>
-                <Trans i18nKey="DISCOUNT_FEE">
-                  Discount fee:{' '}
-                  {{
-                    discountPercent:
-                      poolInfo.advance.service.discount.toNumber(),
-                  }}{' '}
-                  %
-                </Trans>
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.advance.value && (
               <Text>
-                <Trans i18nKey="POOL_FEE">
-                  Fee:{' '}
-                  {{
-                    poolFee: formatBalance(
-                      poolInfo?.advance.value.toString(),
-                      { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                      chainDecimal
-                    ),
-                  }}{' '}
-                  / 30 minute
-                </Trans>
+                {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.advance.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
