@@ -21,6 +21,8 @@ import Card from 'components/card/Card';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
 import { PoolInfo } from 'gafi-dashboard/interfaces';
+import { useTranslation } from 'react-i18next'
+
 
 export const tablesTableData = [
   {
@@ -74,6 +76,7 @@ export const tablesTableData = [
 ];
 
 const SponsoredPool: React.FC = () => {
+  const { t } = useTranslation();
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
   const [selectedPool, setSelectedPool] = useState('');
@@ -196,7 +199,7 @@ const SponsoredPool: React.FC = () => {
     <Box pt={{ base: '120px', md: '75px' }}>
       <HStack justifyContent="space-between">
         <Text fontWeight="bold" fontSize="2xl" mb={5}>
-          Sponsored Pool
+          {t("POOL.SPONSORED_POOL")}
         </Text>
         <Button
           background="primary"
@@ -230,7 +233,7 @@ const SponsoredPool: React.FC = () => {
       <HStack p={5} gap={5}>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Basic
+            {t("POOL_TYPE.BASIC")}
           </Text>
           <VStack>
             {poolInfo?.basic?.service.txLimit && (
@@ -241,7 +244,7 @@ const SponsoredPool: React.FC = () => {
             )}
             {poolInfo?.basic?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.basic.service.discount.toNumber()} %
+                {t("DISCOUNT_FEE")}: {poolInfo.basic.service.discount.toNumber()} %
               </Text>
             )}
 
@@ -263,7 +266,7 @@ const SponsoredPool: React.FC = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Medium
+            {t("POOL_TYPE.MEDIUM")}
           </Text>
           <VStack>
             {poolInfo?.medium?.service.txLimit && (
@@ -274,7 +277,7 @@ const SponsoredPool: React.FC = () => {
             )}
             {poolInfo?.medium?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.medium.service.discount.toNumber()} %
+                {t("DISCOUNT_FEE")}: {poolInfo.medium.service.discount.toNumber()} %
               </Text>
             )}
 
@@ -296,7 +299,7 @@ const SponsoredPool: React.FC = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Advance
+            {t("POOL_TYPE.ADVANCE")}
           </Text>
           <VStack>
             {poolInfo?.advance?.service.txLimit && (
@@ -304,7 +307,7 @@ const SponsoredPool: React.FC = () => {
             )}
             {poolInfo?.advance?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.advance.service.discount.toNumber()} %
+                {t("DISCOUNT_FEE")}: {poolInfo.advance.service.discount.toNumber()} %
               </Text>
             )}
 

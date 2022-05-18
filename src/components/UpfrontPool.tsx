@@ -1,15 +1,14 @@
 import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
 import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-
-import { useSubstrate, useSubstrateState } from '../substrate-lib';
-
+import { formatBalance } from '@polkadot/util';
 import { PoolInfo } from 'gafi-dashboard/interfaces';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import { useSubstrateState } from '../substrate-lib';
 import Card from './card/Card';
 import { getFromAcct, handleTxError } from './utils';
-import { BN, formatBalance } from '@polkadot/util';
 
 export interface TicketType {
   upfront?: string;
@@ -17,6 +16,7 @@ export interface TicketType {
 }
 
 const JoinPool = () => {
+  const { t } = useTranslation();
   const toast = useToast();
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const [selectedPool, setSelectedPool] = useState('');
@@ -138,7 +138,7 @@ const JoinPool = () => {
   return (
     <Box pt={{ base: '120px', md: '75px' }}>
       <Text fontWeight="bold" fontSize="2xl" mb={5}>
-        Upfront Pool
+        {t("POOL.UPFRONT_POOL")}
       </Text>
       {joinedPoolInfo && (
         <VStack>
@@ -152,29 +152,32 @@ const JoinPool = () => {
       <HStack p={5} gap={5}>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Basic
+            {t("POOL_TYPE.BASIC")}
           </Text>
           <VStack>
             {poolInfo?.basic?.service?.txLimit && (
               <Text>
-                Transactions per minute:{' '}
-                {poolInfo.basic.service.txLimit.toNumber()}
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount: poolInfo.basic.service.txLimit.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.basic?.service?.discount && (
               <Text>
-                Discount fee: {poolInfo.basic.service.discount.toNumber()} %
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.basic.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.basic.value && (
               <Text>
-                Fee:{' '}
-                {formatBalance(
-                  poolInfo?.basic.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 minute
+                {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.basic.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
@@ -196,29 +199,32 @@ const JoinPool = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Medium
+            {t("POOL_TYPE.MEDIUM")}
           </Text>
           <VStack>
             {poolInfo?.medium.service.txLimit && (
               <Text>
-                Transactions per minute:{' '}
-                {poolInfo?.medium.service.txLimit.toNumber()}
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount: poolInfo.medium.service.txLimit.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.medium.service.discount && (
               <Text>
-                Discount fee: {poolInfo?.medium.service.discount.toNumber()} %
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.medium.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.medium.value && (
               <Text>
-                Fee:{' '}
-                {formatBalance(
-                  poolInfo?.medium.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 minute
+                {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.medium.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
@@ -240,26 +246,32 @@ const JoinPool = () => {
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            Advance
+            {t("POOL_TYPE.ADVANCE")}
           </Text>
           <VStack>
             {poolInfo?.advance?.service.txLimit && (
-              <Text>Transactions per minute: Maximum</Text>
+              <Text>
+                {t('TRANSACTIONS_PER_MINUTE', {
+                  transactionAmount: poolInfo.advance.service.txLimit.toNumber(),
+                })}
+              </Text>
             )}
             {poolInfo?.advance?.service.discount && (
               <Text>
-                Discount fee: {poolInfo.advance.service.discount.toNumber()} %
+                {t('DISCOUNT_FEE', {
+                  discountPercent: poolInfo.advance.service.discount.toNumber(),
+                })}
               </Text>
             )}
             {poolInfo?.advance.value && (
               <Text>
-                Fee:{' '}
-                {formatBalance(
-                  poolInfo?.advance.value.toString(),
-                  { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
-                  chainDecimal
-                )}{' '}
-                / 30 minute
+               {t('POOL_FEE', {
+                  poolFee: formatBalance(
+                    poolInfo?.advance.value.toString(),
+                    { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+                    chainDecimal
+                  ),
+                })}
               </Text>
             )}
 
