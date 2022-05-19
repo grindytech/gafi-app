@@ -106,7 +106,8 @@ const StakingPool = () => {
     }
   };
 
-  const onLeavePool = async () => {
+  const onLeavePool = async (poolPackage: string) => {
+    setSelectedPool(poolPackage);
     const [account, options] = await getFromAcct(currentAccount);
     if (api && account) {
       const txExecute = api.tx.pool.leave();
@@ -119,6 +120,8 @@ const StakingPool = () => {
             isClosable: true,
             status: 'error',
           });
+        } finally {
+          setSelectedPool('');
         }
       } else {
         try {
@@ -129,6 +132,8 @@ const StakingPool = () => {
             isClosable: true,
             status: 'error',
           });
+        } finally {
+          setSelectedPool('');
         }
       }
     }
@@ -182,7 +187,12 @@ const StakingPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.type === 'Basic' ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Basic')}
+                isLoading={selectedPool === 'Basic'}
+              >
                 Leave
               </Button>
             ) : (
@@ -229,7 +239,12 @@ const StakingPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.isMedium ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Medium')}
+                isLoading={selectedPool === 'Medium'}
+              >
                 Leave
               </Button>
             ) : (
@@ -277,7 +292,12 @@ const StakingPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asStaking.isAdvance ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Advance')}
+                isLoading={selectedPool === 'Advance'}
+              >
                 Leave
               </Button>
             ) : (
