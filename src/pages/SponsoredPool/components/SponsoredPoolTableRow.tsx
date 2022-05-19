@@ -13,9 +13,10 @@ import { ISponsoredPool } from 'gafi-dashboard/pages/SponsoredPool/components/Sp
 import { t } from 'i18next';
 import { useSubstrateState } from 'substrate-lib';
 import { shorten } from 'components/utils';
+import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 
-function SponsoredPoolTableRow(props: { SponsoredPool: ISponsoredPool }) {
-  const { owner, discount, limit, amount } = props.SponsoredPool;
+function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
+  const { poolOwner, discount, txLimit, amount } = props.SponsoredPool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
 
@@ -23,29 +24,24 @@ function SponsoredPoolTableRow(props: { SponsoredPool: ISponsoredPool }) {
     <Tr>
       <Td minWidth={{ sm: '250px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Text
-            fontSize="md"
-            color={textColor}
-            fontWeight="bold"
-            minWidth="100%"
-          >
-            {shorten(owner || '')}
+          <Text fontSize="md" color={textColor} minWidth="100%">
+            {shorten(poolOwner || '')}
           </Text>
         </Flex>
       </Td>
 
       <Td>
-        <Text fontSize="md" color={textColor} fontWeight="bold">
+        <Text fontSize="md" color={textColor}>
           {discount} %
         </Text>
       </Td>
       <Td>
-        <Text fontSize="md" color={textColor} fontWeight="bold">
-          {limit}
+        <Text fontSize="md" color={textColor}>
+          {txLimit}
         </Text>
       </Td>
       <Td>
-        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+        <Text fontSize="md" color={textColor} pb=".5rem">
           {formatBalance(
             amount,
             { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
@@ -54,15 +50,13 @@ function SponsoredPoolTableRow(props: { SponsoredPool: ISponsoredPool }) {
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover">
-          <Text
-            fontSize="md"
-            color="gray.400"
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            {t("JOIN")}
-          </Text>
+        <Button
+          color="primary"
+          variant="solid"
+          onClick={() => {}}
+          isLoading={false}
+        >
+          {t("JOIN")}
         </Button>
       </Td>
     </Tr>

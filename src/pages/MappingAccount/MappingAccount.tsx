@@ -17,9 +17,9 @@ import React, { useState } from 'react';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 
-import { useSubstrateState } from '../substrate-lib';
+import { useSubstrateState } from 'substrate-lib';
 
-import { getFromAcct, handleTxError } from './utils';
+import { getFromAcct, handleTxError } from 'components/utils';
 
 function MappingAccount() {
   const toast = useToast();

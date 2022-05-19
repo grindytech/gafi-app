@@ -23,22 +23,17 @@ import { useSubstrateState } from 'substrate-lib';
 import { PoolInfo } from 'gafi-dashboard/interfaces';
 import { useTranslation } from 'react-i18next'
 import SponsoredPoolTable from './components/SponsoredPoolTable';
+import { SponsoredPool } from 'graphQL/generates';
 
-const SponsoredPool: React.FC = () => {
+
+const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // Example for query data from graphql.
   const { data: sponsoredPoolData } = useSponsoredPoolsQuery(client);
-  const sponsoredPools = sponsoredPoolData?.sponsoredPools?.nodes;
-  const sponsoredPoolsConverted = sponsoredPools?.map(pool => ({
-    id: pool?.id,
-    owner: pool?.poolOwner,
-    discount: pool?.discount,
-    limit: pool?.txLimit,
-    amount: pool?.amount,
-  }));
-
+  const sponsoredPools = sponsoredPoolData?.sponsoredPools
+    ?.nodes as SponsoredPool[];
   return (
     <Box pt={{ base: '120px', md: '75px' }}>
       <HStack justifyContent="space-between">
@@ -59,14 +54,22 @@ const SponsoredPool: React.FC = () => {
           {t("ADD_POOL")}
         </Button>
       </HStack>
-      <SponsoredPoolTable
-        title="Sponsored Pools"
-        captions={[t('OWNER'), t('DISCOUNT'), t('TRANSACTION_LIMIT'), t('BALANCE'), '']}
-        sponsoredPools={sponsoredPoolsConverted}
-      />
+      {sponsoredPools && (
+        <SponsoredPoolTable
+          title="Sponsored Pools"
+          captions={[
+            t('OWNER'),
+            t('DISCOUNT'),
+            t('TRANSACTION_LIMIT', { minuteAmount: 30 }),
+            t('BALANCE'),
+            '',
+          ]}
+          sponsoredPools={sponsoredPools}
+        />
+      )}
       {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
     </Box>
   );
 };
 
-export default SponsoredPool;
+export default SponsoredPoolPage;

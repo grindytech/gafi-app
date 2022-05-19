@@ -1,6 +1,8 @@
 // Chakra imports
 import {
+  Flex,
   Table,
+  TableCaption,
   Tbody,
   Text,
   Th,
@@ -13,6 +15,8 @@ import {
 import Card from 'components/card/Card';
 import CardBody from 'components/card/CardBody';
 import CardHeader from 'components/card/CardHeader';
+import { SponsoredPool } from 'graphQL/generates';
+import SponsoredPoolTablePagination from './SponsoredPoolPagination';
 import TablesTableRow from './SponsoredPoolTableRow';
 
 export interface ISponsoredPool {
@@ -26,7 +30,7 @@ export interface ISponsoredPool {
 interface ISponsoredPoolTableProps {
   title: string;
   captions: string[];
-  sponsoredPools: ISponsoredPool[] | undefined;
+  sponsoredPools: SponsoredPool[];
 }
 
 const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
@@ -41,6 +45,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
       </CardHeader>
       <CardBody>
         <Table variant="simple" color={textColor}>
+          <TableCaption>
+            <SponsoredPoolTablePagination />
+          </TableCaption>
           <Thead>
             <Tr my=".8rem" pl="0px" color="gray.400">
               {captions.map((caption, idx) => (

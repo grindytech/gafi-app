@@ -6,10 +6,10 @@ import { PoolInfo } from 'gafi-dashboard/interfaces';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useSubstrateState } from '../substrate-lib';
-import Card from './card/Card';
-import { TicketType } from './UpfrontPool';
-import { getFromAcct, handleTxError } from './utils';
+import { useSubstrateState } from 'substrate-lib';
+import Card from 'components/card/Card';
+import { TicketType } from '../UpfrontPool/UpfrontPool';
+import { getFromAcct, handleTxError } from 'components/utils';
 
 interface PoolTicketInfo {
   address: string;
@@ -183,7 +183,7 @@ const StakingPool = () => {
 
             {joinedPoolInfo?.ticketType.asStaking.type === 'Basic' ? (
               <Button variant="solid" color="red.300" onClick={onLeavePool}>
-                Leave
+                {t("LEAVE")}
               </Button>
             ) : (
               <Button
@@ -192,7 +192,7 @@ const StakingPool = () => {
                 onClick={() => onJoinPool('Basic')}
                 isLoading={selectedPool === 'Basic'}
               >
-                Join
+                {t("JOIN")}
               </Button>
             )}
           </VStack>

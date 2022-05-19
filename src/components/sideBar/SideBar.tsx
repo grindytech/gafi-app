@@ -23,7 +23,7 @@ import Separator from "../separator/Separator";
 // import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React, { useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import Faucet from "../Faucet";
+import Faucet from "./Faucet";
 
 interface IProps {
   logoText: string;

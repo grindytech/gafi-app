@@ -6,10 +6,10 @@ import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 import { ContractSendMethod } from 'web3-eth-contract';
 
-import { useSubstrateState } from '../substrate-lib';
+import { useSubstrateState } from 'substrate-lib';
 
-import Card from './card/Card';
-import { shorten } from './utils';
+import Card from 'components/card/Card';
+import { shorten } from 'components/utils';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;

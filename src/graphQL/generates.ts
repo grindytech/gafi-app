@@ -679,7 +679,7 @@ export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 
 
 export const SponsoredPoolsDocument = `
     query SponsoredPools {
-  sponsoredPools(first: 5) {
+  sponsoredPools(first: 10) {
     nodes {
       id
       amount

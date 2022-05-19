@@ -15,10 +15,11 @@
   },
   "OWNER": "owner",
   "DISCOUNT": "Discount",
-  "TRANSACTION_LIMIT": "Transaction limit",
+  "TRANSACTION_LIMIT": "Transaction limit / {{minuteAmount}} minutes",
   "BALANCE": "Balance",
   "SPONSORED_POOL_TABLE": "Sponsored Pool table",
   "SPONSORED_POOLS": "Sponsored Pools",
   "ADD_POOL": "Add pool",
-  "JOIN": "Join"
+  "JOIN": "Join",
+  "LEAVE": "Leave"
 }
