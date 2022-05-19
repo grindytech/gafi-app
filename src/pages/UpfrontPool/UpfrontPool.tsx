@@ -105,7 +105,8 @@ const JoinPool = () => {
     }
   };
 
-  const onLeavePool = async () => {
+  const onLeavePool = async (poolPackage: string) => {
+    setSelectedPool(poolPackage);
     const [account, options] = await getFromAcct(currentAccount);
     if (api) {
       const txExecute = api.tx.pool.leave();
@@ -119,6 +120,7 @@ const JoinPool = () => {
             status: 'error',
           });
         } finally {
+          setSelectedPool('');
         }
       } else {
         try {
@@ -130,6 +132,7 @@ const JoinPool = () => {
             status: 'error',
           });
         } finally {
+          setSelectedPool('');
         }
       }
     }
@@ -182,7 +185,12 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.type === 'Basic' ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Basic')}
+                isLoading={selectedPool === 'Basic'}
+              >
                 {t("LEAVE")}
               </Button>
             ) : (
@@ -229,7 +237,12 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.isMedium ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Medium')}
+                isLoading={selectedPool === 'Medium'}
+              >
                 Leave
               </Button>
             ) : (
@@ -276,7 +289,12 @@ const JoinPool = () => {
             )}
 
             {joinedPoolInfo?.ticketType.asUpfront.isAdvance ? (
-              <Button variant="solid" color="red.300" onClick={onLeavePool}>
+              <Button
+                variant="solid"
+                color="red.300"
+                onClick={() => onLeavePool('Advance')}
+                isLoading={selectedPool === 'Advance'}
+              >
                 Leave
               </Button>
             ) : (
