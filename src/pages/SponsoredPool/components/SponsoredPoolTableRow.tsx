@@ -1,19 +1,16 @@
 import {
-  Avatar,
-  Badge,
   Button,
   Flex,
   Td,
   Text,
   Tr,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
-import { ISponsoredPool } from 'gafi-dashboard/pages/SponsoredPool/components/SponsoredPoolTable';
-import { t } from 'i18next';
-import { useSubstrateState } from 'substrate-lib';
 import { shorten } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
+import { t } from 'i18next';
+import { useSubstrateState } from 'substrate-lib';
 
 function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
   const { poolOwner, discount, txLimit, amount } = props.SponsoredPool;
@@ -40,7 +37,7 @@ function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
           {txLimit}
         </Text>
       </Td>
-      <Td>
+      <Td maxWidth="130px">
         <Text fontSize="md" color={textColor} pb=".5rem">
           {formatBalance(
             amount,

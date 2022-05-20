@@ -120,7 +120,6 @@ const StakingPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       } else {
@@ -132,7 +131,6 @@ const StakingPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       }
@@ -191,7 +189,7 @@ const StakingPool = () => {
                 variant="solid"
                 color="red.300"
                 onClick={() => onLeavePool('Basic')}
-                isLoading={selectedPool === 'Medium'}
+                isLoading={selectedPool === 'Basic'}
               >
                 {t('LEAVE')}
               </Button>

@@ -21,5 +21,7 @@
   "SPONSORED_POOLS": "Sponsored Pools",
   "ADD_POOL": "Add pool",
   "JOIN": "Join",
-  "LEAVE": "Leave"
+  "LEAVE": "Leave",
+  "SHOW_A_OF_A": "Showing <b> {{totalCount}} </b> of <b> {{totalCount}} </b> results",
+  "SHOW_FROM_A_TO_B_OF_C": "Showing <b> {{fromAmount}} </b> to <b> {{toAmount}} </b> of <b> {{totalCount}} </b> results"
 }

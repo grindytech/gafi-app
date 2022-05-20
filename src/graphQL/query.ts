@@ -2,8 +2,8 @@ import { gql } from 'graphql-request';
 
 // Query list sponsored pools for codegen
 const sponsoredPoolQuery = gql`
-  query SponsoredPools {
-    sponsoredPools(first: 5) {
+  query SponsoredPools($first: Int!, $offset: Int!) {
+    sponsoredPools(first: $first, offset: $offset){
       nodes {
         id
         amount
@@ -13,6 +13,10 @@ const sponsoredPoolQuery = gql`
         createdAt
       }
       totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;

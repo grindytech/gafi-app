@@ -119,7 +119,6 @@ const JoinPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       } else {
@@ -131,7 +130,6 @@ const JoinPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       }
@@ -243,7 +241,7 @@ const JoinPool = () => {
                 onClick={() => onLeavePool('Medium')}
                 isLoading={selectedPool === 'Medium'}
               >
-                Leave
+                {t("LEAVE")}
               </Button>
             ) : (
               <Button
@@ -252,7 +250,7 @@ const JoinPool = () => {
                 onClick={() => onJoinPool('Medium')}
                 isLoading={selectedPool === 'Medium'}
               >
-                Join
+                {t("JOIN")}
               </Button>
             )}
           </VStack>
@@ -295,7 +293,7 @@ const JoinPool = () => {
                 onClick={() => onLeavePool('Advance')}
                 isLoading={selectedPool === 'Advance'}
               >
-                Leave
+                {t("LEAVE")}
               </Button>
             ) : (
               <Button
@@ -304,7 +302,7 @@ const JoinPool = () => {
                 onClick={() => onJoinPool('Advance')}
                 isLoading={selectedPool === 'Advance'}
               >
-                Join
+                {t("JOIN")}
               </Button>
             )}
           </VStack>

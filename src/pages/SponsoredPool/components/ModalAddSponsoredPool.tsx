@@ -10,20 +10,22 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
+  useToast
 } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { BN, formatBalance, stringToHex } from '@polkadot/util';
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-
+import { BN, formatBalance } from '@polkadot/util';
 import NumberInput from 'components/numberInput/NumberInput';
 import { getFromAcct, handleTxError } from 'components/utils';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useSubstrateState } from 'substrate-lib';
+
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
+  pageNumberOfNewPool: number;
+  setCurrentPage: any;
 }
 
 interface SponsoredPoolForm {
@@ -34,7 +36,12 @@ interface SponsoredPoolForm {
   txLimit: string;
 }
 
-const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
+const ModalAddSponsoredPool: React.FC<IProps> = ({
+  isOpen,
+  onClose,
+  setCurrentPage,
+  pageNumberOfNewPool,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
@@ -82,6 +89,8 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
         status: 'success',
       });
       setLoading(false);
+      setCurrentPage(pageNumberOfNewPool);
+      onClose();
     } else {
       toast({
         description: `Current transaction status: ${status.type}`,
@@ -100,10 +109,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
       bytes.push((charCode & 0xff00) >> 8);
       bytes.push(charCode & 0xff);
     }
-
-    console.log('bytes :>> ', bytes);
     const convertedName = bytes.join('');
-    console.log('convertedName :>> ', stringToHex(data.name).length);
     if (api && account) {
       const txExecute = api.tx.sponsoredPool.createPool(
         ['0x560050700ae0733594F03762bAE68DaB9F50ae28'],
@@ -122,7 +128,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
             status: 'error',
           });
           setLoading(false);
-        } 
+        }
       } else {
         try {
           await txExecute.signAndSend(account, txCallback);
@@ -137,8 +143,6 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
       }
     }
   };
-
-  console.log('currentAccountBalance :>> ', currentAccountBalance.toString());
 
   console.log(
     'Number',
