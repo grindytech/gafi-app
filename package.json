@@ -71,6 +71,7 @@
     "semantic-ui-css": "Semantic-Org/Semantic-UI-CSS#master",
     "semantic-ui-react": "^2.1.2",
     "stream-browserify": "^3.0.0",
+    "use-query-params": "^1.2.3",
     "use-wallet": "^0.13.4",
     "web3": "^1.7.1"
   },

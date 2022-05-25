@@ -3,24 +3,12 @@ import { RequestInit } from 'graphql-request/dist/types.dom';
 import { useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 
-function fetcher<TData, TVariables>(
-  client: GraphQLClient,
-  query: string,
-  variables?: TVariables,
-  headers?: RequestInit['headers']
-) {
-  return async (): Promise<TData> =>
-    client.request<TData, TVariables>(query, variables, headers);
+function fetcher<TData, TVariables>(client: GraphQLClient, query: string, variables?: TVariables, headers?: RequestInit['headers']) {
+  return async (): Promise<TData> => client.request<TData, TVariables>(query, variables, headers);
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -85,6 +73,7 @@ export type BlockEntitiesConnection = {
   totalCount: Scalars['Int'];
 };
 
+
 /** A connection to a list of `BlockEntity` values. */
 export type BlockEntitiesConnectionGroupedAggregatesArgs = {
   groupBy: Array<BlockEntitiesGroupBy>;
@@ -105,6 +94,7 @@ export enum BlockEntitiesGroupBy {
   Field1 = 'FIELD1',
   Field4 = 'FIELD4',
   Field5 = 'FIELD5',
+  Field6 = 'FIELD6'
 }
 
 /** Conditions for `BlockEntity` aggregates. */
@@ -121,11 +111,13 @@ export enum BlockEntitiesOrderBy {
   Field4Desc = 'FIELD4_DESC',
   Field5Asc = 'FIELD5_ASC',
   Field5Desc = 'FIELD5_DESC',
+  Field6Asc = 'FIELD6_ASC',
+  Field6Desc = 'FIELD6_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
 export type BlockEntity = Node & {
@@ -133,6 +125,7 @@ export type BlockEntity = Node & {
   field1?: Maybe<Scalars['Int']>;
   field4?: Maybe<Scalars['Datetime']>;
   field5?: Maybe<Scalars['Boolean']>;
+  field6?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -153,6 +146,8 @@ export type BlockEntityFilter = {
   field4?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `field5` field. */
   field5?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `field6` field. */
+  field6?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -288,6 +283,7 @@ export type Query = Node & {
   transfers?: Maybe<TransfersConnection>;
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntitiesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
@@ -299,30 +295,36 @@ export type QueryBlockEntitiesArgs = {
   orderBy?: InputMaybe<Array<BlockEntitiesOrderBy>>;
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityArgs = {
   id: Scalars['String'];
 };
+
 
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID'];
 };
+
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolArgs = {
   id: Scalars['String'];
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
+
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolsArgs = {
@@ -335,15 +337,18 @@ export type QuerySponsoredPoolsArgs = {
   orderBy?: InputMaybe<Array<SponsoredPoolsOrderBy>>;
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferArgs = {
   id: Scalars['String'];
 };
 
+
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
+
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTransfersArgs = {
@@ -360,10 +365,11 @@ export type SponsoredPool = Node & {
   __typename?: 'SponsoredPool';
   amount: Scalars['BigFloat'];
   createdAt?: Maybe<Scalars['Datetime']>;
-  discount: Scalars['BigFloat'];
+  discount: Scalars['Int'];
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  poolId: Scalars['String'];
   poolOwner: Scalars['String'];
   txLimit: Scalars['Int'];
 };
@@ -382,13 +388,15 @@ export type SponsoredPoolFilter = {
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `discount` field. */
-  discount?: InputMaybe<BigFloatFilter>;
+  discount?: InputMaybe<IntFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<SponsoredPoolFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<SponsoredPoolFilter>>;
+  /** Filter by the object’s `poolId` field. */
+  poolId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `poolOwner` field. */
   poolOwner?: InputMaybe<StringFilter>;
   /** Filter by the object’s `txLimit` field. */
@@ -412,6 +420,7 @@ export type SponsoredPoolsConnection = {
   totalCount: Scalars['Int'];
 };
 
+
 /** A connection to a list of `SponsoredPool` values. */
 export type SponsoredPoolsConnectionGroupedAggregatesArgs = {
   groupBy: Array<SponsoredPoolsGroupBy>;
@@ -432,8 +441,9 @@ export enum SponsoredPoolsGroupBy {
   Amount = 'AMOUNT',
   CreatedAt = 'CREATED_AT',
   Discount = 'DISCOUNT',
+  PoolId = 'POOL_ID',
   PoolOwner = 'POOL_OWNER',
-  TxLimit = 'TX_LIMIT',
+  TxLimit = 'TX_LIMIT'
 }
 
 /** Conditions for `SponsoredPool` aggregates. */
@@ -453,12 +463,14 @@ export enum SponsoredPoolsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
+  PoolIdAsc = 'POOL_ID_ASC',
+  PoolIdDesc = 'POOL_ID_DESC',
   PoolOwnerAsc = 'POOL_OWNER_ASC',
   PoolOwnerDesc = 'POOL_OWNER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   TxLimitAsc = 'TX_LIMIT_ASC',
-  TxLimitDesc = 'TX_LIMIT_DESC',
+  TxLimitDesc = 'TX_LIMIT_DESC'
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -598,6 +610,7 @@ export type TransfersConnection = {
   totalCount: Scalars['Int'];
 };
 
+
 /** A connection to a list of `Transfer` values. */
 export type TransfersConnectionGroupedAggregatesArgs = {
   groupBy: Array<TransfersGroupBy>;
@@ -618,7 +631,7 @@ export enum TransfersGroupBy {
   Amount = 'AMOUNT',
   BlockNumber = 'BLOCK_NUMBER',
   From = 'FROM',
-  To = 'TO',
+  To = 'TO'
 }
 
 /** Conditions for `Transfer` aggregates. */
@@ -641,7 +654,7 @@ export enum TransfersOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ToAsc = 'TO_ASC',
-  ToDesc = 'TO_DESC',
+  ToDesc = 'TO_DESC'
 }
 
 export type _Metadata = {
@@ -662,51 +675,24 @@ export type _Metadata = {
 export type SponsoredPoolsQueryVariables = Exact<{
   first: Scalars['Int'];
   offset: Scalars['Int'];
+  filter?: InputMaybe<SponsoredPoolFilter>;
 }>;
 
-export type SponsoredPoolsQuery = {
-  __typename?: 'Query';
-  sponsoredPools?: {
-    __typename?: 'SponsoredPoolsConnection';
-    totalCount: number;
-    nodes: Array<{
-      __typename?: 'SponsoredPool';
-      id: string;
-      amount: any;
-      poolOwner: string;
-      discount: any;
-      txLimit: number;
-      createdAt?: any | null;
-    } | null>;
-    pageInfo: {
-      __typename?: 'PageInfo';
-      hasNextPage: boolean;
-      hasPreviousPage: boolean;
-    };
-  } | null;
-};
 
-export type TransfersQueryVariables = Exact<{ [key: string]: never }>;
+export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolId: string, amount: any, poolOwner: string, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
-export type TransfersQuery = {
-  __typename?: 'Query';
-  transfers?: {
-    __typename?: 'TransfersConnection';
-    totalCount: number;
-    nodes: Array<{
-      __typename?: 'Transfer';
-      id: string;
-      amount: any;
-      from: string;
-    } | null>;
-  } | null;
-};
+export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 'TransfersConnection', totalCount: number, nodes: Array<{ __typename?: 'Transfer', id: string, amount: any, from: string } | null> } | null };
+
 
 export const SponsoredPoolsDocument = `
-    query SponsoredPools($first: Int!, $offset: Int!) {
-  sponsoredPools(first: $first, offset: $offset) {
+    query SponsoredPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
+  sponsoredPools(first: $first, offset: $offset, filter: $filter) {
     nodes {
       id
+      poolId
       amount
       poolOwner
       discount
@@ -722,24 +708,19 @@ export const SponsoredPoolsDocument = `
 }
     `;
 export const useSponsoredPoolsQuery = <
-  TData = SponsoredPoolsQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables: SponsoredPoolsQueryVariables,
-  options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<SponsoredPoolsQuery, TError, TData>(
-    ['SponsoredPools', variables],
-    fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(
-      client,
-      SponsoredPoolsDocument,
-      variables,
-      headers
-    ),
-    options
-  );
+      TData = SponsoredPoolsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: SponsoredPoolsQueryVariables,
+      options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<SponsoredPoolsQuery, TError, TData>(
+      ['SponsoredPools', variables],
+      fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
+      options
+    );
 export const TransfersDocument = `
     query Transfers {
   transfers(first: 5) {
@@ -752,19 +733,17 @@ export const TransfersDocument = `
   }
 }
     `;
-export const useTransfersQuery = <TData = TransfersQuery, TError = unknown>(
-  client: GraphQLClient,
-  variables?: TransfersQueryVariables,
-  options?: UseQueryOptions<TransfersQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<TransfersQuery, TError, TData>(
-    variables === undefined ? ['Transfers'] : ['Transfers', variables],
-    fetcher<TransfersQuery, TransfersQueryVariables>(
-      client,
-      TransfersDocument,
-      variables,
-      headers
-    ),
-    options
-  );
+export const useTransfersQuery = <
+      TData = TransfersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: TransfersQueryVariables,
+      options?: UseQueryOptions<TransfersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<TransfersQuery, TError, TData>(
+      variables === undefined ? ['Transfers'] : ['Transfers', variables],
+      fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
+      options
+    );

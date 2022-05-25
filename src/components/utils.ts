@@ -1,5 +1,6 @@
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { web3FromSource } from '@polkadot/extension-dapp';
+import { encodeAddress } from '@polkadot/util-crypto';
 
 // Temporary using any. Define type later.
 export const getFromAcct = async (
@@ -53,3 +54,6 @@ export const handleTxError = (events: any, api: any, toast: any) => {
     }
   });
 };
+
+export const getGAKIAccountAddress = (addressRaw: Uint8Array) =>
+  encodeAddress(addressRaw, 24);

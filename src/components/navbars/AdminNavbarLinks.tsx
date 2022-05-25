@@ -2,6 +2,8 @@
 // import { BellIcon, SearchIcon } from "@chakra-ui/icons";
 // Chakra Imports
 import {
+  Avatar,
+  Box,
   Button,
   Flex,
   HStack,
@@ -19,6 +21,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { mdiAccount, mdiWallet } from '@mdi/js';
+import { KeyringPair } from '@polkadot/keyring/types';
 import { BN, formatBalance } from '@polkadot/util';
 // Assets
 import avatar1 from 'assets/img/avatars/avatar1.png';
@@ -31,7 +34,7 @@ import avatar3 from 'assets/img/avatars/avatar3.png';
 // import { ItemContent } from "components/Menu/ItemContent";
 import { FC, useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import routes from '../../routes';
 import { useSubstrate } from '../../substrate-lib';
@@ -46,7 +49,7 @@ interface IProps {
   logoText: string;
 }
 
-const acctAddr = (acct: any) => (acct ? acct.address : '');
+const acctAddr = (acct: KeyringPair) => (acct ? acct.address : '');
 
 const AdminNavbarLinks: FC<IProps> = props => {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
@@ -66,7 +69,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
         .account(acctAddr(currentAccount), (balance: any) => {
           setAccountBalance(balance.data.free);
         })
-        .then((unsub: any) => (unsubscribe = unsub))
+        .then(unsub => (unsubscribe = unsub))
         .catch(console.error);
 
     return () => unsubscribe && unsubscribe();
@@ -74,7 +77,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
 
   // Get the list of accounts we possess the private key for
   // Temporary use any. Define type later
-  const keyringOptions = keyring.getPairs().map((account: any) => ({
+  const keyringOptions = keyring?.getPairs().map((account: any) => ({
     key: account.address,
     value: account.address,
     text: account.meta.name.toUpperCase(),
@@ -82,14 +85,14 @@ const AdminNavbarLinks: FC<IProps> = props => {
   }));
 
   const initialAddress =
-    keyringOptions.length > 0 ? keyringOptions[0].value : '';
+    keyringOptions && keyringOptions.length > 0 ? keyringOptions[0].value : '';
 
   // Set the initial address
   useEffect(() => {
     // `setCurrentAccount()` is called only when currentAccount is null (uninitialized)
-    !currentAccount &&
-      initialAddress.length > 0 &&
+    if (!currentAccount && keyring && initialAddress.length > 0) {
       setCurrentAccount(keyring.getPair(initialAddress));
+    }
   }, [currentAccount, setCurrentAccount, keyring, initialAddress]);
 
   // Chakra Color Mode
@@ -108,7 +111,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
     <Flex
       pe={{ sm: '0px', md: '16px' }}
       w={{ sm: '100%', md: 'auto' }}
-      alignItems="center"
+      gap={1}
       flexDirection="row"
     >
       {/* <InputGroup
@@ -225,42 +228,26 @@ const AdminNavbarLinks: FC<IProps> = props => {
         w="18px"
         h="18px"
       /> */}
-      <Menu>
-        <MenuButton>
-          {/* <BellIcon color={navbarIcon} w="18px" h="18px" /> */}
-        </MenuButton>
-        <MenuList p="16px 8px">
-          <Flex flexDirection="column">
-            <MenuItem borderRadius="8px" mb="10px">
-              {/* <ItemContent
-                time="13 minutes ago"
-                info="from Alicia"
-                boldInfo="New Message"
-                aName="Alicia"
-                aSrc={avatar1}
-              /> */}
-            </MenuItem>
-            <MenuItem borderRadius="8px" mb="10px">
-              {/* <ItemContent
-                time="2 days ago"
-                info="by Josh Henry"
-                boldInfo="New Album"
-                aName="Josh Henry"
-                aSrc={avatar2}
-              /> */}
-            </MenuItem>
-            <MenuItem borderRadius="8px">
-              {/* <ItemContent
-                time="3 days ago"
-                info="Payment succesfully completed!"
-                boldInfo=""
-                aName="Kara"
-                aSrc={avatar3}
-              /> */}
-            </MenuItem>
-          </Flex>
-        </MenuList>
-      </Menu>
+      <Box p={1}>
+        <Menu>
+          <MenuButton>
+            <Avatar
+              size="sm"
+              // name={acctAddr(currentAccount)}
+              _hover={{ zIndex: '3', cursor: 'pointer' }}
+            />
+          </MenuButton>
+          <MenuList p="16px 8px">
+            <Flex flexDirection="column">
+              <MenuItem borderRadius="8px" mb="10px">
+                <Link to="/admin/sponsored-pool?type=owned">
+                  <Text>My Sponsored Pools</Text>
+                </Link>
+              </MenuItem>
+            </Flex>
+          </MenuList>
+        </Menu>
+      </Box>
     </Flex>
   );
 };

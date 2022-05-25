@@ -82,21 +82,24 @@ const Pagination = (props: IProps) => {
         {currentPage * resultsPerPage < totalCount ? (
           <Text>
             <Trans
-              inline="SHOW_FROM_A_TO_B_OF_C"
-              fromAmount={fromAmount || 0}
-              toAmount={toAmount || 0}
-              totalCount={totalCount || 0}
-            >
-              Showing <b> {{ fromAmount }} </b> to <b> {{ toAmount }} </b> of{' '}
-              <b> {{ totalCount }} </b> results
-            </Trans>
+              i18nKey="SHOW_FROM_A_TO_B_OF_C"
+              values={{
+                fromAmount: fromAmount || 0,
+                toAmount: toAmount || 0,
+                totalCount: totalCount || 0,
+              }}
+              components={{ b: <Text as="span" fontSize="bold" /> }}
+            />
           </Text>
         ) : (
           <Text>
-            <Trans inline="SHOW_A_OF_A" totalCount={totalCount || 0}>
-              Showing <b> {{ totalCount }} </b> of <b> {{ totalCount }} </b>{' '}
-              results
-            </Trans>
+            <Trans
+              i18nKey="SHOW_A_OF_A"
+              values={{
+                totalCount: totalCount || 0,
+              }}
+              components={{ b: <Text as="span" fontSize="bold" /> }}
+            />
           </Text>
         )}
       </Flex>

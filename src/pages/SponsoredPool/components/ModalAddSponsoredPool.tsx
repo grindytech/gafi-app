@@ -10,22 +10,23 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { BN, formatBalance } from '@polkadot/util';
-import NumberInput from 'components/numberInput/NumberInput';
-import { getFromAcct, handleTxError } from 'components/utils';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useSubstrateState } from 'substrate-lib';
 
+import NumberInput from 'components/numberInput/NumberInput';
+import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'substrate-lib';
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
   pageNumberOfNewPool: number;
   setCurrentPage: any;
+  refetch: () => void;
 }
 
 interface SponsoredPoolForm {
@@ -41,6 +42,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
   onClose,
   setCurrentPage,
   pageNumberOfNewPool,
+  refetch,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -90,6 +92,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
       });
       setLoading(false);
       setCurrentPage(pageNumberOfNewPool);
+      refetch();
       onClose();
     } else {
       toast({

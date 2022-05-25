@@ -4,27 +4,27 @@ import {
   Td,
   Text,
   Tr,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
-import { shorten } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
-import { t } from 'i18next';
+
+import TableActions from './TableActions';
+
+import { shorten } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
 
 function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
-  const { poolOwner, discount, txLimit, amount } = props.SponsoredPool;
+  const { poolOwner, discount, txLimit, amount, poolId } = props.SponsoredPool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
 
   return (
     <Tr>
       <Td minWidth={{ sm: '250px' }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Text fontSize="md" color={textColor} minWidth="100%">
-            {shorten(poolOwner || '')}
-          </Text>
-        </Flex>
+        <Text fontSize="md" color={textColor} minWidth="100%">
+          {shorten(poolOwner || '')}
+        </Text>
       </Td>
 
       <Td>
@@ -47,14 +47,7 @@ function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
         </Text>
       </Td>
       <Td>
-        <Button
-          color="primary"
-          variant="solid"
-          onClick={() => {}}
-          isLoading={false}
-        >
-          {t("JOIN")}
-        </Button>
+        <TableActions poolId={poolId} />
       </Td>
     </Tr>
   );

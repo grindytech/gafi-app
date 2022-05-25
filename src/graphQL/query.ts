@@ -2,10 +2,15 @@ import { gql } from 'graphql-request';
 
 // Query list sponsored pools for codegen
 const sponsoredPoolQuery = gql`
-  query SponsoredPools($first: Int!, $offset: Int!) {
-    sponsoredPools(first: $first, offset: $offset){
+  query SponsoredPools(
+    $first: Int!
+    $offset: Int!
+    $filter: SponsoredPoolFilter
+  ) {
+    sponsoredPools(first: $first, offset: $offset, filter: $filter) {
       nodes {
         id
+        poolId
         amount
         poolOwner
         discount
