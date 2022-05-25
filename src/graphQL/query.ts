@@ -13,6 +13,7 @@ const sponsoredPoolQuery = gql`
         poolId
         amount
         poolOwner
+        targets
         discount
         txLimit
         createdAt

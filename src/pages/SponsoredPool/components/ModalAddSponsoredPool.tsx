@@ -2,7 +2,11 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Icon,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,11 +15,13 @@ import {
   ModalHeader,
   ModalOverlay,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
+import { mdiClose, mdiPlus } from '@mdi/js';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { BN, formatBalance } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 import NumberInput from 'components/numberInput/NumberInput';
 import { getFromAcct, handleTxError } from 'components/utils';
@@ -30,7 +36,7 @@ interface IProps {
 }
 
 interface SponsoredPoolForm {
-  targets: string[];
+  targets: { contractAddress: string }[];
   name: string;
   poolAmount: number;
   discount: string;
@@ -53,7 +59,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
     watch,
     control,
     formState: { errors },
-  } = useForm<SponsoredPoolForm>();
+  } = useForm<SponsoredPoolForm>({
+    defaultValues: { targets: [{ contractAddress: '' }] },
+  });
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const [currentAccountBalance, setCurrentAccountBalance] = useState(
     new BN(0, 10)
@@ -106,17 +114,10 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
   const onSubmit = async (data: SponsoredPoolForm) => {
     setLoading(true);
     const [account, options] = await getFromAcct(currentAccount);
-    const bytes = [];
-    for (let i = 0; i < data.name.length; ++i) {
-      const charCode = data.name.charCodeAt(i);
-      bytes.push((charCode & 0xff00) >> 8);
-      bytes.push(charCode & 0xff);
-    }
-    const convertedName = bytes.join('');
     if (api && account) {
+      const targets = data.targets.map(target => target.contractAddress);
       const txExecute = api.tx.sponsoredPool.createPool(
-        ['0x560050700ae0733594F03762bAE68DaB9F50ae28'],
-        // convertedName,
+        targets,
         new BN(data.poolAmount, 10).mul(base).toString(),
         data.discount,
         data.txLimit
@@ -147,14 +148,12 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
     }
   };
 
-  console.log(
-    'Number',
-    formatBalance(
-      currentAccountBalance,
-      { withSi: false, forceUnit: '-' },
-      chainDecimal || 18
-    )
-  );
+  const { fields, append, prepend, remove, swap, move, insert } =
+    useFieldArray<SponsoredPoolForm>({
+      control,
+      name: 'targets',
+    });
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">
       <ModalOverlay />
@@ -163,15 +162,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl>
-              <FormLabel htmlFor="">Name</FormLabel>
-              <Input
-                id="name"
-                type="text"
-                {...register('name', { required: true })}
-              />
-            </FormControl>
-            <FormControl>
+            <FormControl mb={4}>
               <FormLabel htmlFor="">Pool amount</FormLabel>
               <Controller
                 control={control}
@@ -191,7 +182,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
                 }}
               />
             </FormControl>
-            <FormControl>
+            <FormControl mb={4}>
               <FormLabel htmlFor="">Discount</FormLabel>
               <Input
                 id="discount"
@@ -207,6 +198,51 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
                 {...register('txLimit', { required: true })}
               />
             </FormControl>
+            <FormControl mb={4}>
+              <FormLabel htmlFor="">Targets</FormLabel>
+              <VStack alignItems="flex-start">
+                {fields.map((field, index) => (
+                  <InputGroup>
+                    <Input
+                      key={field.id}
+                      type="text"
+                      {...register(
+                        `targets.${index}.contractAddress` as const,
+                        {
+                          required: true,
+                        }
+                      )}
+                    />
+                    <InputRightElement
+                      display={fields.length === 1 ? 'none' : 'block'}
+                    >
+                      <IconButton
+                        onClick={() => remove(index)}
+                        colorScheme="red"
+                        aria-label="remove target"
+                        icon={
+                          <Icon>
+                            <path fill="currentColor" d={mdiClose} />
+                          </Icon>
+                        }
+                      />
+                    </InputRightElement>
+                  </InputGroup>
+                ))}
+              </VStack>
+            </FormControl>
+
+            <Button
+              disabled={fields.length >= 5}
+              onClick={() => append({ contractAddress: '' })}
+              leftIcon={
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              }
+            >
+              Add Target
+            </Button>
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" mr={3} onClick={onClose}>

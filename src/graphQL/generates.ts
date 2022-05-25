@@ -28,6 +28,8 @@ export type Scalars = {
    * 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
    */
   Datetime: any;
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any;
 };
 
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
@@ -234,6 +236,42 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+/** A filter to be used against JSON fields. All fields are combined with a logical ‘and.’ */
+export type JsonFilter = {
+  /** Contained by the specified JSON. */
+  containedBy?: InputMaybe<Scalars['JSON']>;
+  /** Contains the specified JSON. */
+  contains?: InputMaybe<Scalars['JSON']>;
+  /** Contains all of the specified keys. */
+  containsAllKeys?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains any of the specified keys. */
+  containsAnyKeys?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified key. */
+  containsKey?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['JSON']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['JSON']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['JSON']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['JSON']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['JSON']>>;
+};
+
 /** An object with a globally unique `ID`. */
 export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -371,6 +409,7 @@ export type SponsoredPool = Node & {
   nodeId: Scalars['ID'];
   poolId: Scalars['String'];
   poolOwner: Scalars['String'];
+  targets: Scalars['JSON'];
   txLimit: Scalars['Int'];
 };
 
@@ -399,6 +438,8 @@ export type SponsoredPoolFilter = {
   poolId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `poolOwner` field. */
   poolOwner?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `targets` field. */
+  targets?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `txLimit` field. */
   txLimit?: InputMaybe<IntFilter>;
 };
@@ -443,6 +484,7 @@ export enum SponsoredPoolsGroupBy {
   Discount = 'DISCOUNT',
   PoolId = 'POOL_ID',
   PoolOwner = 'POOL_OWNER',
+  Targets = 'TARGETS',
   TxLimit = 'TX_LIMIT'
 }
 
@@ -469,6 +511,8 @@ export enum SponsoredPoolsOrderBy {
   PoolOwnerDesc = 'POOL_OWNER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TargetsAsc = 'TARGETS_ASC',
+  TargetsDesc = 'TARGETS_DESC',
   TxLimitAsc = 'TX_LIMIT_ASC',
   TxLimitDesc = 'TX_LIMIT_DESC'
 }
@@ -679,7 +723,7 @@ export type SponsoredPoolsQueryVariables = Exact<{
 }>;
 
 
-export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolId: string, amount: any, poolOwner: string, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolId: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
 export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -695,6 +739,7 @@ export const SponsoredPoolsDocument = `
       poolId
       amount
       poolOwner
+      targets
       discount
       txLimit
       createdAt

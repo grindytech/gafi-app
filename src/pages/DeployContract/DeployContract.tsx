@@ -6,8 +6,6 @@ import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 import { ContractSendMethod } from 'web3-eth-contract';
 
-import { useSubstrateState } from 'substrate-lib';
-
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
 
@@ -114,11 +112,11 @@ async function addAdditionalGas(contract: ContractSendMethod, address: string) {
 }
 
 const DeployContract = () => {
+  const [contractAddresses, setContractAddresses] = useState<string[]>(['']);
   const toast = useToast();
   const { account, connect, isConnected, reset, balance, ethereum } =
     useWallet();
   const [txnFee, setTxnFee] = useState(0);
-  const { api, keyring, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
   const [contractFiles, setContractFiles] = useState<any>([]);
 
@@ -143,6 +141,10 @@ const DeployContract = () => {
           };
           try {
             const result = await web3.eth.sendTransaction(options);
+            setContractAddresses(prevState => [
+              ...prevState,
+              result.contractAddress || '',
+            ]);
             const newBalance = await web3.eth.getBalance(account);
             setTxnFee(
               prevTxnFee =>
@@ -154,6 +156,7 @@ const DeployContract = () => {
               status: 'success',
             });
           } catch (error) {
+            setIsLoading(false);
             console.log('error :>> ', error);
           }
         })
@@ -189,6 +192,11 @@ const DeployContract = () => {
               }
             />
           </Box>
+          <VStack alignItems="flex-start">
+            {contractAddresses.map(contractAddress => (
+              <Text>{contractAddress}</Text>
+            ))}
+          </VStack>
           <VStack gap={2}>
             {txnFee && <Text>Total transaction fee: {txnFee / 10 ** 18}</Text>}
             <Button

@@ -8,19 +8,28 @@ import {
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
+import React from 'react';
 
 import TableActions from './TableActions';
 
 import { shorten } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
 
-function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
-  const { poolOwner, discount, txLimit, amount, poolId } = props.SponsoredPool;
+interface IProps {
+  SponsoredPool: SponsoredPool;
+  onClick?: () => void;
+}
+
+const SponsoredPoolTableRow: React.FC<IProps> = ({
+  SponsoredPool,
+  onClick,
+}) => {
+  const { poolOwner, discount, txLimit, amount, poolId } = SponsoredPool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
 
   return (
-    <Tr>
+    <Tr cursor="pointer" onClick={onClick}>
       <Td minWidth={{ sm: '250px' }} pl="0px">
         <Text fontSize="md" color={textColor} minWidth="100%">
           {shorten(poolOwner || '')}
@@ -51,6 +60,6 @@ function SponsoredPoolTableRow(props: { SponsoredPool: SponsoredPool }) {
       </Td>
     </Tr>
   );
-}
+};
 
 export default SponsoredPoolTableRow;

@@ -17,9 +17,8 @@ import React, { useState } from 'react';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 
-import { useSubstrateState } from 'substrate-lib';
-
 import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'substrate-lib';
 
 function MappingAccount() {
   const toast = useToast();
@@ -62,7 +61,7 @@ function MappingAccount() {
     if (account && ethereum) {
       const [accountAddress, options] = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
-      const data = u8aToHex(currentAccount.publicKey, undefined, false);
+      const data = u8aToHex(currentAccount?.publicKey, undefined, false);
       const signature = await web3.eth.personal.sign(
         `Bond Gafi Network account:${data.toString()}`,
         account,

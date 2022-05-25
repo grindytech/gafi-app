@@ -1,6 +1,6 @@
 {
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
-  "TRANSACTIONS_PER_MINUTE": "Transactions per minute: {{transactionAmount}}",
+  "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per 30 minutes",
   "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
   "POOL_FEE": "Fee: {{poolFee}} / 30 minutes",
   "POOL": {
@@ -16,12 +16,15 @@
   "OWNER": "owner",
   "DISCOUNT": "Discount",
   "TRANSACTION_LIMIT": "Transaction limit / {{minuteAmount}} minutes",
-  "BALANCE": "Balance",
+  "BALANCE": "Balance (GAKI)",
   "SPONSORED_POOL_TABLE": "Sponsored Pool table",
   "SPONSORED_POOLS": "Sponsored Pools",
   "ADD_POOL": "Add pool",
   "JOIN": "Join",
   "LEAVE": "Leave",
   "SHOW_A_OF_A": "Showing <b> {{totalCount}} </b> of <b> {{totalCount}} </b> results",
-  "SHOW_FROM_A_TO_B_OF_C": "Showing <b> {{fromAmount}} </b> to <b> {{toAmount}} </b> of <b> {{totalCount}} </b> results"
+  "SHOW_FROM_A_TO_B_OF_C": "Showing <b> {{fromAmount}} </b> to <b> {{toAmount}} </b> of <b> {{totalCount}} </b> results",
+  "SPONSORED_CONTRACTS": "Sponsored contracts",
+  "POOL_NAME": "Pool: {{poolName}}",
+  "CLOSE": "Close"
 }
