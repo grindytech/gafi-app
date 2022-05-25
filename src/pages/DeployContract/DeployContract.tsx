@@ -6,6 +6,8 @@ import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 import { ContractSendMethod } from 'web3-eth-contract';
 
+import TransferToken from './TransferToken';
+
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
 
@@ -103,7 +105,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
   );
 };
 
-async function addAdditionalGas(contract: ContractSendMethod, address: string) {
+export async function addAdditionalGas(
+  contract: ContractSendMethod,
+  address: string
+) {
   const gasLimit = await contract.estimateGas({ from: address });
   const additionalGas = BigNumber.from(gasLimit.toString())
     .mul('50')
@@ -210,6 +215,7 @@ const DeployContract = () => {
           </VStack>
         </VStack>
       </Card>
+      <TransferToken />
     </Box>
   );
 };

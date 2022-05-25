@@ -1,0 +1,139 @@
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useWallet } from 'use-wallet';
+import Web3 from 'web3';
+
+import { addAdditionalGas } from './DeployContract';
+
+import Card from 'components/card/Card';
+import ERC20JSON from 'contract/ERC20.json';
+
+export const MAX_INT =
+  '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+
+// const signed = await context.web3.eth.accounts.signTransaction(
+//   options,
+//   account.privateKey
+// );
+// const tx_hash = (
+//   await customRequest(context.web3, 'eth_sendRawTransaction', [
+//     signed.rawTransaction,
+//   ])
+// ).result;
+// await createAndFinalizeBlock(context.web3);
+// const receipt = await customRequest(context.web3, 'eth_getTransactionReceipt', [
+//   tx_hash,
+// ]);
+
+const TransferToken = () => {
+  const [txnFee, setTxnFee] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+  const { account, connect, isConnected, reset, balance, ethereum } =
+    useWallet();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { toUser: '', contractAddress: '' },
+  });
+
+  const onTransferMoney = async (data: {
+    contractAddress: string;
+    toUser: string;
+  }) => {
+    setIsLoading(true);
+    if (account && ethereum) {
+      const web3 = new Web3(ethereum);
+      const beforeBalance = await web3.eth.getBalance(account);
+      const userContract = new web3.eth.Contract(
+        ERC20JSON.abi as any,
+        data.contractAddress
+      );
+      const transferAmount = 1 * 10 * 18;
+      try {
+        const contract = await userContract.methods
+          .transfer(data.toUser, transferAmount)
+          .call();
+        const gasLimit = await addAdditionalGas(contract, account);
+        const options = {
+          to: data.contractAddress,
+          data: contract.encodeABI(),
+          gas: gasLimit,
+          gasPrice: await web3.eth.getGasPrice(),
+        };
+        const signed = await web3.eth.sendTransaction(options);
+        const newBalance = await web3.eth.getBalance(account);
+        setTxnFee(
+          prevTxnFee =>
+            prevTxnFee +
+            Number(beforeBalance) -
+            Number(newBalance) +
+            transferAmount
+        );
+        toast({
+          description: `Transfer success!`,
+          isClosable: true,
+          status: 'success',
+        });
+      } catch (error) {
+        setIsLoading(false);
+        toast({
+          description: `Transfer error!`,
+          isClosable: true,
+          status: 'error',
+        });
+        console.log('error :>> ', error);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <Card mt={5}>
+      <form onSubmit={handleSubmit(onTransferMoney)}>
+        <VStack minW="400px" gap={4}>
+          <Text>Transfer Token To User</Text>
+          <VStack alignItems="flex-start">
+            <FormControl mb={4}>
+              <FormLabel htmlFor="">To User</FormLabel>
+              <Input
+                id="toUser"
+                type="text"
+                {...register('toUser', { required: true })}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="">Contract Address</FormLabel>
+              <Input
+                id="contractAddress"
+                type="text"
+                {...register('contractAddress', { required: true })}
+              />
+            </FormControl>
+          </VStack>
+          <VStack gap={2}>
+            {txnFee && <Text>Total transaction fee: {txnFee / 10 ** 18}</Text>}
+            <Button colorScheme="teal" isLoading={isLoading} type="submit">
+              Transfer Token
+            </Button>
+          </VStack>
+        </VStack>
+      </form>
+    </Card>
+  );
+};
+
+export default TransferToken;
