@@ -1,4 +1,4 @@
-schema: http://localhost:3000/
+schema: https://api.subquery.network/sq/lhtrung307/gafi-query__bGh0c
 documents: './src/**/*.ts'
 generates:
   ./src/graphQL/generates.ts:

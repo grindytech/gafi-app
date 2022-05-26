@@ -2,17 +2,27 @@ import { gql } from 'graphql-request';
 
 // Query list sponsored pools for codegen
 const sponsoredPoolQuery = gql`
-  query SponsoredPools {
-    sponsoredPools(first: 5) {
+  query SponsoredPools(
+    $first: Int!
+    $offset: Int!
+    $filter: SponsoredPoolFilter
+  ) {
+    sponsoredPools(first: $first, offset: $offset, filter: $filter) {
       nodes {
         id
+        poolId
         amount
         poolOwner
+        targets
         discount
         txLimit
         createdAt
       }
       totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;

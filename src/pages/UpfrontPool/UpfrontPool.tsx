@@ -6,9 +6,10 @@ import { PoolInfo } from 'gafi-dashboard/interfaces';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useSubstrateState } from '../substrate-lib';
-import Card from './card/Card';
-import { getFromAcct, handleTxError } from './utils';
+
+import Card from 'components/card/Card';
+import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'substrate-lib';
 
 export interface TicketType {
   upfront?: string;
@@ -25,7 +26,7 @@ const JoinPool = () => {
     async (): Promise<GafiPrimitivesPoolTicket | undefined> => {
       if (api) {
         const res = await api.query.upfrontPool.tickets(
-          currentAccount.address as string
+          currentAccount?.address as string
         );
         if (res.isSome) {
           return res.unwrap();
@@ -119,7 +120,6 @@ const JoinPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       } else {
@@ -131,7 +131,6 @@ const JoinPool = () => {
             isClosable: true,
             status: 'error',
           });
-        } finally {
           setSelectedPool('');
         }
       }
@@ -141,7 +140,7 @@ const JoinPool = () => {
   return (
     <Box pt={{ base: '120px', md: '75px' }}>
       <Text fontWeight="bold" fontSize="2xl" mb={5}>
-        {t("POOL.UPFRONT_POOL")}
+        {t('POOL.UPFRONT_POOL')}
       </Text>
       {joinedPoolInfo && (
         <VStack>
@@ -155,12 +154,12 @@ const JoinPool = () => {
       <HStack p={5} gap={5}>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            {t("POOL_TYPE.BASIC")}
+            {t('POOL_TYPE.BASIC')}
           </Text>
           <VStack>
             {poolInfo?.basic?.service?.txLimit && (
               <Text>
-                {t('TRANSACTIONS_PER_MINUTE', {
+                {t('TRANSACTIONS_RATE', {
                   transactionAmount: poolInfo.basic.service.txLimit.toNumber(),
                 })}
               </Text>
@@ -191,7 +190,7 @@ const JoinPool = () => {
                 onClick={() => onLeavePool('Basic')}
                 isLoading={selectedPool === 'Basic'}
               >
-                Leave
+                {t('LEAVE')}
               </Button>
             ) : (
               <Button
@@ -200,19 +199,19 @@ const JoinPool = () => {
                 onClick={() => onJoinPool('Basic')}
                 isLoading={selectedPool === 'Basic'}
               >
-                Join
+                {t('JOIN')}
               </Button>
             )}
           </VStack>
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            {t("POOL_TYPE.MEDIUM")}
+            {t('POOL_TYPE.MEDIUM')}
           </Text>
           <VStack>
             {poolInfo?.medium.service.txLimit && (
               <Text>
-                {t('TRANSACTIONS_PER_MINUTE', {
+                {t('TRANSACTIONS_RATE', {
                   transactionAmount: poolInfo.medium.service.txLimit.toNumber(),
                 })}
               </Text>
@@ -243,7 +242,7 @@ const JoinPool = () => {
                 onClick={() => onLeavePool('Medium')}
                 isLoading={selectedPool === 'Medium'}
               >
-                Leave
+                {t('LEAVE')}
               </Button>
             ) : (
               <Button
@@ -252,20 +251,21 @@ const JoinPool = () => {
                 onClick={() => onJoinPool('Medium')}
                 isLoading={selectedPool === 'Medium'}
               >
-                Join
+                {t('JOIN')}
               </Button>
             )}
           </VStack>
         </Card>
         <Card>
           <Text textAlign="center" fontWeight="bold" mb={5}>
-            {t("POOL_TYPE.ADVANCE")}
+            {t('POOL_TYPE.ADVANCE')}
           </Text>
           <VStack>
             {poolInfo?.advance?.service.txLimit && (
               <Text>
-                {t('TRANSACTIONS_PER_MINUTE', {
-                  transactionAmount: poolInfo.advance.service.txLimit.toNumber(),
+                {t('TRANSACTIONS_RATE', {
+                  transactionAmount:
+                    poolInfo.advance.service.txLimit.toNumber(),
                 })}
               </Text>
             )}
@@ -278,7 +278,7 @@ const JoinPool = () => {
             )}
             {poolInfo?.advance.value && (
               <Text>
-               {t('POOL_FEE', {
+                {t('POOL_FEE', {
                   poolFee: formatBalance(
                     poolInfo?.advance.value.toString(),
                     { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
@@ -295,7 +295,7 @@ const JoinPool = () => {
                 onClick={() => onLeavePool('Advance')}
                 isLoading={selectedPool === 'Advance'}
               >
-                Leave
+                {t('LEAVE')}
               </Button>
             ) : (
               <Button
@@ -304,7 +304,7 @@ const JoinPool = () => {
                 onClick={() => onJoinPool('Advance')}
                 isLoading={selectedPool === 'Advance'}
               >
-                Join
+                {t('JOIN')}
               </Button>
             )}
           </VStack>

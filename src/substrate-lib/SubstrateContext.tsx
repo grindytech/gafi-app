@@ -1,9 +1,10 @@
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise, Keyring, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { KeyringPair } from '@polkadot/keyring/types';
 import { TypeRegistry } from '@polkadot/types/create';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { DefinitionRpcExt } from '@polkadot/types/types';
-import { keyring as Keyring } from '@polkadot/ui-keyring';
+import { keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
 import { set, get } from 'lodash';
 import React, { useReducer, useContext, useEffect } from 'react';
@@ -20,12 +21,12 @@ const connectedSocket =
 interface SubstrateContextState {
   socket: string;
   jsonrpc: Record<string, Record<string, DefinitionRpcExt>>;
-  keyring: any;
+  keyring: Keyring | null;
   keyringState: any;
   api: ApiPromise | null;
   apiError: any;
   apiState: string | null;
-  currentAccount: any;
+  currentAccount: KeyringPair | null;
   chainDecimal: number;
 }
 
@@ -122,7 +123,6 @@ const retrieveChainInfo = async (api: ApiPromise | null) => {
   };
 };
 
-///
 // Loading accounts from dev and polkadot-js extension
 const loadAccounts = (
   state: SubstrateContextState,
@@ -155,9 +155,9 @@ const loadAccounts = (
         systemChainType.isLocal ||
         isTestChain(systemChain);
 
-      Keyring.loadAll({}, allAccounts);
+      KeyringPolkadot.loadAll({}, allAccounts);
 
-      dispatch({ type: 'SET_KEYRING', payload: Keyring });
+      dispatch({ type: 'SET_KEYRING', payload: KeyringPolkadot });
     } catch (e) {
       console.error(e);
       dispatch({ type: 'KEYRING_ERROR' });
@@ -168,7 +168,7 @@ const loadAccounts = (
 
 const SubstrateContext = React.createContext({
   state: initialState,
-  setCurrentAccount: (acct: any) => {},
+  setCurrentAccount: (acct: KeyringPair) => {},
 });
 
 let keyringLoadAll = false;
@@ -194,7 +194,7 @@ const SubstrateContextProvider = (props: any) => {
     }
   }, [state, dispatch]);
 
-  function setCurrentAccount(acct: any) {
+  function setCurrentAccount(acct: KeyringPair) {
     dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });
   }
 

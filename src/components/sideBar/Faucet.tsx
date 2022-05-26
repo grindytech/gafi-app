@@ -2,9 +2,9 @@ import { Box, Button, Icon, useToast } from '@chakra-ui/react';
 import { mdiWaterPump } from '@mdi/js';
 import React, { useState } from 'react';
 
-import { useSubstrateState } from '../substrate-lib';
+import { useSubstrateState } from 'substrate-lib';
 
-import { getFromAcct, handleTxError } from './utils';
+import { getFromAcct, handleTxError } from '../utils';
 
 const Faucet = () => {
   const { api, currentAccount } = useSubstrateState();

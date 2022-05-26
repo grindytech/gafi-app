@@ -10,7 +10,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { UseWalletProvider } from 'use-wallet';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { theme } from "./theme";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
+import { QueryParamProvider } from 'use-query-params';
 import './i18n';
 
 const queryClient = new QueryClient({
@@ -38,7 +39,9 @@ ReactDOM.render(
       <ChakraProvider theme={theme}>
         <Router>
           <Suspense fallback={"..."}>
-          <App />
+              <QueryParamProvider ReactRouterRoute={Route}>
+                <App />
+              </QueryParamProvider>
         </Suspense>
         </Router>
       </ChakraProvider>

@@ -11,10 +11,10 @@
 import { Icon } from '@chakra-ui/react';
 import { mdiAccountSwitch, mdiHome, mdiRocketLaunch } from '@mdi/js';
 
-import DeployContract from './components/DeployContract';
-import MappingAccount from './components/MappingAccount';
-import StakingPool from './components/StakingPool';
-import UpfrontPool from './components/UpfrontPool';
+import DeployContract from './pages/DeployContract';
+import MappingAccount from './pages/MappingAccount';
+import StakingPool from './pages/StakingPool';
+import UpfrontPool from './pages/UpfrontPool';
 import Dashboard from './pages/Dashboard';
 import SponsoredPool from './pages/SponsoredPool';
 // import Profile from "views/Dashboard/Profile.js";
