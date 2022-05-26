@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { BN, formatBalance } from '@polkadot/util';
+import { BN } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 

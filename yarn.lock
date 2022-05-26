@@ -3984,6 +3984,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/error-message@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@hookform/error-message@npm:2.0.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+    react-hook-form: ^7.0.0
+  checksum: 84aa3a6cb5cc729581850dcbe2bb5dfa43431c148782b4e8676757f808cd81e220fbc4e709c4eee381b0168a991c3a3f5306acae2a09a9760859c9a188d591ec
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.5.0":
   version: 0.5.0
   resolution: "@humanwhocodes/config-array@npm:0.5.0"
@@ -14052,6 +14063,7 @@ __metadata:
     "@graphql-codegen/typescript": ^2.4.11
     "@graphql-codegen/typescript-operations": ^2.4.0
     "@graphql-codegen/typescript-react-query": ^3.5.12
+    "@hookform/error-message": ^2.0.0
     "@mdi/js": ^6.6.96
     "@mdi/react": ^1.5.0
     "@polkadot/api": ^8.1.1

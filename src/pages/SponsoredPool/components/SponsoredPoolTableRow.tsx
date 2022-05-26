@@ -1,19 +1,10 @@
-import {
-  Button,
-  Flex,
-  Td,
-  Text,
-  Tr,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Td, Text, Tr, useColorModeValue } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
+import { shorten } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React from 'react';
-
-import TableActions from './TableActions';
-
-import { shorten } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
+import TableActions from './TableActions';
 
 interface IProps {
   SponsoredPool: SponsoredPool;
@@ -24,29 +15,29 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   SponsoredPool,
   onClick,
 }) => {
-  const { poolOwner, discount, txLimit, amount, poolId } = SponsoredPool;
+  const { poolOwner, discount, txLimit, amount } = SponsoredPool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
 
   return (
-    <Tr cursor="pointer" onClick={onClick}>
-      <Td minWidth={{ sm: '250px' }} pl="0px">
+    <Tr cursor="pointer">
+      <Td onClick={onClick} minWidth={{ sm: '250px' }} pl="0px">
         <Text fontSize="md" color={textColor} minWidth="100%">
           {shorten(poolOwner || '')}
         </Text>
       </Td>
 
-      <Td>
+      <Td onClick={onClick}>
         <Text fontSize="md" color={textColor}>
           {discount} %
         </Text>
       </Td>
-      <Td>
+      <Td onClick={onClick}>
         <Text fontSize="md" color={textColor}>
           {txLimit}
         </Text>
       </Td>
-      <Td maxWidth="130px">
+      <Td onClick={onClick} maxWidth="130px">
         <Text fontSize="md" color={textColor} pb=".5rem">
           {formatBalance(
             amount,
@@ -55,8 +46,8 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
           )}
         </Text>
       </Td>
-      <Td>
-        <TableActions poolId={poolId} />
+      <Td textAlign="right">
+        <TableActions pool={SponsoredPool} />
       </Td>
     </Tr>
   );

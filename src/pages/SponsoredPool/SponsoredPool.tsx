@@ -39,7 +39,7 @@ const SponsoredPoolPage: React.FC = () => {
     client,
     {
       first: RESULT_PER_PAGE,
-      offset: (currentPage - 1) * RESULT_PER_PAGE,
+      offset: type === 'owned' ? 0 : (currentPage - 1) * RESULT_PER_PAGE,
       filter:
         type === 'owned'
           ? {
