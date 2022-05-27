@@ -38,6 +38,7 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
   onClose,
 }) => {
   const { poolId, targets } = pool;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">
       <ModalOverlay />

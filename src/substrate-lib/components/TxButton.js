@@ -65,7 +65,7 @@ function TxButton({
           hash: status.asFinalized.toString(),
         }))
       : setStatus(t('CURRENT_TRANSACTION_STATUS', {
-          hash: status.type,
+        statusType: status.type,
         }))
 
   const txErrHandler = err =>

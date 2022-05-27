@@ -37,7 +37,7 @@
   "TARGETS": "Targets",
   "FIELD_CANNOT_BE_LEFT_BLANK": "Field cannot be left blank.",
   "ADD_TARGETS": "Add targets",
-  "NAME_MUST_BE": "Name must be longer than {{min}} and less than {{max}} characters.",
+  "NAME_MUST_BE_LONGER_THAN_MIN_AND_LESS_THAN_MAX_CHARACTERS": "Name must be longer than {{min}} and less than {{max}} characters.",
   "EDIT_NAME_POOL": "Edit name pool",
   "NAME": "Name",
   "FINALIZED_BLOCK_HASH": "😉 Finalized. Block hash: ${{hash}}",

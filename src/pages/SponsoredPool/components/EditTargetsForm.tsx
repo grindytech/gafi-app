@@ -17,7 +17,7 @@ import { ISubmittableResult } from '@polkadot/types/types';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
 import { t } from 'i18next';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
@@ -38,17 +38,25 @@ interface IModalEditTargesProps {
   targets: string[];
 }
 
+type ITargets = {
+  contractAddress: string;
+}[];
+
 const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   poolId,
   targets,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
 
-  const currentTargets = targets.map(target => ({
-    contractAddress: target,
-  }));
+  const currentTargets = useMemo(
+    () =>
+      targets.map(target => ({
+        contractAddress: target,
+      })),
+    [targets]
+  );
   const {
     register,
     handleSubmit,
@@ -70,11 +78,11 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
         isClosable: true,
         status: 'success',
       });
-      setLoading(false);
+      setIsLoading(false);
     } else {
       toast({
         description: t('CURRENT_TRANSACTION_STATUS', {
-          hash: status.type,
+          statusType: status.type,
         }),
         isClosable: true,
         status: 'info',
@@ -83,18 +91,20 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   };
 
   const mutation = useMutation(
-    (data: IRequestData) => {
-      const { newTargets, account, options } = data;
+    async (targetsData: ITargets) => {
+      const [account, options] = await getFromAcct(currentAccount);
+      const newTargets = targetsData.map(target => target.contractAddress);
       const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
         poolId,
         newTargets
       );
-      if (options)
+      if (options) {
         return txSetNewTargets?.signAndSend(
           account,
           options,
           txCallback
         ) as Promise<() => void>;
+      }
       return txSetNewTargets?.signAndSend(account, txCallback) as Promise<
         () => void
       >;
@@ -109,16 +119,14 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
           isClosable: true,
           status: 'error',
         });
-        setLoading(false);
+        setIsLoading(false);
       },
     }
   );
 
   const onSubmit = async (data: IEditTargetsForm) => {
-    setLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    const newTargets = data.targets.map(target => target.contractAddress);
-    mutation.mutate({ newTargets, account, options });
+    setIsLoading(true);
+    mutation.mutate(data.targets);
   };
 
   const { fields, remove, append } = useFieldArray<IEditTargetsForm>({
@@ -126,69 +134,67 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
     name: 'targets',
   });
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={!!errors.targets} isRequired mb={4}>
-          <FormLabel htmlFor="">{t('TARGETS')}</FormLabel>
-          <VStack alignItems="flex-start">
-            {fields.map((field, index) => (
-              <InputGroup>
-                <Input
-                  key={field.id}
-                  type="text"
-                  {...register(`targets.${index}.contractAddress` as const, {
-                    required: t('FIELD_CANNOT_BE_LEFT_BLANK').toString(),
-                  })}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={!!errors.targets} isRequired mb={4}>
+        <FormLabel htmlFor="">{t('TARGETS')}</FormLabel>
+        <VStack alignItems="flex-start">
+          {fields.map((field, index) => (
+            <InputGroup>
+              <Input
+                key={field.id}
+                type="text"
+                {...register(`targets.${index}.contractAddress` as const, {
+                  required: t('FIELD_CANNOT_BE_LEFT_BLANK').toString(),
+                })}
+              />
+              <InputRightElement
+                display={fields.length === 1 ? 'none' : 'block'}
+              >
+                <IconButton
+                  onClick={() => remove(index)}
+                  colorScheme="red"
+                  aria-label="remove target"
+                  icon={
+                    <Icon>
+                      <path fill="currentColor" d={mdiClose} />
+                    </Icon>
+                  }
                 />
-                <InputRightElement
-                  display={fields.length === 1 ? 'none' : 'block'}
-                >
-                  <IconButton
-                    onClick={() => remove(index)}
-                    colorScheme="red"
-                    aria-label="remove target"
-                    icon={
-                      <Icon>
-                        <path fill="currentColor" d={mdiClose} />
-                      </Icon>
-                    }
-                  />
-                </InputRightElement>
-              </InputGroup>
-            ))}
-          </VStack>
-        </FormControl>
-        <ErrorMessage
-          errors={errors}
-          name="poolName"
-          render={({ message }) => <Text color="red.500">{message} 😱</Text>}
-        />
-        <Button
-          display="block"
-          disabled={fields.length >= 5}
-          onClick={() => append({ contractAddress: '' })}
-          leftIcon={
-            <Icon>
-              <path fill="currentColor" d={mdiPlus} />
-            </Icon>
-          }
-        >
-          {t('ADD_TARGETS')}
-        </Button>
+              </InputRightElement>
+            </InputGroup>
+          ))}
+        </VStack>
+      </FormControl>
+      <ErrorMessage
+        errors={errors}
+        name="poolName"
+        render={({ message }) => <Text color="red.500">{message} 😱</Text>}
+      />
+      <Button
+        display="block"
+        disabled={fields.length >= 5}
+        onClick={() => append({ contractAddress: '' })}
+        leftIcon={
+          <Icon>
+            <path fill="currentColor" d={mdiPlus} />
+          </Icon>
+        }
+      >
+        {t('ADD_TARGETS')}
+      </Button>
 
-        <HStack justifyContent="flex-end">
-          <Button
-            type="submit"
-            color="white"
-            background="primary"
-            variant="solid"
-            isLoading={loading}
-          >
-            {t('SAVE')}
-          </Button>
-        </HStack>
-      </form>
-    </>
+      <HStack justifyContent="flex-end">
+        <Button
+          type="submit"
+          color="white"
+          background="primary"
+          variant="solid"
+          isLoading={isLoading}
+        >
+          {t('SAVE')}
+        </Button>
+      </HStack>
+    </form>
   );
 };
 

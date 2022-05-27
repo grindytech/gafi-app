@@ -21,20 +21,15 @@ interface IEditPoolNameForm {
   poolName: string;
 }
 
-interface IRequestData {
-  poolName: string;
-  account: AddressOrPair;
-  options?: Partial<SignerOptions>;
-}
-
 interface IModalEditPoolNameProps {
   poolId: string;
 }
 
 const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
-  const [loading, setLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+
   const {
     register,
     handleSubmit,
@@ -44,6 +39,11 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
       poolName: '',
     },
   });
+
+  const requiredAmountMsg = t(
+    'NAME_MUST_BE_LONGER_THAN_MIN_AND_LESS_THAN_MAX_CHARACTERS',
+    { min: 8, max: 32 }
+  );
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -55,11 +55,11 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
         isClosable: true,
         status: 'success',
       });
-      setLoading(false);
+      setIsLoading(false);
     } else {
       toast({
         description: t('CURRENT_TRANSACTION_STATUS', {
-          hash: status.type,
+          statusType: status.type,
         }),
         isClosable: true,
         status: 'info',
@@ -68,18 +68,19 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
   };
 
   const mutation = useMutation(
-    (data: IRequestData) => {
-      const { poolName, account, options } = data;
+    async (poolName: string) => {
+      const [account, options] = await getFromAcct(currentAccount);
       const txSetPoolNameExecute = api?.tx.sponsoredPool.setPoolName(
         poolId,
         poolName
       );
-      if (options)
+      if (options) {
         return txSetPoolNameExecute?.signAndSend(
           account,
           options,
           txCallback
         ) as Promise<() => void>;
+      }
       return txSetPoolNameExecute?.signAndSend(account, txCallback) as Promise<
         () => void
       >;
@@ -94,16 +95,16 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
           isClosable: true,
           status: 'error',
         });
-        setLoading(false);
+        setIsLoading(false);
       },
     }
   );
 
-  const onSubmit = async (data: IEditPoolNameForm) => {
-    setLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    mutation.mutate({ poolName: data.poolName, account, options });
+  const onSubmit = (data: IEditPoolNameForm) => {
+    setIsLoading(true);
+    mutation.mutate(data.poolName);
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={!!errors.poolName} isRequired mb={4}>
@@ -115,11 +116,11 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
             required: true,
             maxLength: {
               value: 32,
-              message: t('NAME_MUST_BE', { min: 8, max: 32 }),
+              message: requiredAmountMsg,
             },
             minLength: {
               value: 8,
-              message: t('NAME_MUST_BE', { min: 8, max: 32 }),
+              message: requiredAmountMsg,
             },
           })}
         />
@@ -136,7 +137,7 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
           color="white"
           background="primary"
           variant="solid"
-          isLoading={loading}
+          isLoading={isLoading}
         >
           {t('SAVE')}
         </Button>

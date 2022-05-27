@@ -43,7 +43,7 @@ function MappingAccount() {
     } else {
       toast({
         description: t('CURRENT_TRANSACTION_STATUS', {
-          hash: status.type,
+          statusType: status.type,
         }),
         isClosable: true,
         status: 'info',

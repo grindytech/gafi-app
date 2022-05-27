@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { SponsoredPool } from 'graphQL/generates';
 import { ISubmittableResult } from '@polkadot/types/types';
 import ModalEditPool from './ModalEditPool';
+import { useMutation } from 'react-query';
 
 interface IProps {
   pool: SponsoredPool;
@@ -33,7 +34,7 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
     } else {
       toast({
         description: t('CURRENT_TRANSACTION_STATUS', {
-          hash: status.type,
+          statusType: status.type,
         }),
         isClosable: true,
         status: 'info',
@@ -41,39 +42,34 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
     }
   };
 
+  const mutation = useMutation(
+    async () => {
+      const [account, options] = await getFromAcct(currentAccount);
+
+      const txExecute = api?.tx.sponsoredPool.withdrawPool(poolId);
+      if (options) {
+        return txExecute?.signAndSend(account, options, txCallback);
+      }
+      return txExecute?.signAndSend(account, txCallback);
+    },
+    {
+      mutationKey: 'withdraw-pool',
+      onError: (err: any) => {
+        toast({
+          description: t('TRANSACTION_FAILED', {
+            errorMessage: err.toString(),
+          }),
+          isClosable: true,
+          status: 'error',
+        });
+        setIsLoading(false);
+      },
+    }
+  );
+
   const onWithdraw = async () => {
     setIsLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api && account) {
-      const txExecute = api.tx.sponsoredPool.withdrawPool(poolId);
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      }
-    }
+    mutation.mutate();
   };
   return (
     <>
