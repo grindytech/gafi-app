@@ -26,6 +26,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import NumberInput from 'components/numberInput/NumberInput';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
+import { t } from 'i18next';
 
 interface IProps {
   isOpen: boolean;
@@ -94,7 +95,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
@@ -104,7 +107,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
       onClose();
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          hash: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -127,7 +132,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
           await txExecute.signAndSend(account, options, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });
@@ -138,7 +145,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
           await txExecute.signAndSend(account, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });

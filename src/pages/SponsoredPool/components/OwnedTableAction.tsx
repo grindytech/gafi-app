@@ -23,14 +23,18 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          hash: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -47,7 +51,9 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
           await txExecute.signAndSend(account, options, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });
@@ -58,7 +64,9 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
           await txExecute.signAndSend(account, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });

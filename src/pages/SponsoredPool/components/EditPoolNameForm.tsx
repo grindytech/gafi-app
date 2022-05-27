@@ -49,14 +49,18 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
       setLoading(false);
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          hash: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -84,7 +88,9 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
       mutationKey: 'update-pool-name',
       onError: (error: any) => {
         toast({
-          description: `😞 Transaction Failed: ${error.toString()}`,
+          description: t('TRANSACTION_FAILED', {
+            errorMessage: error.toString(),
+          }),
           isClosable: true,
           status: 'error',
         });

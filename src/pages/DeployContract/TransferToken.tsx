@@ -16,6 +16,7 @@ import { addAdditionalGas } from './DeployContract';
 
 import Card from 'components/card/Card';
 import ERC20JSON from 'contract/ERC20.json';
+import { t } from 'i18next';
 
 export const MAX_INT =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
@@ -84,14 +85,14 @@ const TransferToken = () => {
             transferAmount
         );
         toast({
-          description: `Transfer success!`,
+          description: t('TRANSFER_SUCCESS'),
           isClosable: true,
           status: 'success',
         });
       } catch (error) {
         setIsLoading(false);
         toast({
-          description: `Transfer error!`,
+          description: t('TRANSFER_ERROR'),
           isClosable: true,
           status: 'error',
         });

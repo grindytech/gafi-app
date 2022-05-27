@@ -1,5 +1,6 @@
 import { Box, Button, Icon, useToast } from '@chakra-ui/react';
 import { mdiWaterPump } from '@mdi/js';
+import { t } from 'i18next';
 import React, { useState } from 'react';
 
 import { useSubstrateState } from 'substrate-lib';
@@ -16,14 +17,18 @@ const Faucet = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          hash: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -33,7 +38,9 @@ const Faucet = () => {
   // @ts-ignore
   const txErrHandler = err => {
     toast({
-      description: `😞 Transaction Failed: ${err.toString()}`,
+      description: t('TRANSACTION_FAILED', {
+        errorMessage: err.toString(),
+      }),
       isClosable: true,
       status: 'error',
     });
@@ -43,23 +50,21 @@ const Faucet = () => {
   const onFaucet = async () => {
     setIsLoading(true);
     if (currentAccount) {
-      const [account, options]= await getFromAcct(currentAccount);
-     
+      const [account, options] = await getFromAcct(currentAccount);
 
-        if (api) {
-          const txExecute = api.tx.faucet.faucet();
-    
-          if (options) {
-            
-            const unsub = await txExecute
-              .signAndSend(account, options, txResHandler)
-              .catch(txErrHandler);
-          } else {
-            const unsub = await txExecute
-              .signAndSend(account, txResHandler)
-              .catch(txErrHandler); 
-          }
-  }
+      if (api) {
+        const txExecute = api.tx.faucet.faucet();
+
+        if (options) {
+          const unsub = await txExecute
+            .signAndSend(account, options, txResHandler)
+            .catch(txErrHandler);
+        } else {
+          const unsub = await txExecute
+            .signAndSend(account, txResHandler)
+            .catch(txErrHandler);
+        }
+      }
     }
   };
 

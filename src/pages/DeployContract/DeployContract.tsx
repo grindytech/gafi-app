@@ -10,6 +10,7 @@ import TransferToken from './TransferToken';
 
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
+import { t } from 'i18next';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;
@@ -156,7 +157,8 @@ const DeployContract = () => {
                 prevTxnFee + Number(beforeBalance) - Number(newBalance)
             );
             toast({
-              description: `Deploy new contract success!`,
+              description: t('DEPLOY_NEW_CONTRACT_SUCCESS'),
+
               isClosable: true,
               status: 'success',
             });
