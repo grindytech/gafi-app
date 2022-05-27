@@ -1,7 +1,7 @@
 import { Box, Button, Icon, useToast } from '@chakra-ui/react';
 import { mdiWaterPump } from '@mdi/js';
-import { t } from 'i18next';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useSubstrateState } from 'substrate-lib';
 
@@ -11,6 +11,7 @@ const Faucet = () => {
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   // @ts-ignore
   const txResHandler = ({ status, events }) => {

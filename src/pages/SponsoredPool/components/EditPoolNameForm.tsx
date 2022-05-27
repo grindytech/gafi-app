@@ -10,12 +10,12 @@ import {
 import { ErrorMessage } from '@hookform/error-message';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { t } from 'i18next';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { useMutation } from 'react-query';
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
+import { useTranslation } from 'react-i18next';
 
 interface IEditPoolNameForm {
   poolName: string;
@@ -29,7 +29,7 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -41,8 +41,8 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
   });
 
   const requiredAmountMsg = t(
-    'NAME_MUST_BE_LONGER_THAN_MIN_AND_LESS_THAN_MAX_CHARACTERS',
-    { min: 8, max: 32 }
+    'FIELD_NAME_MUST_BE_LONGER_THAN_MIN_AND_LESS_THAN_MAX_CHARACTERS',
+    { fieldName: t('POOL_NAME'), min: 8, max: 32 }
   );
 
   const txCallback = ({ status, events }: ISubmittableResult) => {

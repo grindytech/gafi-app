@@ -16,12 +16,12 @@ import { mdiClose, mdiPlus } from '@mdi/js';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { t } from 'i18next';
 import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { useMutation } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
 interface IEditTargetsForm {
   targets: { contractAddress: string }[];
@@ -49,6 +49,7 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const currentTargets = useMemo(
     () =>

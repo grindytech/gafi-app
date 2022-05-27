@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, useToast } from '@chakra-ui/react';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { t } from 'i18next';
 import { useState } from 'react';
 import { SponsoredPool } from 'graphQL/generates';
 import { ISubmittableResult } from '@polkadot/types/types';
 import ModalEditPool from './ModalEditPool';
 import { useMutation } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   pool: SponsoredPool;
@@ -19,6 +19,7 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -74,7 +75,8 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
   return (
     <>
       <Button
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation();
           setIsOpenEditPoolModal(true);
         }}
         color="primary"
@@ -83,7 +85,8 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
         {t('EDIT')}
       </Button>
       <Button
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation();
           onWithdraw();
         }}
         ml={3}

@@ -16,9 +16,9 @@ import {
 import { ISubmittableResult } from '@polkadot/types/types';
 import { handleTxError } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
-import { t } from 'i18next';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useSubstrateState } from 'substrate-lib';
 import EditPoolNameForm from './EditPoolNameForm';
 import EditTargetsForm from './EditTargetsForm';
@@ -38,6 +38,8 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
   onClose,
 }) => {
   const { poolId, targets } = pool;
+
+  const { t } = useTranslation();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">

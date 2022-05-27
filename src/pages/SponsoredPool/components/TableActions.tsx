@@ -109,7 +109,8 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
         <Button
           color="red.300"
           variant="solid"
-          onClick={() => {
+          onClick={e => {
+            e.stopPropagation();
             onLeavePool();
           }}
           isLoading={isLoading}
@@ -120,7 +121,8 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
         <Button
           color="primary"
           variant="solid"
-          onClick={() => {
+          onClick={e => {
+            e.stopPropagation();
             onJoinPool();
           }}
           disabled={isJoinedPool}

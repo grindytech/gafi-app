@@ -24,24 +24,24 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const isOwned = type === 'owned';
 
   return (
-    <Tr cursor="pointer">
-      <Td onClick={onClick} minWidth={{ sm: '250px' }} pl="0px">
+    <Tr cursor="pointer" onClick={onClick}>
+      <Td minWidth={{ sm: '250px' }} pl="0px">
         <Text fontSize="md" color={textColor} minWidth="100%">
           {shorten(poolOwner || '')}
         </Text>
       </Td>
 
-      <Td onClick={onClick}>
+      <Td>
         <Text fontSize="md" color={textColor}>
           {discount} %
         </Text>
       </Td>
-      <Td onClick={onClick}>
+      <Td>
         <Text fontSize="md" color={textColor}>
           {txLimit}
         </Text>
       </Td>
-      <Td onClick={onClick} maxWidth="130px">
+      <Td maxWidth="130px">
         <Text fontSize="md" color={textColor} pb=".5rem">
           {formatBalance(
             amount,

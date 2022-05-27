@@ -19,10 +19,11 @@ import Web3 from 'web3';
 
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 function MappingAccount() {
   const toast = useToast();
+  const { t } = useTranslation();
   const { account, connect, isConnected, reset, ethereum } = useWallet();
   const { api, currentAccount } = useSubstrateState();
   const [isWithdraw, setIsWithdraw] = useState(true);

@@ -26,7 +26,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import NumberInput from 'components/numberInput/NumberInput';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   isOpen: boolean;
@@ -52,7 +52,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
   refetch,
 }) => {
   const [loading, setLoading] = useState(false);
-
+  const { t } = useTranslation();
   const toast = useToast();
   const {
     register,

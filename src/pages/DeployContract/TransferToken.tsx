@@ -16,7 +16,7 @@ import { addAdditionalGas } from './DeployContract';
 
 import Card from 'components/card/Card';
 import ERC20JSON from 'contract/ERC20.json';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export const MAX_INT =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
@@ -38,6 +38,7 @@ export const MAX_INT =
 const TransferToken = () => {
   const [txnFee, setTxnFee] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
   const toast = useToast();
   const { account, connect, isConnected, reset, balance, ethereum } =
     useWallet();
