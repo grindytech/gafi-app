@@ -32,6 +32,7 @@ const SponsoredPoolPage: React.FC = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const { currentAccount } = useSubstrateState();
+  const isOwned = type === 'owned';
 
   // Example for query data from graphql.
 
@@ -39,17 +40,16 @@ const SponsoredPoolPage: React.FC = () => {
     client,
     {
       first: RESULT_PER_PAGE,
-      offset: type === 'owned' ? 0 : (currentPage - 1) * RESULT_PER_PAGE,
-      filter:
-        type === 'owned'
-          ? {
-              poolOwner: {
-                equalTo: currentAccount?.addressRaw
-                  ? getGAKIAccountAddress(currentAccount?.addressRaw)
-                  : '',
-              },
-            }
-          : undefined,
+      offset: isOwned ? 0 : (currentPage - 1) * RESULT_PER_PAGE,
+      filter: isOwned
+        ? {
+            poolOwner: {
+              equalTo: currentAccount?.addressRaw
+                ? getGAKIAccountAddress(currentAccount?.addressRaw)
+                : '',
+            },
+          }
+        : undefined,
     },
     { enabled: !!currentAccount?.addressRaw }
   );

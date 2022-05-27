@@ -26,7 +26,8 @@
   "SHOW_A_OF_A": "Showing <b> {{totalCount}} </b> of <b> {{totalCount}} </b> results",
   "SHOW_FROM_A_TO_B_OF_C": "Showing <b> {{fromAmount}} </b> to <b> {{toAmount}} </b> of <b> {{totalCount}} </b> results",
   "SPONSORED_CONTRACTS": "Sponsored contracts",
-  "POOL_NAME": "Pool: {{poolName}}",
+  "POOL_POOL_NAME": "Pool: {{poolName}}",
+  "POOL_NAME": "Pool name",
   "CLOSE": "Close",
   "SAVE": "Save",
   "WITHDRAW": "withdraw",
@@ -36,7 +37,7 @@
   "TARGETS": "Targets",
   "FIELD_CANNOT_BE_LEFT_BLANK": "Field cannot be left blank.",
   "ADD_TARGETS": "Add targets",
-  "NAME_MUST_BE_LONGER_THAN_8_AND_LESS_THAN_32": "Name must be longer than 8 and less than 32 characters.",
+  "NAME_MUST_BE": "Name must be longer than {{min}} and less than {{max}} characters.",
   "EDIT_NAME_POOL": "Edit name pool",
   "NAME": "Name"
 

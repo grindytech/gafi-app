@@ -19,8 +19,6 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
   const { t } = useTranslation();
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpenEditPoolModal, setIsOpenEditPoolModal] = useState(false);
-  const [type, _] = useQueryParam('type');
   const toast = useToast();
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
@@ -121,70 +119,6 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
       }
     }
   };
-
-  const onWithdraw = async () => {
-    setIsLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api && account) {
-      const txExecute = api.tx.sponsoredPool.withdrawPool(poolId);
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      }
-    }
-  };
-  if (type === 'owned') {
-    return (
-      <>
-        <Button
-          onClick={() => {
-            setIsOpenEditPoolModal(true);
-          }}
-          color="primary"
-          variant="solid"
-        >
-          {t('EDIT')}
-        </Button>
-        <Button
-          onClick={() => {
-            onWithdraw();
-          }}
-          ml={3}
-          color="red.300"
-          variant="solid"
-          isLoading={isLoading}
-        >
-          {t('WITHDRAW')}
-        </Button>
-        <ModalEditPool
-          pool={pool}
-          isOpen={isOpenEditPoolModal}
-          onClose={() => {
-            setIsOpenEditPoolModal(false);
-          }}
-        />
-      </>
-    );
-  }
 
   return (
     <>

@@ -4,7 +4,9 @@ import { shorten } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React from 'react';
 import { useSubstrateState } from 'substrate-lib';
+import { useQueryParam } from 'use-query-params';
 import TableActions from './TableActions';
+import OwnedTableActions from './OwnedTableAction';
 
 interface IProps {
   SponsoredPool: SponsoredPool;
@@ -18,6 +20,8 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const { poolOwner, discount, txLimit, amount } = SponsoredPool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
+  const [type, _] = useQueryParam('type');
+  const isOwned = type === 'owned';
 
   return (
     <Tr cursor="pointer">
@@ -47,7 +51,11 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
         </Text>
       </Td>
       <Td textAlign="right">
-        <TableActions pool={SponsoredPool} />
+        {isOwned ? (
+          <OwnedTableActions pool={SponsoredPool} />
+        ) : (
+          <TableActions pool={SponsoredPool} />
+        )}
       </Td>
     </Tr>
   );

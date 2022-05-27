@@ -47,8 +47,8 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
         <ModalBody>
           <Tabs variant="enclosed">
             <TabList>
-              <Tab>Targets</Tab>
-              <Tab>Pool name</Tab>
+              <Tab>{t('TARGETS')}</Tab>
+              <Tab>{t('POOL_NAME')}</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>

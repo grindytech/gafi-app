@@ -10,6 +10,7 @@ import {
   useToast,
   VStack,
   Text,
+  HStack,
 } from '@chakra-ui/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { ISubmittableResult } from '@polkadot/types/types';
@@ -19,9 +20,17 @@ import { t } from 'i18next';
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
+import { useMutation } from 'react-query';
 
 interface IEditTargetsForm {
   targets: { contractAddress: string }[];
+}
+
+interface IRequestData {
+  newTargets: string[];
+  account: AddressOrPair;
+  options?: Partial<SignerOptions>;
 }
 
 interface IModalEditTargesProps {
@@ -69,38 +78,41 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
     }
   };
 
+  const mutation = useMutation(
+    (data: IRequestData) => {
+      const { newTargets, account, options } = data;
+      const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
+        poolId,
+        newTargets
+      );
+      if (options)
+        return txSetNewTargets?.signAndSend(
+          account,
+          options,
+          txCallback
+        ) as Promise<() => void>;
+      return txSetNewTargets?.signAndSend(account, txCallback) as Promise<
+        () => void
+      >;
+    },
+    {
+      mutationKey: 'update-target-contract',
+      onError: (error: any) => {
+        toast({
+          description: `😞 Transaction Failed: ${error.toString()}`,
+          isClosable: true,
+          status: 'error',
+        });
+        setLoading(false);
+      },
+    }
+  );
+
   const onSubmit = async (data: IEditTargetsForm) => {
     setLoading(true);
     const [account, options] = await getFromAcct(currentAccount);
     const newTargets = data.targets.map(target => target.contractAddress);
-    const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
-      poolId,
-      newTargets
-    );
-    if (options) {
-      try {
-        await txSetNewTargets?.signAndSend(account, options, txCallback);
-      } catch (err: any) {
-        toast({
-          description: `😞 Transaction Failed: ${err.toString()}`,
-          isClosable: true,
-          status: 'error',
-        });
-        setLoading(false);
-      }
-    } else {
-      try {
-        // await txSetPoolNameExecute?.signAndSend(account, txCallback);
-        await txSetNewTargets?.signAndSend(account, txCallback);
-      } catch (err: any) {
-        toast({
-          description: `😞 Transaction Failed: ${err.toString()}`,
-          isClosable: true,
-          status: 'error',
-        });
-        setLoading(false);
-      }
-    }
+    mutation.mutate({ newTargets, account, options });
   };
 
   const { fields, remove, append } = useFieldArray<IEditTargetsForm>({
@@ -158,16 +170,17 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
           {t('ADD_TARGETS')}
         </Button>
 
-        <Button
-          float="right"
-          type="submit"
-          color="white"
-          background="primary"
-          variant="solid"
-          isLoading={loading}
-        >
-          {t('SAVE')}
-        </Button>
+        <HStack justifyContent="flex-end">
+          <Button
+            type="submit"
+            color="white"
+            background="primary"
+            variant="solid"
+            isLoading={loading}
+          >
+            {t('SAVE')}
+          </Button>
+        </HStack>
       </form>
     </>
   );
