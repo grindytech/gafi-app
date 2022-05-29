@@ -10,6 +10,7 @@ import TransferToken from './TransferToken';
 
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
+import { useTranslation } from 'react-i18next';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;
@@ -46,6 +47,7 @@ const rejectStyle = {
 
 const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { t } = useTranslation();
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (acceptedFiles && acceptedFiles.length > 0) {
@@ -124,6 +126,7 @@ const DeployContract = () => {
   const [txnFee, setTxnFee] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [contractFiles, setContractFiles] = useState<any>([]);
+  const { t } = useTranslation();
 
   const onDeploy = async () => {
     setIsLoading(true);
@@ -156,7 +159,8 @@ const DeployContract = () => {
                 prevTxnFee + Number(beforeBalance) - Number(newBalance)
             );
             toast({
-              description: `Deploy new contract success!`,
+              description: t('DEPLOY_NEW_CONTRACT_SUCCESS'),
+
               isClosable: true,
               status: 'success',
             });

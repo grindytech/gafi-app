@@ -63,7 +63,6 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { title, captions, sponsoredPools, children } = props;
   const textColor = useColorModeValue('gray.700', 'white');
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
-
   return (
     <>
       <Card overflowX={{ sm: 'scroll', xl: 'hidden' }}>
@@ -115,7 +114,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         <ModalContent>
           <ModalHeader>
             {selectedPool?.poolId &&
-              t('POOL_NAME', { poolName: shorten(selectedPool?.poolId) })}
+              t('POOL_POOL_NAME', { poolName: shorten(selectedPool?.poolId) })}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

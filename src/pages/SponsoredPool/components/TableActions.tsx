@@ -1,18 +1,21 @@
 import { Button, useToast } from '@chakra-ui/react';
 import { GafiPrimitivesPlayerTicketInfo } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
+import { getFromAcct, handleTxError } from 'components/utils';
+import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
-
-import { getFromAcct, handleTxError } from 'components/utils';
+import { useMutation, useQuery } from 'react-query';
 import { useSubstrateState } from 'substrate-lib';
+import { useQueryParam } from 'use-query-params';
+import ModalEditPool from './ModalEditPool';
 
 interface IProps {
-  poolId: string;
+  pool: SponsoredPool;
 }
 
-const TableActions: React.FC<IProps> = ({ poolId }) => {
+const TableActions: React.FC<IProps> = ({ pool }) => {
+  const { poolId } = pool;
   const { t } = useTranslation();
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +25,9 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
@@ -30,7 +35,9 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       setIsLoading(false);
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          statusType: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -55,91 +62,76 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
 
   const isJoinedPool = !!joinedPoolInfo?.ticketType.asSponsored.toHuman();
 
+  const mutation = useMutation(
+    async (actionType: 'join' | 'leave') => {
+      const [account, options] = await getFromAcct(currentAccount);
+      let txExecute;
+      if (actionType === 'join') {
+        txExecute = api?.tx.pool.join({ Sponsored: poolId });
+      } else {
+        txExecute = api?.tx.pool.leave();
+      }
+      if (options) {
+        return txExecute?.signAndSend(account, options, txCallback) as Promise<
+          () => void
+        >;
+      }
+      return txExecute?.signAndSend(account, txCallback) as Promise<() => void>;
+    },
+    {
+      mutationKey: 'join-leave-pool',
+      onError: (error: any) => {
+        toast({
+          description: t('TRANSACTION_FAILED', {
+            errorMessage: error.toString(),
+          }),
+          isClosable: true,
+          status: 'error',
+        });
+        setIsLoading(false);
+      },
+    }
+  );
+
   const onJoinPool = async () => {
     setIsLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api && account) {
-      const txExecute = api.tx.pool.join({ Sponsored: poolId });
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      }
-    }
+    mutation.mutate('join');
   };
 
   const onLeavePool = async () => {
     setIsLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api && account) {
-      const txExecute = api.tx.pool.leave();
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
-            isClosable: true,
-            status: 'error',
-          });
-          setIsLoading(false);
-        }
-      }
-    }
+    mutation.mutate('leave');
   };
 
-  return joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
-    <Button
-      color="red.300"
-      variant="solid"
-      onClick={() => {
-        onLeavePool();
-      }}
-      isLoading={isLoading}
-    >
-      {t('LEAVE')}
-    </Button>
-  ) : (
-    <Button
-      color="primary"
-      variant="solid"
-      onClick={() => {
-        onJoinPool();
-      }}
-      disabled={isJoinedPool}
-      isLoading={isLoading}
-    >
-      {t('JOIN')}
-    </Button>
+  return (
+    <>
+      {joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
+        <Button
+          color="red.300"
+          variant="solid"
+          onClick={e => {
+            e.stopPropagation();
+            onLeavePool();
+          }}
+          isLoading={isLoading}
+        >
+          {t('LEAVE')}
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="solid"
+          onClick={e => {
+            e.stopPropagation();
+            onJoinPool();
+          }}
+          disabled={isJoinedPool}
+          isLoading={isLoading}
+        >
+          {t('JOIN')}
+        </Button>
+      )}
+    </>
   );
 };
 

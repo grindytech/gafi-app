@@ -19,13 +19,14 @@ import {
 } from '@chakra-ui/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { BN, formatBalance } from '@polkadot/util';
+import { BN } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 import NumberInput from 'components/numberInput/NumberInput';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
   refetch,
 }) => {
   const [loading, setLoading] = useState(false);
-
+  const { t } = useTranslation();
   const toast = useToast();
   const {
     register,
@@ -94,7 +95,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
@@ -104,7 +107,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
       onClose();
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          statusType: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -127,7 +132,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
           await txExecute.signAndSend(account, options, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });
@@ -138,7 +145,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
           await txExecute.signAndSend(account, txCallback);
         } catch (err: any) {
           toast({
-            description: `😞 Transaction Failed: ${err.toString()}`,
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
             isClosable: true,
             status: 'error',
           });

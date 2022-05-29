@@ -19,9 +19,11 @@ import Web3 from 'web3';
 
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
+import { useTranslation } from 'react-i18next';
 
 function MappingAccount() {
   const toast = useToast();
+  const { t } = useTranslation();
   const { account, connect, isConnected, reset, ethereum } = useWallet();
   const { api, currentAccount } = useSubstrateState();
   const [isWithdraw, setIsWithdraw] = useState(true);
@@ -32,14 +34,18 @@ function MappingAccount() {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: `😉 Finalized. Block hash: ${status.asFinalized.toString()}`,
+        description: t('FINALIZED_BLOCK_HASH', {
+          hash: status.asFinalized.toString(),
+        }),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: `Current transaction status: ${status.type}`,
+        description: t('CURRENT_TRANSACTION_STATUS', {
+          statusType: status.type,
+        }),
         isClosable: true,
         status: 'info',
       });
@@ -49,7 +55,9 @@ function MappingAccount() {
   // @ts-ignore
   const txErrHandler = err => {
     toast({
-      description: `😞 Transaction Failed: ${err.toString()}`,
+      description: t('TRANSACTION_FAILED', {
+        errorMessage: err.toString(),
+      }),
       isClosable: true,
       status: 'error',
     });
