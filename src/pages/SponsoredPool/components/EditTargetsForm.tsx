@@ -27,12 +27,6 @@ interface IEditTargetsForm {
   targets: { contractAddress: string }[];
 }
 
-interface IRequestData {
-  newTargets: string[];
-  account: AddressOrPair;
-  options?: Partial<SignerOptions>;
-}
-
 interface IModalEditTargesProps {
   poolId: string;
   targets: string[];

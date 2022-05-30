@@ -93,6 +93,7 @@ const SponsoredPoolPage: React.FC = () => {
           { label: '', fieldName: '' },
         ]}
         sponsoredPools={sponsoredPools}
+        limitRow={RESULT_PER_PAGE}
       >
         <Pagination
           currentPage={currentPage}

@@ -1,12 +1,10 @@
 // Chakra imports
 import {
   Button,
-  CircularProgress,
   Icon,
   IconButton,
   Input,
   InputGroup,
-  InputRightAddon,
   InputRightElement,
   Modal,
   ModalBody,
@@ -26,21 +24,20 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import React, { useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { useTranslation } from 'react-i18next';
-
-import SponsoredPoolTableRow from './SponsoredPoolTableRow';
-
 import Card from 'components/card/Card';
 import CardBody from 'components/card/CardBody';
 import CardHeader from 'components/card/CardHeader';
 import { shorten } from 'components/utils';
 import { SponsoredPool } from 'graphQL/generates';
+import React, { useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useTranslation } from 'react-i18next';
+import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
+import SponsoredPoolTableRow from './SponsoredPoolTableRow';
 
 export interface ISponsoredPool {
   id: string | undefined;
-  amount: any | undefined;
+  amount: string | undefined;
   owner: string | undefined;
   discount: number | undefined;
   limit: number | undefined;
@@ -56,13 +53,15 @@ interface ISponsoredPoolTableProps {
   captions: TableCaption[];
   sponsoredPools: SponsoredPool[];
   children: React.ReactNode;
+  limitRow: number;
 }
 
 const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
-  const { title, captions, sponsoredPools, children } = props;
+  const { title, captions, sponsoredPools, children, limitRow } = props;
   const textColor = useColorModeValue('gray.700', 'white');
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
+  const SkeletonArray = new Array(limitRow).fill(0);
   return (
     <>
       <Card overflowX={{ sm: 'scroll', xl: 'hidden' }}>
@@ -75,34 +74,33 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         <CardBody>
           <Table variant="simple" textAlign="center" color={textColor}>
             <TableCaption>{children}</TableCaption>
-            {sponsoredPools ? (
-              <>
-                <Thead>
-                  <Tr my=".8rem" pl="0px" color="gray.400">
-                    {React.Children.toArray(
-                      captions.map(caption => (
-                        <Th color="gray.400">{caption.label}</Th>
-                      ))
-                    )}
-                  </Tr>
-                </Thead>
-                <Tbody justifyContent="flex-start">
-                  {React.Children.toArray(
-                    sponsoredPools?.map(pool => (
+            <Thead>
+              <Tr my=".8rem" pl="0px" color="gray.400">
+                {React.Children.toArray(
+                  captions.map(caption => (
+                    <Th color="gray.400">{caption.label}</Th>
+                  ))
+                )}
+              </Tr>
+            </Thead>
+            <Tbody justifyContent="flex-start">
+              {React.Children.toArray(
+                sponsoredPools
+                  ? sponsoredPools.map(pool => (
                       <SponsoredPoolTableRow
-                        SponsoredPool={pool}
+                        pool={pool}
                         onClick={() => setSelectedPool(pool)}
                       />
                     ))
-                  )}
-                </Tbody>
-              </>
-            ) : (
-              <CircularProgress isIndeterminate color="green.300" />
-            )}
+                  : SkeletonArray.map(() => (
+                      <SkeletonLoadingRow columnAmount={limitRow} />
+                    ))
+              )}
+            </Tbody>
           </Table>
         </CardBody>
       </Card>
+
       <Modal
         isOpen={!!selectedPool}
         onClose={() => setSelectedPool(undefined)}
