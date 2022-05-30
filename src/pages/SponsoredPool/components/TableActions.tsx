@@ -60,7 +60,7 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
     }
   );
 
-  const isJoinedPool = !!joinedPoolInfo?.ticketType.asSponsored.toHuman();
+  const isJoinedPool = !!joinedPoolInfo?.ticketType.toHuman();
 
   const mutation = useMutation(
     async (actionType: 'join' | 'leave') => {
@@ -105,7 +105,8 @@ const TableActions: React.FC<IProps> = ({ pool }) => {
 
   return (
     <>
-      {joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
+      {joinedPoolInfo?.ticketType.isSponsored &&
+      joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
         <Button
           color="red.300"
           variant="solid"
