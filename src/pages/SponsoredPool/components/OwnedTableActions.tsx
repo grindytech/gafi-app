@@ -5,17 +5,15 @@ import { useSubstrateState } from 'substrate-lib';
 import { useState } from 'react';
 import { SponsoredPool } from 'graphQL/generates';
 import { ISubmittableResult } from '@polkadot/types/types';
-import ModalEditPool from './ModalEditPool';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 
 interface IProps {
-  pool: SponsoredPool;
+  poolId: string;
+  onClick: () => void;
 }
 
-const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
-  const { poolId } = pool;
-  const [isOpenEditPoolModal, setIsOpenEditPoolModal] = useState(false);
+const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
@@ -77,7 +75,7 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
       <Button
         onClick={e => {
           e.stopPropagation();
-          setIsOpenEditPoolModal(true);
+          onClick();
         }}
         color="primary"
         variant="solid"
@@ -96,15 +94,8 @@ const OwnedTableAction: React.FC<IProps> = ({ pool }) => {
       >
         {t('WITHDRAW')}
       </Button>
-      <ModalEditPool
-        pool={pool}
-        isOpen={isOpenEditPoolModal}
-        onClose={() => {
-          setIsOpenEditPoolModal(false);
-        }}
-      />
     </>
   );
 };
 
-export default OwnedTableAction;
+export default OwnedTableActions;

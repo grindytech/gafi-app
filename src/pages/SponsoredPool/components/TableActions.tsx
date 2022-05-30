@@ -2,20 +2,16 @@ import { Button, useToast } from '@chakra-ui/react';
 import { GafiPrimitivesPlayerTicketInfo } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { getFromAcct, handleTxError } from 'components/utils';
-import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { useSubstrateState } from 'substrate-lib';
-import { useQueryParam } from 'use-query-params';
-import ModalEditPool from './ModalEditPool';
 
 interface IProps {
-  pool: SponsoredPool;
+  poolId: string;
 }
 
-const TableActions: React.FC<IProps> = ({ pool }) => {
-  const { poolId } = pool;
+const TableActions: React.FC<IProps> = ({ poolId }) => {
   const { t } = useTranslation();
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
