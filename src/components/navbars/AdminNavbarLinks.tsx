@@ -2,44 +2,27 @@
 // import { BellIcon, SearchIcon } from "@chakra-ui/icons";
 // Chakra Imports
 import {
-  Avatar,
-  Box,
   Button,
   Flex,
   HStack,
   Icon,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   useColorModeValue,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { mdiAccount, mdiWallet } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
+import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { BN, formatBalance } from '@polkadot/util';
-// Assets
-import avatar1 from 'assets/img/avatars/avatar1.png';
-import avatar2 from 'assets/img/avatars/avatar2.png';
-import avatar3 from 'assets/img/avatars/avatar3.png';
-
-// Custom Icons
-// import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
-// Custom Components
-// import { ItemContent } from "components/Menu/ItemContent";
 import { FC, useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Link, NavLink } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import routes from '../../routes';
 import { useSubstrate } from '../../substrate-lib';
 import { SidebarResponsive } from '../sideBar/SideBar';
 import { shorten } from '../utils';
+import UserMenu from './UserMenu';
 
 interface IProps {
   variant?: string;
@@ -49,7 +32,7 @@ interface IProps {
   logoText: string;
 }
 
-const acctAddr = (acct: KeyringPair) => (acct ? acct.address : '');
+export const acctAddr = (acct: KeyringPair) => (acct ? acct.address : '');
 
 const AdminNavbarLinks: FC<IProps> = props => {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
@@ -57,7 +40,11 @@ const AdminNavbarLinks: FC<IProps> = props => {
     setCurrentAccount,
     state: { keyring, currentAccount, api, chainDecimal },
   } = useSubstrate();
+  const AccountsObjects = keyring?.accounts.subject.value as SubjectInfo;
+  const accountList = Object.keys(AccountsObjects);
   const [accountBalance, setAccountBalance] = useState(new BN(0));
+  const { t } = useTranslation();
+  const toast = useToast();
 
   // When account address changes, update subscriptions
   useEffect(() => {
@@ -95,6 +82,28 @@ const AdminNavbarLinks: FC<IProps> = props => {
     }
   }, [currentAccount, setCurrentAccount, keyring, initialAddress]);
 
+  const hanldeSwitchAccount = (index: number) => {
+    const keyringParams =
+      keyringOptions && keyringOptions.length > index
+        ? keyringOptions[index].value
+        : '';
+    if (keyring && keyringParams !== '') {
+      setCurrentAccount(keyring.getPair(keyringParams));
+      toast({
+        description: t('SWITCH_TO_ACCOUNT_SUCCESSFUL', {
+          accountAddress: keyringParams,
+        }),
+        isClosable: true,
+        status: 'success',
+      });
+    } else {
+      toast({
+        description: t('SWITCH_ACCOUNT_FAIL'),
+        isClosable: true,
+        status: 'error',
+      });
+    }
+  };
   // Chakra Color Mode
   const mainTeal = useColorModeValue('teal.300', 'teal.300');
   const inputBg = useColorModeValue('white', 'gray.800');
@@ -114,47 +123,6 @@ const AdminNavbarLinks: FC<IProps> = props => {
       gap={1}
       flexDirection="row"
     >
-      {/* <InputGroup
-        cursor="pointer"
-        bg={inputBg}
-        borderRadius="15px"
-        w={{
-          sm: "128px",
-          md: "200px",
-        }}
-        me={{ sm: "auto", md: "20px" }}
-        _focus={{
-          borderColor: { mainTeal },
-        }}
-        _active={{
-          borderColor: { mainTeal },
-        }}
-      >
-        <InputLeftElement>
-          <IconButton
-            aria-label="search-button"
-            bg="inherit"
-            borderRadius="inherit"
-            hover="none"
-            _active={{
-              bg: "inherit",
-              transform: "none",
-              borderColor: "transparent",
-            }}
-            _focus={{
-              boxShadow: "none",
-            }}
-            icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
-          />
-        </InputLeftElement>
-        <Input
-          fontSize="xs"
-          py="11px"
-          color={mainText}
-          placeholder="Type here..."
-          borderRadius="inherit"
-        />
-      </InputGroup> */}
       {currentAccount ? (
         <VStack alignItems="flex-end">
           <CopyToClipboard text={acctAddr(currentAccount)}>
@@ -211,43 +179,16 @@ const AdminNavbarLinks: FC<IProps> = props => {
           <Text display={{ sm: 'none', md: 'flex' }}>Connect wallet</Text>
         </Button>
       )}
-
       <SidebarResponsive
         secondary={props.secondary}
         routes={routes}
-        // logo={logo}
         {...rest}
       />
-      {/* <SettingsIcon
-        cursor="pointer"
-        ms={{ base: "16px", xl: "0px" }}
-        me="16px"
-        ref={settingsRef}
-        onClick={props.onOpen}
-        color={navbarIcon}
-        w="18px"
-        h="18px"
-      /> */}
-      <Box p={1}>
-        <Menu>
-          <MenuButton>
-            <Avatar
-              size="sm"
-              // name={acctAddr(currentAccount)}
-              _hover={{ zIndex: '3', cursor: 'pointer' }}
-            />
-          </MenuButton>
-          <MenuList p="16px 8px">
-            <Flex flexDirection="column">
-              <MenuItem borderRadius="8px" mb="10px">
-                <Link to="/admin/sponsored-pool?type=owned">
-                  <Text>My Sponsored Pools</Text>
-                </Link>
-              </MenuItem>
-            </Flex>
-          </MenuList>
-        </Menu>
-      </Box>
+      <UserMenu
+        accountList={accountList}
+        currentAccount={currentAccount}
+        hanldeSwitchAccount={hanldeSwitchAccount}
+      />
     </Flex>
   );
 };

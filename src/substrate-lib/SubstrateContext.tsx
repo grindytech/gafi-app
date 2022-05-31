@@ -1,10 +1,10 @@
-import { ApiPromise, Keyring, WsProvider } from '@polkadot/api';
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { TypeRegistry } from '@polkadot/types/create';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { DefinitionRpcExt } from '@polkadot/types/types';
-import { keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
+import { Keyring, keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
 import { set, get } from 'lodash';
 import React, { useReducer, useContext, useEffect } from 'react';
