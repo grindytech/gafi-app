@@ -1,4 +1,4 @@
-import React, { createRef, useRef, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import {
   Dimmer,
   Loader,
@@ -28,7 +28,7 @@ import AdminNavbar from './components/navbars/AdminNavbar'
 import MainPanel from './components/layout/MainPanel'
 import PanelContainer from './components/layout/PanelContainer'
 import PanelContent from './components/layout/PanelContent'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function Main() {
@@ -38,6 +38,8 @@ function Main() {
   const mainPanel = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [fixed, setFixed] = useState(false);
+  const [brandText, setBrandText] = useState('');
+  const location = useLocation();
 
   // functions for changing the states from components
   const getRoute = () => window.location.pathname !== "/admin/full-screen-maps";
@@ -64,6 +66,9 @@ function Main() {
     return activeRoute;
   };
 
+  useEffect(() => {
+    setBrandText(getActiveRoute(routes));
+  }, [location])
    // TODO: Define type for route
    const getActiveNavbar = (routes )  => {
     const activeNavbar = false;
@@ -157,7 +162,7 @@ function Main() {
           <AdminNavbar
             onOpen={onOpen}
             logoText={t("GAFI_DASHBOARD")}
-            brandText={getActiveRoute(routes)}
+            brandText={brandText}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
             // {...rest}
