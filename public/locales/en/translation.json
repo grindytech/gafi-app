@@ -45,5 +45,9 @@
   "TRANSACTION_FAILED": "😞 Transaction Failed: {{errorMessage}}",
   "DEPLOY_NEW_CONTRACT_SUCCESS": "Deploy new contract success!",
   "TRANSFER_SUCCESS":"Transfer success!",
-  "TRANSFER_ERROR":"Transfer error!"
+  "TRANSFER_ERROR":"Transfer error!",
+  "SWITCH_TO_ACCOUNT_SUCCESSFUL":"Switch to {{accountAddress}} successful!",
+  "SWITCH_ACCOUNT_FAIL":"Switch account fail!",
+  "SWITCH_ACCOUNT":"Switch account",
+  "MY_SPONSORED_POOLS":"My Sponsored Pools"
 }
