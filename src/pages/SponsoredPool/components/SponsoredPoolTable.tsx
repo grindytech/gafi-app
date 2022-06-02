@@ -34,6 +34,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import SponsoredPoolTableRow from './SponsoredPoolTableRow';
+import EmptyRow from 'components/EmptyRow';
 
 export interface ISponsoredPool {
   id: string | undefined;
@@ -54,11 +55,13 @@ interface ISponsoredPoolTableProps {
   sponsoredPools: SponsoredPool[];
   children: React.ReactNode;
   limitRow: number;
+  isLoading: boolean;
 }
 
 const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
-  const { title, captions, sponsoredPools, children, limitRow } = props;
+  const { title, captions, sponsoredPools, children, limitRow, isLoading } =
+    props;
   const textColor = useColorModeValue('gray.700', 'white');
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
   const SkeletonArray = new Array(limitRow).fill(0);
@@ -85,16 +88,22 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
             </Thead>
             <Tbody justifyContent="flex-start">
               {React.Children.toArray(
-                sponsoredPools
-                  ? sponsoredPools.map(pool => (
+                !isLoading ? (
+                  !!sponsoredPools.length ? (
+                    sponsoredPools.map(pool => (
                       <SponsoredPoolTableRow
                         pool={pool}
                         onClick={() => setSelectedPool(pool)}
                       />
                     ))
-                  : SkeletonArray.map(() => (
-                      <SkeletonLoadingRow columnAmount={limitRow} />
-                    ))
+                  ) : (
+                    <EmptyRow columnAmount={6} />
+                  )
+                ) : (
+                  SkeletonArray.map(() => (
+                    <SkeletonLoadingRow columnAmount={limitRow} />
+                  ))
+                )
               )}
             </Tbody>
           </Table>
@@ -111,8 +120,8 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {selectedPool?.poolId &&
-              t('POOL_POOL_NAME', { poolName: shorten(selectedPool?.poolId) })}
+            {selectedPool?.id &&
+              t('POOL_POOL_NAME', { poolName: shorten(selectedPool?.id) })}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

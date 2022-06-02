@@ -14,12 +14,11 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { shorten } from '../utils';
-import { acctAddr } from './AdminNavbarLinks';
+import { shorten, acctAddr } from '../utils';
 
 interface IProps {
   hanldeSwitchAccount: (index: number) => void;
-  accountList: string[];
+  accountList?: string[];
   currentAccount: KeyringPair | null;
 }
 
@@ -39,13 +38,13 @@ const UserMenu: React.FC<IProps> = ({
             </MenuButton>
             <MenuList p="16px 8px">
               <Flex flexDirection="column">
-                <MenuItem borderRadius="8px" mb="10px">
+                <MenuItem borderRadius="8px" mb={3}>
                   <Link to="/admin/sponsored-pool?type=owned">
                     <Text>{t('MY_SPONSORED_POOLS')}</Text>
                   </Link>
                 </MenuItem>
                 {currentAccount ? (
-                  <MenuItem closeOnSelect={false} borderRadius="8px">
+                  <MenuItem closeOnSelect={false} borderRadius="8px" mb={3}>
                     <Menu>
                       <MenuButton>{t('SWITCH_ACCOUNT')}</MenuButton>
                       <MenuList>
@@ -53,22 +52,30 @@ const UserMenu: React.FC<IProps> = ({
                           defaultValue={acctAddr(currentAccount)}
                           type="radio"
                         >
-                          {accountList.map((account: string, index: number) => (
-                            <MenuItemOption
-                              onClick={() => {
-                                hanldeSwitchAccount(index);
-                                onClose();
-                              }}
-                              value={account}
-                            >
-                              {shorten(account)}
-                            </MenuItemOption>
-                          ))}
+                          {accountList?.map(
+                            (account: string, index: number) => (
+                              <MenuItemOption
+                                key={account}
+                                onClick={() => {
+                                  hanldeSwitchAccount(index);
+                                  onClose();
+                                }}
+                                value={account}
+                              >
+                                {shorten(account)}
+                              </MenuItemOption>
+                            )
+                          )}
                         </MenuOptionGroup>
                       </MenuList>
                     </Menu>
                   </MenuItem>
                 ) : null}
+                <MenuItem borderRadius="8px" mb={3}>
+                  <Link to="/admin/contracts">
+                    <Text>{t('MY_CONTRACTS')}</Text>
+                  </Link>
+                </MenuItem>
               </Flex>
             </MenuList>
           </>

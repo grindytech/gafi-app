@@ -49,5 +49,15 @@
   "SWITCH_TO_ACCOUNT_SUCCESSFUL":"Switch to {{accountAddress}} successful!",
   "SWITCH_ACCOUNT_FAIL":"Switch account fail!",
   "SWITCH_ACCOUNT":"Switch account",
-  "MY_SPONSORED_POOLS":"My Sponsored Pools"
+  "MY_SPONSORED_POOLS":"My Sponsored Pools",
+  "CLAIM_CONTRACT":"Claim contract",
+  "CONTRACT_ADDRESS":"Contract address",
+  "MY_CONTRACTS":"My contracts",
+  "CLAIM":"Claim",
+  "CHANGE_OWNER":"Change owner",
+  "OWNER_ADDRESS":"Owner address",
+  "CHANGE":"Change",
+  "CHANGE_CONTRACT_OWNER":"Change contract owner",
+  "ACTIONS":"Actions",
+  "CONTRACTS":"Contracts"
 }

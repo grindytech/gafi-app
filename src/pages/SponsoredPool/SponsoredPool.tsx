@@ -23,8 +23,7 @@ import {
   useSponsoredPoolsQuery,
 } from 'graphQL/generates';
 import { useSubstrateState } from 'substrate-lib';
-
-const RESULT_PER_PAGE = 5;
+import * as constants from 'utils/constants';
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
@@ -36,11 +35,17 @@ const SponsoredPoolPage: React.FC = () => {
 
   // Example for query data from graphql.
 
-  const { data: sponsoredPoolData, refetch } = useSponsoredPoolsQuery(
+  const {
+    data: sponsoredPoolData,
+    refetch,
+    isLoading,
+  } = useSponsoredPoolsQuery(
     client,
     {
-      first: RESULT_PER_PAGE,
-      offset: isOwned ? 0 : (currentPage - 1) * RESULT_PER_PAGE,
+      first: constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
+      offset: isOwned
+        ? 0
+        : (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
       filter: isOwned
         ? {
             poolOwner: {
@@ -57,8 +62,12 @@ const SponsoredPoolPage: React.FC = () => {
     ?.nodes as SponsoredPool[];
   const totalCount = sponsoredPoolData?.sponsoredPools
     ?.totalCount as Scalars['Int'];
-  const totalPage = Math.ceil(totalCount / RESULT_PER_PAGE);
-  const pageNumberOfNewPool = Math.ceil((totalCount + 1) / RESULT_PER_PAGE);
+  const totalPage = Math.ceil(
+    totalCount / constants.SPONSORED_POOL_AMOUNT_PER_PAGE
+  );
+  const pageNumberOfNewPool = Math.ceil(
+    (totalCount + 1) / constants.SPONSORED_POOL_AMOUNT_PER_PAGE
+  );
 
   return (
     <Box pt={{ base: '120px', md: '75px' }}>
@@ -93,14 +102,16 @@ const SponsoredPoolPage: React.FC = () => {
           { label: '', fieldName: '' },
         ]}
         sponsoredPools={sponsoredPools}
-        limitRow={RESULT_PER_PAGE}
+        limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+        isLoading={isLoading}
       >
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           totalCount={totalCount}
-          resultsPerPage={RESULT_PER_PAGE}
+          resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
           totalPage={totalPage}
+          isLoading={isLoading}
         />
       </SponsoredPoolTable>
       {isOpen && (
