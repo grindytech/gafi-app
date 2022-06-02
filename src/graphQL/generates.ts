@@ -319,6 +319,11 @@ export type Query = Node & {
   transferByNodeId?: Maybe<Transfer>;
   /** Reads and enables pagination through a set of `Transfer`. */
   transfers?: Maybe<TransfersConnection>;
+  userJoinedPool?: Maybe<UserJoinedPool>;
+  /** Reads a single `UserJoinedPool` using its globally unique `ID`. */
+  userJoinedPoolByNodeId?: Maybe<UserJoinedPool>;
+  /** Reads and enables pagination through a set of `UserJoinedPool`. */
+  userJoinedPools?: Maybe<UserJoinedPoolsConnection>;
 };
 
 
@@ -399,6 +404,30 @@ export type QueryTransfersArgs = {
   orderBy?: InputMaybe<Array<TransfersOrderBy>>;
 };
 
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserJoinedPoolArgs = {
+  id: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserJoinedPoolByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserJoinedPoolsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+};
+
 export type SponsoredPool = Node & {
   __typename?: 'SponsoredPool';
   amount: Scalars['BigFloat'];
@@ -407,10 +436,23 @@ export type SponsoredPool = Node & {
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  poolId: Scalars['String'];
   poolOwner: Scalars['String'];
   targets: Scalars['JSON'];
+  totalUsers: Scalars['Int'];
   txLimit: Scalars['Int'];
+  /** Reads and enables pagination through a set of `UserJoinedPool`. */
+  userJoinedPoolsByPoolId: UserJoinedPoolsConnection;
+};
+
+
+export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
 };
 
 export type SponsoredPoolAggregates = {
@@ -434,12 +476,12 @@ export type SponsoredPoolFilter = {
   not?: InputMaybe<SponsoredPoolFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<SponsoredPoolFilter>>;
-  /** Filter by the object’s `poolId` field. */
-  poolId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `poolOwner` field. */
   poolOwner?: InputMaybe<StringFilter>;
   /** Filter by the object’s `targets` field. */
   targets?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `totalUsers` field. */
+  totalUsers?: InputMaybe<IntFilter>;
   /** Filter by the object’s `txLimit` field. */
   txLimit?: InputMaybe<IntFilter>;
 };
@@ -482,9 +524,9 @@ export enum SponsoredPoolsGroupBy {
   Amount = 'AMOUNT',
   CreatedAt = 'CREATED_AT',
   Discount = 'DISCOUNT',
-  PoolId = 'POOL_ID',
   PoolOwner = 'POOL_OWNER',
   Targets = 'TARGETS',
+  TotalUsers = 'TOTAL_USERS',
   TxLimit = 'TX_LIMIT'
 }
 
@@ -505,16 +547,18 @@ export enum SponsoredPoolsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
-  PoolIdAsc = 'POOL_ID_ASC',
-  PoolIdDesc = 'POOL_ID_DESC',
   PoolOwnerAsc = 'POOL_OWNER_ASC',
   PoolOwnerDesc = 'POOL_OWNER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   TargetsAsc = 'TARGETS_ASC',
   TargetsDesc = 'TARGETS_DESC',
+  TotalUsersAsc = 'TOTAL_USERS_ASC',
+  TotalUsersDesc = 'TOTAL_USERS_DESC',
   TxLimitAsc = 'TX_LIMIT_ASC',
-  TxLimitDesc = 'TX_LIMIT_DESC'
+  TxLimitDesc = 'TX_LIMIT_DESC',
+  UserJoinedPoolsByPoolIdCountAsc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_ASC',
+  UserJoinedPoolsByPoolIdCountDesc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_DESC'
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -701,6 +745,102 @@ export enum TransfersOrderBy {
   ToDesc = 'TO_DESC'
 }
 
+export type UserJoinedPool = Node & {
+  __typename?: 'UserJoinedPool';
+  account: Scalars['String'];
+  createdAt?: Maybe<Scalars['Datetime']>;
+  id: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `SponsoredPool` that is related to this `UserJoinedPool`. */
+  pool?: Maybe<SponsoredPool>;
+  poolId: Scalars['String'];
+};
+
+export type UserJoinedPoolAggregates = {
+  __typename?: 'UserJoinedPoolAggregates';
+  keys?: Maybe<Array<Scalars['String']>>;
+};
+
+/** A filter to be used against `UserJoinedPool` object types. All fields are combined with a logical ‘and.’ */
+export type UserJoinedPoolFilter = {
+  /** Filter by the object’s `account` field. */
+  account?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserJoinedPoolFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserJoinedPoolFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserJoinedPoolFilter>>;
+  /** Filter by the object’s `poolId` field. */
+  poolId?: InputMaybe<StringFilter>;
+};
+
+/** A connection to a list of `UserJoinedPool` values. */
+export type UserJoinedPoolsConnection = {
+  __typename?: 'UserJoinedPoolsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<UserJoinedPoolAggregates>;
+  /** A list of edges which contains the `UserJoinedPool` and cursor to aid in pagination. */
+  edges: Array<UserJoinedPoolsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<UserJoinedPoolAggregates>>;
+  /** A list of `UserJoinedPool` objects. */
+  nodes: Array<Maybe<UserJoinedPool>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserJoinedPool` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `UserJoinedPool` values. */
+export type UserJoinedPoolsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<UserJoinedPoolsGroupBy>;
+  having?: InputMaybe<UserJoinedPoolsHavingInput>;
+};
+
+/** A `UserJoinedPool` edge in the connection. */
+export type UserJoinedPoolsEdge = {
+  __typename?: 'UserJoinedPoolsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserJoinedPool` at the end of the edge. */
+  node?: Maybe<UserJoinedPool>;
+};
+
+/** Grouping methods for `UserJoinedPool` for usage during aggregation. */
+export enum UserJoinedPoolsGroupBy {
+  Account = 'ACCOUNT',
+  CreatedAt = 'CREATED_AT',
+  PoolId = 'POOL_ID'
+}
+
+/** Conditions for `UserJoinedPool` aggregates. */
+export type UserJoinedPoolsHavingInput = {
+  AND?: InputMaybe<Array<UserJoinedPoolsHavingInput>>;
+  OR?: InputMaybe<Array<UserJoinedPoolsHavingInput>>;
+};
+
+/** Methods to use when ordering `UserJoinedPool`. */
+export enum UserJoinedPoolsOrderBy {
+  AccountAsc = 'ACCOUNT_ASC',
+  AccountDesc = 'ACCOUNT_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PoolIdAsc = 'POOL_ID_ASC',
+  PoolIdDesc = 'POOL_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
 export type _Metadata = {
   __typename?: '_Metadata';
   chain?: Maybe<Scalars['String']>;
@@ -723,7 +863,7 @@ export type SponsoredPoolsQueryVariables = Exact<{
 }>;
 
 
-export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolId: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
 export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -736,7 +876,6 @@ export const SponsoredPoolsDocument = `
   sponsoredPools(first: $first, offset: $offset, filter: $filter) {
     nodes {
       id
-      poolId
       amount
       poolOwner
       targets

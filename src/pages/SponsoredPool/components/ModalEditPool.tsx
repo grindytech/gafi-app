@@ -28,7 +28,7 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { poolId, targets } = pool;
+  const { id, targets } = pool;
   const { t } = useTranslation();
 
   return (
@@ -45,10 +45,10 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
             </TabList>
             <TabPanels>
               <TabPanel>
-                <EditTargetsForm poolId={poolId} targets={targets} />
+                <EditTargetsForm poolId={id} targets={targets} />
               </TabPanel>
               <TabPanel>
-                <EditPoolNameForm poolId={poolId} />
+                <EditPoolNameForm poolId={id} />
               </TabPanel>
             </TabPanels>
           </Tabs>

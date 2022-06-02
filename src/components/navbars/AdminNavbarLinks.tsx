@@ -13,15 +13,17 @@ import {
 } from '@chakra-ui/react';
 import { mdiAccount, mdiWallet } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
-import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { BN, formatBalance } from '@polkadot/util';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
+import { useWallet } from 'use-wallet';
+
 import routes from '../../routes';
 import { useSubstrate } from '../../substrate-lib';
 import { SidebarResponsive } from '../sideBar/SideBar';
-import { shorten } from '../utils';
+import { acctAddr, getGAKIAccountAddress, shorten } from '../utils';
+
 import UserMenu from './UserMenu';
 
 interface IProps {
@@ -32,16 +34,15 @@ interface IProps {
   logoText: string;
 }
 
-export const acctAddr = (acct: KeyringPair) => (acct ? acct.address : '');
-
 const AdminNavbarLinks: FC<IProps> = props => {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
+  const { account } = useWallet();
   const {
     setCurrentAccount,
     state: { keyring, currentAccount, api, chainDecimal },
   } = useSubstrate();
-  const AccountsObjects = keyring?.accounts.subject.value as SubjectInfo;
-  const accountList = Object.keys(AccountsObjects);
+  const pairs = keyring?.getPairs() || [];
+  const accountList = pairs.map((key: KeyringPair) => acctAddr(key));
   const [accountBalance, setAccountBalance] = useState(new BN(0));
   const { t } = useTranslation();
   const toast = useToast();
@@ -49,7 +50,6 @@ const AdminNavbarLinks: FC<IProps> = props => {
   // When account address changes, update subscriptions
   useEffect(() => {
     let unsubscribe: any;
-
     // If the user has selected an address, create a new subscription
     currentAccount &&
       api?.query.system
@@ -58,45 +58,39 @@ const AdminNavbarLinks: FC<IProps> = props => {
         })
         .then(unsub => (unsubscribe = unsub))
         .catch(console.error);
-
     return () => unsubscribe && unsubscribe();
   }, [api, currentAccount]);
 
-  // Get the list of accounts we possess the private key for
-  // Temporary use any. Define type later
-  const keyringOptions = keyring?.getPairs().map((account: any) => ({
-    key: account.address,
-    value: account.address,
-    text: account.meta.name.toUpperCase(),
-    icon: 'user',
-  }));
+  const setPolkadotAccount = useCallback(async () => {
+    const response = await api?.query.proofAddressMapping.h160Mapping(account);
+    const polkadotAccount = response?.toHuman() || '';
+    const initPair = pairs.find(
+      (pair: KeyringPair) =>
+        getGAKIAccountAddress(pair.addressRaw) === polkadotAccount
+    );
 
-  const initialAddress =
-    keyringOptions && keyringOptions.length > 0 ? keyringOptions[0].value : '';
-
+    if (initPair) {
+      setCurrentAccount(initPair);
+    } else if (pairs.length > 0) {
+      setCurrentAccount(pairs[0]);
+    }
+  }, [account, api, keyring]);
   // Set the initial address
   useEffect(() => {
-    // `setCurrentAccount()` is called only when currentAccount is null (uninitialized)
-    if (!currentAccount && keyring && initialAddress.length > 0) {
-      setCurrentAccount(keyring.getPair(initialAddress));
-    }
-  }, [currentAccount, setCurrentAccount, keyring, initialAddress]);
+    setPolkadotAccount();
+  }, [setPolkadotAccount]);
 
   const hanldeSwitchAccount = (index: number) => {
-    const keyringParams =
-      keyringOptions && keyringOptions.length > index
-        ? keyringOptions[index].value
-        : '';
-    if (keyring && keyringParams !== '') {
-      setCurrentAccount(keyring.getPair(keyringParams));
+    try {
+      setCurrentAccount(pairs[index]);
       toast({
         description: t('SWITCH_TO_ACCOUNT_SUCCESSFUL', {
-          accountAddress: keyringParams,
+          accountAddress: acctAddr(pairs[index]),
         }),
         isClosable: true,
         status: 'success',
       });
-    } else {
+    } catch (error) {
       toast({
         description: t('SWITCH_ACCOUNT_FAIL'),
         isClosable: true,
@@ -104,18 +98,12 @@ const AdminNavbarLinks: FC<IProps> = props => {
       });
     }
   };
-  // Chakra Color Mode
-  const mainTeal = useColorModeValue('teal.300', 'teal.300');
-  const inputBg = useColorModeValue('white', 'gray.800');
-  let mainText = useColorModeValue('gray.700', 'gray.200');
+
   let navbarIcon = useColorModeValue('gray.500', 'gray.200');
-  const searchIcon = useColorModeValue('gray.700', 'gray.200');
 
   if (secondary) {
     navbarIcon = 'white';
-    mainText = 'white';
   }
-  const settingsRef = useRef(null);
   return (
     <Flex
       pe={{ sm: '0px', md: '16px' }}
