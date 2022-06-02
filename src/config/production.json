@@ -1,5 +1,5 @@
 {
   "APP_NAME": "gafi-dashboard",
   "PROVIDER_SOCKET": "wss://ws.gafi.network",
-  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query__bGh0c"
+  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query"
 }
