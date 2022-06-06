@@ -18,7 +18,7 @@ export const FeatureFlags: React.FC<{ flag: EFeatureFlag }> = ({
   children,
 }) => {
   if (checkFeature(flag)) {
-    return children as ReactElement;
+    return <>{children}</>;
   }
-  return null;
+  return <></>;
 };
