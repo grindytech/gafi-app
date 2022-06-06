@@ -17,19 +17,17 @@ import {
   mdiGamepadSquare,
 } from '@mdi/js';
 
+import Contracts from './pages/Contracts';
+import Dashboard from './pages/Dashboard';
 import DeployContract from './pages/DeployContract';
 import MappingAccount from './pages/MappingAccount';
+import SponsoredPool from './pages/SponsoredPool';
 import StakingPool from './pages/StakingPool';
 import UpfrontPool from './pages/UpfrontPool';
-import Dashboard from './pages/Dashboard';
-import SponsoredPool from './pages/SponsoredPool';
-import Contracts from './pages/Contracts';
-// import Profile from "views/Dashboard/Profile.js";
-// import Tables from "views/Dashboard/Tables.js";
-// import SignUp from "views/Pages/SignUp.js";
-// import RTLPage from "views/RTL/RTLPage.js";
 
-// import SignIn from "pages/signIn/SignIn";
+import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
+
+const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
 
 const dashRoutes = [
   {
@@ -97,6 +95,7 @@ const dashRoutes = [
       </Icon>
     ),
     layout: '/admin',
+    redirect: isDisplayGameCreatorFeature ? null : '/contracts',
   },
   {
     path: '/deploy-contract',
