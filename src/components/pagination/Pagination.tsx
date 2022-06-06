@@ -16,11 +16,18 @@ interface IProps {
   totalCount: number;
   resultsPerPage: number;
   totalPage: number;
+  isLoading: boolean;
 }
 
 const Pagination = (props: IProps) => {
-  const { currentPage, setCurrentPage, totalCount, resultsPerPage, totalPage } =
-    props;
+  const {
+    currentPage,
+    setCurrentPage,
+    totalCount,
+    resultsPerPage,
+    totalPage,
+    isLoading,
+  } = props;
   const pageButtons = [];
 
   let startPage = currentPage < 5 ? 1 : currentPage - 2;
@@ -66,7 +73,7 @@ const Pagination = (props: IProps) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Flex flex="6" justifyContent="flex-start">
-        <SkeletonText isLoaded={!!totalCount} noOfLines={2}>
+        <SkeletonText isLoaded={!isLoading} noOfLines={2}>
           {currentPage * resultsPerPage < totalCount ? (
             <Text>
               <Trans
@@ -93,15 +100,17 @@ const Pagination = (props: IProps) => {
         </SkeletonText>
       </Flex>
       <Flex flex="4" justifyContent="flex-end">
-        <Skeleton isLoaded={!!totalCount} height="20px">
-          <IconButton
-            ml={3}
-            onClick={() => {
-              hanldleSwitchPage(currentPage - 1);
-            }}
-            aria-label="previous page"
-            icon={<Icon size={1} path={mdiChevronLeft} />}
-          />
+        <Skeleton isLoaded={!isLoading} height="20px">
+          {!!totalCount && (
+            <IconButton
+              ml={3}
+              onClick={() => {
+                hanldleSwitchPage(currentPage - 1);
+              }}
+              aria-label="previous page"
+              icon={<Icon size={1} path={mdiChevronLeft} />}
+            />
+          )}
           {pageButtons.map(button => (
             <Button
               ml={3}
@@ -120,14 +129,16 @@ const Pagination = (props: IProps) => {
               {button.pageNumber}
             </Button>
           ))}
-          <IconButton
-            ml={3}
-            onClick={() => {
-              hanldleSwitchPage(currentPage + 1);
-            }}
-            aria-label="next page"
-            icon={<Icon size={1} path={mdiChevronRight} />}
-          />
+          {!!totalCount && (
+            <IconButton
+              ml={3}
+              onClick={() => {
+                hanldleSwitchPage(currentPage + 1);
+              }}
+              aria-label="next page"
+              icon={<Icon size={1} path={mdiChevronRight} />}
+            />
+          )}
         </Skeleton>
       </Flex>
     </Flex>
