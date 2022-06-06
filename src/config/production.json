@@ -1,5 +1,8 @@
 {
   "APP_NAME": "gafi-dashboard",
   "PROVIDER_SOCKET": "wss://ws.gafi.network",
-  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query"
+  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query",
+  "FEATURE_FLAG": {
+    "PUBLIC_FEATURE_GAME_CREATOR": false
+  }
 }
