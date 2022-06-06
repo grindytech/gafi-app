@@ -7,8 +7,7 @@ export enum EFeatureFlag {
 }
 
 const FEATURE_FLAGS: Record<EFeatureFlag, boolean> = {
-  [EFeatureFlag.GameCreator]:
-    config.FEATURE_FLAG.PUBLIC_FEATURE_GAME_CREATOR === true,
+  [EFeatureFlag.GameCreator]: config.FEATURE_FLAG.PUBLIC_FEATURE_GAME_CREATOR,
 };
 
 export const checkFeature = (flag: EFeatureFlag) => FEATURE_FLAGS[flag];
