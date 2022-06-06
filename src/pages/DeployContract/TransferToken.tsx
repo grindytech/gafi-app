@@ -60,23 +60,34 @@ const TransferToken = () => {
     if (account && ethereum) {
       const web3 = new Web3(ethereum);
       const beforeBalance = await web3.eth.getBalance(account);
-      const userContract = new web3.eth.Contract(
-        ERC20JSON.abi as any,
-        data.contractAddress
-      );
+
       const transferAmount = 1 * 10 * 18;
       try {
-        const contract = await userContract.methods
-          .transfer(data.toUser, transferAmount)
-          .call();
-        const gasLimit = await addAdditionalGas(contract, account);
-        const options = {
-          to: data.contractAddress,
-          data: contract.encodeABI(),
-          gas: gasLimit,
-          gasPrice: await web3.eth.getGasPrice(),
-        };
-        const signed = await web3.eth.sendTransaction(options);
+
+        // get sender
+        var accounts = await web3.eth.getAccounts();
+        let sender = accounts[0];
+        const connect = () => {
+          if (typeof ethereum !== 'undefined') {
+            ethereum.enable()
+              .catch(console.error)
+          }
+        }
+        
+        // try reconnect
+        if (!sender) return connect();
+
+        const userContract = new web3.eth.Contract(
+          ERC20JSON.abi as any,
+          data.contractAddress,
+          {
+            from: sender,
+            gasPrice: await web3.eth.getGasPrice(),
+          },
+        );
+
+        userContract.methods.transfer(data.toUser, transferAmount).send().then(console.log).catch(console.error);
+
         const newBalance = await web3.eth.getBalance(account);
         setTxnFee(
           prevTxnFee =>
