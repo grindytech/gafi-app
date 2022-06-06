@@ -14,7 +14,10 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
 import { shorten, acctAddr } from '../utils';
+
+import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
 
 interface IProps {
   hanldeSwitchAccount: (index: number) => void;
@@ -27,6 +30,7 @@ const UserMenu: React.FC<IProps> = ({
   currentAccount,
   hanldeSwitchAccount,
 }) => {
+  const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
   return (
     <Box p={1}>
@@ -71,11 +75,13 @@ const UserMenu: React.FC<IProps> = ({
                     </Menu>
                   </MenuItem>
                 ) : null}
-                <MenuItem borderRadius="8px" mb={3}>
-                  <Link to="/admin/contracts">
-                    <Text>{t('MY_CONTRACTS')}</Text>
-                  </Link>
-                </MenuItem>
+                {isDisplayGameCreatorFeature && (
+                  <MenuItem borderRadius="8px" mb={3}>
+                    <Link to="/admin/contracts">
+                      <Text>{t('MY_CONTRACTS')}</Text>
+                    </Link>
+                  </MenuItem>
+                )}
               </Flex>
             </MenuList>
           </>
