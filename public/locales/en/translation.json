@@ -59,5 +59,9 @@
   "CHANGE":"Change",
   "CHANGE_CONTRACT_OWNER":"Change contract owner",
   "ACTIONS":"Actions",
-  "CONTRACTS":"Contracts"
+  "CONTRACTS":"Contracts",
+  "TRANSFER_TOKEN":"Transfer token",
+  "TRANSFER":"Transfer",
+  "TRANSFER_TO":"Transfer to",
+  "TOKEN_AMOUNT":"Token amount"
 }

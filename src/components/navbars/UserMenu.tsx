@@ -9,13 +9,17 @@ import {
   MenuList,
   MenuOptionGroup,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { KeyringPair } from '@polkadot/keyring/types';
+import { BN } from '@polkadot/util';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { shorten, acctAddr } from '../utils';
+import { acctAddr, shorten } from '../utils';
+
+import ModalTransferToken from './ModalTransferToken';
 
 import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
 
@@ -23,15 +27,18 @@ interface IProps {
   hanldeSwitchAccount: (index: number) => void;
   accountList?: string[];
   currentAccount: KeyringPair | null;
+  accountBalance: BN;
 }
 
 const UserMenu: React.FC<IProps> = ({
   accountList,
   currentAccount,
   hanldeSwitchAccount,
+  accountBalance,
 }) => {
   const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box p={1}>
       <Menu>
@@ -42,6 +49,9 @@ const UserMenu: React.FC<IProps> = ({
             </MenuButton>
             <MenuList p="16px 8px">
               <Flex flexDirection="column">
+                <MenuItem onClick={onOpen} borderRadius="8px" mb={3}>
+                  <Text>{t('TRANSFER_TOKEN')}</Text>
+                </MenuItem>
                 <MenuItem borderRadius="8px" mb={3}>
                   <Link to="/admin/sponsored-pool?type=owned">
                     <Text>{t('MY_SPONSORED_POOLS')}</Text>
@@ -87,6 +97,12 @@ const UserMenu: React.FC<IProps> = ({
           </>
         )}
       </Menu>
+      <ModalTransferToken
+        accountList={accountList}
+        isOpen={isOpen}
+        onClose={onClose}
+        accountBalance={accountBalance}
+      />
     </Box>
   );
 };
