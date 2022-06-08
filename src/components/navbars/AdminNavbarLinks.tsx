@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { mdiAccount, mdiWallet } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
+import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { BN, formatBalance } from '@polkadot/util';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
