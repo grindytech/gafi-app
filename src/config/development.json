@@ -1,4 +1,8 @@
 {
+  "APP_NAME": "gafi-dashboard",
   "PROVIDER_SOCKET": "ws://127.0.0.1:9944",
-  "GRAPHQL_ENDPOINT": "127.0.0.1:3000"
+  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query",
+  "FEATURE_FLAG": {
+    "PUBLIC_FEATURE_GAME_CREATOR": false
+  }
 }
