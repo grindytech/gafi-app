@@ -9,7 +9,6 @@ import {
   MenuList,
   MenuOptionGroup,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { BN } from '@polkadot/util';
@@ -22,12 +21,12 @@ import { acctAddr, shorten } from '../utils';
 import ModalTransferERC20Token from './ModalTransferERC20Token';
 import ModalTransferGaki from './ModalTransferGaki';
 
+import featureFlags from 'components/FeatureFlags';
+
 enum UserMenuModal {
   transferGaki = 'transferGaki',
   transferERC20Token = 'transferERC20Token',
 }
-
-import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
 
 interface IProps {
   hanldeSwitchAccount: (index: number) => void;
@@ -42,6 +41,7 @@ const UserMenu: React.FC<IProps> = ({
   hanldeSwitchAccount,
   accountBalance,
 }) => {
+  const { checkFeature, EFeatureFlag } = featureFlags;
   const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState('');

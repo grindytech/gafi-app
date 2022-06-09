@@ -25,7 +25,9 @@ import SponsoredPool from './pages/SponsoredPool';
 import StakingPool from './pages/StakingPool';
 import UpfrontPool from './pages/UpfrontPool';
 
-import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
+import featureFlags from 'components/FeatureFlags';
+
+const { checkFeature, EFeatureFlag } = featureFlags;
 
 const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
 
@@ -33,22 +35,14 @@ const dashRoutes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    icon: (
-      <Icon>
-        <path d={mdiHome} />
-      </Icon>
-    ),
+    icon: mdiHome,
     component: Dashboard,
     layout: '/admin',
   },
   {
     path: '/mapping-account',
     name: 'Mapping Account',
-    icon: (
-      <Icon>
-        <path d={mdiAccountSwitch} />
-      </Icon>
-    ),
+    icon: mdiAccountSwitch,
     component: MappingAccount,
     layout: '/admin',
   },
@@ -56,55 +50,35 @@ const dashRoutes = [
     path: '/upfront-pool',
     name: 'Upfront Pool',
     component: UpfrontPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/staking-pool',
     name: 'Staking Pool',
     component: StakingPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/sponsored-pool',
     name: 'Sponsored Pool',
     component: SponsoredPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/contracts',
     name: 'Game creator',
     component: Contracts,
-    icon: (
-      <Icon>
-        <path d={mdiGamepadSquare} />
-      </Icon>
-    ),
+    icon: mdiGamepadSquare,
     layout: '/admin',
     redirect: isDisplayGameCreatorFeature ? null : '/contracts',
   },
   {
     path: '/deploy-contract',
     name: 'Deploy Contract',
-    icon: (
-      <Icon>
-        <path d={mdiRocketLaunch} />
-      </Icon>
-    ),
+    icon: mdiRocketLaunch,
     component: DeployContract,
     layout: '/admin',
   },
