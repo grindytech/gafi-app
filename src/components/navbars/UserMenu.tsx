@@ -9,26 +9,42 @@ import {
   MenuList,
   MenuOptionGroup,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { KeyringPair } from '@polkadot/keyring/types';
-import React from 'react';
+import { BN } from '@polkadot/util';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { shorten } from '../utils';
-import { acctAddr } from './AdminNavbarLinks';
+
+import { acctAddr, shorten } from '../utils';
+
+import ModalTransferERC20Token from './ModalTransferERC20Token';
+import ModalTransferGaki from './ModalTransferGaki';
+
+enum UserMenuModal {
+  transferGaki = 'transferGaki',
+  transferERC20Token = 'transferERC20Token',
+}
+
+import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
 
 interface IProps {
   hanldeSwitchAccount: (index: number) => void;
-  accountList: string[];
+  accountList?: string[];
   currentAccount: KeyringPair | null;
+  accountBalance: BN;
 }
 
 const UserMenu: React.FC<IProps> = ({
   accountList,
   currentAccount,
   hanldeSwitchAccount,
+  accountBalance,
 }) => {
+  const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
+  const [modalOpen, setModalOpen] = useState('');
   return (
     <Box p={1}>
       <Menu>
@@ -39,7 +55,25 @@ const UserMenu: React.FC<IProps> = ({
             </MenuButton>
             <MenuList p="16px 8px">
               <Flex flexDirection="column">
-                <MenuItem borderRadius="8px" mb="10px">
+                <MenuItem
+                  onClick={() => {
+                    setModalOpen(UserMenuModal.transferGaki);
+                  }}
+                  borderRadius="8px"
+                  mb={3}
+                >
+                  <Text>{t('TRANSFER_GAKI')}</Text>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setModalOpen(UserMenuModal.transferERC20Token);
+                  }}
+                  borderRadius="8px"
+                  mb={3}
+                >
+                  <Text>{t('TRANSFER_ERC20_TOKEN')}</Text>
+                </MenuItem>
+                <MenuItem borderRadius="8px" mb={3}>
                   <Link to="/admin/sponsored-pool?type=owned">
                     <Text>{t('MY_SPONSORED_POOLS')}</Text>
                   </Link>
@@ -53,27 +87,51 @@ const UserMenu: React.FC<IProps> = ({
                           defaultValue={acctAddr(currentAccount)}
                           type="radio"
                         >
-                          {accountList.map((account: string, index: number) => (
-                            <MenuItemOption
-                              onClick={() => {
-                                hanldeSwitchAccount(index);
-                                onClose();
-                              }}
-                              value={account}
-                            >
-                              {shorten(account)}
-                            </MenuItemOption>
-                          ))}
+                          {accountList?.map(
+                            (account: string, index: number) => (
+                              <MenuItemOption
+                                key={account}
+                                onClick={() => {
+                                  hanldeSwitchAccount(index);
+                                  onClose();
+                                }}
+                                value={account}
+                              >
+                                {shorten(account)}
+                              </MenuItemOption>
+                            )
+                          )}
                         </MenuOptionGroup>
                       </MenuList>
                     </Menu>
                   </MenuItem>
                 ) : null}
+                {isDisplayGameCreatorFeature && (
+                  <MenuItem borderRadius="8px" mb={3}>
+                    <Link to="/admin/contracts">
+                      <Text>{t('MY_CONTRACTS')}</Text>
+                    </Link>
+                  </MenuItem>
+                )}
               </Flex>
             </MenuList>
           </>
         )}
       </Menu>
+      <ModalTransferGaki
+        accountList={accountList}
+        isOpen={modalOpen === UserMenuModal.transferGaki}
+        onClose={() => {
+          setModalOpen('');
+        }}
+        accountBalance={accountBalance}
+      />
+      <ModalTransferERC20Token
+        isOpen={modalOpen === UserMenuModal.transferERC20Token}
+        onClose={() => {
+          setModalOpen('');
+        }}
+      />
     </Box>
   );
 };

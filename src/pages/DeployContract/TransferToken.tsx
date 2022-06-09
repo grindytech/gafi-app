@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 
@@ -16,7 +17,6 @@ import { addAdditionalGas } from './DeployContract';
 
 import Card from 'components/card/Card';
 import ERC20JSON from 'contract/ERC20.json';
-import { useTranslation } from 'react-i18next';
 
 export const MAX_INT =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
