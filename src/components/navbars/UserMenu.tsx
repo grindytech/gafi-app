@@ -27,6 +27,8 @@ enum UserMenuModal {
   transferERC20Token = 'transferERC20Token',
 }
 
+import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
+
 interface IProps {
   hanldeSwitchAccount: (index: number) => void;
   accountList?: string[];
@@ -40,6 +42,7 @@ const UserMenu: React.FC<IProps> = ({
   hanldeSwitchAccount,
   accountBalance,
 }) => {
+  const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState('');
   return (
@@ -103,11 +106,13 @@ const UserMenu: React.FC<IProps> = ({
                     </Menu>
                   </MenuItem>
                 ) : null}
-                <MenuItem borderRadius="8px" mb={3}>
-                  <Link to="/admin/contracts">
-                    <Text>{t('MY_CONTRACTS')}</Text>
-                  </Link>
-                </MenuItem>
+                {isDisplayGameCreatorFeature && (
+                  <MenuItem borderRadius="8px" mb={3}>
+                    <Link to="/admin/contracts">
+                      <Text>{t('MY_CONTRACTS')}</Text>
+                    </Link>
+                  </MenuItem>
+                )}
               </Flex>
             </MenuList>
           </>
