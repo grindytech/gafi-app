@@ -47,7 +47,7 @@ const NumberInput: React.FC<Props> = ({ value, onChange, max }) => (
         <NumberInputField paddingX="4" />
       </ChakraNumberInput>
       <InputRightElement>
-        <Button onClick={() => onChange(Number(cast(max.toString(), 1, 3)))}>
+        <Button onClick={() => onChange(Number(cast(max.toString(), 1, 4)))}>
           Max
         </Button>
       </InputRightElement>

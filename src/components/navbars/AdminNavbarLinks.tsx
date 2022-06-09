@@ -174,6 +174,7 @@ const AdminNavbarLinks: FC<IProps> = props => {
         {...rest}
       />
       <UserMenu
+        accountBalance={accountBalance}
         accountList={accountList}
         currentAccount={currentAccount}
         hanldeSwitchAccount={hanldeSwitchAccount}
