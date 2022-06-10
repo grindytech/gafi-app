@@ -53,8 +53,12 @@ const AccountInfo = () => {
             setAccountBalance(balance.data.free);
           }
         );
-      } catch (error) {
-        console.log('error: ', error);
+      } catch (error: any) {
+        toast({
+          description: error.toString(),
+          isClosable: true,
+          status: 'error',
+        });
       }
       return () => unsubscribe && unsubscribe();
     }

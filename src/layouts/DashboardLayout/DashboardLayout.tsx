@@ -15,7 +15,6 @@ const DashboardLayout: React.FC = ({ children }) => (
       sx={{
         background: 'greyBg',
         display: 'flex',
-        flexDirection: 'column',
       }}
     >
       <Panel />
