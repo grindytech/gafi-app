@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import AccountInfo from './components/AccountInfo';
@@ -10,7 +10,7 @@ import Banner from 'components/Banner/Banner';
 const DashboardLayout: React.FC = ({ children }) => (
   <Box sx={dashBoardStyled}>
     <SideBar />
-    <Box
+    <VStack
       flex={10}
       sx={{
         background: 'greyBg',
@@ -37,7 +37,7 @@ const DashboardLayout: React.FC = ({ children }) => (
         </Box>
         <AccountInfo />
       </Box>
-    </Box>
+    </VStack>
   </Box>
 );
 export default DashboardLayout;

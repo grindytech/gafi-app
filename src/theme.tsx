@@ -148,7 +148,7 @@ export const theme = extendTheme(
               xl: {
                 h: '56px',
                 fontSize: 'lg',
-                px: '32px',
+                px: 8,
               },
             },
             variants: {

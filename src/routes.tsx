@@ -8,13 +8,12 @@
 //   SupportIcon,
 // } from "components/Icons/Icons";
 // import Billing from "views/Dashboard/Billing.js";
-import { Icon } from '@chakra-ui/react';
 import {
   mdiAccountSwitch,
-  mdiHome,
-  mdiRocketLaunch,
-  mdiPool,
   mdiGamepadSquare,
+  mdiHome,
+  mdiPool,
+  mdiRocketLaunch,
 } from '@mdi/js';
 
 import Contracts from './pages/Contracts';
@@ -34,42 +33,42 @@ const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
 const dashRoutes = [
   {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'DASHBOARD',
     icon: mdiHome,
     component: Dashboard,
     layout: '/admin',
   },
   {
     path: '/mapping-account',
-    name: 'Mapping Account',
+    name: 'MAPPING_ACCOUNT',
     icon: mdiAccountSwitch,
     component: MappingAccount,
     layout: '/admin',
   },
   {
     path: '/upfront-pool',
-    name: 'Upfront Pool',
+    name: 'UPFRONT_POOL',
     component: UpfrontPool,
     icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/staking-pool',
-    name: 'Staking Pool',
+    name: 'STACKING_POOL',
     component: StakingPool,
     icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/sponsored-pool',
-    name: 'Sponsored Pool',
+    name: 'SPONSORED_POOL',
     component: SponsoredPool,
     icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/contracts',
-    name: 'Game creator',
+    name: 'GAME_CREATOR',
     component: Contracts,
     icon: mdiGamepadSquare,
     layout: '/admin',
@@ -77,7 +76,7 @@ const dashRoutes = [
   },
   {
     path: '/deploy-contract',
-    name: 'Deploy Contract',
+    name: 'DEPLOY_CONTRACT',
     icon: mdiRocketLaunch,
     component: DeployContract,
     layout: '/admin',

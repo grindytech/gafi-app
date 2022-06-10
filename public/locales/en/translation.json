@@ -72,5 +72,15 @@
   "PLEASE_ENTER_THE_ADDRESS_YOU_WANT_TO_TRANSFER_TO":"Please enter the address you want to transfer to!",
   "AMOUNT_MUST_BE_GREATER_THAN_AMOUNT_GAKI":"Amount must be greater than {{minAmount}} GAKI",
   "YOUR_BALANCE_AMOUNT_GAKI":"Your balance: {{amount}} {{symbol}}",
-  "PLEASE_ENTER_AMOUNT":"Please enter amount!"
+  "PLEASE_ENTER_AMOUNT":"Please enter amount!",
+  "FAUCET":"Faucet",
+  "HELLO":"Hello",
+  "DASHBOARD":"Dashboard",
+  "MAPPING_ACCOUNT":"Mapping Account",
+  "UPFRONT_POOL":"Upfront Pool",
+  "STACKING_POOL":"Staking Pool",
+  "SPONSORED_POOL":"Sponsored Pool",
+  "GAME_CREATOR":"Game creator",
+  "DEPLOY_CONTRACT":"Deploy Contract",
+  "YOUR_BALANCE":"Your balance"
 }

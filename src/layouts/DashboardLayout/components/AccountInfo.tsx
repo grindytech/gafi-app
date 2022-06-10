@@ -124,11 +124,11 @@ const AccountInfo = () => {
 
   return (
     <Card sx={AccountInfoStyled}>
-      <Text sx={titleStyled}>Your balance</Text>
+      <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
       {currentAccount && (
         <CopyToClipboard text={acctAddr(currentAccount)}>
           <Button
-            sx={addressButtonStyled}
+            sx={{ width: '100%' }}
             variant="ghost"
             rightIcon={
               <Icon>
@@ -149,7 +149,7 @@ const AccountInfo = () => {
         )}
       </Text>
       <Button onClick={onFaucet} isLoading={isLoading} sx={faucetButtonStyled}>
-        Faucet
+        {t('FAUCET')}
       </Button>
     </Card>
   );
@@ -163,12 +163,7 @@ const AccountInfoStyled = {
   alignItems: 'center',
   bg: 'white',
   display: 'flex',
-  flexDirection: 'column',
   justifyContent: 'space-evenly',
-};
-
-const addressButtonStyled = {
-  width: '100%',
 };
 
 const titleStyled = {
