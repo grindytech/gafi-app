@@ -1,12 +1,17 @@
 {
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
-  "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per 30 minutes",
+  "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per {{minute}} minutes",
   "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
-  "POOL_FEE": "Fee: {{poolFee}} / 30 minutes",
+  "POOL_FEE": "Fee: {{poolFee}} GAKI per {{minute}} minutes",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
     "STACKING_POOL": "Stacking pool",
     "SPONSORED_POOL": "Sponsored pool"
+  },
+  "POOL_DESCRIPTION": {
+    "UPFRONT_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
+    "STACKING_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
+    "SPONSORED_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address."
   },
   "POOL_TYPE": {
     "BASIC": "Basic",
@@ -72,5 +77,6 @@
   "PLEASE_ENTER_THE_ADDRESS_YOU_WANT_TO_TRANSFER_TO":"Please enter the address you want to transfer to!",
   "AMOUNT_MUST_BE_GREATER_THAN_AMOUNT_GAKI":"Amount must be greater than {{minAmount}} GAKI",
   "YOUR_BALANCE_AMOUNT_GAKI":"Your balance: {{amount}} {{symbol}}",
-  "PLEASE_ENTER_AMOUNT":"Please enter amount!"
+  "PLEASE_ENTER_AMOUNT":"Please enter amount!",
+  "MORE_DETAIL":"More detail"
 }

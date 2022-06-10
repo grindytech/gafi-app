@@ -201,11 +201,7 @@ export default function App() {
   return (
     <SubstrateContextProvider>
       {featureFlags.isDisplayNewDashboardUI ? (<DashboardLayout>
-        {/* <PageContent/> */}
-        <Box sx={{
-          background: '#4299E1',
-          height: 800
-        }} />
+        <PageContent/>
       </DashboardLayout>) : (<Main/>)}
     </SubstrateContextProvider>
   )

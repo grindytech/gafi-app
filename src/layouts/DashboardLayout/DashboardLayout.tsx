@@ -5,8 +5,6 @@ import AccountInfo from './components/AccountInfo';
 import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
-import Banner from 'components/Banner/Banner';
-
 const DashboardLayout: React.FC = ({ children }) => (
   <Box sx={dashBoardStyled}>
     <SideBar />
@@ -32,7 +30,6 @@ const DashboardLayout: React.FC = ({ children }) => (
             px: 4,
           }}
         >
-          <Banner />
           {children}
         </Box>
         <AccountInfo />

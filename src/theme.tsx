@@ -170,11 +170,14 @@ export const theme = extendTheme(
                 bg: 'white',
                 color: 'black',
               },
+              primary: {
+                bg: colors.primary,
+              },
             },
             defaultProps: {
-              size: 'xl', // default is md
-              variant: 'solid', // default is solid
-              colorScheme: colors.primary, // default is gray
+              size: 'xl',
+              variant: 'solid',
+              colorScheme: colors.primary,
             },
           },
         },
