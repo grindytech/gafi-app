@@ -1,35 +1,23 @@
+import { Box, Portal, useDisclosure } from '@chakra-ui/react'
+import DashboardLayout from 'layouts/DashboardLayout'
 import React, { createRef, useEffect, useRef, useState } from 'react'
-import {
-  Dimmer,
-  Loader,
-  Grid,
-  Sticky,
-  Message,
-} from 'semantic-ui-react'
-import {Container, Stack, Portal, useDisclosure} from '@chakra-ui/react'
-
-import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
-import { DeveloperConsole } from './substrate-lib/components'
+import { useTranslation } from 'react-i18next'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css'
-
-import AccountSelector from './AccountSelector'
-// import Balances from './Balances'
-// import Interactor from './Interactor'
-import TemplateModule from './TemplateModule'
-// import Transfer from './Transfer'
-// import Upgrade from './Upgrade'
-import MappingAccount from './pages/MappingAccount'
-import UpfrontPool from './pages/UpfrontPool'
-import StakingPool from './pages/StakingPool'
-import DeployContract from './pages/DeployContract'
-import SideBar from './components/sideBar/SideBar'
-import routes from "./routes";
-import AdminNavbar from './components/navbars/AdminNavbar'
+import {
+  Dimmer, Grid, Loader, Message
+} from 'semantic-ui-react'
+import featureFlags from './components/FeatureFlags'
 import MainPanel from './components/layout/MainPanel'
 import PanelContainer from './components/layout/PanelContainer'
 import PanelContent from './components/layout/PanelContent'
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import AdminNavbar from './components/navbars/AdminNavbar'
+import SideBar from './components/sideBar/SideBar'
+import routes from "./routes"
+import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
+import { DeveloperConsole } from './substrate-lib/components'
+
+
 
 function Main() {
   const { t } = useTranslation();
@@ -40,6 +28,7 @@ function Main() {
   const [fixed, setFixed] = useState(false);
   const [brandText, setBrandText] = useState('');
   const location = useLocation();
+  
 
   // functions for changing the states from components
   const getRoute = () => window.location.pathname !== "/admin/full-screen-maps";
@@ -146,11 +135,8 @@ function Main() {
         logoText={t("GAFI_DASHBOARD")}
         display="none"
         sidebarVariant={sidebarVariant}
-        // {...rest}
       />
-      {/* <Sticky context={contextRef}>
-        <AccountSelector />
-      </Sticky> */}
+      
       <MainPanel
         ref={mainPanel}
         w={{
@@ -165,7 +151,6 @@ function Main() {
             brandText={brandText}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
-            // {...rest}
           />
         </Portal>
         {getRoute() ? (
@@ -179,59 +164,49 @@ function Main() {
             </PanelContainer>
           </PanelContent>
         ) : null}
-        {/* <Portal>
-          <FixedPlugin
-            secondary={getActiveNavbar(routes)}
-            fixed={fixed}
-            onOpen={onOpen}
-          />
-        </Portal> */}
-        {/* <Configurator
-          secondary={getActiveNavbar(routes)}
-          isOpen={isOpen}
-          onClose={onClose}
-          isChecked={fixed}
-          // TODO: Define type for value
-          onSwitch={(value: any) => {
-            setFixed(value);
-          }}
-          onOpaque={() => setSidebarVariant("opaque")}
-          onTransparent={() => setSidebarVariant("transparent")}
-        /> */}
+        
       </MainPanel>
-      {/* <Container maxW='container.xl' pb={5}>
-        <Grid stackable columns="equal">
-          <Grid.Row stretched>
-            <Balances />
-          </Grid.Row>
-          <Grid.Row>
-            <Transfer />
-            <Upgrade />
-          </Grid.Row>
-          <Grid.Row>
-            <TemplateModule />
-          </Grid.Row>
-        </Grid>
-        <Stack direction="column" width="full" gap={4}>
-          <MappingAccount /> 
-          <UpfrontPool />
-          <StakingPool />
-          <DeployContract/>
-        </Stack>
-          <Grid.Row>
-            <Interactor />
-           
-          </Grid.Row>
-      </Container> */}
+      
       <DeveloperConsole />
     </>
   )
 }
 
+function PageContent(){
+  const getRoutes = (routes: any) =>
+    routes.map((prop: any) => {
+      if (prop.collapse) {
+        return getRoutes(prop.views);
+      }
+      if (prop.category === 'account') {
+        return getRoutes(prop.views);
+      }
+      if (prop.layout === '/admin') {
+        return (
+          <Route path={prop.layout + prop.path} component={prop.component} />
+        );
+      }
+      return null;
+    });
+  return (<Box>
+    <Switch>
+      {React.Children.toArray(getRoutes(routes))}
+      <Redirect from="/admin" to="/admin/dashboard" />
+      <Redirect from="/" to="/admin/dashboard" />
+    </Switch>
+  </Box>)
+}
+
 export default function App() {
   return (
     <SubstrateContextProvider>
-      <Main />
+      {featureFlags.isDisplayNewDashboardUI ? (<DashboardLayout>
+        {/* <PageContent/> */}
+        <Box sx={{
+          background: '#4299E1',
+          height: 800
+        }} />
+      </DashboardLayout>) : (<Main/>)}
     </SubstrateContextProvider>
   )
 }

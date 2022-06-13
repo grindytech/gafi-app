@@ -2,9 +2,11 @@ import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode, createBreakpoints } from '@chakra-ui/theme-tools';
 
+import featureFlags from './components/FeatureFlags';
+
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    p: '22px',
+    p: 8,
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -12,13 +14,14 @@ const Card: ComponentStyleConfig = {
     minWidth: '0px',
     wordWrap: 'break-word',
     backgroundClip: 'border-box',
+    bg: '#FFFFFF',
   },
   variants: {
     panel: (props: StyleFunctionProps) => ({
       bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
       width: '100%',
-      boxShadow: '0px 3.5px 5.5px rgba(0, 0, 0, 0.02)',
-      borderRadius: 'var(--chakra-radii-lg)',
+      boxShadow: '3px 4px 10px rgba(0, 0, 0, 0.05)',
+      borderRadius: 'var(--chakra-radii-2xl)',
     }),
   },
   defaultProps: {
@@ -88,39 +91,128 @@ const breakpoints = createBreakpoints({
   xl: '1200px',
 });
 
-export const theme = extendTheme({
-  breakpoints,
-  styles: {
-    global: (props: StyleFunctionProps) => ({
-      '#root': {
-        position: 'relative',
-        minHeight: '100vh',
-        bg: mode('gray.50', 'gray.800')(props),
-      },
-    }),
-  },
-  colors: { primary: '#51c8c5' },
-  components: {
-    Card,
-    CardBody,
-    CardHeader,
-    MainPanel,
-    PanelContainer,
-    PanelContent,
-    Link: {
-      variants: {
-        'no-underline': {
-          _hover: {
-            textDecoration: 'none',
-          },
-          height: 10,
-          minWidth: 10,
-          paddingInlineStart: 4,
-          paddingInlineEnd: 4,
-          display: 'inline-flex',
-          alignItems: 'center',
+const colors = {
+  primary: '#2667FF',
+  greyBg: '#F5F7FB',
+  gradientColor1: '#56CCF2',
+  gradientColor2: '#3860FF',
+};
+
+export const theme = extendTheme(
+  featureFlags.isDisplayNewDashboardUI
+    ? {
+        breakpoints,
+        styles: {
+          global: (props: StyleFunctionProps) => ({
+            '#root': {
+              position: 'relative',
+              minHeight: '100vh',
+              bg: mode('gray.50', 'gray.800')(props),
+            },
+          }),
         },
-      },
-    },
-  },
-});
+        colors,
+        components: {
+          Card,
+          CardBody,
+          CardHeader,
+          MainPanel,
+          PanelContainer,
+          PanelContent,
+          Link: {
+            variants: {
+              'no-underline': {
+                _hover: {
+                  textDecoration: 'none',
+                },
+                height: 10,
+                minWidth: 10,
+                paddingInlineStart: 4,
+                paddingInlineEnd: 4,
+                display: 'inline-flex',
+                alignItems: 'center',
+              },
+            },
+          },
+          Button: {
+            baseStyle: {
+              fontWeight: 'semibold',
+              borderRadius: '32px',
+              color: 'white',
+              '&:hover': {
+                opacity: 0.8,
+              },
+            },
+            sizes: {
+              sm: {},
+              xl: {
+                h: '56px',
+                fontSize: 'lg',
+                px: 8,
+              },
+            },
+            variants: {
+              solid: {
+                bg: `linear-gradient(97.48deg, ${colors.gradientColor1} -9.59%, ${colors.gradientColor2} 107.41%)`,
+              },
+              ghost: {
+                bg: colors.greyBg,
+                px: 10,
+                py: 5,
+                fontSize: 'md',
+                borderRadius: '8px',
+                fontWeight: 'light',
+                '&:hover': {
+                  bg: 'gray.200',
+                },
+              },
+              white: {
+                bg: 'white',
+                color: 'black',
+              },
+            },
+            defaultProps: {
+              size: 'xl', // default is md
+              variant: 'solid', // default is solid
+              colorScheme: colors.primary, // default is gray
+            },
+          },
+        },
+      }
+    : {
+        breakpoints,
+        styles: {
+          global: (props: StyleFunctionProps) => ({
+            '#root': {
+              position: 'relative',
+              minHeight: '100vh',
+              bg: mode('gray.50', 'gray.800')(props),
+            },
+          }),
+        },
+        colors: { primary: '51c8c5' },
+        components: {
+          Card,
+          CardBody,
+          CardHeader,
+          MainPanel,
+          PanelContainer,
+          PanelContent,
+          Link: {
+            variants: {
+              'no-underline': {
+                _hover: {
+                  textDecoration: 'none',
+                },
+                height: 10,
+                minWidth: 10,
+                paddingInlineStart: 4,
+                paddingInlineEnd: 4,
+                display: 'inline-flex',
+                alignItems: 'center',
+              },
+            },
+          },
+        },
+      }
+);

@@ -8,13 +8,12 @@
 //   SupportIcon,
 // } from "components/Icons/Icons";
 // import Billing from "views/Dashboard/Billing.js";
-import { Icon } from '@chakra-ui/react';
 import {
   mdiAccountSwitch,
-  mdiHome,
-  mdiRocketLaunch,
-  mdiPool,
   mdiGamepadSquare,
+  mdiHome,
+  mdiPool,
+  mdiRocketLaunch,
 } from '@mdi/js';
 
 import Contracts from './pages/Contracts';
@@ -25,86 +24,60 @@ import SponsoredPool from './pages/SponsoredPool';
 import StakingPool from './pages/StakingPool';
 import UpfrontPool from './pages/UpfrontPool';
 
-import { checkFeature, EFeatureFlag } from 'components/FeatureFlags';
+import featureFlags from 'components/FeatureFlags';
+
+const { checkFeature, EFeatureFlag } = featureFlags;
 
 const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
 
 const dashRoutes = [
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    icon: (
-      <Icon>
-        <path d={mdiHome} />
-      </Icon>
-    ),
+    name: 'DASHBOARD',
+    icon: mdiHome,
     component: Dashboard,
     layout: '/admin',
   },
   {
     path: '/mapping-account',
-    name: 'Mapping Account',
-    icon: (
-      <Icon>
-        <path d={mdiAccountSwitch} />
-      </Icon>
-    ),
+    name: 'MAPPING_ACCOUNT',
+    icon: mdiAccountSwitch,
     component: MappingAccount,
     layout: '/admin',
   },
   {
     path: '/upfront-pool',
-    name: 'Upfront Pool',
+    name: 'UPFRONT_POOL',
     component: UpfrontPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/staking-pool',
-    name: 'Staking Pool',
+    name: 'STACKING_POOL',
     component: StakingPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/sponsored-pool',
-    name: 'Sponsored Pool',
+    name: 'SPONSORED_POOL',
     component: SponsoredPool,
-    icon: (
-      <Icon>
-        <path d={mdiPool} />
-      </Icon>
-    ),
+    icon: mdiPool,
     layout: '/admin',
   },
   {
     path: '/contracts',
-    name: 'Game creator',
+    name: 'GAME_CREATOR',
     component: Contracts,
-    icon: (
-      <Icon>
-        <path d={mdiGamepadSquare} />
-      </Icon>
-    ),
+    icon: mdiGamepadSquare,
     layout: '/admin',
     redirect: isDisplayGameCreatorFeature ? null : '/contracts',
   },
   {
     path: '/deploy-contract',
-    name: 'Deploy Contract',
-    icon: (
-      <Icon>
-        <path d={mdiRocketLaunch} />
-      </Icon>
-    ),
+    name: 'DEPLOY_CONTRACT',
+    icon: mdiRocketLaunch,
     component: DeployContract,
     layout: '/admin',
   },
