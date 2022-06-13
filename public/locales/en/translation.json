@@ -1,12 +1,17 @@
 {
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
-  "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per 30 minutes",
+  "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per {{minute}} minutes",
   "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
-  "POOL_FEE": "Fee: {{poolFee}} / 30 minutes",
+  "POOL_FEE": "Fee: {{poolFee}} GAKI per {{minute}} minutes",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
     "STACKING_POOL": "Stacking pool",
     "SPONSORED_POOL": "Sponsored pool"
+  },
+  "POOL_DESCRIPTION": {
+    "UPFRONT_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
+    "STACKING_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
+    "SPONSORED_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address."
   },
   "POOL_TYPE": {
     "BASIC": "Basic",
@@ -82,5 +87,6 @@
   "SPONSORED_POOL":"Sponsored Pool",
   "GAME_CREATOR":"Game creator",
   "DEPLOY_CONTRACT":"Deploy Contract",
-  "YOUR_BALANCE":"Your balance"
+  "YOUR_BALANCE":"Your balance",
+  "MORE_DETAIL":"More detail"
 }
