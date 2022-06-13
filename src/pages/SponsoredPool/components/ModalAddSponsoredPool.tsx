@@ -3,13 +3,11 @@ import {
   FormControl,
   FormLabel,
   Icon,
-  IconButton,
   Input,
   InputGroup,
-  InputRightElement,
+  InputRightAddon,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -164,15 +162,28 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
     });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create sponsored pool</ModalHeader>
-        <ModalCloseButton />
+    <Modal size="lg" isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
+      <ModalOverlay
+        bg="none"
+        backdropFilter="auto"
+        backdropInvert="80%"
+        backdropBlur="2px"
+      />
+      <ModalContent
+        sx={{
+          borderRadius: '16px',
+        }}
+        p={3}
+      >
+        <ModalHeader mb={10} fontWeight="bold" color="primary" fontSize="2xl">
+          {t('CREATE_SPONSORED_POOL')}
+        </ModalHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Pool amount</FormLabel>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('POOL_AMOUNT')}
+              </FormLabel>
               <Controller
                 control={control}
                 name="poolAmount"
@@ -192,27 +203,36 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
               />
             </FormControl>
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Discount</FormLabel>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('DISCOUNT')}
+              </FormLabel>
               <Input
+                size="lg"
                 id="discount"
                 type="text"
                 {...register('discount', { required: true })}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="">Transaction Limit</FormLabel>
+            <FormControl mb={4}>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('TRANSACTION_LIMIT')}
+              </FormLabel>
               <Input
+                size="lg"
                 id="txLimit"
                 type="text"
                 {...register('txLimit', { required: true })}
               />
             </FormControl>
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Targets</FormLabel>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('TARGETS')}
+              </FormLabel>
               <VStack alignItems="flex-start">
                 {fields.map((field, index) => (
-                  <InputGroup>
+                  <InputGroup size="lg" display="flex" alignItems="center">
                     <Input
+                      size="lg"
                       key={field.id}
                       type="text"
                       {...register(
@@ -222,20 +242,22 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
                         }
                       )}
                     />
-                    <InputRightElement
-                      display={fields.length === 1 ? 'none' : 'block'}
+                    <InputRightAddon
+                      cursor="pointer"
+                      _hover={{
+                        opacity: 0.8,
+                      }}
+                      bg="red.500"
+                      color="white"
+                      fontSize="md"
+                      fontWeight="bold"
+                      display={fields.length === 1 ? 'none' : 'flex'}
+                      onClick={() => remove(index)}
                     >
-                      <IconButton
-                        onClick={() => remove(index)}
-                        colorScheme="red"
-                        aria-label="remove target"
-                        icon={
-                          <Icon>
-                            <path fill="currentColor" d={mdiClose} />
-                          </Icon>
-                        }
-                      />
-                    </InputRightElement>
+                      <Icon>
+                        <path fill="currentColor" d={mdiClose} />
+                      </Icon>
+                    </InputRightAddon>
                   </InputGroup>
                 ))}
               </VStack>
@@ -243,28 +265,31 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
 
             <Button
               disabled={fields.length >= 5}
+              variant="smallPrimary"
+              size="sm"
               onClick={() => append({ contractAddress: '' })}
               leftIcon={
-                <Icon>
+                <Icon w={18} h={18}>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
               }
             >
-              Add Target
+              {t('ADD_TARGETS')}
             </Button>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              Close
+            <Button size="sm" variant="transparent" mr={3} onClick={onClose}>
+              {t('CANCEL')}
             </Button>
             <Button
               type="submit"
               color="white"
-              background="primary"
+              size="sm"
+              px={8}
               variant="solid"
               isLoading={loading}
             >
-              Save
+              {t('SAVE')}
             </Button>
           </ModalFooter>
         </form>

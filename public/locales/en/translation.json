@@ -20,7 +20,8 @@
   },
   "OWNER": "owner",
   "DISCOUNT": "Discount",
-  "TRANSACTION_LIMIT": "Transaction limit / {{minuteAmount}} minutes",
+  "TRANSACTION_LIMIT_AMOUNT_MINUTES": "Transaction limit / {{minuteAmount}} minutes",
+  "TRANSACTION_LIMIT": "Transaction limit",
   "BALANCE": "Balance (GAKI)",
   "SPONSORED_POOL_TABLE": "Sponsored Pool table",
   "SPONSORED_POOLS": "Sponsored Pools",
@@ -88,5 +89,10 @@
   "GAME_CREATOR":"Game creator",
   "DEPLOY_CONTRACT":"Deploy Contract",
   "YOUR_BALANCE":"Your balance",
-  "MORE_DETAIL":"More detail"
+  "MORE_DETAIL":"More detail",
+  "CREATE_SPONSORED_POOL":"Create sponsored pool",
+  "MAX":"max",
+  "POOL_AMOUNT":"Pool amount",
+  "CANCEL":"Cancel",
+  "COPIED_TO_CLIPBOARD":"Copied to clipboard"
 }

@@ -97,6 +97,8 @@ const colors = {
   greyBg: '#F5F7FB',
   gradientColor1: '#56CCF2',
   gradientColor2: '#3860FF',
+  white: '#FFFFFF',
+  black: '#000000',
 };
 
 export const theme = extendTheme(
@@ -137,7 +139,9 @@ export const theme = extendTheme(
           },
           Button: {
             baseStyle: {
-              fontWeight: 'semibold',
+              lineHeight: 6,
+              fontSize: 'md',
+              fontWeight: 'normal',
               borderRadius: '32px',
               color: 'white',
               '&:hover': {
@@ -145,7 +149,11 @@ export const theme = extendTheme(
               },
             },
             sizes: {
-              sm: {},
+              sm: {
+                h: '40px',
+                fontSize: 'md',
+                px: 4,
+              },
               xl: {
                 h: '56px',
                 fontSize: 'lg',
@@ -161,7 +169,7 @@ export const theme = extendTheme(
                 px: 10,
                 py: 5,
                 fontSize: 'md',
-                borderRadius: '8px',
+
                 fontWeight: 'light',
                 '&:hover': {
                   bg: 'gray.200',
@@ -174,12 +182,32 @@ export const theme = extendTheme(
               primary: {
                 bg: colors.primary,
               },
+              smallPrimary: {
+                fontWeight: 'bold',
+                bg: colors.primary,
+                borderRadius: '8px',
+                color: colors.white,
+              },
               secondary: {
                 bg: colors.secondary,
                 opacity: 0.8,
                 '&:hover': {
                   opacity: 1,
                 },
+              },
+              outline: {
+                bg: colors.white,
+                color: colors.primary,
+                border: `2px solid ${colors.primary}`,
+                '&:hover': {
+                  bg: colors.primary,
+                  color: colors.white,
+                },
+              },
+              transparent: {
+                bg: 'rgba(0, 0, 0, 0.0)',
+                borderRadius: '8px',
+                color: colors.black,
               },
             },
             defaultProps: {

@@ -14,6 +14,8 @@ import { useQueryParam } from 'use-query-params';
 import ModalAddSponsoredPool from './components/ModalAddSponsoredPool';
 import SponsoredPoolTable from './components/SponsoredPoolTable';
 
+import Banner from 'components/Banner';
+import featureFlag from 'components/FeatureFlags';
 import Pagination from 'components/pagination';
 import { getGAKIAccountAddress } from 'components/utils';
 import client from 'graphQL/client';
@@ -70,60 +72,127 @@ const SponsoredPoolPage: React.FC = () => {
   );
 
   return (
-    <Box pt={{ base: '120px', md: '75px' }}>
-      <HStack justifyContent="space-between">
-        <Text fontWeight="bold" fontSize="2xl" mb={5}>
-          {t('POOL.SPONSORED_POOL')}
-        </Text>
-        <Button
-          background="primary"
-          color="white"
-          variant="solid"
-          leftIcon={
-            <Icon>
-              <path fill="currentColor" d={mdiPlus} />
-            </Icon>
-          }
-          onClick={onOpen}
-        >
-          {t('ADD_POOL')}
-        </Button>
-      </HStack>
-      <SponsoredPoolTable
-        title="Sponsored Pools"
-        captions={[
-          { label: t('OWNER'), fieldName: 'poolOwner' },
-          { label: t('DISCOUNT'), fieldName: 'discount' },
-          {
-            label: t('TRANSACTION_LIMIT', { minuteAmount: 30 }),
-            fieldName: 'txLimit',
-          },
-          { label: t('BALANCE'), fieldName: 'amount' },
-          { label: '', fieldName: '' },
-        ]}
-        sponsoredPools={sponsoredPools}
-        limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-        isLoading={isLoading}
-      >
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalCount={totalCount}
-          resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-          totalPage={totalPage}
-          isLoading={isLoading}
-        />
-      </SponsoredPoolTable>
-      {isOpen && (
-        <ModalAddSponsoredPool
-          setCurrentPage={setCurrentPage}
-          pageNumberOfNewPool={pageNumberOfNewPool}
-          isOpen={isOpen}
-          onClose={onClose}
-          refetch={refetch}
-        />
+    <>
+      {featureFlag.isDisplayNewDashboardUI ? (
+        <>
+          <Banner
+            title={t('POOL.SPONSORED_POOL')}
+            subTitle={t('POOL_DESCRIPTION.SPONSORED_POOL')}
+            bannerBg="/assets/layout/sponsored-banner-bg.png"
+          />
+          <HStack justifyContent="space-between">
+            <Box />
+            <Button
+              size="sm"
+              color="white"
+              variant="primary"
+              fontWeight="bold"
+              rightIcon={
+                <Icon w={18} h={18}>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              }
+              onClick={onOpen}
+            >
+              {t('ADD_POOL')}
+            </Button>
+          </HStack>
+          <SponsoredPoolTable
+            title="Sponsored Pools"
+            captions={[
+              { label: t('OWNER'), fieldName: 'poolOwner' },
+              { label: t('DISCOUNT'), fieldName: 'discount' },
+              {
+                label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+                  minuteAmount: 30,
+                }),
+                fieldName: 'txLimit',
+              },
+              { label: t('BALANCE'), fieldName: 'amount' },
+              { label: t('ACTIONS'), fieldName: 'actions' },
+            ]}
+            sponsoredPools={sponsoredPools}
+            limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+            isLoading={isLoading}
+          >
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalCount={totalCount}
+              resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+              totalPage={totalPage}
+              isLoading={isLoading}
+            />
+          </SponsoredPoolTable>
+          {isOpen && (
+            <ModalAddSponsoredPool
+              setCurrentPage={setCurrentPage}
+              pageNumberOfNewPool={pageNumberOfNewPool}
+              isOpen={isOpen}
+              onClose={onClose}
+              refetch={refetch}
+            />
+          )}
+        </>
+      ) : (
+        <Box pt={{ base: '120px', md: '75px' }}>
+          <HStack justifyContent="space-between">
+            <Text fontWeight="bold" fontSize="2xl" mb={5}>
+              {t('POOL.SPONSORED_POOL')}
+            </Text>
+            <Button
+              background="primary"
+              color="white"
+              variant="solid"
+              leftIcon={
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              }
+              onClick={onOpen}
+            >
+              {t('ADD_POOL')}
+            </Button>
+          </HStack>
+          <SponsoredPoolTable
+            title="Sponsored Pools"
+            captions={[
+              { label: t('OWNER'), fieldName: 'poolOwner' },
+              { label: t('DISCOUNT'), fieldName: 'discount' },
+              {
+                label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+                  minuteAmount: 30,
+                }),
+                fieldName: 'txLimit',
+              },
+              { label: t('BALANCE'), fieldName: 'amount' },
+              { label: '', fieldName: '' },
+            ]}
+            sponsoredPools={sponsoredPools}
+            limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+            isLoading={isLoading}
+          >
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalCount={totalCount}
+              resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+              totalPage={totalPage}
+              isLoading={isLoading}
+            />
+          </SponsoredPoolTable>
+          {isOpen && (
+            <ModalAddSponsoredPool
+              setCurrentPage={setCurrentPage}
+              pageNumberOfNewPool={pageNumberOfNewPool}
+              isOpen={isOpen}
+              onClose={onClose}
+              refetch={refetch}
+            />
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 

@@ -1,11 +1,4 @@
-import {
-  Button,
-  Flex,
-  IconButton,
-  Skeleton,
-  SkeletonText,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Skeleton, SkeletonText, Text } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Trans } from 'react-i18next';
@@ -72,10 +65,10 @@ const Pagination = (props: IProps) => {
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Flex flex="6" justifyContent="flex-start">
+      <Flex pl={8} flex="6" justifyContent="flex-start">
         <SkeletonText isLoaded={!isLoading} noOfLines={2}>
           {currentPage * resultsPerPage < totalCount ? (
-            <Text>
+            <Text fontSize="md" fontWeight="normal">
               <Trans
                 i18nKey="SHOW_FROM_A_TO_B_OF_C"
                 values={{
@@ -87,7 +80,7 @@ const Pagination = (props: IProps) => {
               />
             </Text>
           ) : (
-            <Text>
+            <Text fontSize="md" fontWeight="normal">
               <Trans
                 i18nKey="SHOW_A_OF_A"
                 values={{
@@ -102,21 +95,30 @@ const Pagination = (props: IProps) => {
       <Flex flex="4" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading} height="20px">
           {!!totalCount && (
-            <IconButton
+            <Button
               ml={3}
+              size="sm"
+              variant="smallPrimary"
               onClick={() => {
                 hanldleSwitchPage(currentPage - 1);
               }}
               aria-label="previous page"
-              icon={<Icon size={1} path={mdiChevronLeft} />}
-            />
+              leftIcon={<Icon size={1} path={mdiChevronLeft} />}
+            >
+              Previous
+            </Button>
           )}
           {pageButtons.map(button => (
             <Button
               ml={3}
-              boxShadow={button.pageNumber === currentPage ? 'Outline' : ''}
+              size="sm"
               disabled={button.pageNumber === '...'}
-              variant={button.pageNumber === currentPage ? 'outline' : ''}
+              fontWeight="bold"
+              variant={
+                button.pageNumber === currentPage
+                  ? 'smallPrimary'
+                  : 'transparent'
+              }
               onClick={() => {
                 if (
                   button.pageNumber !== '...' &&
@@ -130,14 +132,18 @@ const Pagination = (props: IProps) => {
             </Button>
           ))}
           {!!totalCount && (
-            <IconButton
+            <Button
               ml={3}
+              size="sm"
+              variant="smallPrimary"
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
               aria-label="next page"
-              icon={<Icon size={1} path={mdiChevronRight} />}
-            />
+              rightIcon={<Icon size={1} path={mdiChevronRight} />}
+            >
+              Next
+            </Button>
           )}
         </Skeleton>
       </Flex>

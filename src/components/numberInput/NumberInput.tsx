@@ -1,11 +1,11 @@
 import {
-  Button,
   HStack,
   InputGroup,
-  InputRightElement,
+  InputRightAddon,
   NumberInput as ChakraNumberInput,
   NumberInputField,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 import React from 'react';
 
 import { cast } from 'utils/utils';
@@ -18,10 +18,9 @@ interface Props {
 
 const NumberInput: React.FC<Props> = ({ value, onChange, max }) => (
   <HStack>
-    <InputGroup>
+    <InputGroup size="lg">
       <ChakraNumberInput
         width="100%"
-        size="md"
         keepWithinRange
         precision={3}
         min={0}
@@ -46,11 +45,20 @@ const NumberInput: React.FC<Props> = ({ value, onChange, max }) => (
       >
         <NumberInputField paddingX="4" />
       </ChakraNumberInput>
-      <InputRightElement>
-        <Button onClick={() => onChange(Number(cast(max.toString(), 1, 4)))}>
-          Max
-        </Button>
-      </InputRightElement>
+      <InputRightAddon
+        cursor="pointer"
+        _hover={{
+          opacity: 0.8,
+        }}
+        bg="primary"
+        color="white"
+        fontSize="md"
+        fontWeight="bold"
+        onClick={() => onChange(Number(cast(max.toString(), 1, 4)))}
+        textTransform="uppercase"
+      >
+        {t('MAX')}
+      </InputRightAddon>
     </InputGroup>
   </HStack>
 );
