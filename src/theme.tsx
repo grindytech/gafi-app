@@ -93,6 +93,7 @@ const breakpoints = createBreakpoints({
 
 const colors = {
   primary: '#2667FF',
+  secondary: '#64DFDF',
   greyBg: '#F5F7FB',
   gradientColor1: '#56CCF2',
   gradientColor2: '#3860FF',
@@ -172,6 +173,13 @@ export const theme = extendTheme(
               },
               primary: {
                 bg: colors.primary,
+              },
+              secondary: {
+                bg: colors.secondary,
+                opacity: 0.8,
+                '&:hover': {
+                  opacity: 1,
+                },
               },
             },
             defaultProps: {
