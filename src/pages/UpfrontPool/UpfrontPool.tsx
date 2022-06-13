@@ -214,6 +214,7 @@ const JoinPool = () => {
           <Banner
             title={t('POOL.UPFRONT_POOL')}
             subTitle={t('POOL_DESCRIPTION.UPFRONT_POOL')}
+            bannerBg="/assets/layout/upfront-banner-bg.png"
           />
           <Box sx={{ display: 'flex' }}>
             {React.Children.toArray(

@@ -8,6 +8,9 @@ import { useQuery } from 'react-query';
 
 import { TicketType } from '../UpfrontPool/UpfrontPool';
 
+import Pool, { IPool } from './components/Pool';
+
+import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
 import { getFromAcct, handleTxError } from 'components/utils';
@@ -58,6 +61,60 @@ const StakingPool = () => {
       }
     }
   );
+
+  const pools = [
+    {
+      poolType: t('BASIC'),
+      discount: poolInfo?.basic.service.discount.toNumber() || 0,
+      rate: {
+        txLimit: poolInfo?.basic.service.txLimit.toNumber() || 0,
+        minute: 30,
+      },
+      banner: '/assets/layout/pool-banner-4.png',
+      fee: {
+        gaki: poolInfo?.basic.value.toString() || '0',
+        minute: 30,
+      },
+      onJoin: () => onJoinPool('Basic'),
+      onLeave: () => onLeavePool('Basic'),
+      isLoading: selectedPool === 'Basic',
+      isJoined: joinedPoolInfo?.ticketType.asStaking.type === 'Basic',
+    },
+    {
+      poolType: t('MEDIUM'),
+      discount: poolInfo?.medium.service.discount.toNumber() || 0,
+      rate: {
+        txLimit: poolInfo?.medium.service.txLimit.toNumber() || 0,
+        minute: 30,
+      },
+      banner: '/assets/layout/pool-banner-5.png',
+      fee: {
+        gaki: poolInfo?.medium.value.toString() || '0',
+        minute: 30,
+      },
+      onJoin: () => onJoinPool('Medium'),
+      onLeave: () => onLeavePool('Medium'),
+      isLoading: selectedPool === 'Medium',
+      isJoined: joinedPoolInfo?.ticketType.asStaking.isMedium,
+    },
+    {
+      poolType: t('ADVANCE'),
+      discount: poolInfo?.advance.service.discount.toNumber() || 0,
+      rate: {
+        txLimit: poolInfo?.advance.service.txLimit.toNumber() || 0,
+        minute: 30,
+      },
+      banner: '/assets/layout/pool-banner-6.png',
+      fee: {
+        gaki: poolInfo?.advance.value.toString() || '0',
+        minute: 30,
+      },
+      onJoin: () => onJoinPool('Advance'),
+      onLeave: () => onLeavePool('Advance'),
+      isLoading: selectedPool === 'Advance',
+      isJoined: joinedPoolInfo?.ticketType.asStaking.isAdvance,
+    },
+  ] as Array<IPool>;
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -154,8 +211,21 @@ const StakingPool = () => {
 
   return (
     <>
-      {!featureFlag.isDisplayNewDashboardUI ? (
-        <>New Staking page</>
+      {featureFlag.isDisplayNewDashboardUI ? (
+        <>
+          <Banner
+            title={t('POOL.STACKING_POOL')}
+            subTitle={t('POOL_DESCRIPTION.STACKING_POOL')}
+            bannerBg="/assets/layout/stacking-banner-bg.png"
+          />
+          <Box sx={{ display: 'flex' }}>
+            {React.Children.toArray(
+              pools.map((pool: IPool, index: number) => (
+                <Pool sx={index !== 0 ? { ml: 4 } : {}} pool={pool} />
+              ))
+            )}
+          </Box>
+        </>
       ) : (
         <Box pt={{ base: '120px', md: '75px' }}>
           <Text fontWeight="bold" fontSize="2xl" mb={5}>

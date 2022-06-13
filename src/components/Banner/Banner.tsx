@@ -8,12 +8,16 @@ import Card from 'components/card/Card';
 interface IProp {
   title: string;
   subTitle: string;
+  bannerBg: string;
 }
 
-const Banner: React.FC<IProp> = ({ title, subTitle }) => {
+const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg }) => {
   const { t } = useTranslation();
   return (
-    <Card mb={4} sx={bannerStyled}>
+    <Card
+      mb={4}
+      sx={{ ...bannerStyled, bg: `url(${bannerBg}) no-repeat center` }}
+    >
       <Box>
         <Heading>{title}</Heading>
         <Text sx={subTitleStyled} fontSize="md">
