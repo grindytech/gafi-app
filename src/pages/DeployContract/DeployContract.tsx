@@ -1,16 +1,25 @@
-import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { BigNumber } from '@ethersproject/bignumber';
+import { mdiCloudUploadOutline, mdiContentCopy } from '@mdi/js';
 import React, { useCallback, useMemo, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 import { ContractSendMethod } from 'web3-eth-contract';
 
-import TransferToken from './TransferToken';
-
+import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
-import { useTranslation } from 'react-i18next';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;
@@ -81,6 +90,11 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
       ...(isFocused ? focusedStyle : {}),
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
+      border: 'none',
+      background: '#F5F7FB',
+      boxShadow: 'none',
+      borderRadius: '16px',
+      padding: '60px',
     }),
     [isFocused, isDragAccept, isDragReject]
   );
@@ -90,20 +104,31 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
   ));
 
   return (
-    <>
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <Text color="gray.500">Drop the files here ...</Text>
-        ) : (
-          <Text color="gray.500">
-            Drag and drop contract files here, or click to select files
+    <Card {...getRootProps({ style })}>
+      <input {...getInputProps()} />
+      <Icon mb={4} color="primary" w={24} h={18}>
+        <path fill="currentColor" d={mdiCloudUploadOutline} />
+      </Icon>
+      {isDragActive ? (
+        <Text color="gray.500">Drop the files here ...</Text>
+      ) : (
+        <Box display="flex">
+          <Text color="primary">Drag & drop</Text>
+          <Text ml={2} color="black">
+            contract files here, or click to select files.
           </Text>
-        )}
-      </div>
-      {fileList.length > 0 && <Text pt={4}>Files</Text>}
-      {React.Children.toArray(fileList)}
-    </>
+        </Box>
+      )}
+      {React.Children.toArray(
+        fileList.map(file => (
+          <Text mt={3} color="grey">
+            {t('FILE_FILE_NAME', {
+              fileName: file.props.children,
+            })}
+          </Text>
+        ))
+      )}
+    </Card>
   );
 };
 
@@ -119,7 +144,7 @@ export async function addAdditionalGas(
 }
 
 const DeployContract = () => {
-  const [contractAddresses, setContractAddresses] = useState<string[]>(['']);
+  const [contractAddresses, setContractAddresses] = useState<string[]>([]);
   const toast = useToast();
   const { account, connect, isConnected, reset, balance, ethereum } =
     useWallet();
@@ -175,52 +200,85 @@ const DeployContract = () => {
   };
 
   return (
-    <Box pt={{ base: '120px', md: '75px' }}>
-      <HStack justifyContent="space-between" mb={5}>
-        <Text fontWeight="bold" fontSize="2xl">
-          Deploy Contract
-        </Text>
-        {isConnected() ? (
-          <HStack>
-            <Text id="metamask">{shorten(account || '')}</Text>
-            <Button onClick={() => reset()}>Disconnect Metamask</Button>
-          </HStack>
-        ) : (
-          <Button onClick={() => connect('injected')}>Connect Metamask</Button>
-        )}
-      </HStack>
+    <>
+      <Banner
+        title={t('DEPLOY_CONTRACT')}
+        subTitle={t('DEPLOY_CONTRACT_DESCRIPTION')}
+        bannerBg="/assets/layout/deploycontract-banner.png"
+      />
       <Card>
         <VStack minW="400px" gap={4}>
-          <Box>
-            <Dropzone
-              onUploadFile={files =>
-                setContractFiles((prevContractFiles: any) => [
-                  ...prevContractFiles,
-                  ...files,
-                ])
-              }
-            />
-          </Box>
-          <VStack alignItems="flex-start">
-            {contractAddresses.map(contractAddress => (
-              <Text>{contractAddress}</Text>
-            ))}
-          </VStack>
+          <Dropzone
+            onUploadFile={files =>
+              setContractFiles((prevContractFiles: any) => [
+                ...prevContractFiles,
+                ...files,
+              ])
+            }
+          />
+          {contractAddresses.length && (
+            <Card
+              bg="greyBg"
+              width="50%"
+              boxShadow="none"
+              border="1px dashed #B4CAFF"
+              alignItems="center"
+            >
+              {contractAddresses.map(contractAddress => (
+                <HStack mb={3}>
+                  <Text>{shorten(contractAddress)}</Text>
+                  <CopyToClipboard text={contractAddress}>
+                    <Icon cursor="pointer" ml={4} color="primary" w={5} h={5}>
+                      <path fill="currentColor" d={mdiContentCopy} />
+                    </Icon>
+                  </CopyToClipboard>
+                </HStack>
+              ))}
+              {txnFee && (
+                <HStack>
+                  <Text>{t('TOTAL_TRANSACTION_FEE')}</Text>
+                  <Text fontWeight="bold" color="primary">
+                    {(txnFee / 10 ** 18).toFixed(5)}
+                  </Text>
+                </HStack>
+              )}
+            </Card>
+          )}
+
           <VStack gap={2}>
-            {txnFee && <Text>Total transaction fee: {txnFee / 10 ** 18}</Text>}
+            {isConnected() ? (
+              account && (
+                <CopyToClipboard text={account.toString()}>
+                  <Button mb={4} variant="outline">
+                    {shorten(account.toString())}
+                  </Button>
+                </CopyToClipboard>
+              )
+            ) : (
+              <Button
+                mb={4}
+                variant="outline"
+                onClick={() => connect('injected')}
+              >
+                {t('CONNECT_METAMASK')}
+              </Button>
+            )}
             <Button
-              colorScheme="teal"
+              size="sm"
+              px={8}
+              fontSize="md"
+              fontWeight="bold"
+              colorScheme="greyBg"
               onClick={onDeploy}
               isLoading={isLoading}
               disabled={contractFiles.length === 0 || !isConnected()}
             >
-              Deploy contract
+              {t('DEPLOY')}
             </Button>
           </VStack>
         </VStack>
       </Card>
-      <TransferToken />
-    </Box>
+    </>
   );
 };
 
