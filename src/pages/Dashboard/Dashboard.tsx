@@ -1,6 +1,20 @@
-import { Box, Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import { mdiCogOutline } from '@mdi/js';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import BlockNumber from '../../BlockNumber';
@@ -13,9 +27,31 @@ import EventInfo from './components/EventInfo';
 
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
+import { useSubstrateState } from 'substrate-lib';
+
+interface IMetadata {
+  data: any;
+  version: number;
+}
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const { api } = useSubstrateState();
+  const [metadata, setMetadata] = useState<IMetadata>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    const getMetadata = async () => {
+      try {
+        const data = await api?.rpc.state.getMetadata();
+        setMetadata({ data, version: data?.version ? data?.version : 0 });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getMetadata();
+  }, [api?.rpc.state]);
+
   return (
     <>
       {featureFlag.isDisplayNewDashboardUI ? (
@@ -51,14 +87,31 @@ const Dashboard = () => {
                   <Text fontSize="sm" fontWeight="light">
                     V14
                   </Text>
-                  <Button w="full" variant="primary">
-                    {t('SHOW_METAMASK')}
+                  <Button onClick={onOpen} w="full" variant="primary">
+                    {t('SHOW_METADATA')}
                   </Button>
                 </VStack>
               </Card>
             </HStack>
           </VStack>
           <EventInfo />
+          <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            scrollBehavior="inside"
+            size="6xl"
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Runtime Metadata</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <pre>
+                  <code>{JSON.stringify(metadata?.data, null, 2)}</code>
+                </pre>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
         </HStack>
       ) : (
         <Box pt={{ base: '120px', md: '75px' }}>

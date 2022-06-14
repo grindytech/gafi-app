@@ -1,4 +1,13 @@
-import { VStack, Text, HStack, Box, Image } from '@chakra-ui/react';
+import {
+  VStack,
+  Text,
+  HStack,
+  Box,
+  Image,
+  Icon,
+  IconButton,
+} from '@chakra-ui/react';
+import { mdiEraser } from '@mdi/js';
 import { t } from 'i18next';
 import React, { useState, useEffect } from 'react';
 
@@ -61,9 +70,26 @@ const EventInfo = () => {
   return (
     <Card flex={4}>
       <VStack alignItems="flex-start">
-        <Text mb={8} color="primary">
-          &bull; {t('RECENT_EVENTS')}
-        </Text>
+        <HStack
+          justifyContent="space-between"
+          w="full"
+          mb={8}
+          alignItems="center"
+        >
+          <Text color="primary">&bull; {t('RECENT_EVENTS')}</Text>
+          <IconButton
+            w={10}
+            h={10}
+            aria-label="Search database"
+            onClick={_ => setEventFeed([])}
+            bg="primary"
+            icon={
+              <Icon w={18} h={18}>
+                <path fill="currentColor" d={mdiEraser} />
+              </Icon>
+            }
+          />
+        </HStack>
         {React.Children.toArray(
           eventFeed?.map((event, index: number) => (
             <HStack
