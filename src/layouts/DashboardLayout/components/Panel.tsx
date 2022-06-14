@@ -3,6 +3,8 @@ import { mdiNearMe, mdiWeatherNight } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import UserMenu from './UserMenu';
+
 const actions = [
   {
     icon: mdiWeatherNight,
@@ -11,9 +13,6 @@ const actions = [
   {
     icon: mdiNearMe,
     bg: '#FFFFFF',
-  },
-  {
-    bg: 'url(/assets/layout/actionBg.png) no-repeat center',
   },
 ];
 
@@ -47,6 +46,8 @@ const Panel = () => {
             />
           ))
         )}
+
+        <UserMenu />
       </Box>
     </Box>
   );
