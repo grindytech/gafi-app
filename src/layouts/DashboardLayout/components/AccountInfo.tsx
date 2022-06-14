@@ -135,8 +135,8 @@ const AccountInfo = () => {
             sx={{ width: '100%' }}
             variant="ghost"
             rightIcon={
-              <Icon>
-                <path d={mdiContentCopy} />
+              <Icon w={5} h={5} color="primary">
+                <path fill="currentColor" d={mdiContentCopy} />
               </Icon>
             }
           >
