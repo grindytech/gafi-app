@@ -1,4 +1,4 @@
-import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { color, ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode, createBreakpoints } from '@chakra-ui/theme-tools';
 
@@ -21,6 +21,12 @@ const Card: ComponentStyleConfig = {
       bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
       width: '100%',
       boxShadow: '3px 4px 10px rgba(0, 0, 0, 0.05)',
+      borderRadius: 'var(--chakra-radii-2xl)',
+    }),
+    dashed: (props: StyleFunctionProps) => ({
+      border: '1px dashed #B4CAFF',
+      bg: props.colorMode === 'dark' ? 'gray.700' : colors.greyBg,
+      width: '100%',
       borderRadius: 'var(--chakra-radii-2xl)',
     }),
   },

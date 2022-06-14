@@ -88,6 +88,7 @@
   "SPONSORED_POOL":"Sponsored Pool",
   "GAME_CREATOR":"Game creator",
   "DEPLOY_CONTRACT":"Deploy Contract",
+  "DEPLOY_CONTRACT_DESCRIPTION":"",
   "YOUR_BALANCE":"Your balance",
   "MORE_DETAIL":"More detail",
   "CREATE_SPONSORED_POOL":"Create sponsored pool",
@@ -96,5 +97,10 @@
   "CANCEL":"Cancel",
   "COPIED_TO_CLIPBOARD":"Copied to clipboard",
   "PREVIOUS":"Previous",
-  "NEXT":"Next"
+  "NEXT":"Next",
+  "CONNECT_METAMASK":"Connect Metamask",
+  "FILE_FILE_NAME":"File: {{fileName}}",
+  "DEPLOY":"Deploy",
+  "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
+  "DROP_THE_FILES_HERE":"Drop the files here ..."
 }
