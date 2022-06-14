@@ -102,5 +102,12 @@
   "FILE_FILE_NAME":"File: {{fileName}}",
   "DEPLOY":"Deploy",
   "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
-  "POLKADOT_ADDRESS":"Polkadot Address"
+  "POLKADOT_ADDRESS":"Polkadot Address",
+  "CURRENT_BLOCK":"Curent Block",
+  "FINALIZED_BLOCK":"Finalized Block",
+  "SHOW_METAMASK":"Show metamask",
+  "METADATA":"Metadata",
+  "GAKI_TESTNET":"Gaki Testnest",
+  "FRONTIER_NODE":"Frontier Node",
+  "RECENT_EVENTS":"Recent Events"
 }

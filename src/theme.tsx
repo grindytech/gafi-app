@@ -230,6 +230,15 @@ export const theme = extendTheme(
               colorScheme: colors.primary,
             },
           },
+          Text: {
+            baseStyle: {
+              fontSize: 'md',
+              fontWeight: 'normal',
+            },
+            sizes: {},
+            variants: {},
+            defaultProps: {},
+          },
         },
       }
     : {
