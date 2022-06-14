@@ -137,7 +137,9 @@ export const theme = extendTheme(
           },
           Button: {
             baseStyle: {
-              fontWeight: 'semibold',
+              lineHeight: 6,
+              fontSize: 'md',
+              fontWeight: 'normal',
               borderRadius: '32px',
               color: 'white',
               '&:hover': {
@@ -145,7 +147,13 @@ export const theme = extendTheme(
               },
             },
             sizes: {
-              sm: {},
+              sm: {
+                h: '40px',
+                fontSize: 'md',
+                px: 4,
+                borderRadius: '8px',
+                fontWeight: 'bold',
+              },
               xl: {
                 h: '56px',
                 fontSize: 'lg',
@@ -161,7 +169,7 @@ export const theme = extendTheme(
                 px: 10,
                 py: 5,
                 fontSize: 'md',
-                borderRadius: '8px',
+
                 fontWeight: 'light',
                 '&:hover': {
                   bg: 'gray.200',
@@ -173,6 +181,7 @@ export const theme = extendTheme(
               },
               primary: {
                 bg: colors.primary,
+                color: 'white',
               },
               secondary: {
                 bg: colors.secondary,
@@ -180,6 +189,19 @@ export const theme = extendTheme(
                 '&:hover': {
                   opacity: 1,
                 },
+              },
+              outline: {
+                bg: 'white',
+                color: colors.primary,
+                border: `2px solid ${colors.primary}`,
+                '&:hover': {
+                  bg: colors.primary,
+                  color: 'white',
+                },
+              },
+              transparent: {
+                bg: 'transparent',
+                color: 'black',
               },
             },
             defaultProps: {

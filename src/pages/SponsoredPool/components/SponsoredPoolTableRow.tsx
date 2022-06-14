@@ -1,13 +1,23 @@
-import { Td, Text, Tr, useColorModeValue } from '@chakra-ui/react';
+import {
+  Avatar,
+  HStack,
+  Td,
+  Text,
+  Tr,
+  useColorModeValue,
+  VStack,
+} from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
-import { shorten } from 'components/utils';
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React, { useState } from 'react';
-import { useSubstrateState } from 'substrate-lib';
 import { useQueryParam } from 'use-query-params';
-import TableActions from './TableActions';
-import OwnedTableActions from './OwnedTableActions';
+
 import ModalEditPool from './ModalEditPool';
+import OwnedTableActions from './OwnedTableActions';
+import TableActions from './TableActions';
+
+import { shorten } from 'components/utils';
+import { useSubstrateState } from 'substrate-lib';
 
 interface IProps {
   pool: SponsoredPool;
@@ -25,24 +35,41 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>
-        <Td minWidth={{ sm: '250px' }} pl="0px">
-          <Text fontSize="md" color={textColor} minWidth="100%">
-            {shorten(poolOwner || '')}
-          </Text>
+        <Td textAlign="center" minWidth={{ sm: '250px' }}>
+          <HStack>
+            <Avatar
+              mr={4}
+              w={14}
+              h={14}
+              name="Segun Adebayo"
+              src="/assets/layout/contract-img-1.png"
+            />
+            <VStack ml={0} alignItems="flex-start">
+              <Text
+                fontWeight="bold"
+                fontSize="md"
+                color={textColor}
+                minWidth="100%"
+              >
+                {shorten(poolOwner || '')}
+              </Text>
+              <Text fontSize="xs">Games</Text>
+            </VStack>
+          </HStack>
         </Td>
 
-        <Td>
-          <Text fontSize="md" color={textColor}>
+        <Td textAlign="center">
+          <Text fontWeight="normal" fontSize="md" color={textColor}>
             {discount} %
           </Text>
         </Td>
-        <Td>
-          <Text fontSize="md" color={textColor}>
+        <Td textAlign="center">
+          <Text fontWeight="normal" fontSize="md" color={textColor}>
             {txLimit}
           </Text>
         </Td>
-        <Td maxWidth="130px">
-          <Text fontSize="md" color={textColor} pb=".5rem">
+        <Td textAlign="center" maxWidth="130px">
+          <Text fontWeight="normal" fontSize="md" color={textColor}>
             {formatBalance(
               amount,
               { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
@@ -50,7 +77,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
             )}
           </Text>
         </Td>
-        <Td textAlign="right">
+        <Td textAlign="center" fontWeight="normal" fontSize="md">
           {isOwned ? (
             <OwnedTableActions
               poolId={pool.id}

@@ -1,10 +1,11 @@
 import { Button, useToast } from '@chakra-ui/react';
 import { GafiPrimitivesPlayerTicketInfo } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { getFromAcct, handleTxError } from 'components/utils';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
+
+import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
 
 interface IProps {
@@ -104,7 +105,10 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       {joinedPoolInfo?.ticketType.isSponsored &&
       joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
         <Button
-          color="red.300"
+          size="sm"
+          sx={{
+            px: 8,
+          }}
           variant="solid"
           onClick={e => {
             e.stopPropagation();
@@ -116,8 +120,11 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
         </Button>
       ) : (
         <Button
-          color="primary"
-          variant="solid"
+          size="sm"
+          sx={{
+            px: 8,
+          }}
+          variant="outline"
           onClick={e => {
             e.stopPropagation();
             onJoinPool();

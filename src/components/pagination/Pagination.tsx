@@ -1,14 +1,7 @@
-import {
-  Button,
-  Flex,
-  IconButton,
-  Skeleton,
-  SkeletonText,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Skeleton, SkeletonText, Text } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface IProps {
   currentPage: number;
@@ -34,6 +27,7 @@ const Pagination = (props: IProps) => {
   let endPage = 4 + startPage;
   endPage = totalPage < endPage ? totalPage : endPage;
   const diff = startPage - endPage + 4;
+  const { t } = useTranslation();
   startPage -= startPage - diff > 0 ? diff : 0;
   if (startPage > 1) {
     pageButtons.push({
@@ -72,10 +66,10 @@ const Pagination = (props: IProps) => {
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Flex flex="6" justifyContent="flex-start">
+      <Flex pl={8} flex="6" justifyContent="flex-start">
         <SkeletonText isLoaded={!isLoading} noOfLines={2}>
           {currentPage * resultsPerPage < totalCount ? (
-            <Text>
+            <Text fontSize="md" fontWeight="normal">
               <Trans
                 i18nKey="SHOW_FROM_A_TO_B_OF_C"
                 values={{
@@ -87,7 +81,7 @@ const Pagination = (props: IProps) => {
               />
             </Text>
           ) : (
-            <Text>
+            <Text fontSize="md" fontWeight="normal">
               <Trans
                 i18nKey="SHOW_A_OF_A"
                 values={{
@@ -102,21 +96,28 @@ const Pagination = (props: IProps) => {
       <Flex flex="4" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading} height="20px">
           {!!totalCount && (
-            <IconButton
+            <Button
               ml={3}
+              size="sm"
+              variant="primary"
               onClick={() => {
                 hanldleSwitchPage(currentPage - 1);
               }}
               aria-label="previous page"
-              icon={<Icon size={1} path={mdiChevronLeft} />}
-            />
+              leftIcon={<Icon size={1} path={mdiChevronLeft} />}
+            >
+              {t('PREVIOUS')}
+            </Button>
           )}
           {pageButtons.map(button => (
             <Button
               ml={3}
-              boxShadow={button.pageNumber === currentPage ? 'Outline' : ''}
+              size="sm"
               disabled={button.pageNumber === '...'}
-              variant={button.pageNumber === currentPage ? 'outline' : ''}
+              fontWeight="bold"
+              variant={
+                button.pageNumber === currentPage ? 'primary' : 'transparent'
+              }
               onClick={() => {
                 if (
                   button.pageNumber !== '...' &&
@@ -130,14 +131,18 @@ const Pagination = (props: IProps) => {
             </Button>
           ))}
           {!!totalCount && (
-            <IconButton
+            <Button
               ml={3}
+              size="sm"
+              variant="primary"
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
               aria-label="next page"
-              icon={<Icon size={1} path={mdiChevronRight} />}
-            />
+              rightIcon={<Icon size={1} path={mdiChevronRight} />}
+            >
+              {t('NEXT')}
+            </Button>
           )}
         </Skeleton>
       </Flex>
