@@ -265,7 +265,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
 
             <Button
               disabled={fields.length >= 5}
-              variant="smallPrimary"
+              variant="primary"
               size="sm"
               onClick={() => append({ contractAddress: '' })}
               leftIcon={

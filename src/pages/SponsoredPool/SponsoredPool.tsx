@@ -80,11 +80,9 @@ const SponsoredPoolPage: React.FC = () => {
             subTitle={t('POOL_DESCRIPTION.SPONSORED_POOL')}
             bannerBg="/assets/layout/sponsored-banner-bg.png"
           />
-          <HStack justifyContent="space-between">
-            <Box />
+          <HStack justifyContent="flex-end">
             <Button
               size="sm"
-              color="white"
               variant="primary"
               fontWeight="bold"
               rightIcon={
@@ -142,7 +140,6 @@ const SponsoredPoolPage: React.FC = () => {
             </Text>
             <Button
               background="primary"
-              color="white"
               variant="solid"
               leftIcon={
                 <Icon>

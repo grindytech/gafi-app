@@ -1,7 +1,7 @@
 import { Button, Flex, Skeleton, SkeletonText, Text } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface IProps {
   currentPage: number;
@@ -27,6 +27,7 @@ const Pagination = (props: IProps) => {
   let endPage = 4 + startPage;
   endPage = totalPage < endPage ? totalPage : endPage;
   const diff = startPage - endPage + 4;
+  const { t } = useTranslation();
   startPage -= startPage - diff > 0 ? diff : 0;
   if (startPage > 1) {
     pageButtons.push({
@@ -98,14 +99,14 @@ const Pagination = (props: IProps) => {
             <Button
               ml={3}
               size="sm"
-              variant="smallPrimary"
+              variant="primary"
               onClick={() => {
                 hanldleSwitchPage(currentPage - 1);
               }}
               aria-label="previous page"
               leftIcon={<Icon size={1} path={mdiChevronLeft} />}
             >
-              Previous
+              {t('PREVIOUS')}
             </Button>
           )}
           {pageButtons.map(button => (
@@ -115,9 +116,7 @@ const Pagination = (props: IProps) => {
               disabled={button.pageNumber === '...'}
               fontWeight="bold"
               variant={
-                button.pageNumber === currentPage
-                  ? 'smallPrimary'
-                  : 'transparent'
+                button.pageNumber === currentPage ? 'primary' : 'transparent'
               }
               onClick={() => {
                 if (
@@ -135,14 +134,14 @@ const Pagination = (props: IProps) => {
             <Button
               ml={3}
               size="sm"
-              variant="smallPrimary"
+              variant="primary"
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
               aria-label="next page"
               rightIcon={<Icon size={1} path={mdiChevronRight} />}
             >
-              Next
+              {t('NEXT')}
             </Button>
           )}
         </Skeleton>

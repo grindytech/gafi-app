@@ -76,14 +76,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     <>
       {featureFlag.isDisplayNewDashboardUI ? (
         <>
-          <Card
-            sx={{
-              p: 0,
-            }}
-            mb={8}
-            mt={4}
-            overflowX={{ sm: 'scroll', xl: 'hidden' }}
-          >
+          <Card p={0} mb={8} mt={4} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
             <Table variant="simple" textAlign="center" color={textColor}>
               <Thead>
                 <Tr pl="0px" color="gray.400">
