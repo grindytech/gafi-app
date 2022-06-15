@@ -90,6 +90,7 @@ declare module '@polkadot/api-base/types/errors' {
     faucet: {
       DontBeGreedy: AugmentedError<ApiType>;
       NotEnoughBalance: AugmentedError<ApiType>;
+      PleaseWait: AugmentedError<ApiType>;
       TransferToSelf: AugmentedError<ApiType>;
       /**
        * Generic error
@@ -97,8 +98,17 @@ declare module '@polkadot/api-base/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     gameCreator: {
+      /**
+       * The contract had claimed
+       **/
       ContractClaimed: AugmentedError<ApiType>;
+      /**
+       * Claim the contract does not exist
+       **/
       ContractNotFound: AugmentedError<ApiType>;
+      /**
+       * Not the contract creator either game creator
+       **/
       NotContractOwner: AugmentedError<ApiType>;
       /**
        * Generic error
@@ -142,6 +152,12 @@ declare module '@polkadot/api-base/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     palletCache: {
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    palletCacheFaucet: {
       /**
        * Generic error
        **/
@@ -193,17 +209,18 @@ declare module '@polkadot/api-base/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     sponsoredPool: {
-      /**
-       * Can not convert u128 to balance
-       **/
-      ConvertBalanceFail: AugmentedError<ApiType>;
       ExceedMaxPoolOwned: AugmentedError<ApiType>;
       ExceedPoolTarget: AugmentedError<ApiType>;
+      GreaterThanMaxTxLimit: AugmentedError<ApiType>;
+      GreaterThanMinDiscountPercent: AugmentedError<ApiType>;
       /**
        * Can not convert pool id to account
        **/
       IntoAccountFail: AugmentedError<ApiType>;
       IntoU32Fail: AugmentedError<ApiType>;
+      LessThanMinDiscountPercent: AugmentedError<ApiType>;
+      LessThanMinTxLimit: AugmentedError<ApiType>;
+      NotReachMinPoolBalance: AugmentedError<ApiType>;
       /**
        * Origin not the owner
        **/

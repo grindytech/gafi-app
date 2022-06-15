@@ -25,17 +25,14 @@ const UserMenu: React.FC = () => {
       <Menu>
         {({ onClose }: { onClose: () => void }) => (
           <>
-            <MenuButton>
-              <IconButton
-                aria-label="Search database"
-                ml={4}
-                sx={{
-                  ...actionStyled,
-                  background:
-                    'url(/assets/layout/actionBg.png) no-repeat center',
-                }}
-              />
-            </MenuButton>
+            <MenuButton
+              aria-label="account-actions"
+              ml={4}
+              sx={{
+                ...actionStyled,
+                background: 'url(/assets/layout/actionBg.png) no-repeat center',
+              }}
+            />
             <MenuList
               sx={{
                 bg: 'linear-gradient(227.25deg, #3860FF 2.24%, #56CCF2 127.36%)',

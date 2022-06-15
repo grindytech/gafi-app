@@ -3,4 +3,3 @@
 
 export * from './signaling/types';
 export * from './voting/types';
-export * from './pool';

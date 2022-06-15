@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
-import { GafiPrimitivesPoolTicket } from '@polkadot/types/lookup';
+import { GafiPrimitivesTicket } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
@@ -12,7 +12,7 @@ import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
 import { getFromAcct, handleTxError } from 'components/utils';
-import { PoolInfo } from 'interfaces';
+import { PoolInfo } from 'interfaces/pool';
 import { useSubstrateState } from 'substrate-lib';
 
 export interface TicketType {
@@ -27,7 +27,7 @@ const JoinPool = () => {
   const [selectedPool, setSelectedPool] = useState('');
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedUpfrontPool', currentAccount],
-    async (): Promise<GafiPrimitivesPoolTicket | undefined> => {
+    async (): Promise<GafiPrimitivesTicket | undefined> => {
       if (api) {
         const res = await api.query.upfrontPool.tickets(
           currentAccount?.address as string
@@ -58,7 +58,6 @@ const JoinPool = () => {
       }
     }
   );
-
   const pools = [
     {
       poolType: t('BASIC'),
@@ -75,7 +74,7 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Basic'),
       onLeave: () => onLeavePool('Basic'),
       isLoading: selectedPool === 'Basic',
-      isJoined: joinedPoolInfo?.ticketType.asUpfront.type === 'Basic',
+      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isBasic,
     },
     {
       poolType: t('MEDIUM'),
@@ -92,7 +91,7 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Medium'),
       onLeave: () => onLeavePool('Medium'),
       isLoading: selectedPool === 'Medium',
-      isJoined: joinedPoolInfo?.ticketType.asUpfront.isMedium,
+      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isMedium,
     },
     {
       poolType: t('ADVANCE'),
@@ -109,7 +108,7 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Advance'),
       onLeave: () => onLeavePool('Advance'),
       isLoading: selectedPool === 'Advance',
-      isJoined: joinedPoolInfo?.ticketType.asUpfront.isAdvance,
+      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isAdvance,
     },
   ] as Array<IPool>;
 
@@ -141,7 +140,7 @@ const JoinPool = () => {
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api && account) {
-      const txExecute = api.tx.pool.join({ Upfront: poolPackage });
+      const txExecute = api.tx.pool.join({ System: { Upfront: poolPackage } });
       if (options) {
         try {
           await txExecute.signAndSend(account, options, txCallback);
@@ -215,6 +214,7 @@ const JoinPool = () => {
             title={t('POOL.UPFRONT_POOL')}
             subTitle={t('POOL_DESCRIPTION.UPFRONT_POOL')}
             bannerBg="/assets/layout/upfront-banner-bg.png"
+            btnLink="https://wiki.gafi.network/learn/upfront-pool"
           />
           <Box sx={{ display: 'flex' }}>
             {React.Children.toArray(
@@ -272,7 +272,7 @@ const JoinPool = () => {
                   </Text>
                 )}
 
-                {joinedPoolInfo?.ticketType.asUpfront.type === 'Basic' ? (
+                {joinedPoolInfo?.ticketType.asSystem.asUpfront.isBasic ? (
                   <Button
                     variant="solid"
                     color="red.300"
@@ -326,9 +326,9 @@ const JoinPool = () => {
                   </Text>
                 )}
 
-                {joinedPoolInfo?.ticketType.asUpfront.isMedium ? (
+                {joinedPoolInfo?.ticketType.asSystem.asUpfront.isMedium ? (
                   <Button
-                    variant="solid"
+                    variant="secondary"
                     color="red.300"
                     onClick={() => onLeavePool('Medium')}
                     isLoading={selectedPool === 'Medium'}
@@ -380,7 +380,7 @@ const JoinPool = () => {
                   </Text>
                 )}
 
-                {joinedPoolInfo?.ticketType.asUpfront.isAdvance ? (
+                {joinedPoolInfo?.ticketType.asSystem.asUpfront.isAdvance ? (
                   <Button
                     variant="solid"
                     color="red.300"

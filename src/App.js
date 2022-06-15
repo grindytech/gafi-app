@@ -3,10 +3,7 @@ import DashboardLayout from 'layouts/DashboardLayout'
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
-import 'semantic-ui-css/semantic.min.css'
-import {
-  Dimmer, Grid, Loader, Message
-} from 'semantic-ui-react'
+
 import featureFlags from './components/FeatureFlags'
 import MainPanel from './components/layout/MainPanel'
 import PanelContainer from './components/layout/PanelContainer'
@@ -98,34 +95,6 @@ function Main() {
       return null;
     });
 
-  const loader = text => (
-    <Dimmer active>
-      <Loader size="small">{text}</Loader>
-    </Dimmer>
-  )
-
-  const message = errObj => (
-    <Grid centered columns={2} padded>
-      <Grid.Column>
-        <Message
-          negative
-          compact
-          floating
-          header="Error Connecting to Substrate"
-          content={`Connection to websocket '${errObj.target.url}' failed.`}
-        />
-      </Grid.Column>
-    </Grid>
-  )
-
-  if (apiState === 'ERROR') return message(apiError)
-  else if (apiState !== 'READY') return loader('Connecting to Substrate')
-
-  if (keyringState !== 'READY') {
-    return loader(
-      "Loading accounts (please review any extension's authorization)"
-    )
-  }
   const contextRef = createRef()
 
   return (
@@ -200,9 +169,12 @@ function PageContent(){
 export default function App() {
   return (
     <SubstrateContextProvider>
-      {featureFlags.isDisplayNewDashboardUI ? (<DashboardLayout>
-        <PageContent/>
-      </DashboardLayout>) : (<Main/>)}
+      {featureFlags.isDisplayNewDashboardUI ? 
+      (
+        <DashboardLayout>
+          <PageContent/>
+        </DashboardLayout>
+      ) : (<Main/>)}
     </SubstrateContextProvider>
   )
 }

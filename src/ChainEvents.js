@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Feed, Grid, Button } from 'semantic-ui-react'
-
 import { useSubstrateState } from './substrate-lib'
 
 // Events to be filtered from feed
@@ -54,23 +52,7 @@ function Main(props) {
 
   const { feedMaxHeight = 250 } = props
 
-  return (
-    <Grid.Column width={8}>
-      <h1 style={{ float: 'left' }}>Events</h1>
-      <Button
-        basic
-        circular
-        size="mini"
-        color="grey"
-        floated="right"
-        icon="erase"
-        onClick={_ => setEventFeed([])}
-      />
-      <Feed
-        style={{ clear: 'both', overflow: 'auto', maxHeight: feedMaxHeight }}
-        events={eventFeed}
-      />
-    </Grid.Column>
+  return (<></>
   )
 }
 

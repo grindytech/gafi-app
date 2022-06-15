@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'semantic-ui-react'
+import { Button } from '@chakra-ui/react'
 import { web3FromSource } from '@polkadot/extension-dapp'
 
 import { useSubstrateState } from '../'

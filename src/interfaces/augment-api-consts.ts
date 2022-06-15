@@ -4,6 +4,7 @@
 import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Bytes, Vec, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
+import type { Permill } from '@polkadot/types/interfaces/runtime';
 import type { FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/consts' {
@@ -38,7 +39,13 @@ declare module '@polkadot/api-base/types/consts' {
       [key: string]: Codec;
     };
     gameCreator: {
+      /**
+       * A maximum number of contracts can be owned
+       **/
       maxContractOwned: u32 & AugmentedConst<ApiType>;
+      /**
+       * Balance reserve for the claim of ownership
+       **/
       reservationFee: u128 & AugmentedConst<ApiType>;
       /**
        * Generic const
@@ -86,6 +93,10 @@ declare module '@polkadot/api-base/types/consts' {
     };
     sponsoredPool: {
       /**
+       * The maximum discount percent when creating the pool
+       **/
+      maxDiscountPercent: Permill & AugmentedConst<ApiType>;
+      /**
        * The maximum number of pool that sponsor can create
        **/
       maxPoolOwned: u32 & AugmentedConst<ApiType>;
@@ -93,6 +104,22 @@ declare module '@polkadot/api-base/types/consts' {
        * The maximum number of contract address can added to the pool
        **/
       maxPoolTarget: u32 & AugmentedConst<ApiType>;
+      /**
+       * The maximum tx limit when creating the pool
+       **/
+      maxTxLimit: u32 & AugmentedConst<ApiType>;
+      /**
+       * The minimum discount percent when creating the pool
+       **/
+      minDiscountPercent: Permill & AugmentedConst<ApiType>;
+      /**
+       * The minimum balance owner have to deposit when creating the pool
+       **/
+      minPoolBalance: u128 & AugmentedConst<ApiType>;
+      /**
+       * The minimum tx limit when creating the pool
+       **/
+      minTxLimit: u32 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -187,7 +214,7 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * percentage of transaction fee reward to game-creator
        **/
-      gameCreatorReward: u8 & AugmentedConst<ApiType>;
+      gameCreatorReward: Permill & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/

@@ -99,10 +99,9 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
         isClosable: true,
         status: 'success',
       });
-      setLoading(false);
       setCurrentPage(pageNumberOfNewPool);
       refetch();
-      onClose();
+      setLoading(false);
     } else {
       toast({
         description: t('CURRENT_TRANSACTION_STATUS', {
@@ -122,7 +121,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
       const txExecute = api.tx.sponsoredPool.createPool(
         targets,
         new BN(data.poolAmount, 10).mul(base).toString(),
-        data.discount,
+        parseFloat(data.discount) * 10000,
         data.txLimit
       );
       if (options) {

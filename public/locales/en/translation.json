@@ -9,9 +9,9 @@
     "SPONSORED_POOL": "Sponsored pool"
   },
   "POOL_DESCRIPTION": {
-    "UPFRONT_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
-    "STACKING_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
-    "SPONSORED_POOL": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address."
+    "UPFRONT_POOL": "Upfront Pool provides upfront-charge services to reduce transaction fees and enhance network security. Basic, Medium, and Advanced are the three packs you can use when you join the Upfront Pool.",
+    "STACKING_POOL": "Staking Pool provides staking-like services to reduce transaction fees and enhance network security. Basic, Medium, and Advanced are the three packs you can use when you join the Staking Pool.",
+    "SPONSORED_POOL": "Gafi Pool offers the Sponsored Pool to give players more options to participate in Gafi Network and provide the method for game projects to appeal to their users."
   },
   "POOL_TYPE": {
     "BASIC": "Basic",
@@ -90,7 +90,7 @@
   "SPONSORED_POOL":"Sponsored Pool",
   "GAME_CREATOR":"Game creator",
   "DEPLOY_CONTRACT":"Deploy Contract",
-  "DEPLOY_CONTRACT_DESCRIPTION":"",
+  "DEPLOY_CONTRACT_DESCRIPTION":"Let's deploy your contracts. See demo for more details.",
   "YOUR_BALANCE":"Your balance",
   "MORE_DETAIL":"More detail",
   "CREATE_SPONSORED_POOL":"Create sponsored pool",
@@ -101,6 +101,7 @@
   "PREVIOUS":"Previous",
   "NEXT":"Next",
   "CONNECT_METAMASK":"Connect Metamask",
+  "DISCONNECT_METAMASK":"Disconnect Metamask",
   "FILE_FILE_NAME":"File: {{fileName}}",
   "DEPLOY":"Deploy",
   "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
@@ -111,5 +112,9 @@
   "SHOW_METADATA":"Show metadata",
   "METADATA":"Metadata",
   "RECENT_EVENTS":"Recent Events",
-  "RUNTIME_METADATA":"Runtime Metadata"
+  "RUNTIME_METADATA":"Runtime Metadata",
+  "CONNECTING_TO_SUBSTRATE":"Connecting to Substrate",
+  "LOADING_ACCOUNTS_NOTIFY":"Loading accounts (please review any extension's authorization)",
+  "ERROR_CONNECTING_TO_SUBTRATE":"Error Connecting to Substrate",
+  "CONNECTING_TO_WEBSOCKET_FAILED":"Connection to websocket {{websocketName}} failed."
 }

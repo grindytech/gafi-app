@@ -1,5 +1,5 @@
-import { Button, Icon, Text, useToast } from '@chakra-ui/react';
-import { mdiContentCopy } from '@mdi/js';
+import { Box, Button, Icon, Text, useToast, Image } from '@chakra-ui/react';
+import { mdiWalletOutline } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { BN, formatBalance } from '@polkadot/util';
 import { useCallback, useEffect, useState } from 'react';
@@ -18,10 +18,10 @@ import {
 import { useSubstrate } from 'substrate-lib';
 
 const AccountInfo = () => {
-  const { account } = useWallet();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
+  const { account, connect, isConnected } = useWallet();
   const {
     setCurrentAccount,
     state: { keyring, currentAccount, api, chainDecimal },
@@ -132,17 +132,61 @@ const AccountInfo = () => {
       {currentAccount && (
         <CopyToClipboard text={acctAddr(currentAccount)}>
           <Button
+            mb={4}
             sx={{ width: '100%' }}
             variant="ghost"
+            onClick={() => {
+              toast({
+                description: t('COPIED_TO_CLIPBOARD'),
+                isClosable: true,
+                status: 'success',
+              });
+            }}
             rightIcon={
               <Icon w={5} h={5} color="primary">
-                <path fill="currentColor" d={mdiContentCopy} />
+                <path fill="currentColor" d={mdiWalletOutline} />
               </Icon>
             }
           >
+            <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
             {shorten(acctAddr(currentAccount))}
           </Button>
         </CopyToClipboard>
+      )}
+
+      {isConnected() ? (
+        account && (
+          <CopyToClipboard text={account.toString()}>
+            <Button
+              sx={{ width: '100%' }}
+              variant="ghost"
+              onClick={() => {
+                toast({
+                  description: t('COPIED_TO_CLIPBOARD'),
+                  isClosable: true,
+                  status: 'success',
+                });
+              }}
+              rightIcon={
+                <Icon w={5} h={5} color="primary">
+                  <path fill="currentColor" d={mdiWalletOutline} />
+                </Icon>
+              }
+            >
+              <Image w={5} h={5} src="/assets/layout/metamask.png" mr={2} />
+              {shorten(account.toString())}
+            </Button>
+          </CopyToClipboard>
+        )
+      ) : (
+        <Button
+          w="full"
+          mb={4}
+          variant="outline"
+          onClick={() => connect('injected')}
+        >
+          {t('CONNECT_METAMASK')}
+        </Button>
       )}
 
       <Text sx={balanceStyled}>
@@ -162,7 +206,7 @@ const AccountInfo = () => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  height: '40vh',
+  height: '50vh',
   flex: 2,
   alignItems: 'center',
   bg: 'white',

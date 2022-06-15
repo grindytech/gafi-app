@@ -8,8 +8,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { mdiEraser } from '@mdi/js';
-import { t } from 'i18next';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'substrate-lib';
@@ -30,7 +30,7 @@ interface IEvent {
 const EventInfo = () => {
   const { api } = useSubstrateState();
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
-
+  const { t } = useTranslation();
   useEffect(() => {
     let unsub: any;
     let keyNum = 0;
@@ -106,7 +106,7 @@ const EventInfo = () => {
               </Box>
               <VStack flex={8} alignItems="flex-start">
                 <Text fontWeight="bold">{event.summary}</Text>
-                <Text w="90%">{event.content}</Text>
+                <Text w="70%">{event.content}</Text>
               </VStack>
             </HStack>
           ))

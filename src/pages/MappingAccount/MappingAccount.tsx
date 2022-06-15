@@ -109,6 +109,7 @@ function MappingAccount() {
             title={t('MAPPING_ACCOUNT')}
             subTitle={t('MAPPING_ACCOUNT_DESCRIPTION')}
             bannerBg="/assets/layout/mapping-account-banner.png"
+            btnLink="https://wiki.gafi.network/learn/proof-address-mapping"
           />
           <Card>
             <VStack width="full" gap={2}>
@@ -133,6 +134,13 @@ function MappingAccount() {
                           <Button
                             mb={4}
                             variant="ghost"
+                            onClick={() => {
+                              toast({
+                                description: t('COPIED_TO_CLIPBOARD'),
+                                isClosable: true,
+                                status: 'success',
+                              });
+                            }}
                             w="full"
                             rightIcon={
                               <Icon w={5} h={5} color="primary">
@@ -148,7 +156,7 @@ function MappingAccount() {
                           variant="primary"
                           onClick={() => reset()}
                         >
-                          {t('POLKADOT_ADDRESS')}
+                          {t('DISCONNECT_METAMASK')}
                         </Button>
                       </>
                     )
@@ -182,6 +190,13 @@ function MappingAccount() {
                         mb={4}
                         variant="ghost"
                         w="full"
+                        onClick={() => {
+                          toast({
+                            description: t('COPIED_TO_CLIPBOARD'),
+                            isClosable: true,
+                            status: 'success',
+                          });
+                        }}
                         rightIcon={
                           <Icon w={5} h={5} color="primary">
                             <path fill="currentColor" d={mdiContentCopy} />
