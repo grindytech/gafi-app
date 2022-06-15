@@ -102,9 +102,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               </Thead>
               <Tbody justifyContent="flex-start">
                 {!isLoading ? (
-                  sponsoredPools.length ? (
+                  sponsoredPools?.length ? (
                     React.Children.toArray(
-                      sponsoredPools.map(pool => (
+                      sponsoredPools?.map(pool => (
                         <SponsoredPoolTableRow
                           pool={pool}
                           onClick={() => setSelectedPool(pool)}
@@ -150,9 +150,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               </Thead>
               <Tbody justifyContent="flex-start">
                 {!isLoading ? (
-                  sponsoredPools.length ? (
+                  sponsoredPools?.length ? (
                     React.Children.toArray(
-                      sponsoredPools.map(pool => (
+                      sponsoredPools?.map(pool => (
                         <SponsoredPoolTableRow
                           pool={pool}
                           onClick={() => setSelectedPool(pool)}

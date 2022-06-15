@@ -200,9 +200,12 @@ function PageContent(){
 export default function App() {
   return (
     <SubstrateContextProvider>
-      {featureFlags.isDisplayNewDashboardUI ? (<DashboardLayout>
-        <PageContent/>
-      </DashboardLayout>) : (<Main/>)}
+      {featureFlags.isDisplayNewDashboardUI ? 
+      (
+        <DashboardLayout>
+          <PageContent/>
+        </DashboardLayout>
+      ) : (<Main/>)}
     </SubstrateContextProvider>
   )
 }
