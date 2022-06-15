@@ -105,5 +105,11 @@
   "DEPLOY":"Deploy",
   "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
   "POLKADOT_ADDRESS":"Polkadot Address",
-  "DROP_THE_FILES_HERE":"Drop the files here ..."
+  "DROP_THE_FILES_HERE":"Drop the files here ...",
+  "CURRENT_BLOCK":"Curent Block",
+  "FINALIZED_BLOCK":"Finalized Block",
+  "SHOW_METADATA":"Show metadata",
+  "METADATA":"Metadata",
+  "RECENT_EVENTS":"Recent Events",
+  "RUNTIME_METADATA":"Runtime Metadata"
 }
