@@ -32,7 +32,7 @@ const Panel = () => {
           display: 'flex',
         }}
       >
-        {React.Children.toArray(
+        {/* {React.Children.toArray(
           actions.map(action => (
             <IconButton
               aria-label="Search database"
@@ -45,7 +45,7 @@ const Panel = () => {
               sx={{ ...actionStyled, background: action.bg }}
             />
           ))
-        )}
+        )} */}
 
         <UserMenu />
       </Box>

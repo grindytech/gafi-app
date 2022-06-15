@@ -5,7 +5,7 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H160, H256, Permill } from '@polkadot/types/interfaces/runtime';
-import type { EthereumLog, EvmCoreErrorExitReason, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchInfo, GafiPrimitivesPoolTicketType, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
+import type { EthereumLog, EvmCoreErrorExitReason, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchInfo, GafiPrimitivesTicketTicketType, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
@@ -119,6 +119,9 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     gameCreator: {
+      Changed: AugmentedEvent<ApiType, [H160, AccountId32]>;
+      Claimed: AugmentedEvent<ApiType, [H160, AccountId32]>;
+      Withdrew: AugmentedEvent<ApiType, [H160, AccountId32]>;
       /**
        * Generic event
        **/
@@ -148,6 +151,12 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    palletCacheFaucet: {
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     player: {
       NewPlayerCreated: AugmentedEvent<ApiType, [AccountId32, U8aFixed]>;
       /**
@@ -156,8 +165,8 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     pool: {
-      Joined: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
-      Leaved: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesPoolTicketType]>;
+      Joined: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesTicketTicketType]>;
+      Leaved: AugmentedEvent<ApiType, [AccountId32, GafiPrimitivesTicketTicketType]>;
       /**
        * Generic event
        **/

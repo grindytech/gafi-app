@@ -2,10 +2,10 @@
 /* eslint-disable */
 
 import type { ApiTypes } from '@polkadot/api-base/types';
-import type { Bytes, Compact, Option, U256, U8aFixed, Vec, bool, u128, u32, u64, u8 } from '@polkadot/types-codec';
+import type { Bytes, Compact, Option, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { AnyNumber, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, Call, H160, H256, MultiAddress, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-import type { EthereumTransactionTransactionV2, GafiPrimitivesPoolTicketType, SpCoreVoid, SpFinalityGrandpaEquivocationProof } from '@polkadot/types/lookup';
+import type { EthereumTransactionTransactionV2, GafiPrimitivesTicketTicketType, SpCoreVoid, SpFinalityGrandpaEquivocationProof } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/submittable' {
   export interface AugmentedSubmittables<ApiType extends ApiTypes> {
@@ -173,8 +173,45 @@ declare module '@polkadot/api-base/types/submittable' {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
     gameCreator: {
+      /**
+       * Change the contract ownership
+       * 
+       * The origin must be Signed
+       * 
+       * Parameters:
+       * - `contract`: smart-contract address to change
+       * - `new_owner`: new contract owner
+       * 
+       * Emits `Changed` event when successful.
+       * 
+       * Weight: `O(1)`
+       **/
       changeOwnership: AugmentedSubmittable<(contract: H160 | string | Uint8Array, newOwner: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160, AccountId32]>;
+      /**
+       * Claim the contract as an origin contract creator
+       * 
+       * The origin must be Signed
+       * 
+       * Parameters:
+       * - `contract`: smart-contract address to claim
+       * 
+       * Emits `Claimed` event when successful.
+       * 
+       * Weight: `O(1)`
+       **/
       claimContract: AugmentedSubmittable<(contract: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160]>;
+      /**
+       * Withdraw the ownership
+       * 
+       * The origin must be Signed
+       * 
+       * Parameters:
+       * - `contract`: smart-contract address
+       * 
+       * Emits `Withdrew` event when successful.
+       * 
+       * Weight: `O(1)`
+       **/
       withdrawContract: AugmentedSubmittable<(contract: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160]>;
       /**
        * Generic tx
@@ -222,6 +259,12 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
+    palletCacheFaucet: {
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
     player: {
       createPlayer: AugmentedSubmittable<(name: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
       /**
@@ -240,7 +283,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * 
        * Weight: `O(1)`
        **/
-      join: AugmentedSubmittable<(ticket: GafiPrimitivesPoolTicketType | { Upfront: any } | { Staking: any } | { Sponsored: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [GafiPrimitivesPoolTicketType]>;
+      join: AugmentedSubmittable<(ticket: GafiPrimitivesTicketTicketType | { System: any } | { Custom: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [GafiPrimitivesTicketTicketType]>;
       /**
        * leave pool
        * 
@@ -311,7 +354,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * 
        * Weight: `O(1)`
        **/
-      createPool: AugmentedSubmittable<(targets: Vec<H160> | (H160 | string | Uint8Array)[], value: u128 | AnyNumber | Uint8Array, discount: u8 | AnyNumber | Uint8Array, txLimit: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<H160>, u128, u8, u32]>;
+      createPool: AugmentedSubmittable<(targets: Vec<H160> | (H160 | string | Uint8Array)[], value: u128 | AnyNumber | Uint8Array, discount: Permill | AnyNumber | Uint8Array, txLimit: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<H160>, u128, Permill, u32]>;
       killPoolName: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
       /**
        * New Targets

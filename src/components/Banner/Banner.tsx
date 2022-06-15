@@ -9,9 +9,10 @@ interface IProp {
   title: string;
   subTitle: string;
   bannerBg: string;
+  btnLink?: string;
 }
 
-const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg }) => {
+const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
   return (
     <Card
@@ -24,16 +25,21 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg }) => {
           {subTitle}
         </Text>
       </Box>
-      <Button
-        variant="white"
-        rightIcon={
-          <Icon color="primary">
-            <path fill="currentColor" d={mdiArrowRightThin} />
-          </Icon>
-        }
-      >
-        {t('MORE_DETAIL')}
-      </Button>
+      {btnLink && (
+        <Button
+          as="a"
+          variant="white"
+          target="_blank"
+          href={btnLink}
+          rightIcon={
+            <Icon color="primary">
+              <path fill="currentColor" d={mdiArrowRightThin} />
+            </Icon>
+          }
+        >
+          {t('MORE_DETAIL')}
+        </Button>
+      )}
     </Card>
   );
 };

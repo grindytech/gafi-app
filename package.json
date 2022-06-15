@@ -70,8 +70,6 @@
     "react-query": "^3.34.19",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",
-    "semantic-ui-css": "Semantic-Org/Semantic-UI-CSS#master",
-    "semantic-ui-react": "^2.1.2",
     "stream-browserify": "^3.0.0",
     "use-query-params": "^1.2.3",
     "use-wallet": "^0.13.4",

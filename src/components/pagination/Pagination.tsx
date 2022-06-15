@@ -1,6 +1,7 @@
 import { Button, Flex, Skeleton, SkeletonText, Text } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
+import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 interface IProps {
@@ -109,27 +110,29 @@ const Pagination = (props: IProps) => {
               {t('PREVIOUS')}
             </Button>
           )}
-          {pageButtons.map(button => (
-            <Button
-              ml={3}
-              size="sm"
-              disabled={button.pageNumber === '...'}
-              fontWeight="bold"
-              variant={
-                button.pageNumber === currentPage ? 'primary' : 'transparent'
-              }
-              onClick={() => {
-                if (
-                  button.pageNumber !== '...' &&
-                  button.pageNumber !== currentPage
-                ) {
-                  hanldleSwitchPage(parseInt(button.pageNumber.toString()));
+          {React.Children.toArray(
+            pageButtons.map(button => (
+              <Button
+                ml={3}
+                size="sm"
+                disabled={button.pageNumber === '...'}
+                fontWeight="bold"
+                variant={
+                  button.pageNumber === currentPage ? 'primary' : 'transparent'
                 }
-              }}
-            >
-              {button.pageNumber}
-            </Button>
-          ))}
+                onClick={() => {
+                  if (
+                    button.pageNumber !== '...' &&
+                    button.pageNumber !== currentPage
+                  ) {
+                    hanldleSwitchPage(parseInt(button.pageNumber.toString()));
+                  }
+                }}
+              >
+                {button.pageNumber}
+              </Button>
+            ))
+          )}
           {!!totalCount && (
             <Button
               ml={3}

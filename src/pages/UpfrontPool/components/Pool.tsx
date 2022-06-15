@@ -47,7 +47,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
       <Box sx={contentStyled}>
         <Heading as="h2" size="lg" pt={8} mb={4}>
           {t('DISCOUNT_FEE', {
-            discountPercent: pool.discount,
+            discountPercent: pool.discount / 10000,
           })}
         </Heading>
         <Box mb={16}>
@@ -68,7 +68,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           <Button
             onClick={pool.onLeave}
             isLoading={pool.isLoading}
-            variant="primary"
+            variant="secondary"
           >
             {t('LEAVE')}
           </Button>

@@ -60,8 +60,9 @@ const SponsoredPoolPage: React.FC = () => {
     },
     { enabled: !!currentAccount?.addressRaw }
   );
-  const sponsoredPools = sponsoredPoolData?.sponsoredPools
-    ?.nodes as SponsoredPool[];
+  const sponsoredPools = sponsoredPoolData
+    ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
+    : [];
   const totalCount = sponsoredPoolData?.sponsoredPools
     ?.totalCount as Scalars['Int'];
   const totalPage = Math.ceil(
@@ -79,6 +80,7 @@ const SponsoredPoolPage: React.FC = () => {
             title={t('POOL.SPONSORED_POOL')}
             subTitle={t('POOL_DESCRIPTION.SPONSORED_POOL')}
             bannerBg="/assets/layout/sponsored-banner-bg.png"
+            btnLink="https://wiki.gafi.network/learn/sponsored-pool"
           />
           <HStack justifyContent="flex-end">
             <Button

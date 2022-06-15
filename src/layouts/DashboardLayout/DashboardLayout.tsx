@@ -1,41 +1,55 @@
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text, Spinner, VStack, Grid } from '@chakra-ui/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AccountInfo from './components/AccountInfo';
 import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
-const DashboardLayout: React.FC = ({ children }) => (
-  <Box sx={dashBoardStyled}>
-    <SideBar />
-    <VStack
-      flex={10}
-      sx={{
-        background: 'greyBg',
-        display: 'flex',
-      }}
-    >
-      <Panel />
-      <Box
+import { useSubstrateState } from 'substrate-lib';
+
+const DashboardLayout: React.FC = ({ children }) => {
+  const { apiState, apiError, keyringState } = useSubstrateState();
+  const { t } = useTranslation();
+  if (apiState === 'ERROR') return message(apiError);
+  if (apiState !== 'READY') return loader(t('CONNECTING_TO_SUBSTRATE'));
+
+  if (keyringState !== 'READY') {
+    return loader(t('LOADING_ACCOUNTS_NOTIFY'));
+  }
+
+  return (
+    <Box sx={dashBoardStyled}>
+      <SideBar />
+      <VStack
+        flex={10}
         sx={{
+          background: 'greyBg',
           display: 'flex',
-          width: '100%',
-          height: '100%',
         }}
       >
+        <Panel />
         <Box
           sx={{
-            flex: 8,
-            px: 4,
+            display: 'flex',
+            width: '100%',
+            height: '100%',
           }}
         >
-          {children}
+          <Box
+            sx={{
+              flex: 8,
+              px: 4,
+            }}
+          >
+            {children}
+          </Box>
+          <AccountInfo />
         </Box>
-        <AccountInfo />
-      </Box>
-    </VStack>
-  </Box>
-);
+      </VStack>
+    </Box>
+  );
+};
 export default DashboardLayout;
 
 const dashBoardStyled = {
@@ -44,3 +58,46 @@ const dashBoardStyled = {
   background: 'greyBg',
   minHeight: '100vh',
 };
+
+const message = (errObj: any) => {
+  const { t } = useTranslation();
+  return (
+    <VStack
+      pt={20}
+      justifyContent="flex-start"
+      alignItems="center"
+      w="100vw"
+      h="100vh"
+      bg="greyBg"
+    >
+      <Text color="red.500">{t('ERROR_CONNECTING_TO_SUBTRATE')}</Text>
+      <Text color="red.500">
+        {t('CONNECTING_TO_WEBSOCKET_FAILED', {
+          websocketName: errObj.target.url,
+        })}
+      </Text>
+    </VStack>
+  );
+};
+
+const loader = (text: string) => (
+  <Flex
+    bg="greyBg"
+    justifyContent="center"
+    flexDirection="column"
+    alignItems="center"
+    w="100vw"
+    h="100vh"
+  >
+    <Text color="white">{text}</Text>
+
+    <Spinner
+      mt={4}
+      thickness="4px"
+      speed="0.65s"
+      emptyColor="gray.200"
+      color="blue.500"
+      size="xl"
+    />
+  </Flex>
+);

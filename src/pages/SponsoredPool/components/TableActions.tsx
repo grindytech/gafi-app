@@ -1,5 +1,5 @@
 import { Button, useToast } from '@chakra-ui/react';
-import { GafiPrimitivesPlayerTicketInfo } from '@polkadot/types/lookup';
+import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedStakingPool', currentAccount],
-    async (): Promise<GafiPrimitivesPlayerTicketInfo | undefined> => {
+    async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
       if (api && currentAccount?.address) {
         const res = await api.query.pool.tickets(currentAccount?.address);
         if (res.isSome) {
@@ -64,7 +64,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       const [account, options] = await getFromAcct(currentAccount);
       let txExecute;
       if (actionType === 'join') {
-        txExecute = api?.tx.pool.join({ Sponsored: poolId });
+        txExecute = api?.tx.pool.join({ Custom: { Sponsored: poolId } });
       } else {
         txExecute = api?.tx.pool.leave();
       }
@@ -102,8 +102,8 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
 
   return (
     <>
-      {joinedPoolInfo?.ticketType.isSponsored &&
-      joinedPoolInfo?.ticketType.asSponsored.toHuman() === poolId ? (
+      {joinedPoolInfo?.ticketType.isCustom &&
+      joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() === poolId ? (
         <Button
           size="sm"
           sx={{

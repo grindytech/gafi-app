@@ -146,8 +146,7 @@ export async function addAdditionalGas(
 const DeployContract = () => {
   const [contractAddresses, setContractAddresses] = useState<string[]>([]);
   const toast = useToast();
-  const { account, connect, isConnected, reset, balance, ethereum } =
-    useWallet();
+  const { account, isConnected, ethereum } = useWallet();
   const [txnFee, setTxnFee] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [contractFiles, setContractFiles] = useState<any>([]);
@@ -205,6 +204,7 @@ const DeployContract = () => {
         title={t('DEPLOY_CONTRACT')}
         subTitle={t('DEPLOY_CONTRACT_DESCRIPTION')}
         bannerBg="/assets/layout/deploycontract-banner.png"
+        btnLink="https://wiki.gafi.network/learn/demo"
       />
       <Card>
         <VStack minW="400px" gap={4}>
@@ -228,7 +228,20 @@ const DeployContract = () => {
                 <HStack mb={3}>
                   <Text>{shorten(contractAddress)}</Text>
                   <CopyToClipboard text={contractAddress}>
-                    <Icon cursor="pointer" ml={4} color="primary" w={5} h={5}>
+                    <Icon
+                      onClick={() => {
+                        toast({
+                          description: t('COPIED_TO_CLIPBOARD'),
+                          isClosable: true,
+                          status: 'success',
+                        });
+                      }}
+                      cursor="pointer"
+                      ml={4}
+                      color="primary"
+                      w={5}
+                      h={5}
+                    >
                       <path fill="currentColor" d={mdiContentCopy} />
                     </Icon>
                   </CopyToClipboard>
@@ -246,23 +259,6 @@ const DeployContract = () => {
           )}
 
           <VStack gap={2}>
-            {isConnected() ? (
-              account && (
-                <CopyToClipboard text={account.toString()}>
-                  <Button mb={4} variant="outline">
-                    {shorten(account.toString())}
-                  </Button>
-                </CopyToClipboard>
-              )
-            ) : (
-              <Button
-                mb={4}
-                variant="outline"
-                onClick={() => connect('injected')}
-              >
-                {t('CONNECT_METAMASK')}
-              </Button>
-            )}
             <Button
               size="sm"
               px={8}
