@@ -23,6 +23,19 @@ const Card: ComponentStyleConfig = {
       boxShadow: '3px 4px 10px rgba(0, 0, 0, 0.05)',
       borderRadius: 'var(--chakra-radii-2xl)',
     }),
+    dashed: (props: StyleFunctionProps) => ({
+      border: '1px dashed #B4CAFF',
+      bg: props.colorMode === 'dark' ? 'gray.700' : colors.greyBg,
+      width: '100%',
+      borderRadius: 'var(--chakra-radii-2xl)',
+    }),
+    solid: (props: StyleFunctionProps) => ({
+      bg: props.colorMode === 'dark' ? 'gray.700' : colors.greyBg,
+      width: '100%',
+      borderRadius: 'var(--chakra-radii-2xl)',
+      border: '2px dashed #EEF1FF',
+      boxShadow: 'none',
+    }),
   },
   defaultProps: {
     variant: 'panel',
@@ -162,6 +175,8 @@ export const theme = extendTheme(
             },
             variants: {
               solid: {
+                fontWeight: 'bold',
+                fontSize: 'md',
                 bg: `linear-gradient(97.48deg, ${colors.gradientColor1} -9.59%, ${colors.gradientColor2} 107.41%)`,
               },
               ghost: {
@@ -169,8 +184,7 @@ export const theme = extendTheme(
                 px: 10,
                 py: 5,
                 fontSize: 'md',
-
-                fontWeight: 'light',
+                fontWeight: 'normal',
                 '&:hover': {
                   bg: 'gray.200',
                 },

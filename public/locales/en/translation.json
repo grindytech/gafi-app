@@ -82,7 +82,9 @@
   "FAUCET":"Faucet",
   "HELLO":"Hello",
   "DASHBOARD":"Dashboard",
+  "MAPPING":"Mapping",
   "MAPPING_ACCOUNT":"Mapping Account",
+  "MAPPING_ACCOUNT_DESCRIPTION":"Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
   "UPFRONT_POOL":"Upfront Pool",
   "STACKING_POOL":"Staking Pool",
   "SPONSORED_POOL":"Sponsored Pool",
@@ -96,5 +98,10 @@
   "CANCEL":"Cancel",
   "COPIED_TO_CLIPBOARD":"Copied to clipboard",
   "PREVIOUS":"Previous",
-  "NEXT":"Next"
+  "NEXT":"Next",
+  "CONNECT_METAMASK":"Connect Metamask",
+  "FILE_FILE_NAME":"File: {{fileName}}",
+  "DEPLOY":"Deploy",
+  "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
+  "POLKADOT_ADDRESS":"Polkadot Address"
 }

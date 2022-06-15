@@ -10,16 +10,22 @@ import {
   Text,
   useToast,
   VStack,
+  Image,
+  Switch,
 } from '@chakra-ui/react';
-import { mdiArrowLeftRight } from '@mdi/js';
+import { mdiArrowLeftRight, mdiContentCopy } from '@mdi/js';
 import { u8aToHex } from '@polkadot/util';
 import React, { useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 import Web3 from 'web3';
 
-import { getFromAcct, handleTxError } from 'components/utils';
+import Banner from 'components/Banner';
+import Card from 'components/card/Card';
+import featureFlag from 'components/FeatureFlags';
+import { getFromAcct, handleTxError, shorten } from 'components/utils';
 import { useSubstrateState } from 'substrate-lib';
-import { useTranslation } from 'react-i18next';
 
 function MappingAccount() {
   const toast = useToast();
@@ -96,57 +102,174 @@ function MappingAccount() {
   };
 
   return (
-    <Box pt={{ base: '120px', md: '75px' }}>
-      <Text fontWeight="bold" fontSize="2xl" mb={5}>
-        Mapping Account
-      </Text>
-      <VStack width="full" gap={2}>
-        <FormControl>
-          <Checkbox
-            checked={isWithdraw}
-            defaultChecked={isWithdraw}
-            onChange={event => setIsWithdraw(event.target.checked)}
-          >
-            Withdraw
-          </Checkbox>
-        </FormControl>
-        <HStack gap={2} width="full">
-          <VStack width="full">
-            {isConnected() && (
-              <FormControl>
-                <FormLabel htmlFor="metamask">Metamask Address</FormLabel>
-                <Input id="metamask" type="text" value={account || ''} />
+    <>
+      {featureFlag.isDisplayNewDashboardUI ? (
+        <>
+          <Banner
+            title={t('MAPPING_ACCOUNT')}
+            subTitle={t('MAPPING_ACCOUNT_DESCRIPTION')}
+            bannerBg="/assets/layout/mapping-account-banner.png"
+          />
+          <Card>
+            <VStack width="full" gap={2}>
+              <HStack alignItems="flex-start" gap={2} width="full">
+                <Card
+                  border="2px solid #EEF1FF"
+                  boxShadow="none"
+                  py={12}
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  <HStack mb={6}>
+                    <Text>{t('CONNECT_METAMASK')}</Text>
+                    <Box>
+                      <Image src="/assets/layout/metamask.png" />
+                    </Box>
+                  </HStack>
+                  {isConnected() ? (
+                    account && (
+                      <>
+                        <CopyToClipboard text={account.toString()}>
+                          <Button
+                            mb={4}
+                            variant="ghost"
+                            w="full"
+                            rightIcon={
+                              <Icon w={5} h={5} color="primary">
+                                <path fill="currentColor" d={mdiContentCopy} />
+                              </Icon>
+                            }
+                          >
+                            {shorten(account.toString())}
+                          </Button>
+                        </CopyToClipboard>
+                        <Button
+                          mt={6}
+                          variant="primary"
+                          onClick={() => reset()}
+                        >
+                          {t('POLKADOT_ADDRESS')}
+                        </Button>
+                      </>
+                    )
+                  ) : (
+                    <Button
+                      mb={4}
+                      variant="ghost"
+                      w="full"
+                      onClick={() => connect('injected')}
+                    >
+                      {t('CONNECT_METAMASK')}
+                    </Button>
+                  )}
+                </Card>
+                <Card
+                  border="2px solid #EEF1FF"
+                  boxShadow="none"
+                  py={12}
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  <HStack mb={6}>
+                    <Text>{t('POLKADOT_ADDRESS')}</Text>
+                    <Box>
+                      <Image src="/assets/layout/polkadot.png" />
+                    </Box>
+                  </HStack>
+                  {currentAccount && (
+                    <CopyToClipboard text={currentAccount.address.toString()}>
+                      <Button
+                        mb={4}
+                        variant="ghost"
+                        w="full"
+                        rightIcon={
+                          <Icon w={5} h={5} color="primary">
+                            <path fill="currentColor" d={mdiContentCopy} />
+                          </Icon>
+                        }
+                      >
+                        {shorten(currentAccount.address.toString())}
+                      </Button>
+                    </CopyToClipboard>
+                  )}
+                </Card>
+              </HStack>
+              <FormControl
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Switch
+                  checked={isWithdraw}
+                  defaultChecked
+                  onChange={event => setIsWithdraw(event.target.checked)}
+                  size="md"
+                  id="isWithdraw"
+                />
+                <FormLabel htmlFor="isWithdraw" ml={4} mb={0}>
+                  {t('WITHDRAW')}
+                </FormLabel>
               </FormControl>
-            )}
-            {isConnected() ? (
-              <Button onClick={() => reset()}>Disconnect Metamask</Button>
-            ) : (
-              <Button onClick={() => connect('injected')}>
-                Connect Metamask
+              <Button px={20} onClick={onWithdraw} isLoading={isLoading}>
+                {t('MAPPING')}
               </Button>
-            )}
-          </VStack>
-          <Box alignSelf="center">
-            <Icon color="black" width="30px" height="30px">
-              <path fill="currentColor" d={mdiArrowLeftRight} />
-            </Icon>
-          </Box>
-          <VStack width="full" alignSelf="flex-start">
+            </VStack>
+          </Card>
+        </>
+      ) : (
+        <Box pt={{ base: '120px', md: '75px' }}>
+          <Text fontWeight="bold" fontSize="2xl" mb={5}>
+            Mapping Account
+          </Text>
+          <VStack width="full" gap={2}>
             <FormControl>
-              <FormLabel htmlFor="polkadot">Polkadot Address</FormLabel>
-              <Input
-                id="polkadot"
-                type="text"
-                value={currentAccount?.address || ''}
-              />
+              <Checkbox
+                checked={isWithdraw}
+                defaultChecked={isWithdraw}
+                onChange={event => setIsWithdraw(event.target.checked)}
+              >
+                Withdraw
+              </Checkbox>
             </FormControl>
+            <HStack gap={2} width="full">
+              <VStack width="full">
+                {isConnected() && (
+                  <FormControl>
+                    <FormLabel htmlFor="metamask">Metamask Address</FormLabel>
+                    <Input id="metamask" type="text" value={account || ''} />
+                  </FormControl>
+                )}
+                {isConnected() ? (
+                  <Button onClick={() => reset()}>Disconnect Metamask</Button>
+                ) : (
+                  <Button onClick={() => connect('injected')}>
+                    Connect Metamask
+                  </Button>
+                )}
+              </VStack>
+              <Box alignSelf="center">
+                <Icon color="black" width="30px" height="30px">
+                  <path fill="currentColor" d={mdiArrowLeftRight} />
+                </Icon>
+              </Box>
+              <VStack width="full" alignSelf="flex-start">
+                <FormControl>
+                  <FormLabel htmlFor="polkadot">Polkadot Address</FormLabel>
+                  <Input
+                    id="polkadot"
+                    type="text"
+                    value={currentAccount?.address || ''}
+                  />
+                </FormControl>
+              </VStack>
+            </HStack>
+            <Button onClick={onWithdraw} isLoading={isLoading}>
+              Map
+            </Button>
           </VStack>
-        </HStack>
-        <Button onClick={onWithdraw} isLoading={isLoading}>
-          Map
-        </Button>
-      </VStack>
-    </Box>
+        </Box>
+      )}
+    </>
   );
 }
 
