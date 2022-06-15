@@ -196,7 +196,12 @@ const AccountInfo = () => {
           chainDecimal
         )}
       </Text>
-      <Button onClick={onFaucet} isLoading={isLoading} sx={faucetButtonStyled}>
+      <Button
+        mt={20}
+        onClick={onFaucet}
+        isLoading={isLoading}
+        sx={faucetButtonStyled}
+      >
         {t('FAUCET')}
       </Button>
     </Card>
@@ -206,12 +211,11 @@ const AccountInfo = () => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  height: '50vh',
   flex: 2,
   alignItems: 'center',
   bg: 'white',
   display: 'flex',
-  justifyContent: 'space-evenly',
+  justifyContent: 'flex-start',
 };
 
 const titleStyled = {

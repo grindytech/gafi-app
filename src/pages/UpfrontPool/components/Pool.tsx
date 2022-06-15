@@ -34,7 +34,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
   const { chainDecimal } = useSubstrateState();
   const { t } = useTranslation();
   return (
-    <Card sx={{ ...sx, p: 0 }}>
+    <Card sx={{ ...sx, p: 0, overflow: 'hidden' }}>
       <Box
         sx={{
           ...bannerStyled,

@@ -32,6 +32,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         <Box
           sx={{
             display: 'flex',
+            alignItems: 'flex-start',
             width: '100%',
             height: '100%',
           }}
@@ -56,6 +57,7 @@ const dashBoardStyled = {
   p: 4,
   display: 'flex',
   background: 'greyBg',
+  alignItems: 'flex-start',
   minHeight: '100vh',
 };
 

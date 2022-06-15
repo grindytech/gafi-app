@@ -39,8 +39,7 @@ const SideBar = () => {
           ))
         )}
       </Box>
-      <Box sx={{ flex: 1, background: 'red' }} />
-      <Text opacity="inherit" fontSize="sm">
+      <Text mt={20} opacity="inherit" fontSize="sm">
         &copy; copyright by cryptoviet
       </Text>
     </Card>
@@ -50,7 +49,7 @@ const SideBar = () => {
 export default SideBar;
 
 const sidebarStyled = {
-  height: '80vh',
+  minWidth: '20vw',
   flex: 2,
   alignItems: 'center',
   py: 10,

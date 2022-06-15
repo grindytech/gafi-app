@@ -78,46 +78,48 @@ const Dashboard = () => {
   return (
     <>
       {featureFlag.isDisplayNewDashboardUI ? (
-        <HStack spacing={4} alignItems="flex-start">
-          <VStack spacing={4} flex={6}>
-            <HStack spacing={4} w="full">
-              <BlockInfo />
-              <BlockInfo isFinalized />
-            </HStack>
-            <HStack spacing={4} w="full">
-              <Card h="full" pb={0} flex={1}>
-                <VStack alignItems="flex-start">
-                  <Text mb={4} fontWeight="bold" color="primary">
-                    {nodeInfo?.nodeName}
-                  </Text>
-                  <Text fontSize="sm" fontWeight="light">
-                    {nodeInfo?.chain}
-                  </Text>
-                  <Text color="black">{socket}</Text>
-                  <HStack w="full" py={5} borderTop="1px solid #EEF1FF">
-                    <Icon color="primary">
-                      <path fill="currentColor" d={mdiCogOutline} />
-                    </Icon>
-                    <Text>v{nodeInfo?.nodeVersion}</Text>
-                  </HStack>
-                </VStack>
-              </Card>
-              <Card flex={1} h="full">
-                <VStack alignItems="flex-start">
-                  <Text mb={4} fontWeight="bold" color="primary">
-                    {t('METADATA')}
-                  </Text>
-                  <Text fontSize="sm" fontWeight="light">
-                    v{metadata?.version}
-                  </Text>
-                  <Button onClick={onOpen} w="full" variant="primary">
-                    {t('SHOW_METADATA')}
-                  </Button>
-                </VStack>
-              </Card>
-            </HStack>
+        <>
+          <VStack alignItems="flex-start">
+            <VStack spacing={4} w="full">
+              <HStack spacing={4} w="full">
+                <BlockInfo />
+                <BlockInfo isFinalized />
+              </HStack>
+              <HStack spacing={4} w="full">
+                <Card pb={0} flex={1}>
+                  <VStack alignItems="flex-start">
+                    <Text mb={4} fontWeight="bold" color="primary">
+                      {nodeInfo?.nodeName}
+                    </Text>
+                    <Text fontSize="sm" fontWeight="light">
+                      {nodeInfo?.chain}
+                    </Text>
+                    <Text color="black">{socket}</Text>
+                    <HStack w="full" py={5} borderTop="1px solid #EEF1FF">
+                      <Icon color="primary">
+                        <path fill="currentColor" d={mdiCogOutline} />
+                      </Icon>
+                      <Text>v{nodeInfo?.nodeVersion}</Text>
+                    </HStack>
+                  </VStack>
+                </Card>
+                <Card flex={1}>
+                  <VStack alignItems="flex-start">
+                    <Text mb={4} fontWeight="bold" color="primary">
+                      {t('METADATA')}
+                    </Text>
+                    <Text mb={4} fontSize="sm" fontWeight="light">
+                      v{metadata?.version}
+                    </Text>
+                    <Button onClick={onOpen} w="full" variant="primary">
+                      {t('SHOW_METADATA')}
+                    </Button>
+                  </VStack>
+                </Card>
+              </HStack>
+            </VStack>
+            <EventInfo />
           </VStack>
-          <EventInfo />
           <Modal
             isOpen={isOpen}
             onClose={onClose}
@@ -135,7 +137,7 @@ const Dashboard = () => {
               </ModalBody>
             </ModalContent>
           </Modal>
-        </HStack>
+        </>
       ) : (
         <Box pt={{ base: '120px', md: '75px' }}>
           <VStack alignItems="stretch" gap={3}>
