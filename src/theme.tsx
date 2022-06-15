@@ -1,4 +1,4 @@
-import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { color, ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode, createBreakpoints } from '@chakra-ui/theme-tools';
 
