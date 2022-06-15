@@ -173,8 +173,8 @@ function Main() {
 }
 
 function PageContent(){
-  const getRoutes = (routes: any) =>
-    routes.map((prop: any) => {
+  const getRoutes = (route) =>
+    routes.map((prop) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }

@@ -16,12 +16,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { acctAddr, shorten } from '../utils';
-
 import ModalTransferERC20Token from './ModalTransferERC20Token';
 import ModalTransferGaki from './ModalTransferGaki';
 
 import featureFlags from 'components/FeatureFlags';
+import { acctAddr, shorten } from 'components/utils';
 
 enum UserMenuModal {
   transferGaki = 'transferGaki',
@@ -45,6 +44,7 @@ const UserMenu: React.FC<IProps> = ({
   const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState('');
+
   return (
     <Box p={1}>
       <Menu>
