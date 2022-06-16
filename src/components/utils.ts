@@ -24,7 +24,7 @@ export const getFromAcct = async (
 
 export const shorten = (hash: string) => {
   const n = hash.length;
-  return `${hash.substr(0, 10)}...${hash.substr(n - 6)}`;
+  return `${hash.substr(0, 6)}...${hash.substr(n - 6)}`;
 };
 
 export const handleTxError = (events: any, api: any, toast: any) => {
