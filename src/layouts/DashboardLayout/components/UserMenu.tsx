@@ -33,29 +33,11 @@ const UserMenu: React.FC = () => {
                 background: 'url(/assets/layout/actionBg.png) no-repeat center',
               }}
             />
-            <MenuList
-              sx={{
-                bg: 'linear-gradient(227.25deg, #3860FF 2.24%, #56CCF2 127.36%)',
-                border: 'none',
-              }}
-              w="300px"
-              borderRadius="32px"
-              p={8}
-            >
+            <MenuList>
               <MenuItem
-                _focus={{ bg: 'rgba(255, 255, 255, 0.25)', fontWeight: 'bold' }}
-                sx={{
-                  py: 3,
-                  px: 8,
-                  m: 0,
-                  borderRadius: '40px',
-                  color: 'white',
-                }}
                 onClick={() => {
                   setModalOpen(UserMenuModal.transferERC20Token);
                 }}
-                borderRadius="8px"
-                mb={3}
               >
                 <Text>{t('TRANSFER_ERC20_TOKEN')}</Text>
               </MenuItem>

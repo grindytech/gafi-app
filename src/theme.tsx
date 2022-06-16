@@ -110,6 +110,7 @@ const colors = {
   greyBg: '#F5F7FB',
   gradientColor1: '#56CCF2',
   gradientColor2: '#3860FF',
+  btnHover: 'rgba(255, 255, 255, 0.25)',
 };
 
 export const theme = extendTheme(
@@ -232,6 +233,25 @@ export const theme = extendTheme(
             sizes: {},
             variants: {},
             defaultProps: {},
+          },
+          Menu: {
+            baseStyle: () => ({
+              list: {
+                bg: `linear-gradient(227.25deg, ${colors.gradientColor2} 2.24%, ${colors.gradientColor1} 127.36%)`,
+                border: 'none',
+                borderRadius: '3xl',
+                p: { base: 2, md: 6, xl: 8 },
+              },
+              item: {
+                _focus: { bg: colors.btnHover, fontWeight: 'bold' },
+                py: { base: 2, xl: 3 },
+                px: { base: 2, md: 6, xl: 8 },
+                m: 0,
+                borderRadius: '3xl',
+                color: 'white',
+                mb: { base: 1, xl: 2 },
+              },
+            }),
           },
         },
       }
