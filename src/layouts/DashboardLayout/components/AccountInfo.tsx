@@ -133,6 +133,7 @@ const AccountInfo = () => {
         <CopyToClipboard text={acctAddr(currentAccount)}>
           <Button
             mb={4}
+            justifyContent="center"
             sx={{ width: '100%' }}
             variant="ghost"
             onClick={() => {
@@ -142,11 +143,11 @@ const AccountInfo = () => {
                 status: 'success',
               });
             }}
-            rightIcon={
-              <Icon w={5} h={5} color="primary">
-                <path fill="currentColor" d={mdiWalletOutline} />
-              </Icon>
-            }
+            // rightIcon={
+            //   <Icon w={5} h={5} color="primary">
+            //     <path fill="currentColor" d={mdiWalletOutline} />
+            //   </Icon>
+            // }
           >
             <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
             {shorten(acctAddr(currentAccount))}
@@ -160,6 +161,7 @@ const AccountInfo = () => {
             <Button
               sx={{ width: '100%' }}
               variant="ghost"
+              justifyContent="center"
               onClick={() => {
                 toast({
                   description: t('COPIED_TO_CLIPBOARD'),
@@ -167,11 +169,11 @@ const AccountInfo = () => {
                   status: 'success',
                 });
               }}
-              rightIcon={
-                <Icon w={5} h={5} color="primary">
-                  <path fill="currentColor" d={mdiWalletOutline} />
-                </Icon>
-              }
+              // rightIcon={
+              //   <Icon w={5} h={5} color="primary">
+              //     <path fill="currentColor" d={mdiWalletOutline} />
+              //   </Icon>
+              // }
             >
               <Image w={5} h={5} src="/assets/layout/metamask.png" mr={2} />
               {shorten(account.toString())}

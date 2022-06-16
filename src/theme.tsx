@@ -6,7 +6,7 @@ import featureFlags from './components/FeatureFlags';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    p: 8,
+    p: { base: 2, lg: 4, xl: 6 },
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
