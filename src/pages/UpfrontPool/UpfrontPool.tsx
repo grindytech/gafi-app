@@ -74,7 +74,7 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Basic'),
       onLeave: () => onLeavePool('Basic'),
       isLoading: selectedPool === 'Basic',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isBasic,
+      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.type === 'Basic',
     },
     {
       poolType: t('MEDIUM'),

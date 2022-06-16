@@ -60,7 +60,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
 
         <Td textAlign="center">
           <Text fontWeight="normal" fontSize="md" color={textColor}>
-            {discount} %
+            {discount / 10000} %
           </Text>
         </Td>
         <Td textAlign="center">
