@@ -152,7 +152,6 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{t('TRANSFER_ERC20_TOKEN')}</ModalHeader>
-        <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
             <FormControl mb={4}>

@@ -253,6 +253,29 @@ export const theme = extendTheme(
               },
             }),
           },
+          Modal: {
+            baseStyle: () => ({
+              dialog: {
+                borderRadius: '2xl',
+                p: 8,
+              },
+              header: {
+                p: 0,
+                color: colors.primary,
+                mb: 10,
+                fontWeight: 'bold',
+                fontSize: '2xl',
+                fontHeight: 9,
+              },
+              body: {
+                p: 0,
+              },
+              footer: {
+                p: 0,
+                mt: 10,
+              },
+            }),
+          },
         },
       }
     : {
