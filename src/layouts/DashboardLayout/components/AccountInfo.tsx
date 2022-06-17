@@ -1,7 +1,24 @@
-import { Box, Button, Icon, Text, useToast, Image } from '@chakra-ui/react';
-import { mdiWalletOutline } from '@mdi/js';
+import {
+  Button,
+  Flex,
+  Icon,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useTheme,
+  useToast,
+} from '@chakra-ui/react';
+import { mdiSwapVerticalBold } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
-import { BN, formatBalance } from '@polkadot/util';
 import { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
@@ -15,19 +32,24 @@ import {
   handleTxError,
   shorten,
 } from 'components/utils';
+import useMessageToast from 'hooks/useMessageToast';
+import { usePolkadotBalance } from 'hooks/useUserBalance';
 import { useSubstrate } from 'substrate-lib';
 
 const AccountInfo = () => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
   const { account, connect, isConnected } = useWallet();
   const {
     setCurrentAccount,
-    state: { keyring, currentAccount, api, chainDecimal },
+    state: { keyring, currentAccount, api },
   } = useSubstrate();
-  const [accountBalance, setAccountBalance] = useState(new BN(0));
+
+  const { polkadotFormatedBalance } = usePolkadotBalance();
   const pairs = keyring?.getPairs() || [];
+  const accountList = pairs.map((key: KeyringPair) => acctAddr(key));
   const setPolkadotAccount = useCallback(async () => {
     const response = await api?.query.proofAddressMapping.h160Mapping(account);
     const polkadotAccount = response?.toHuman() || '';
@@ -43,30 +65,24 @@ const AccountInfo = () => {
     }
   }, [account, api, keyring]);
 
-  const setBalanceAccount = useCallback(async () => {
-    let unsubscribe: any;
-    if (currentAccount) {
-      try {
-        unsubscribe = await api?.query.system.account(
-          acctAddr(currentAccount),
-          (balance: any) => {
-            setAccountBalance(balance.data.free);
-          }
-        );
-      } catch (error: any) {
-        toast({
-          description: error.toString(),
-          isClosable: true,
-          status: 'error',
-        });
-      }
-      return () => unsubscribe && unsubscribe();
+  const hanldeSwitchAccount = (index: number) => {
+    try {
+      setCurrentAccount(pairs[index]);
+      toast({
+        description: t('SWITCH_TO_ACCOUNT_SUCCESSFUL', {
+          accountAddress: acctAddr(pairs[index]),
+        }),
+        isClosable: true,
+        status: 'success',
+      });
+    } catch (error) {
+      toast({
+        description: t('SWITCH_ACCOUNT_FAIL'),
+        isClosable: true,
+        status: 'error',
+      });
     }
-  }, [api, currentAccount]);
-
-  useEffect(() => {
-    setBalanceAccount();
-  }, [setBalanceAccount]);
+  };
 
   useEffect(() => {
     setPolkadotAccount();
@@ -129,83 +145,107 @@ const AccountInfo = () => {
   return (
     <Card sx={AccountInfoStyled}>
       <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
-      {currentAccount && (
-        <CopyToClipboard text={acctAddr(currentAccount)}>
-          <Button
-            mb={4}
-            justifyContent="center"
-            sx={{ width: '100%' }}
-            variant="ghost"
-            onClick={() => {
-              toast({
-                description: t('COPIED_TO_CLIPBOARD'),
-                isClosable: true,
-                status: 'success',
-              });
-            }}
-            // rightIcon={
-            //   <Icon w={5} h={5} color="primary">
-            //     <path fill="currentColor" d={mdiWalletOutline} />
-            //   </Icon>
-            // }
-          >
+
+      <Tabs variant="soft-rounded">
+        <TabList>
+          <Tab>
             <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
-            {shorten(acctAddr(currentAccount))}
-          </Button>
-        </CopyToClipboard>
-      )}
+            {t('POLKADOT')}
+          </Tab>
+          <Tab>
+            <Image w={5} h={5} src="/assets/layout/metamask.png" mr={2} />
+            {t('METAMASK')}
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            {currentAccount && (
+              <Flex mb={4} w="full" alignItems="center">
+                <CopyToClipboard text={acctAddr(currentAccount)}>
+                  <Button
+                    flex={10}
+                    justifyContent="center"
+                    w="full"
+                    px={0}
+                    variant="outline"
+                    onClick={copySuccessToast}
+                  >
+                    {shorten(acctAddr(currentAccount))}
+                  </Button>
+                </CopyToClipboard>
 
-      {isConnected() ? (
-        account && (
-          <CopyToClipboard text={account.toString()}>
+                <Menu>
+                  <MenuButton
+                    sx={{
+                      '&:hover': { opacity: 0.8 },
+                    }}
+                    ml={2}
+                  >
+                    <Icon color="primary">
+                      <path fill="currentColor" d={mdiSwapVerticalBold} />
+                    </Icon>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuOptionGroup
+                      defaultValue={acctAddr(currentAccount)}
+                      type="radio"
+                    >
+                      {accountList?.map((account: string, index: number) => (
+                        <MenuItemOption
+                          key={account}
+                          onClick={() => {
+                            hanldeSwitchAccount(index);
+                          }}
+                          value={account}
+                        >
+                          {shorten(account)}
+                        </MenuItemOption>
+                      ))}
+                    </MenuOptionGroup>
+                  </MenuList>
+                </Menu>
+              </Flex>
+            )}
+
+            <Text textAlign="center" sx={balanceStyled}>
+              {polkadotFormatedBalance}
+            </Text>
             <Button
-              sx={{ width: '100%' }}
-              variant="ghost"
-              justifyContent="center"
-              onClick={() => {
-                toast({
-                  description: t('COPIED_TO_CLIPBOARD'),
-                  isClosable: true,
-                  status: 'success',
-                });
-              }}
-              // rightIcon={
-              //   <Icon w={5} h={5} color="primary">
-              //     <path fill="currentColor" d={mdiWalletOutline} />
-              //   </Icon>
-              // }
+              mt={20}
+              onClick={onFaucet}
+              isLoading={isLoading}
+              sx={faucetButtonStyled}
             >
-              <Image w={5} h={5} src="/assets/layout/metamask.png" mr={2} />
-              {shorten(account.toString())}
+              {t('FAUCET')}
             </Button>
-          </CopyToClipboard>
-        )
-      ) : (
-        <Button
-          w="full"
-          mb={4}
-          variant="outline"
-          onClick={() => connect('injected')}
-        >
-          {t('CONNECT_METAMASK')}
-        </Button>
-      )}
-
-      <Text sx={balanceStyled}>
-        {formatBalance(
-          accountBalance,
-          { withSi: false, forceUnit: '-' },
-          chainDecimal
-        )}
-      </Text>
-      <Button
-        mt={20}
-        onClick={onFaucet}
-        isLoading={isLoading}
-        sx={faucetButtonStyled}
-      >
-        {t('FAUCET')}
-      </Button>
+          </TabPanel>
+          <TabPanel>
+            {isConnected() ? (
+              account && (
+                <CopyToClipboard text={account.toString()}>
+                  <Button
+                    w="full"
+                    variant="outline"
+                    justifyContent="center"
+                    onClick={copySuccessToast}
+                  >
+                    {shorten(account.toString())}
+                  </Button>
+                </CopyToClipboard>
+              )
+            ) : (
+              <Button
+                w="full"
+                mb={4}
+                variant="outline"
+                onClick={() => connect('injected')}
+              >
+                {t('CONNECT_METAMASK')}
+              </Button>
+            )}
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Card>
   );
 };

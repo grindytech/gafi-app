@@ -41,6 +41,7 @@ import featureFlag from 'components/FeatureFlags';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { shorten } from 'components/utils';
 import { SponsoredPool } from 'graphQL/generates';
+import useMessageToast from 'hooks/useMessageToast';
 
 export interface ISponsoredPool {
   id: string | undefined;
@@ -68,7 +69,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
   const { title, captions, sponsoredPools, children, limitRow, isLoading } =
     props;
-  const toast = useToast();
+  const { copySuccessToast } = useMessageToast();
   const textColor = useColorModeValue('gray.700', 'white');
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
   const SkeletonArray = new Array(limitRow).fill(0);
@@ -204,13 +205,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                       color="white"
                       fontSize="md"
                       fontWeight="bold"
-                      onClick={() => {
-                        toast({
-                          description: t('COPIED_TO_CLIPBOARD'),
-                          isClosable: true,
-                          status: 'success',
-                        });
-                      }}
+                      onClick={copySuccessToast}
                     >
                       <CopyToClipboard text={target}>
                         <Icon aria-label="copy-button" color="white">
