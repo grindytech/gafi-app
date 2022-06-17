@@ -162,12 +162,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
 
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
-      <ModalOverlay
-        bg="none"
-        backdropFilter="auto"
-        backdropInvert="80%"
-        backdropBlur="2px"
-      />
+      <ModalOverlay />
       <ModalContent
         sx={{
           borderRadius: '16px',

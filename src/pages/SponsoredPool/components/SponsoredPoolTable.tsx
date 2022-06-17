@@ -180,12 +180,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         scrollBehavior="inside"
         size="xl"
       >
-        <ModalOverlay
-          bg="none"
-          backdropFilter="auto"
-          backdropInvert="80%"
-          backdropBlur="2px"
-        />
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader mb={10} fontWeight="bold" color="primary" fontSize="2xl">
             {selectedPool?.id &&

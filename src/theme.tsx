@@ -243,13 +243,33 @@ export const theme = extendTheme(
                 p: { base: 2, md: 6, xl: 8 },
               },
               item: {
-                _focus: { bg: colors.btnHover, fontWeight: 'bold' },
+                _focus: { bg: colors.btnHover },
                 py: { base: 2, xl: 3 },
                 px: { base: 2, md: 6, xl: 8 },
                 m: 0,
                 borderRadius: '3xl',
                 color: 'white',
                 mb: { base: 1, xl: 2 },
+              },
+            }),
+          },
+          Tabs: {
+            baseStyle: () => ({
+              root: {
+                w: 'full',
+              },
+              tab: {
+                bg: 'transparent',
+                fontWeight: 'bold',
+                color: colors.primary,
+                lineHeight: 6,
+              },
+              tablist: {
+                justifyContent: 'space-evenly',
+              },
+              tabpanel: {
+                p: 0,
+                mt: 8,
               },
             }),
           },

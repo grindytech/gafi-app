@@ -122,7 +122,7 @@ function MappingAccount() {
                   alignItems="center"
                 >
                   <HStack mb={6}>
-                    <Text>{t('CONNECT_METAMASK')}</Text>
+                    <Text>{t('METAMASK_ADDRESS')}</Text>
                     <Box>
                       <Image src="/assets/layout/metamask.png" />
                     </Box>
