@@ -20,6 +20,7 @@ import { ContractSendMethod } from 'web3-eth-contract';
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
+import useMessageToast from 'hooks/useMessageToast';
 
 interface DropzoneProps {
   onUploadFile: React.Dispatch<React.SetStateAction<any>>;
@@ -146,6 +147,7 @@ export async function addAdditionalGas(
 const DeployContract = () => {
   const [contractAddresses, setContractAddresses] = useState<string[]>([]);
   const toast = useToast();
+  const { CopySuccessToast } = useMessageToast();
   const { account, isConnected, ethereum } = useWallet();
   const [txnFee, setTxnFee] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -230,11 +232,7 @@ const DeployContract = () => {
                   <CopyToClipboard text={contractAddress}>
                     <Icon
                       onClick={() => {
-                        toast({
-                          description: t('COPIED_TO_CLIPBOARD'),
-                          isClosable: true,
-                          status: 'success',
-                        });
+                        CopySuccessToast();
                       }}
                       cursor="pointer"
                       ml={4}

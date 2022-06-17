@@ -9,6 +9,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text,
   useDisclosure,
   VStack,
@@ -85,8 +86,8 @@ const Dashboard = () => {
                 <BlockInfo />
                 <BlockInfo isFinalized />
               </HStack>
-              <HStack spacing={4} w="full">
-                <Card pb={0} flex={1}>
+              <Stack direction="row" spacing={4} w="full">
+                <Card>
                   <VStack alignItems="flex-start">
                     <Text mb={4} fontWeight="bold" color="primary">
                       {nodeInfo?.nodeName}
@@ -103,8 +104,12 @@ const Dashboard = () => {
                     </HStack>
                   </VStack>
                 </Card>
-                <Card flex={1}>
-                  <VStack alignItems="flex-start">
+                <Card>
+                  <VStack
+                    h="full"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
                     <Text mb={4} fontWeight="bold" color="primary">
                       {t('METADATA')}
                     </Text>
@@ -116,7 +121,7 @@ const Dashboard = () => {
                     </Button>
                   </VStack>
                 </Card>
-              </HStack>
+              </Stack>
             </VStack>
             <EventInfo />
           </VStack>

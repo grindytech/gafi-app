@@ -25,6 +25,7 @@ import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
 import { getFromAcct, handleTxError, shorten } from 'components/utils';
+import useMessageToast from 'hooks/useMessageToast';
 import { useSubstrateState } from 'substrate-lib';
 
 function MappingAccount() {
@@ -34,6 +35,7 @@ function MappingAccount() {
   const { api, currentAccount } = useSubstrateState();
   const [isWithdraw, setIsWithdraw] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const { CopySuccessToast } = useMessageToast();
 
   // @ts-ignore
   const txResHandler = ({ status, events }) => {
@@ -122,7 +124,7 @@ function MappingAccount() {
                   alignItems="center"
                 >
                   <HStack mb={6}>
-                    <Text>{t('CONNECT_METAMASK')}</Text>
+                    <Text>{t('METAMASK_ADDRESS')}</Text>
                     <Box>
                       <Image src="/assets/layout/metamask.png" />
                     </Box>
@@ -135,11 +137,7 @@ function MappingAccount() {
                             mb={4}
                             variant="ghost"
                             onClick={() => {
-                              toast({
-                                description: t('COPIED_TO_CLIPBOARD'),
-                                isClosable: true,
-                                status: 'success',
-                              });
+                              CopySuccessToast();
                             }}
                             w="full"
                             rightIcon={
@@ -191,11 +189,7 @@ function MappingAccount() {
                         variant="ghost"
                         w="full"
                         onClick={() => {
-                          toast({
-                            description: t('COPIED_TO_CLIPBOARD'),
-                            isClosable: true,
-                            status: 'success',
-                          });
+                          CopySuccessToast();
                         }}
                         rightIcon={
                           <Icon w={5} h={5} color="primary">
