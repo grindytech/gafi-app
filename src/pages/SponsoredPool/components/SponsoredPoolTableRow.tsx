@@ -72,7 +72,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
           <Text fontWeight="normal" fontSize="md" color={textColor}>
             {formatBalance(
               amount,
-              { withSi: true, forceUnit: '-', withUnit: 'GAKI' },
+              { withSi: true, forceUnit: '-', withUnit: '' },
               chainDecimal || 18
             )}
           </Text>

@@ -201,6 +201,12 @@ export const theme = extendTheme(
               primary: {
                 bg: colors.primary,
                 color: 'white',
+                _hover: {
+                  _disabled: {
+                    opacity: 0.4,
+                    bg: 'primary',
+                  },
+                },
               },
               secondary: {
                 bg: colors.secondary,
@@ -216,11 +222,20 @@ export const theme = extendTheme(
                 '&:hover': {
                   bg: colors.primary,
                   color: 'white',
+                  _disabled: {
+                    opacity: 0.4,
+                    border: `2px solid primary`,
+                    color: 'primary',
+                  },
                 },
               },
               transparent: {
                 bg: 'transparent',
                 color: 'black',
+              },
+              delete: {
+                bg: 'red.500',
+                color: 'white',
               },
             },
             defaultProps: {
@@ -278,7 +293,7 @@ export const theme = extendTheme(
                 lineHeight: 6,
               },
               tablist: {
-                justifyContent: 'space-evenly',
+                justifyContent: 'flex-start',
                 '.chakra-tabs__tab': {
                   _selected: { color: 'primary', bg: 'greyBg' },
                 },

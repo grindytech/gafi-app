@@ -1,5 +1,8 @@
 import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
-import { GafiPrimitivesTicket } from '@polkadot/types/lookup';
+import {
+  GafiPrimitivesTicket,
+  GafiPrimitivesTicketTicketInfo,
+} from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
@@ -26,10 +29,10 @@ const JoinPool = () => {
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const [selectedPool, setSelectedPool] = useState('');
   const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedUpfrontPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicket | undefined> => {
+    ['getJoinedPool', currentAccount],
+    async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
       if (api) {
-        const res = await api.query.upfrontPool.tickets(
+        const res = await api.query.pool.tickets(
           currentAccount?.address as string
         );
         if (res.isSome) {
@@ -42,6 +45,31 @@ const JoinPool = () => {
       enabled: !!currentAccount,
     }
   );
+
+  const { data: joinedUpfrontPoolInfo, refetch: refetchJoinedUpfrontPoolInfo } =
+    useQuery(
+      ['getJoinedUpfrontPool', currentAccount],
+      async (): Promise<GafiPrimitivesTicket | undefined> => {
+        if (api) {
+          const res = await api.query.upfrontPool.tickets(
+            currentAccount?.address as string
+          );
+          if (res.isSome) {
+            return res.unwrap();
+          }
+          return undefined;
+        }
+      },
+      {
+        enabled: !!currentAccount,
+      }
+    );
+
+  const isJoinedPool = !!joinedPoolInfo?.ticketType.toHuman();
+  const isJoinedUpfrontPool =
+    !!joinedPoolInfo &&
+    joinedPoolInfo.ticketType.isSystem &&
+    joinedPoolInfo.ticketType.asSystem.isUpfront;
 
   const { data: poolInfo } = useQuery(
     'getPoolInfo',
@@ -58,7 +86,8 @@ const JoinPool = () => {
       }
     }
   );
-  const pools = [
+
+  const pools: Array<IPool> = [
     {
       poolType: t('BASIC'),
       discount: poolInfo?.basic.service.discount.toNumber() || 0,
@@ -74,7 +103,10 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Basic'),
       onLeave: () => onLeavePool('Basic'),
       isLoading: selectedPool === 'Basic',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.type === 'Basic',
+      isJoined:
+        isJoinedUpfrontPool &&
+        joinedPoolInfo.ticketType.asSystem.asUpfront.type === 'Basic',
+      isDisabled: isJoinedPool,
     },
     {
       poolType: t('MEDIUM'),
@@ -91,7 +123,10 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Medium'),
       onLeave: () => onLeavePool('Medium'),
       isLoading: selectedPool === 'Medium',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isMedium,
+      isJoined:
+        isJoinedUpfrontPool &&
+        joinedPoolInfo.ticketType.asSystem.asUpfront.isMedium,
+      isDisabled: isJoinedPool,
     },
     {
       poolType: t('ADVANCE'),
@@ -108,9 +143,12 @@ const JoinPool = () => {
       onJoin: () => onJoinPool('Advance'),
       onLeave: () => onLeavePool('Advance'),
       isLoading: selectedPool === 'Advance',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asUpfront.isAdvance,
+      isJoined:
+        isJoinedUpfrontPool &&
+        joinedPoolInfo.ticketType.asSystem.asUpfront.isAdvance,
+      isDisabled: isJoinedPool,
     },
-  ] as Array<IPool>;
+  ];
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -123,6 +161,7 @@ const JoinPool = () => {
         status: 'success',
       });
       refetch();
+      refetchJoinedUpfrontPoolInfo();
       setSelectedPool('');
     } else {
       toast({
@@ -229,19 +268,26 @@ const JoinPool = () => {
           <Text fontWeight="bold" fontSize="2xl" mb={5}>
             {t('POOL.UPFRONT_POOL')}
           </Text>
-          {joinedPoolInfo && (
+          {joinedUpfrontPoolInfo && (
             <VStack>
-              {/* <Text>Joined pool type: {joinedPoolInfo.ticketType.upfront}</Text> */}
+              <Text>
+                Joined pool type:{' '}
+                {joinedUpfrontPoolInfo.ticketType.isSystem &&
+                  joinedUpfrontPoolInfo.ticketType.asSystem.isUpfront &&
+                  joinedUpfrontPoolInfo.ticketType.asSystem.asUpfront.type}
+              </Text>
               <Text>
                 Time:{' '}
-                {new Date(joinedPoolInfo.joinTime.toNumber()).toLocaleString()}
+                {new Date(
+                  joinedUpfrontPoolInfo.joinTime.toNumber()
+                ).toLocaleString()}
               </Text>
             </VStack>
           )}
           <HStack p={5} gap={5}>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.BASIC')}
+                {t('BASIC')}
               </Text>
               <VStack>
                 {poolInfo?.basic?.service?.txLimit && (
@@ -285,6 +331,7 @@ const JoinPool = () => {
                   <Button
                     color="primary"
                     variant="solid"
+                    isDisabled={isJoinedPool}
                     onClick={() => onJoinPool('Basic')}
                     isLoading={selectedPool === 'Basic'}
                   >
@@ -295,7 +342,7 @@ const JoinPool = () => {
             </Card>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.MEDIUM')}
+                {t('MEDIUM')}
               </Text>
               <VStack>
                 {poolInfo?.medium.service.txLimit && (
@@ -349,7 +396,7 @@ const JoinPool = () => {
             </Card>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.ADVANCE')}
+                {t('ADVANCE')}
               </Text>
               <VStack>
                 {poolInfo?.advance?.service.txLimit && (
