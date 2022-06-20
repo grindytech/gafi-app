@@ -222,6 +222,10 @@ export const theme = extendTheme(
                 bg: 'transparent',
                 color: 'black',
               },
+              delete: {
+                bg: 'red.500',
+                color: 'white',
+              },
             },
             defaultProps: {
               size: 'xl',

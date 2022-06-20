@@ -77,8 +77,12 @@ const SponsoredPoolPage: React.FC = () => {
       {featureFlag.isDisplayNewDashboardUI ? (
         <>
           <Banner
-            title={t('POOL.SPONSORED_POOL')}
-            subTitle={t('POOL_DESCRIPTION.SPONSORED_POOL')}
+            title={isOwned ? t('MY_SPONSORED_POOLS') : t('POOL.SPONSORED_POOL')}
+            subTitle={
+              isOwned
+                ? t('POOL_DESCRIPTION.MY_SPONSORED_POOL')
+                : t('POOL_DESCRIPTION.SPONSORED_POOL')
+            }
             bannerBg="/assets/layout/sponsored-banner-bg.png"
             btnLink="https://wiki.gafi.network/learn/sponsored-pool"
           />
@@ -125,13 +129,7 @@ const SponsoredPoolPage: React.FC = () => {
             />
           </SponsoredPoolTable>
           {isOpen && (
-            <ModalAddSponsoredPool
-              setCurrentPage={setCurrentPage}
-              pageNumberOfNewPool={pageNumberOfNewPool}
-              isOpen={isOpen}
-              onClose={onClose}
-              refetch={refetch}
-            />
+            <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />
           )}
         </>
       ) : (
@@ -181,13 +179,7 @@ const SponsoredPoolPage: React.FC = () => {
             />
           </SponsoredPoolTable>
           {isOpen && (
-            <ModalAddSponsoredPool
-              setCurrentPage={setCurrentPage}
-              pageNumberOfNewPool={pageNumberOfNewPool}
-              isOpen={isOpen}
-              onClose={onClose}
-              refetch={refetch}
-            />
+            <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />
           )}
         </Box>
       )}

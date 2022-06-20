@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import ModalTransferERC20Token from './ModalTransferERC20Token';
 
@@ -40,6 +40,11 @@ const UserMenu: React.FC = () => {
                 }}
               >
                 <Text>{t('TRANSFER_ERC20_TOKEN')}</Text>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/sponsored-pool?type=owned">
+                  <Text>{t('MY_SPONSORED_POOLS')}</Text>
+                </Link>
               </MenuItem>
             </MenuList>
           </>
