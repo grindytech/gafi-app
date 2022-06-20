@@ -105,9 +105,9 @@
   "FILE_FILE_NAME":"File: {{fileName}}",
   "DEPLOY":"Deploy",
   "TOTAL_TRANSACTION_FEE":"Total transaction fee:",
-  "POLKADOT_ADDRESS":"Polkadot Address",
+  "POLKADOT_ADDRESS":"Polkadot address",
   "DROP_THE_FILES_HERE":"Drop the files here ...",
-  "CURRENT_BLOCK":"Curent Block",
+  "CURRENT_BLOCK":"Current Block",
   "FINALIZED_BLOCK":"Finalized Block",
   "SHOW_METADATA":"Show metadata",
   "METADATA":"Metadata",
@@ -116,5 +116,8 @@
   "CONNECTING_TO_SUBSTRATE":"Connecting to Substrate",
   "LOADING_ACCOUNTS_NOTIFY":"Loading accounts (please review any extension's authorization)",
   "ERROR_CONNECTING_TO_SUBTRATE":"Error Connecting to Substrate",
+  "POLKADOT":"Polkadot",
+  "METAMASK":"Metamask",
+  "METAMASK_ADDRESS":"Metamask address",
   "CONNECTING_TO_WEBSOCKET_FAILED":"Connection to websocket {{websocketName}} failed."
 }

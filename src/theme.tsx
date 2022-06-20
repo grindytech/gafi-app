@@ -159,6 +159,10 @@ export const theme = extendTheme(
               '&:hover': {
                 opacity: 0.8,
               },
+              '.chakra-icon': {
+                w: 5,
+                h: 5,
+              },
             },
             sizes: {
               sm: {
@@ -229,6 +233,10 @@ export const theme = extendTheme(
             baseStyle: {
               fontSize: 'md',
               fontWeight: 'normal',
+              '.chakra-icon': {
+                w: 5,
+                h: 5,
+              },
             },
             sizes: {},
             variants: {},
@@ -243,7 +251,7 @@ export const theme = extendTheme(
                 p: { base: 2, md: 6, xl: 8 },
               },
               item: {
-                _focus: { bg: colors.btnHover, fontWeight: 'bold' },
+                _focus: { bg: colors.btnHover },
                 py: { base: 2, xl: 3 },
                 px: { base: 2, md: 6, xl: 8 },
                 m: 0,
@@ -251,28 +259,33 @@ export const theme = extendTheme(
                 color: 'white',
                 mb: { base: 1, xl: 2 },
               },
+              button: {
+                '.chakra-icon': {
+                  w: 5,
+                  h: 5,
+                },
+              },
             }),
           },
-          Modal: {
+          Tabs: {
             baseStyle: () => ({
-              dialog: {
-                borderRadius: '2xl',
-                p: 8,
+              root: {
+                w: 'full',
               },
-              header: {
-                p: 0,
-                color: colors.primary,
-                mb: 10,
+              tab: {
+                bg: 'transparent',
                 fontWeight: 'bold',
-                fontSize: '2xl',
-                fontHeight: 9,
+                lineHeight: 6,
               },
-              body: {
-                p: 0,
+              tablist: {
+                justifyContent: 'space-evenly',
+                '.chakra-tabs__tab': {
+                  _selected: { color: 'primary', bg: 'greyBg' },
+                },
               },
-              footer: {
+              tabpanel: {
                 p: 0,
-                mt: 10,
+                mt: 8,
               },
             }),
           },

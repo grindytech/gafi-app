@@ -17,7 +17,7 @@ const SideBar = () => {
         <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
         <Heading ml={4}>GAFI</Heading>
       </Box>
-      <Box sx={{ width: '100%' }}>
+      <Box w="full">
         {React.Children.toArray(
           routes.map(route => (
             <NavLink to={route.layout + route.path}>

@@ -24,10 +24,10 @@ const Pagination = (props: IProps) => {
   } = props;
   const pageButtons = [];
 
-  let startPage = currentPage < 5 ? 1 : currentPage - 2;
-  let endPage = 4 + startPage;
+  let startPage = currentPage < 3 ? 1 : currentPage - 1;
+  let endPage = 2 + startPage;
   endPage = totalPage < endPage ? totalPage : endPage;
-  const diff = startPage - endPage + 4;
+  const diff = startPage - endPage + 2;
   const { t } = useTranslation();
   startPage -= startPage - diff > 0 ? diff : 0;
   if (startPage > 1) {
@@ -67,7 +67,7 @@ const Pagination = (props: IProps) => {
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Flex pl={8} flex="6" justifyContent="flex-start">
+      <Flex pl={8} flex="4" justifyContent="flex-start">
         <SkeletonText isLoaded={!isLoading} noOfLines={2}>
           {currentPage * resultsPerPage < totalCount ? (
             <Text fontSize="md" fontWeight="normal">
@@ -94,11 +94,11 @@ const Pagination = (props: IProps) => {
           )}
         </SkeletonText>
       </Flex>
-      <Flex flex="4" justifyContent="flex-end">
-        <Skeleton isLoaded={!isLoading} height="20px">
+      <Flex flex="14" justifyContent="flex-end">
+        <Skeleton isLoaded={!isLoading}>
           {!!totalCount && (
             <Button
-              ml={3}
+              ml={{ base: 1, xl: 2 }}
               size="sm"
               variant="primary"
               onClick={() => {
@@ -113,7 +113,7 @@ const Pagination = (props: IProps) => {
           {React.Children.toArray(
             pageButtons.map(button => (
               <Button
-                ml={3}
+                ml={{ base: 1, xl: 2 }}
                 size="sm"
                 disabled={button.pageNumber === '...'}
                 fontWeight="bold"
@@ -135,7 +135,7 @@ const Pagination = (props: IProps) => {
           )}
           {!!totalCount && (
             <Button
-              ml={3}
+              ml={{ base: 1, xl: 2 }}
               size="sm"
               variant="primary"
               onClick={() => {
