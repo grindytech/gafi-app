@@ -1,5 +1,6 @@
 import { u128 } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
+import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 
 import { acctAddr } from 'components/utils';
@@ -9,6 +10,7 @@ export const usePolkadotBalance = () => {
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<u128>();
+  const { formatUnits } = ethers.utils;
 
   const fetchPolkadotBalance = useCallback(async () => {
     setIsLoading(true);
@@ -29,7 +31,7 @@ export const usePolkadotBalance = () => {
   }, [fetchPolkadotBalance]);
 
   return {
-    polkadotBalance: response,
+    polkadotBalance: formatUnits(response?.toString() || '0', chainDecimal),
     polkadotFormatedBalance: formatBalance(
       response,
       { withSi: false, forceUnit: '-' },

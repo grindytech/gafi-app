@@ -42,7 +42,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
   };
 
   const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedStakingPool', currentAccount],
+    ['getJoinedPool', currentAccount],
     async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
       if (api && currentAccount?.address) {
         const res = await api.query.pool.tickets(currentAccount?.address);

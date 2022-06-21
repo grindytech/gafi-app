@@ -68,9 +68,9 @@ const Pagination = (props: IProps) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Flex pl={8} flex="4" justifyContent="flex-start">
-        <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-          {currentPage * resultsPerPage < totalCount ? (
-            <Text fontSize="md" fontWeight="normal">
+        <SkeletonText isLoaded={!isLoading} noOfLines={1}>
+          <Text fontSize="md" fontWeight="normal" whiteSpace="nowrap">
+            {currentPage * resultsPerPage < totalCount ? (
               <Trans
                 i18nKey="SHOW_FROM_A_TO_B_OF_C"
                 values={{
@@ -80,9 +80,7 @@ const Pagination = (props: IProps) => {
                 }}
                 components={{ b: <Text as="span" fontSize="bold" /> }}
               />
-            </Text>
-          ) : (
-            <Text fontSize="md" fontWeight="normal">
+            ) : (
               <Trans
                 i18nKey="SHOW_A_OF_A"
                 values={{
@@ -90,8 +88,8 @@ const Pagination = (props: IProps) => {
                 }}
                 components={{ b: <Text as="span" fontSize="bold" /> }}
               />
-            </Text>
-          )}
+            )}
+          </Text>
         </SkeletonText>
       </Flex>
       <Flex flex="14" justifyContent="flex-end">

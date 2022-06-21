@@ -14,6 +14,7 @@ import {
 import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import EditPoolNameForm from './EditPoolNameForm';
 import EditTargetsForm from './EditTargetsForm';
 
@@ -36,7 +37,6 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{t('EDIT_POOL')}</ModalHeader>
-        <ModalCloseButton />
         <ModalBody>
           <Tabs variant="enclosed">
             <TabList>
@@ -45,10 +45,14 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
             </TabList>
             <TabPanels>
               <TabPanel>
-                <EditTargetsForm poolId={id} targets={targets} />
+                <EditTargetsForm
+                  onClose={onClose}
+                  poolId={id}
+                  targets={targets}
+                />
               </TabPanel>
               <TabPanel>
-                <EditPoolNameForm poolId={id} />
+                <EditPoolNameForm onClose={onClose} poolId={id} />
               </TabPanel>
             </TabPanels>
           </Tabs>

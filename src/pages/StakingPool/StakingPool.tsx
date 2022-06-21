@@ -1,5 +1,8 @@
 import { Box, Button, HStack, Text, useToast, VStack } from '@chakra-ui/react';
-import { GafiPrimitivesTicket } from '@polkadot/types/lookup';
+import {
+  GafiPrimitivesTicket,
+  GafiPrimitivesTicketTicketInfo,
+} from '@polkadot/types/lookup';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
@@ -22,10 +25,10 @@ const StakingPool = () => {
   const [selectedPool, setSelectedPool] = useState('');
 
   const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedStakingPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicket | undefined> => {
+    ['getJoinedPool', currentAccount],
+    async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
       if (api) {
-        const res = await api.query.stakingPool.tickets(
+        const res = await api.query.pool.tickets(
           currentAccount?.address as string
         );
         if (res.isSome) {
@@ -38,6 +41,25 @@ const StakingPool = () => {
       enabled: !!currentAccount,
     }
   );
+
+  const { data: joinedStakingPoolInfo, refetch: refetchJoinedStakingPoolInfo } =
+    useQuery(
+      ['getJoinedStakingPool', currentAccount],
+      async (): Promise<GafiPrimitivesTicket | undefined> => {
+        if (api) {
+          const res = await api.query.stakingPool.tickets(
+            currentAccount?.address as string
+          );
+          if (res.isSome) {
+            return res.unwrap();
+          }
+          return undefined;
+        }
+      },
+      {
+        enabled: !!currentAccount,
+      }
+    );
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
@@ -55,7 +77,13 @@ const StakingPool = () => {
     }
   );
 
-  const pools = [
+  const isJoinedPool = !!joinedPoolInfo?.ticketType.toHuman();
+  const isJoinedStakingPool =
+    !!joinedPoolInfo &&
+    joinedPoolInfo.ticketType.isSystem &&
+    joinedPoolInfo.ticketType.asSystem.isStaking;
+
+  const pools: Array<IPool> = [
     {
       poolType: t('BASIC'),
       discount: poolInfo?.basic.service.discount.toNumber() || 0,
@@ -71,7 +99,10 @@ const StakingPool = () => {
       onJoin: () => onJoinPool('Basic'),
       onLeave: () => onLeavePool('Basic'),
       isLoading: selectedPool === 'Basic',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asStaking.type === 'Basic',
+      isJoined:
+        isJoinedStakingPool &&
+        joinedPoolInfo.ticketType.asSystem.asStaking.type === 'Basic',
+      isDisabled: isJoinedPool,
     },
     {
       poolType: t('MEDIUM'),
@@ -88,7 +119,10 @@ const StakingPool = () => {
       onJoin: () => onJoinPool('Medium'),
       onLeave: () => onLeavePool('Medium'),
       isLoading: selectedPool === 'Medium',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asStaking.isMedium,
+      isJoined:
+        isJoinedStakingPool &&
+        joinedPoolInfo.ticketType.asSystem.asStaking.isMedium,
+      isDisabled: isJoinedPool,
     },
     {
       poolType: t('ADVANCE'),
@@ -105,9 +139,12 @@ const StakingPool = () => {
       onJoin: () => onJoinPool('Advance'),
       onLeave: () => onLeavePool('Advance'),
       isLoading: selectedPool === 'Advance',
-      isJoined: joinedPoolInfo?.ticketType.asSystem.asStaking.isAdvance,
+      isJoined:
+        isJoinedStakingPool &&
+        joinedPoolInfo.ticketType.asSystem.asStaking.isAdvance,
+      isDisabled: isJoinedPool,
     },
-  ] as Array<IPool>;
+  ];
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -120,6 +157,7 @@ const StakingPool = () => {
         status: 'success',
       });
       refetch();
+      refetchJoinedStakingPoolInfo();
       setSelectedPool('');
     } else {
       toast({
@@ -227,22 +265,24 @@ const StakingPool = () => {
           <Text fontWeight="bold" fontSize="2xl" mb={5}>
             {t('POOL.STACKING_POOL')}
           </Text>
-          {joinedPoolInfo && (
+          {joinedStakingPoolInfo && (
             <VStack>
-              <Text>
+              {/* <Text>
                 Joined pool type:{' '}
-                {joinedPoolInfo.ticketType.asSystem.asStaking.type}
-              </Text>
+                {joinedStakingPoolInfo.ticketType.asSystem.asStaking.type}
+              </Text> */}
               <Text>
                 Time:{' '}
-                {new Date(Number(joinedPoolInfo.joinTime)).toLocaleString()}
+                {new Date(
+                  Number(joinedStakingPoolInfo.joinTime)
+                ).toLocaleString()}
               </Text>
             </VStack>
           )}
           <HStack p={5} gap={5}>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.BASIC')}
+                {t('BASIC')}
               </Text>
               <VStack>
                 {poolInfo?.basic?.service.txLimit && (
@@ -297,7 +337,7 @@ const StakingPool = () => {
             </Card>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.MEDIUM')}
+                {t('MEDIUM')}
               </Text>
               <VStack>
                 {poolInfo?.medium?.service.txLimit && (
@@ -351,7 +391,7 @@ const StakingPool = () => {
             </Card>
             <Card>
               <Text textAlign="center" fontWeight="bold" mb={5}>
-                {t('POOL_TYPE.ADVANCE')}
+                {t('ADVANCE')}
               </Text>
               <VStack>
                 {poolInfo?.advance?.service.txLimit && (

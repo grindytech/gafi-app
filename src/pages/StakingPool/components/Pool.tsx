@@ -22,6 +22,7 @@ export interface IPool {
   onLeave: () => void;
   isLoading: boolean;
   isJoined: boolean;
+  isDisabled: boolean;
 }
 
 interface IProps {
@@ -77,6 +78,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
             onClick={pool.onJoin}
             isLoading={pool.isLoading}
             variant="primary"
+            isDisabled={pool.isDisabled}
           >
             {t('JOIN')}
           </Button>
