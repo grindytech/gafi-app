@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 
 import { acctAddr } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 export const usePolkadotBalance = () => {
   const { api, currentAccount, chainDecimal } = useSubstrateState();

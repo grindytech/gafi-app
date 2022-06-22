@@ -18,13 +18,13 @@ import Banner from 'components/Banner';
 import featureFlag from 'components/FeatureFlags';
 import Pagination from 'components/pagination';
 import { getGAKIAccountAddress } from 'components/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
 import {
   Scalars,
   SponsoredPool,
   useSponsoredPoolsQuery,
 } from 'graphQL/generates';
-import { useSubstrateState } from 'substrate-lib';
 import * as constants from 'utils/constants';
 
 const SponsoredPoolPage: React.FC = () => {

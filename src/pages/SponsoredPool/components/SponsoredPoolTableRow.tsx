@@ -8,7 +8,6 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
-import { SponsoredPool } from 'gafi-dashboard/graphQL/generates';
 import React, { useState } from 'react';
 import { useQueryParam } from 'use-query-params';
 
@@ -17,17 +16,22 @@ import OwnedTableActions from './OwnedTableActions';
 import TableActions from './TableActions';
 
 import { shorten } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
+import { SponsoredPool } from 'graphQL/generates';
 
 interface IProps {
   pool: SponsoredPool;
   onClick?: () => void;
+  onEditClick: () => void;
 }
 
-const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
+const SponsoredPoolTableRow: React.FC<IProps> = ({
+  pool,
+  onClick,
+  onEditClick,
+}) => {
   const { poolOwner, discount, txLimit, amount } = pool;
   const textColor = useColorModeValue('gray.700', 'white');
-  const [isOpenEditPoolModal, setIsOpenEditPoolModal] = useState(false);
   const { chainDecimal } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
@@ -79,24 +83,12 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({ pool, onClick }) => {
         </Td>
         <Td textAlign="center" fontWeight="normal" fontSize="md">
           {isOwned ? (
-            <OwnedTableActions
-              poolId={pool.id}
-              onClick={() => {
-                setIsOpenEditPoolModal(true);
-              }}
-            />
+            <OwnedTableActions poolId={pool.id} onClick={onEditClick} />
           ) : (
             <TableActions poolId={pool.id} />
           )}
         </Td>
       </Tr>
-      <ModalEditPool
-        pool={pool}
-        isOpen={isOpenEditPoolModal}
-        onClose={() => {
-          setIsOpenEditPoolModal(false);
-        }}
-      />
     </>
   );
 };

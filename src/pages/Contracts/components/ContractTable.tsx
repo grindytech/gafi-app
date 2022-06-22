@@ -1,85 +1,58 @@
-import {
-  Table,
-  TableCaption,
-  Tbody,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Table, TableCaption, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+import TableContent from './TableContent';
+
 import Card from 'components/card/Card';
 import CardBody from 'components/card/CardBody';
-import CardHeader from 'components/card/CardHeader';
-import React from 'react';
-import { IResponseContract } from '../Contracts';
-import ContractTableRow from './ContractTableRow';
-import * as constants from 'utils/constants';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
-import EmptyRow from 'components/EmptyRow';
+import useLoadContracts from 'hooks/useLoadContracts';
+import * as constants from 'utils/constants';
 
 export interface ICaptions {
   label: string;
   fieldName: string;
 }
 
-interface IProps {
-  contracts?: IResponseContract[];
-  title: string;
-  captions: ICaptions[];
-  refreshData: () => void;
-  isLoading: boolean;
-}
-
-const ContractsTable: React.FC<IProps> = ({
-  title,
-  children,
-  captions,
-  contracts,
-  refreshData,
-  isLoading,
-}) => {
-  const textColor = useColorModeValue('gray.700', 'white');
+const ContractsTable: React.FC = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
+  const { t } = useTranslation();
+  const captions = [
+    { label: t('OWNER'), fieldName: 'poolOwner' },
+    { label: t('CONTRACT_ADDRESS'), fieldName: 'contractAddress' },
+    { label: t('ACTIONS'), fieldName: 'actions' },
+  ];
+
+  const { isLoading } = useLoadContracts();
+
   return (
-    <Card overflowX={{ sm: 'scroll', xl: 'hidden' }}>
-      <CardHeader p={[2, 0, 6, 0]}>
-        <Text fontSize="xl" color={textColor} fontWeight="bold">
-          {title}
-        </Text>
-      </CardHeader>
+    <Card pt={0} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
       <CardBody>
-        <Table variant="simple" textAlign="center" color={textColor}>
+        <Table variant="simple">
           <TableCaption>{children}</TableCaption>
           <Thead>
-            <Tr my={3} pl={0} color="gray.400">
+            <Tr>
               {React.Children.toArray(
                 captions.map(caption => (
-                  <Th color="gray.400">{caption.label}</Th>
+                  <Th textAlign={caption.label === 'owner' ? 'left' : 'center'}>
+                    {caption.label}
+                  </Th>
                 ))
               )}
             </Tr>
           </Thead>
           <Tbody justifyContent="flex-start">
-            {React.Children.toArray(
-              !isLoading ? (
-                !!contracts?.length ? (
-                  contracts?.map(contract => (
-                    <ContractTableRow
-                      refreshData={refreshData}
-                      contract={contract}
-                    />
-                  ))
-                ) : (
-                  <EmptyRow columnAmount={3} />
-                )
-              ) : (
+            {isLoading ? (
+              React.Children.toArray(
                 SkeletonArray.map(() => (
                   <SkeletonLoadingRow
                     columnAmount={constants.CONTRACT_AMOUNT_PER_PAGE}
                   />
                 ))
               )
+            ) : (
+              <TableContent />
             )}
           </Tbody>
         </Table>

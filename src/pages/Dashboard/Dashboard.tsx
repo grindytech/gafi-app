@@ -29,7 +29,7 @@ import EventInfo from './components/EventInfo';
 
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 interface IMetadata {
   data: any;

@@ -12,7 +12,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { mdiPlus } from '@mdi/js';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -60,9 +60,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
         }}
         p={3}
       >
-        <ModalHeader mb={10} fontWeight="bold" color="primary" fontSize="2xl">
-          {t('CREATE_SPONSORED_POOL')}
-        </ModalHeader>
+        <ModalHeader>{t('CREATE_SPONSORED_POOL')}</ModalHeader>
         <form
           onSubmit={handleSubmit((data: ISponsoredPoolForm) => {
             createPool(data);

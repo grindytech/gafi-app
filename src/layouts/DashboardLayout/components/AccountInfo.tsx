@@ -14,7 +14,6 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useTheme,
   useToast,
 } from '@chakra-ui/react';
 import { mdiSwapVerticalBold } from '@mdi/js';
@@ -32,9 +31,9 @@ import {
   handleTxError,
   shorten,
 } from 'components/utils';
+import { useSubstrate } from 'contexts/substrateContext';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
-import { useSubstrate } from 'substrate-lib';
 
 const AccountInfo = () => {
   const toast = useToast();
@@ -44,12 +43,11 @@ const AccountInfo = () => {
   const { account, connect, isConnected } = useWallet();
   const {
     setCurrentAccount,
-    state: { keyring, currentAccount, api },
+    state: { keyring, currentAccount, api, polkadotAccounts },
   } = useSubstrate();
 
   const { polkadotFormatedBalance } = usePolkadotBalance();
   const pairs = keyring?.getPairs() || [];
-  const accountList = pairs.map((key: KeyringPair) => acctAddr(key));
   const setPolkadotAccount = useCallback(async () => {
     const response = await api?.query.proofAddressMapping.h160Mapping(account);
     const polkadotAccount = response?.toHuman() || '';
@@ -190,17 +188,19 @@ const AccountInfo = () => {
                       defaultValue={acctAddr(currentAccount)}
                       type="radio"
                     >
-                      {accountList?.map((account: string, index: number) => (
-                        <MenuItemOption
-                          key={account}
-                          onClick={() => {
-                            hanldeSwitchAccount(index);
-                          }}
-                          value={account}
-                        >
-                          {shorten(account)}
-                        </MenuItemOption>
-                      ))}
+                      {polkadotAccounts?.map(
+                        (polkadotAccount: string, index: number) => (
+                          <MenuItemOption
+                            key={polkadotAccount}
+                            onClick={() => {
+                              hanldeSwitchAccount(index);
+                            }}
+                            value={polkadotAccount}
+                          >
+                            {shorten(polkadotAccount)}
+                          </MenuItemOption>
+                        )
+                      )}
                     </MenuOptionGroup>
                   </MenuList>
                 </Menu>

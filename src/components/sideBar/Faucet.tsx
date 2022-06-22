@@ -3,7 +3,7 @@ import { mdiWaterPump } from '@mdi/js';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 import { getFromAcct, handleTxError } from '../utils';
 

@@ -23,9 +23,9 @@ import { useWallet } from 'use-wallet';
 
 import NumberInput from '../../../components/numberInput/NumberInput';
 
+import { useSubstrateState } from 'contexts/substrateContext';
 import ERC20JSON from 'contract/ERC20.json';
 import useWeb3 from 'hooks/useWeb3';
-import { useSubstrateState } from 'substrate-lib';
 
 interface Iprops {
   isOpen: boolean;
@@ -154,7 +154,7 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
         <ModalHeader>{t('TRANSFER_ERC20_TOKEN')}</ModalHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl mb={4}>
+            <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TOKEN_CONTRACT')}</FormLabel>
               <Input
                 type="text"
@@ -181,7 +181,7 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
                 </Text>
               )}
             </FormControl>
-            <FormControl mb={4}>
+            <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TRANSFER_TO')}</FormLabel>
               <Input
                 type="text"
@@ -197,7 +197,7 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
                 render={({ message }) => <Text color="red.400">{message}</Text>}
               />
             </FormControl>
-            <FormControl mb={4}>
+            <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TOKEN_AMOUNT')}</FormLabel>
               <Controller
                 control={control}
@@ -239,14 +239,10 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              {t('CLOSE')}
-            </Button>
             <Button
               type="submit"
-              color="white"
-              background="primary"
-              variant="solid"
+              size="sm"
+              variant="primary"
               isLoading={mutation.isLoading}
             >
               {t('TRANSFER')}

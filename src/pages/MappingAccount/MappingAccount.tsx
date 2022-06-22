@@ -25,8 +25,8 @@ import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
 import { getFromAcct, handleTxError, shorten } from 'components/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 import useMessageToast from 'hooks/useMessageToast';
-import { useSubstrateState } from 'substrate-lib';
 
 function MappingAccount() {
   const toast = useToast();

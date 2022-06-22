@@ -15,8 +15,8 @@ import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import featureFlag from 'components/FeatureFlags';
 import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 import { PoolInfo } from 'interfaces/pool';
-import { useSubstrateState } from 'substrate-lib';
 
 export interface TicketType {
   upfront?: string;

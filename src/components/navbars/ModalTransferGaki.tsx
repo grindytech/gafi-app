@@ -37,7 +37,7 @@ import {
   handleTxError,
   shorten,
 } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 interface Iprops {
   accountList?: string[];

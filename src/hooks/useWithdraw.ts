@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 const useWithdraw = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,10 +40,7 @@ const useWithdraw = () => {
       const [account, options] = await getFromAcct(currentAccount);
 
       const txExecute = api?.tx.sponsoredPool.withdrawPool(poolId);
-      if (options) {
-        return txExecute?.signAndSend(account, options, txCallback);
-      }
-      return txExecute?.signAndSend(account, txCallback);
+      return txExecute?.signAndSend(account, options || {}, txCallback);
     },
     {
       mutationKey: 'withdraw-pool',

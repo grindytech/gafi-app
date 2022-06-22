@@ -7,9 +7,13 @@ import { useMutation } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
-import { ISponsoredPoolForm } from 'pages/SponsoredPool/components/ModalAddSponsoredPool';
 
-const useCreatePool = (onSuccess: () => void) => {
+interface IMutationParams {
+  transferTo: string;
+  amount: number;
+}
+
+const useTransferGaki = (onSuccess: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const toast = useToast();
@@ -20,9 +24,7 @@ const useCreatePool = (onSuccess: () => void) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
+        description: t('TRANSFER_SUCCESS'),
         isClosable: true,
         status: 'success',
       });
@@ -39,20 +41,17 @@ const useCreatePool = (onSuccess: () => void) => {
     }
   };
 
-  const createPoolMutation = useMutation(
-    async (data: ISponsoredPoolForm) => {
+  const mutation = useMutation(
+    async ({ transferTo, amount }: IMutationParams) => {
       const [account, options] = await getFromAcct(currentAccount);
-      const targets = data.targets.map(target => target.contractAddress);
-      const txExecute = api?.tx.sponsoredPool.createPool(
-        targets,
-        parseUnits(data.poolAmount.toString(), chainDecimal).toString(),
-        parseFloat(data.discount) * 10000,
-        data.txLimit
+      const txTransferToken = api?.tx.balances.transfer(
+        transferTo,
+        parseUnits(amount.toString(), chainDecimal).toString()
       );
-      return txExecute?.signAndSend(account, options || {}, txCallback);
+      return txTransferToken?.signAndSend(account, options || {}, txCallback);
     },
     {
-      mutationKey: 'create-pool',
+      mutationKey: 'transfer-gaki',
       onError: (error: any) => {
         toast({
           description: t('TRANSACTION_FAILED', {
@@ -67,12 +66,15 @@ const useCreatePool = (onSuccess: () => void) => {
   );
 
   return {
-    createPool: (data: ISponsoredPoolForm) => {
+    transferGaki: (transferTo: string, amount: number) => {
       setIsLoading(true);
-      createPoolMutation.mutate(data);
+      mutation.mutate({
+        transferTo,
+        amount,
+      });
     },
     isLoading,
   };
 };
 
-export default useCreatePool;
+export default useTransferGaki;

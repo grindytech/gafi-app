@@ -12,7 +12,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 const FILTERED_EVENTS = [
   'system:ExtrinsicSuccess::(phase={"applyExtrinsic":0})',
