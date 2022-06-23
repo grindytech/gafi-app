@@ -1,8 +1,8 @@
-import { color, ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
-import { mode, createBreakpoints } from '@chakra-ui/theme-tools';
+import { createBreakpoints, mode } from '@chakra-ui/theme-tools';
 
-import featureFlags from './components/FeatureFlags';
+import featureFlags from 'components/FeatureFlags';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
