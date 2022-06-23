@@ -6,7 +6,7 @@ import AccountInfo from './components/AccountInfo';
 import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { apiState, apiError, keyringState } = useSubstrateState();

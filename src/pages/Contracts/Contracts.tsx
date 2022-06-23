@@ -1,100 +1,37 @@
-import { Box, Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import { Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { mdiCashMultiple } from '@mdi/js';
-import keyring from '@polkadot/ui-keyring';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
 import ContractTable from './components/ContractTable';
 import ModalClaimContract from './components/ModalClaimContract';
 
+import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
-import { acctAddr } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import useLoadContracts from 'hooks/useLoadContracts';
 import * as constants from 'utils/constants';
-
-export interface IResponseContract {
-  owner: string;
-  address: string;
-}
 
 const Contracts = () => {
   const { t } = useTranslation();
-  const { api, currentAccount } = useSubstrateState();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [currentPage, setCurrentPage] = useState(1);
-  const captions = [
-    { label: t('CONTRACT_ADDRESS'), fieldName: 'contractAddress' },
-    { label: t('OWNER'), fieldName: 'poolOwner' },
-    { label: t('ACTIONS'), fieldName: 'actions' },
-  ];
-  const [contractsDisplay, setContractsDisplay] =
-    useState<IResponseContract[]>();
 
-  const loadingContract = async () => {
-    const response = await api?.query.gameCreator.contractOwner.entries();
-
-    if (response) {
-      let contractArray = response.map(([key, exposure]) => {
-        const addresses = key.args.map(k => k.toHuman());
-        const ownerAddress = keyring.getPair(
-          exposure.toHuman()?.toString() || ''
-        );
-        return {
-          owner: acctAddr(ownerAddress),
-          address: addresses[0]?.toString() || '',
-        };
-      });
-      if (currentAccount) {
-        contractArray = contractArray.filter(
-          contract => contract.owner === acctAddr(currentAccount)
-        ) as IResponseContract[];
-        return {
-          contracts: contractArray as IResponseContract[],
-          totalPage: contractArray.length
-            ? Math.ceil(
-                contractArray.length / constants.CONTRACT_AMOUNT_PER_PAGE
-              )
-            : 0,
-        };
-      }
-    }
-  };
-
-  // loading contracts
-  const { data, refetch, isLoading } = useQuery(
-    ['loading-contract', currentAccount],
-    loadingContract,
-    {
-      enabled: !!currentAccount,
-    }
-  );
-
-  useEffect(() => {
-    if (currentAccount) {
-      setCurrentPage(1);
-    }
-  }, [currentAccount]);
-
-  // display contracts
-  useEffect(() => {
-    setContractsDisplay(
-      data?.contracts?.slice(
-        (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE,
-        (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE +
-          constants.CONTRACT_AMOUNT_PER_PAGE
-      )
-    );
-  }, [currentPage, data?.contracts]);
+  const { currentPage, setCurrentPage, isLoading, maxCount, totalPage } =
+    useLoadContracts();
 
   return (
-    <Box pt={{ base: '120px', md: '75px' }}>
-      <HStack mb={2} justifyContent="flex-end">
+    <>
+      <Banner
+        title={t('GAME_CREATOR')}
+        subTitle={t('GAME_CREATOR_DESCRIPTION')}
+        bannerBg="/assets/layout/game-creator-banner.png"
+        btnLink="https://wiki.gafi.network/learn/game-creator"
+      />
+      <HStack mb={4} justifyContent="flex-end">
         <Button
           background="primary"
+          size="sm"
           color="white"
           variant="solid"
-          leftIcon={
+          rightIcon={
             <Icon>
               <path fill="currentColor" d={mdiCashMultiple} />
             </Icon>
@@ -105,30 +42,18 @@ const Contracts = () => {
         </Button>
       </HStack>
 
-      <ContractTable
-        contracts={contractsDisplay}
-        title={t('CONTRACTS')}
-        captions={captions}
-        refreshData={refetch}
-        isLoading={isLoading}
-      >
+      <ContractTable>
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-          totalCount={data?.contracts.length || 0}
+          totalCount={maxCount || 0}
           resultsPerPage={constants.CONTRACT_AMOUNT_PER_PAGE}
-          totalPage={data?.totalPage || 0}
+          totalPage={totalPage || 0}
           isLoading={isLoading}
         />
       </ContractTable>
-      {isOpen && (
-        <ModalClaimContract
-          refreshData={refetch}
-          isOpen={isOpen}
-          onClose={onClose}
-        />
-      )}
-    </Box>
+      {isOpen && <ModalClaimContract isOpen={isOpen} onClose={onClose} />}
+    </>
   );
 };
 

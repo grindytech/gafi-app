@@ -10,7 +10,7 @@ const SkeletonLoadingRow: React.FC<IProps> = ({ columnAmount }) => {
   return (
     <Tr>
       {React.Children.toArray(
-        columnArray.map(index => (
+        columnArray.map(() => (
           <Td>
             <Skeleton height="20px" />
           </Td>

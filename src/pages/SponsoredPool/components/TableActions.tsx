@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 interface IProps {
   poolId: string;

@@ -25,7 +25,7 @@ import NumberInput from '../numberInput/NumberInput';
 
 import ERC20JSON from 'contract/ERC20.json';
 import useWeb3 from 'hooks/useWeb3';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 interface Iprops {
   isOpen: boolean;

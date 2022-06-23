@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 const useEditPool = (onSuccess: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,10 +43,11 @@ const useEditPool = (onSuccess: () => void) => {
         params.poolId,
         params.poolName
       );
-      if (options) {
-        return txSetPoolNameExecute?.signAndSend(account, options, txCallback);
-      }
-      return txSetPoolNameExecute?.signAndSend(account, txCallback);
+      return txSetPoolNameExecute?.signAndSend(
+        account,
+        options || {},
+        txCallback
+      );
     },
     {
       mutationKey: 'update-pool-name',

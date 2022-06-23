@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import ModalTransferERC20Token from './ModalTransferERC20Token';
+import ModalTransferGaki from './ModalTransferGaki';
 
 enum UserMenuModal {
   transferGaki = 'transferGaki',
@@ -20,41 +21,51 @@ enum UserMenuModal {
 const UserMenu: React.FC = () => {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState('');
+
+  const onClose = () => {
+    setModalOpen('');
+  };
+
+  const onOpenTransferGakiModal = () => {
+    setModalOpen(UserMenuModal.transferGaki);
+  };
+
+  const onOpenTransferERC20TokenModal = () => {
+    setModalOpen(UserMenuModal.transferERC20Token);
+  };
+
   return (
     <Box p={1}>
       <Menu>
-        {({ onClose }: { onClose: () => void }) => (
-          <>
-            <MenuButton
-              aria-label="account-actions"
-              ml={4}
-              sx={{
-                ...actionStyled,
-                background: 'url(/assets/layout/actionBg.png) no-repeat center',
-              }}
-            />
-            <MenuList>
-              <MenuItem
-                onClick={() => {
-                  setModalOpen(UserMenuModal.transferERC20Token);
-                }}
-              >
-                <Text>{t('TRANSFER_ERC20_TOKEN')}</Text>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/admin/sponsored-pool?type=owned">
-                  <Text>{t('MY_SPONSORED_POOLS')}</Text>
-                </Link>
-              </MenuItem>
-            </MenuList>
-          </>
-        )}
+        <MenuButton
+          aria-label="account-actions"
+          ml={4}
+          sx={{
+            ...actionStyled,
+            background: 'url(/assets/layout/actionBg.png) no-repeat center',
+          }}
+        />
+        <MenuList>
+          <MenuItem onClick={onOpenTransferERC20TokenModal}>
+            <Text>{t('TRANSFER_ERC20_TOKEN')}</Text>
+          </MenuItem>
+          <MenuItem onClick={onOpenTransferGakiModal}>
+            <Text>{t('TRANSFER_GAKI')}</Text>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/admin/sponsored-pool?type=owned">
+              <Text>{t('MY_SPONSORED_POOLS')}</Text>
+            </Link>
+          </MenuItem>
+        </MenuList>
       </Menu>
       <ModalTransferERC20Token
         isOpen={modalOpen === UserMenuModal.transferERC20Token}
-        onClose={() => {
-          setModalOpen('');
-        }}
+        onClose={onClose}
+      />
+      <ModalTransferGaki
+        isOpen={modalOpen === UserMenuModal.transferGaki}
+        onClose={onClose}
       />
     </Box>
   );

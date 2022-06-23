@@ -1,20 +1,17 @@
 import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
-import { ISponsoredPoolForm } from 'pages/SponsoredPool/components/ModalAddSponsoredPool';
 
-const useCreatePool = (onSuccess: () => void) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { api, currentAccount, chainDecimal } = useSubstrateState();
+const useChangeOwner = (onSuccess: () => void) => {
   const toast = useToast();
   const { t } = useTranslation();
-  const { parseUnits } = ethers.utils;
+  const { api, currentAccount } = useSubstrateState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -39,20 +36,21 @@ const useCreatePool = (onSuccess: () => void) => {
     }
   };
 
-  const createPoolMutation = useMutation(
-    async (data: ISponsoredPoolForm) => {
+  const mutation = useMutation(
+    async (params: { contractAddress: string; ownerAddress: string }) => {
       const [account, options] = await getFromAcct(currentAccount);
-      const targets = data.targets.map(target => target.contractAddress);
-      const txExecute = api?.tx.sponsoredPool.createPool(
-        targets,
-        parseUnits(data.poolAmount.toString(), chainDecimal).toString(),
-        parseFloat(data.discount) * 10000,
-        data.txLimit
+      const txChangeContractOwnerExecute = api?.tx.gameCreator.changeOwnership(
+        params.contractAddress,
+        params.ownerAddress
       );
-      return txExecute?.signAndSend(account, options || {}, txCallback);
+      return txChangeContractOwnerExecute?.signAndSend(
+        account,
+        options || {},
+        txCallback
+      );
     },
     {
-      mutationKey: 'create-pool',
+      mutationKey: 'change-contract-onwer',
       onError: (error: any) => {
         toast({
           description: t('TRANSACTION_FAILED', {
@@ -66,13 +64,15 @@ const useCreatePool = (onSuccess: () => void) => {
     }
   );
 
+  const changeOwner = (contractAddress: string, ownerAddress: string) => {
+    setIsLoading(true);
+    mutation.mutate({ contractAddress, ownerAddress });
+  };
+
   return {
-    createPool: (data: ISponsoredPoolForm) => {
-      setIsLoading(true);
-      createPoolMutation.mutate(data);
-    },
+    changeOwner,
     isLoading,
   };
 };
 
-export default useCreatePool;
+export default useChangeOwner;

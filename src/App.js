@@ -11,7 +11,7 @@ import PanelContent from './components/layout/PanelContent'
 import AdminNavbar from './components/navbars/AdminNavbar'
 import SideBar from './components/sideBar/SideBar'
 import routes from "./routes"
-import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
+import { SubstrateContextProvider, useSubstrateState } from './contexts/substrateContext'
 import { DeveloperConsole } from './substrate-lib/components'
 
 

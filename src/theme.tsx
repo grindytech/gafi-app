@@ -106,6 +106,7 @@ const breakpoints = createBreakpoints({
 
 const colors = {
   primary: '#2667FF',
+  hoverPrimary: '#588aff',
   secondary: '#64DFDF',
   greyBg: '#F5F7FB',
   gradientColor1: '#56CCF2',
@@ -303,6 +304,48 @@ export const theme = extendTheme(
                 mt: 8,
               },
             }),
+          },
+          Table: {
+            baseStyle: () => ({
+              thead: {
+                fontSize: 'md',
+                lineHeight: '10',
+                fontWeight: 'normal',
+                textTransform: 'capitalize',
+              },
+            }),
+          },
+          Modal: {
+            baseStyle: () => ({
+              header: {
+                mb: 4,
+                fontWeight: 'bold',
+                color: 'primary',
+                fontSize: '2xl',
+              },
+              dialog: {
+                borderRadius: '2xl',
+              },
+            }),
+          },
+          Input: {
+            variants: {
+              outline: () => ({
+                addon: {
+                  bg: colors.primary,
+                  display: 'flex',
+                  minWidth: 16,
+                  justifyContent: 'center',
+                  color: 'white',
+                  border: 'none',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bg: colors.hoverPrimary,
+                  },
+                },
+              }),
+            },
+            defaultProps: { size: 'lg', variant: 'outline' },
           },
         },
       }

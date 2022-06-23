@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
 import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 import { ITargets } from 'pages/SponsoredPool/components/EditTargetsForm';
-import { useSubstrateState } from 'substrate-lib';
 
 const useEditPoolTargets = (onSuccess: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,10 +47,7 @@ const useEditPoolTargets = (onSuccess: () => void) => {
         params.poolId,
         newTargets
       );
-      if (options) {
-        return txSetNewTargets?.signAndSend(account, options, txCallback);
-      }
-      return txSetNewTargets?.signAndSend(account, txCallback);
+      return txSetNewTargets?.signAndSend(account, options || {}, txCallback);
     },
     {
       mutationKey: 'update-target-contract',

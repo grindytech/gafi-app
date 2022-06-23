@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { mdiPlus } from '@mdi/js';
-import { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';

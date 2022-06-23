@@ -118,5 +118,6 @@
   "POLKADOT": "Polkadot",
   "METAMASK": "Metamask",
   "METAMASK_ADDRESS": "Metamask address",
+  "GAME_CREATOR_DESCRIPTION": "The concept of Game Creator is that the transaction fee in Gafi Network will be burned, sent to the reserve and a part of the transaction fee will be awarded to the Game Creator",
   "CONNECTING_TO_WEBSOCKET_FAILED": "Connection to websocket {{websocketName}} failed."
 }

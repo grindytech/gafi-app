@@ -1,16 +1,12 @@
 // Chakra imports
 import {
-  Box,
   Button,
   Icon,
-  IconButton,
   Input,
   InputGroup,
   InputRightAddon,
-  InputRightElement,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -23,7 +19,6 @@ import {
   Thead,
   Tr,
   useColorModeValue,
-  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
@@ -31,6 +26,7 @@ import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 
+import ModalEditPool from './ModalEditPool';
 import SponsoredPoolTableRow from './SponsoredPoolTableRow';
 
 import Card from 'components/card/Card';
@@ -72,6 +68,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { copySuccessToast } = useMessageToast();
   const textColor = useColorModeValue('gray.700', 'white');
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
+  const [selectedEditPool, setSelectedEditPool] = useState<
+    SponsoredPool | undefined
+  >();
   const SkeletonArray = new Array(limitRow).fill(0);
   return (
     <>
@@ -109,6 +108,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                         <SponsoredPoolTableRow
                           pool={pool}
                           onClick={() => setSelectedPool(pool)}
+                          onEditClick={() => setSelectedEditPool(pool)}
                         />
                       ))
                     )
@@ -157,6 +157,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                         <SponsoredPoolTableRow
                           pool={pool}
                           onClick={() => setSelectedPool(pool)}
+                          onEditClick={() => setSelectedEditPool(pool)}
                         />
                       ))
                     )
@@ -175,6 +176,13 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           </CardBody>
         </Card>
       )}
+      <ModalEditPool
+        pool={selectedEditPool}
+        isOpen={!!selectedEditPool}
+        onClose={() => {
+          setSelectedEditPool(undefined);
+        }}
+      />
       <Modal
         isOpen={!!selectedPool}
         onClose={() => setSelectedPool(undefined)}
