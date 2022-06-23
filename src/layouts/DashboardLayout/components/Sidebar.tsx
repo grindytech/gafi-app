@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import Card from 'components/card/Card';
-import routes from 'routes';
+import routes from 'routes/routes';
 
 const SideBar = () => {
   const location = useLocation();

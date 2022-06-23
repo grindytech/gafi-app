@@ -3,6 +3,7 @@ import {
   Flex,
   Icon,
   Image,
+  Link,
   Menu,
   MenuButton,
   MenuItemOption,
@@ -35,6 +36,11 @@ import { useSubstrate } from 'contexts/substrateContext';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
 
+const CHROME_EXT_URL =
+  'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd';
+const FIREFOX_ADDON_URL =
+  'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/';
+
 const AccountInfo = () => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +54,7 @@ const AccountInfo = () => {
 
   const { polkadotFormatedBalance } = usePolkadotBalance();
   const pairs = keyring?.getPairs() || [];
+
   const setPolkadotAccount = useCallback(async () => {
     const response = await api?.query.proofAddressMapping.h160Mapping(account);
     const polkadotAccount = response?.toHuman() || '';
@@ -62,6 +69,10 @@ const AccountInfo = () => {
       setCurrentAccount(pairs[0]);
     }
   }, [account, api, keyring]);
+
+  useEffect(() => {
+    if (!currentAccount) setPolkadotAccount();
+  }, [setPolkadotAccount]);
 
   const hanldeSwitchAccount = (index: number) => {
     try {
@@ -82,9 +93,6 @@ const AccountInfo = () => {
     }
   };
 
-  useEffect(() => {
-    setPolkadotAccount();
-  }, [setPolkadotAccount]);
   const txResHandler = ({ status, events }: any) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
@@ -157,67 +165,90 @@ const AccountInfo = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {currentAccount && (
-              <Flex mb={4} w="full" alignItems="center">
-                <CopyToClipboard text={acctAddr(currentAccount)}>
-                  <Button
-                    flex={10}
-                    justifyContent="center"
-                    w="full"
-                    px={0}
-                    variant="outline"
-                    onClick={copySuccessToast}
-                  >
-                    {shorten(acctAddr(currentAccount))}
-                  </Button>
-                </CopyToClipboard>
-
-                <Menu>
-                  <MenuButton
-                    sx={{
-                      '&:hover': { opacity: 0.8 },
-                    }}
-                    ml={2}
-                  >
-                    <Icon color="primary">
-                      <path fill="currentColor" d={mdiSwapVerticalBold} />
-                    </Icon>
-                  </MenuButton>
-                  <MenuList>
-                    <MenuOptionGroup
-                      defaultValue={acctAddr(currentAccount)}
-                      type="radio"
+            {currentAccount ? (
+              <>
+                <Flex mb={4} w="full" alignItems="center">
+                  <CopyToClipboard text={acctAddr(currentAccount)}>
+                    <Button
+                      flex={10}
+                      justifyContent="center"
+                      w="full"
+                      px={0}
+                      variant="outline"
+                      onClick={copySuccessToast}
                     >
-                      {polkadotAccounts?.map(
-                        (polkadotAccount: string, index: number) => (
-                          <MenuItemOption
-                            key={polkadotAccount}
-                            onClick={() => {
-                              hanldeSwitchAccount(index);
-                            }}
-                            value={polkadotAccount}
-                          >
-                            {shorten(polkadotAccount)}
-                          </MenuItemOption>
-                        )
-                      )}
-                    </MenuOptionGroup>
-                  </MenuList>
-                </Menu>
-              </Flex>
-            )}
+                      {shorten(acctAddr(currentAccount))}
+                    </Button>
+                  </CopyToClipboard>
 
-            <Text textAlign="center" sx={balanceStyled}>
-              {polkadotFormatedBalance}
-            </Text>
-            <Button
-              mt={20}
-              onClick={onFaucet}
-              isLoading={isLoading}
-              sx={faucetButtonStyled}
-            >
-              {t('FAUCET')}
-            </Button>
+                  <Menu>
+                    <MenuButton
+                      sx={{
+                        '&:hover': { opacity: 0.8 },
+                      }}
+                      ml={2}
+                    >
+                      <Icon color="primary">
+                        <path fill="currentColor" d={mdiSwapVerticalBold} />
+                      </Icon>
+                    </MenuButton>
+                    <MenuList>
+                      <MenuOptionGroup
+                        defaultValue={acctAddr(currentAccount)}
+                        type="radio"
+                      >
+                        {polkadotAccounts?.map(
+                          (polkadotAccount: string, index: number) => (
+                            <MenuItemOption
+                              key={polkadotAccount}
+                              onClick={() => {
+                                hanldeSwitchAccount(index);
+                              }}
+                              value={polkadotAccount}
+                            >
+                              {shorten(polkadotAccount)}
+                            </MenuItemOption>
+                          )
+                        )}
+                      </MenuOptionGroup>
+                    </MenuList>
+                  </Menu>
+                </Flex>
+                <Text textAlign="center" sx={balanceStyled}>
+                  {polkadotFormatedBalance}
+                </Text>
+                <Button
+                  mt={20}
+                  onClick={onFaucet}
+                  isLoading={isLoading}
+                  sx={faucetButtonStyled}
+                >
+                  {t('FAUCET')}
+                </Button>
+              </>
+            ) : (
+              <Text>
+                Create an account with Polkadot-JS Extension (
+                <Link
+                  color="primary"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={CHROME_EXT_URL}
+                >
+                  Chrome
+                </Link>
+                ,&nbsp;
+                <Link
+                  color="primary"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={FIREFOX_ADDON_URL}
+                >
+                  Firefox
+                </Link>
+                )&nbsp;
+              </Text>
+            )}
           </TabPanel>
           <TabPanel>
             {isConnected() ? (

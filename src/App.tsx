@@ -1,12 +1,15 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import routes from 'routes/routes';
+import { SubstrateContextProvider } from './contexts/substrateContext';
 
-const PageContent: React.FC = () => {
-  const getRoutes = (routes: any) =>
-    routes.map((prop: any) => {
+import DashboardLayout from 'layouts/DashboardLayout';
+import routes, { IRoute } from 'routes/routes';
+
+function PageContent() {
+  const getRoutes = (routeList: IRoute[]): ReactNode[] =>
+    routeList.map((prop: IRoute) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -29,6 +32,14 @@ const PageContent: React.FC = () => {
       </Switch>
     </Box>
   );
-};
+}
 
-export default PageContent;
+export default function App() {
+  return (
+    <SubstrateContextProvider>
+      <DashboardLayout>
+        <PageContent />
+      </DashboardLayout>
+    </SubstrateContextProvider>
+  );
+}

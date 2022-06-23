@@ -3,16 +3,28 @@
   "compilerOptions": {
     "paths": {
       // this is the package name we use (in the interface imports, --package for generators)
-      "gafi-dashboard/*": ["./*"],
+      "gafi-dashboard/*": [
+        "./*"
+      ],
       // here we replace the @polkadot/api augmentation with our own, generated from chain
-      "@polkadot/api/augment": ["interfaces/augment-api.ts"],
+      "@polkadot/api/augment": [
+        "interfaces/augment-api.ts"
+      ],
       // replace the augmented types with our own, as generated from definitions
-      "@polkadot/types/augment": ["interfaces/augment-types.ts"],
-      "@polkadot/types/lookup": ["interfaces/types-lookup.ts"]
+      "@polkadot/types/augment": [
+        "interfaces/augment-types.ts"
+      ],
+      "@polkadot/types/lookup": [
+        "interfaces/types-lookup.ts"
+      ]
     },
     "jsx": "react-jsx",
     "baseUrl": "src",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
@@ -22,8 +34,16 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "strict": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["build/**/*", "node_modules"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "build/**/*",
+    "node_modules"
+  ]
 }

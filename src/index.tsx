@@ -1,18 +1,22 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom';
 
 import './interfaces/augment-api';
 import './interfaces/augment-types';
-import "./interfaces/types-lookup";
+import './interfaces/types-lookup';
 
-import App from './App'
-import { ChakraProvider } from '@chakra-ui/react';
-import { UseWalletProvider } from 'use-wallet';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { theme } from "./theme";
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
-import './i18n';
+import { UseWalletProvider } from 'use-wallet';
+
+import App from './App';
+
+import { ChakraProvider } from '@chakra-ui/react';
+
+import { theme } from 'themes/theme';
+
+import 'translations/i18n';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,14 +42,14 @@ ReactDOM.render(
     >
       <ChakraProvider theme={theme}>
         <Router>
-          <Suspense fallback={"..."}>
-              <QueryParamProvider ReactRouterRoute={Route}>
-                <App />
-              </QueryParamProvider>
-        </Suspense>
+          <Suspense fallback="...">
+            <QueryParamProvider ReactRouterRoute={Route}>
+              <App />
+            </QueryParamProvider>
+          </Suspense>
         </Router>
       </ChakraProvider>
     </UseWalletProvider>
   </QueryClientProvider>,
   document.getElementById('root')
-)
+);

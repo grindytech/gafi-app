@@ -1,13 +1,3 @@
-// import {
-//   HomeIcon,
-//   StatsIcon,
-//   CreditIcon,
-//   PersonIcon,
-//   DocumentIcon,
-//   RocketIcon,
-//   SupportIcon,
-// } from "components/Icons/Icons";
-// import Billing from "views/Dashboard/Billing.js";
 import {
   mdiAccountSwitch,
   mdiGamepadSquare,
@@ -15,23 +5,34 @@ import {
   mdiPool,
   mdiRocketLaunch,
 } from '@mdi/js';
-
-import Contracts from './pages/Contracts';
-import Dashboard from './pages/Dashboard';
-import DeployContract from './pages/DeployContract';
-import MappingAccount from './pages/MappingAccount';
-import SponsoredPool from './pages/SponsoredPool';
-import StakingPool from './pages/StakingPool';
-import UpfrontPool from './pages/UpfrontPool';
+import React from 'react';
 
 import featureFlags from 'components/FeatureFlags';
+import Contracts from 'pages/Contracts';
+import Dashboard from 'pages/Dashboard';
+import DeployContract from 'pages/DeployContract';
+import MappingAccount from 'pages/MappingAccount';
+import SponsoredPool from 'pages/SponsoredPool';
+import StakingPool from 'pages/StakingPool';
+import UpfrontPool from 'pages/UpfrontPool';
 
 const { checkFeature, EFeatureFlag } = featureFlags;
 
 const isDisplayGameCreatorFeature = checkFeature(EFeatureFlag.GameCreator);
 
+export interface IRoute {
+  path: string;
+  name: string;
+  icon: string;
+  component: () => React.ReactElement;
+  layout: string;
+  category?: string;
+  views: IRoute[];
+  collapse?: string;
+}
+
 const dashRoutes = isDisplayGameCreatorFeature
-  ? [
+  ? ([
       {
         path: '/dashboard',
         name: 'DASHBOARD',
@@ -81,8 +82,8 @@ const dashRoutes = isDisplayGameCreatorFeature
         component: DeployContract,
         layout: '/admin',
       },
-    ]
-  : [
+    ] as IRoute[])
+  : ([
       {
         path: '/dashboard',
         name: 'DASHBOARD',
@@ -132,5 +133,5 @@ const dashRoutes = isDisplayGameCreatorFeature
         component: DeployContract,
         layout: '/admin',
       },
-    ];
+    ] as IRoute[]);
 export default dashRoutes;
