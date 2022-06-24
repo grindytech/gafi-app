@@ -42,18 +42,16 @@ function MappingAccount() {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
+        title: t('FINALIZED_BLOCK_HASH'),
+        description: status.asFinalized.toString(),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: status.type,
         isClosable: true,
         status: 'info',
       });
@@ -131,30 +129,21 @@ function MappingAccount() {
                   </HStack>
                   {isConnected() ? (
                     account && (
-                      <>
-                        <CopyToClipboard text={account.toString()}>
-                          <Button
-                            mb={4}
-                            variant="ghost"
-                            onClick={copySuccessToast}
-                            w="full"
-                            rightIcon={
-                              <Icon color="primary">
-                                <path fill="currentColor" d={mdiContentCopy} />
-                              </Icon>
-                            }
-                          >
-                            {shorten(account.toString())}
-                          </Button>
-                        </CopyToClipboard>
+                      <CopyToClipboard text={account.toString()}>
                         <Button
-                          mt={6}
-                          variant="primary"
-                          onClick={() => reset()}
+                          mb={4}
+                          variant="ghost"
+                          onClick={copySuccessToast}
+                          w="full"
+                          rightIcon={
+                            <Icon color="primary">
+                              <path fill="currentColor" d={mdiContentCopy} />
+                            </Icon>
+                          }
                         >
-                          {t('DISCONNECT_METAMASK')}
+                          {shorten(account.toString())}
                         </Button>
-                      </>
+                      </CopyToClipboard>
                     )
                   ) : (
                     <Button

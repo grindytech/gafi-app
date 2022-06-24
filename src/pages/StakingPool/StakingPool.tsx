@@ -150,9 +150,8 @@ const StakingPool = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
+        title: t('FINALIZED_BLOCK_HASH'),
+        description: status.asFinalized.toString(),
         isClosable: true,
         status: 'success',
       });
@@ -161,9 +160,8 @@ const StakingPool = () => {
       setSelectedPool('');
     } else {
       toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: status.type,
         isClosable: true,
         status: 'info',
       });

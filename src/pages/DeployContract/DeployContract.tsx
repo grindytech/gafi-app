@@ -107,7 +107,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
   return (
     <Card {...getRootProps({ style })}>
       <input {...getInputProps()} />
-      <Icon mb={4} color="primary" w={24} h={18}>
+      <Icon mb={4} color="primary" w={40} h={30}>
         <path fill="currentColor" d={mdiCloudUploadOutline} />
       </Icon>
       {isDragActive ? (
@@ -235,8 +235,6 @@ const DeployContract = () => {
                       cursor="pointer"
                       ml={4}
                       color="primary"
-                      w={5}
-                      h={5}
                     >
                       <path fill="currentColor" d={mdiContentCopy} />
                     </Icon>
@@ -256,7 +254,7 @@ const DeployContract = () => {
 
           <VStack gap={2}>
             <Button
-              size="sm"
+              size="xl"
               px={8}
               fontSize="md"
               fontWeight="bold"

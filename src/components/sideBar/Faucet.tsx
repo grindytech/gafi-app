@@ -3,9 +3,9 @@ import { mdiWaterPump } from '@mdi/js';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useSubstrateState } from 'contexts/substrateContext';
-
 import { getFromAcct, handleTxError } from '../utils';
+
+import { useSubstrateState } from 'contexts/substrateContext';
 
 const Faucet = () => {
   const { api, currentAccount } = useSubstrateState();
@@ -18,18 +18,16 @@ const Faucet = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
+        title: t('FINALIZED_BLOCK_HASH'),
+        description: status.asFinalized.toString(),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: status.type,
         isClosable: true,
         status: 'info',
       });
