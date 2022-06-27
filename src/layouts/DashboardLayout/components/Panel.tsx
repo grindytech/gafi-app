@@ -1,53 +1,59 @@
-import { Box, Heading, Icon, IconButton } from '@chakra-ui/react';
-import { mdiNearMe, mdiWeatherNight } from '@mdi/js';
+import { Box, Heading, IconButton, useTheme } from '@chakra-ui/react';
+import { mdiMenu } from '@mdi/js';
+import Icon from '@mdi/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import UserMenu from './UserMenu';
 
-const actions = [
-  {
-    icon: mdiWeatherNight,
-    bg: '#FFFFFF',
-  },
-  {
-    icon: mdiNearMe,
-    bg: '#FFFFFF',
-  },
-];
+interface IProps {
+  onOpen: () => void;
+}
 
-const Panel = () => {
+const Panel = ({ onOpen }: IProps) => {
   const userName = 'Alex';
+  const theme = useTheme();
   const { t } = useTranslation();
   return (
-    <Box sx={PanelStyled}>
-      <Box sx={{ display: 'flex' }}>
+    <Box w="full">
+      <Box sx={PanelStyled}>
+        <IconButton
+          display={{ base: 'flex', pc: 'none' }}
+          onClick={onOpen}
+          variant="transparents"
+          aria-label="open menu"
+          size="lg"
+          icon={<Icon size={1.5} path={mdiMenu} color={theme.colors.primary} />}
+        />
+        <Box
+          sx={{
+            display: { base: 'none', tablet: 'flex' },
+          }}
+        >
+          <Heading>{t('HELLO')},</Heading>
+          <Heading ml={2} color="primary">
+            {userName}
+          </Heading>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <UserMenu />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          mt: 4,
+          display: { base: 'flex', tablet: 'none' },
+        }}
+      >
         <Heading>{t('HELLO')},</Heading>
         <Heading ml={2} color="primary">
           {userName}
         </Heading>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-        }}
-      >
-        {/* {React.Children.toArray(
-          actions.map(action => (
-            <IconButton
-              aria-label="Search database"
-              icon={
-                <Icon w={18} h={18}>
-                  <path fill="currentColor" d={action.icon} />
-                </Icon>
-              }
-              ml={4}
-              sx={{ ...actionStyled, background: action.bg }}
-            />
-          ))
-        )} */}
-
-        <UserMenu />
       </Box>
     </Box>
   );
@@ -57,17 +63,11 @@ export default Panel;
 
 const PanelStyled = {
   width: '100%',
-  h: 20,
+  h: { base: 16, pc: 20 },
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  p: 8,
-};
-
-const actionStyled = {
-  bg: 'white',
-  color: 'black',
-  w: '56px',
-  h: '56px',
-  borderRadius: '50%',
+  pb: { base: 4, pc: 'none' },
+  p: { base: 'none', pc: 8 },
+  borderBottom: { base: '2px solid #EEF1FF', pc: 'none' },
 };

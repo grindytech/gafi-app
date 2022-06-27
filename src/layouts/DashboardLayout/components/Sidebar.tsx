@@ -1,4 +1,14 @@
-import { Box, Heading, Icon, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  BoxProps,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Text,
+} from '@chakra-ui/react';
+import { mdiChevronLeft } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -6,21 +16,46 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Card from 'components/card/Card';
 import routes from 'routes/routes';
 
-const SideBar = () => {
+interface IProps extends BoxProps {
+  onClose?: () => void;
+}
+
+const SideBar = ({ onClose, display }: IProps) => {
   const location = useLocation();
   const { t } = useTranslation();
   const activeRoute = (routeName: string) =>
     location.pathname === routeName ? 'active' : '';
   return (
-    <Card sx={sidebarStyled}>
-      <Box sx={sidebarHead}>
-        <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
-        <Heading ml={4}>GAFI</Heading>
-      </Box>
-      <Box w="full">
+    <Card sx={sidebarStyled} display={display}>
+      <HStack
+        w="full"
+        mb={{ base: 5, pc: 10 }}
+        borderBottom={{ base: '1px solid #EEF1FF', pc: 'none' }}
+        justifyContent="space-between"
+        pb={{ base: 6, pc: 0 }}
+        px={{ base: 6, pc: 0 }}
+      >
+        <Box sx={sidebarHead}>
+          <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
+          <Heading ml={4}>GAFI</Heading>
+        </Box>
+        <Box
+          display={{ base: 'flex', pc: 'none' }}
+          onClick={onClose}
+          w={10}
+          h={10}
+          cursor="pointer"
+        >
+          <Icon color="primary" w={10} h={10}>
+            <path fill="currentColor" d={mdiChevronLeft} />
+          </Icon>
+        </Box>
+      </HStack>
+
+      <Box px={{ base: 6, pc: 0 }} w="full">
         {React.Children.toArray(
           routes.map(route => (
-            <NavLink to={route.layout + route.path}>
+            <NavLink onClick={onClose} to={route.layout + route.path}>
               <Box
                 sx={
                   activeRoute(route.layout + route.path) === 'active'
@@ -31,7 +66,13 @@ const SideBar = () => {
                 <Icon w={18} h={18}>
                   <path fill="currentColor" d={route.icon} />
                 </Icon>
-                <Text fontWeight="semibold" fontSize="md" ml={7}>
+                <Text
+                  sx={
+                    activeRoute(route.layout + route.path) === 'active'
+                      ? activeMenuItemTitle
+                      : menuItemTitle
+                  }
+                >
                   {t(route.name)}
                 </Text>
               </Box>
@@ -39,7 +80,7 @@ const SideBar = () => {
           ))
         )}
       </Box>
-      <Text mt={20} opacity="inherit" fontSize="sm">
+      <Text sx={cpyRight} opacity="inherit" fontSize="sm">
         &copy; copyright by cryptoviet
       </Text>
     </Card>
@@ -49,19 +90,20 @@ const SideBar = () => {
 export default SideBar;
 
 const sidebarStyled = {
-  minWidth: '20vw',
-  flex: 2,
+  w: { base: 'full', pc: 72, '2xl': '20vw' },
+  h: { base: 'full', pc: '80vh' },
+  borderRadius: { base: '0px 24px 0px 0px', pc: '2xl' },
   alignItems: 'center',
+  justifyContent: 'space-between',
   py: 10,
+  px: { base: 0, pc: 6 },
 };
 
 const sidebarHead = {
   display: 'flex',
-  justifyContent: 'flex-start',
   alignItems: 'center',
+  justifyContent: 'center',
   width: '100%',
-  mb: 20,
-  pl: 8,
 };
 
 const menuItem = {
@@ -73,12 +115,29 @@ const menuItem = {
   px: 8,
   py: 6,
 };
+
 const activeMenuItem = {
   background: 'greyBg',
   color: 'primary',
   fontWeight: 'semibold',
 };
 
-const menuStyled = {
-  width: '100%',
+const cpyRight = {
+  flex: 1,
+  display: 'flex',
+  alignItems: 'flex-end',
+};
+
+const menuItemTitle = {
+  fontWeight: 'normal',
+  fontSize: 'md',
+  ml: { base: 5, pc: 7 },
+  color: 'greyText',
+};
+
+const activeMenuItemTitle = {
+  fontWeight: 'bold',
+  ml: { base: 5, pc: 7 },
+  fontSize: 'md',
+  color: 'primary',
 };

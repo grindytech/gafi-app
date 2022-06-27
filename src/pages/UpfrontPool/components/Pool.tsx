@@ -46,19 +46,19 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
         {pool.poolType}
       </Box>
       <Box sx={contentStyled}>
-        <Heading as="h2" size="lg" pt={8} mb={4}>
+        <Heading as="h2" size="lg" pt={{ base: 4, tablet: 8 }} mb={4}>
           {t('DISCOUNT_FEE', {
             discountPercent: pool.discount / 10000,
           })}
         </Heading>
-        <Box mb={16}>
-          <Text>
+        <Box mb={{ base: 10, tablet: 16 }}>
+          <Text color="greyText">
             {t('TRANSACTIONS_RATE', {
               transactionAmount: pool.rate.txLimit,
               minute: pool.rate.minute,
             })}
           </Text>
-          <Text>
+          <Text color="greyText">
             {t('POOL_FEE', {
               poolFee: formatUnits(pool.fee.gaki, chainDecimal),
               minute: pool.fee.minute,
@@ -92,13 +92,13 @@ export default Pool;
 
 const bannerStyled = {
   width: '100%',
-  height: 210,
+  height: { base: 24, tablet: 210 },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   color: 'white',
-  fontSize: '4xl',
-  fontWeight: 'medium',
+  fontSize: { base: '2xl', tablet: '4xl' },
+  fontWeight: { base: 'bold', tablet: 'medium' },
   textTransform: 'uppercase',
 };
 
@@ -107,5 +107,5 @@ const contentStyled = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  p: 8,
+  p: { base: 6, tablet: 8 },
 };

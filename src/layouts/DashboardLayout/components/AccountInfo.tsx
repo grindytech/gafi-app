@@ -1,8 +1,10 @@
 import {
   Box,
+  BoxProps,
   Button,
   Flex,
   Icon,
+  IconButton,
   Image,
   Link,
   Menu,
@@ -17,26 +19,17 @@ import {
   Tabs,
   Text,
   useTheme,
-  useToast,
-  VStack,
 } from '@chakra-ui/react';
-import { mdiSwapVerticalBold } from '@mdi/js';
-import { KeyringPair } from '@polkadot/keyring/types';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { useCallback, useEffect, useState } from 'react';
+import { mdiChevronDown, mdiSwapVerticalBold } from '@mdi/js';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
-import {
-  acctAddr,
-  getFromAcct,
-  getGAKIAccountAddress,
-  handleTxError,
-  shorten,
-} from 'components/utils';
+import { acctAddr, shorten } from 'components/utils';
 import { useSubstrate } from 'contexts/substrateContext';
+import useFaucet from 'hooks/useFaucet';
+import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
 
@@ -45,117 +38,49 @@ const CHROME_EXT_URL =
 const FIREFOX_ADDON_URL =
   'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/';
 
-const AccountInfo = () => {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const theme = useTheme();
+interface IProps extends BoxProps {
+  onClose?: () => void;
+}
+const AccountInfo = ({ display, onClose }: IProps) => {
+  const { reset } = useWallet();
   const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
-  const { account, connect, isConnected, reset } = useWallet();
-  const {
-    setCurrentAccount,
-    state: { keyring, currentAccount, api, polkadotAccounts },
-  } = useSubstrate();
-
+  const { account, connect, isConnected } = useWallet();
+  const { hanldeSwitchAccount, state } = useSubstrate();
+  const { currentAccount, polkadotAccounts } = state;
   const { polkadotFormatedBalance } = usePolkadotBalance();
-  const pairs = keyring?.getPairs() || [];
-
-  const setPolkadotAccount = useCallback(async () => {
-    const response = await api?.query.proofAddressMapping.h160Mapping(account);
-    const polkadotAccount = response?.toHuman() || '';
-    const initPair = pairs.find(
-      (pair: KeyringPair) =>
-        getGAKIAccountAddress(pair.addressRaw) === polkadotAccount
-    );
-
-    if (initPair) {
-      setCurrentAccount(initPair);
-    } else if (pairs.length > 0) {
-      setCurrentAccount(pairs[0]);
-    }
-  }, [account, api, keyring]);
-
-  useEffect(() => {
-    if (!currentAccount) setPolkadotAccount();
-  }, [setPolkadotAccount]);
-
-  const hanldeSwitchAccount = (index: number) => {
-    try {
-      setCurrentAccount(pairs[index]);
-      toast({
-        title: t('SWITCH_ACCOUNT_SUCCESSFUL'),
-        description: acctAddr(pairs[index]),
-        isClosable: true,
-        status: 'success',
-      });
-    } catch (error) {
-      toast({
-        description: t('SWITCH_ACCOUNT_FAIL'),
-        isClosable: true,
-        status: 'error',
-      });
-    }
-  };
-
-  const txResHandler = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
-
-  // @ts-ignore
-  const txErrHandler = err => {
-    toast({
-      description: t('TRANSACTION_FAILED', {
-        errorMessage: err.toString(),
-      }),
-      isClosable: true,
-      status: 'error',
-    });
-    setIsLoading(false);
-  };
-
-  const onFaucet = async () => {
-    setIsLoading(true);
-    if (currentAccount) {
-      const [acc, options] = await getFromAcct(currentAccount);
-
-      if (api) {
-        const txExecute = api.tx.faucet.faucet();
-
-        if (options) {
-          const unsub = await txExecute
-            .signAndSend(acc, options, txResHandler)
-            .catch(txErrHandler);
-        } else {
-          const unsub = await txExecute
-            .signAndSend(acc, txResHandler)
-            .catch(txErrHandler);
-        }
-      }
-    }
-  };
+  const { pairs } = useLoadCurrentAccount();
+  const { faucet, isLoading } = useFaucet();
+  const theme = useTheme();
 
   return (
-    <Card sx={AccountInfoStyled}>
-      <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
+    <Card sx={AccountInfoStyled} display={display}>
+      <Box
+        display="flex"
+        mb={10}
+        alignItems="center"
+        justifyContent="space-between"
+        w="full"
+      >
+        <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
+        <Box
+          display={{ base: 'flex', pc: 'none' }}
+          onClick={onClose}
+          w={10}
+          h={10}
+        >
+          <Icon color="primary" w={10} h={10}>
+            <path fill="currentColor" d={mdiChevronDown} />
+          </Icon>
+        </Box>
+      </Box>
 
       <Tabs variant="soft-rounded">
-        <TabList justifyContent="space-evenly">
+        <TabList
+          sx={{
+            justifyContent: 'space-evenly',
+          }}
+        >
           <Tab>
             <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
             {t('POLKADOT')}
@@ -195,7 +120,16 @@ const AccountInfo = () => {
                         </Icon>
                       </Flex>
                     </MenuButton>
-                    <MenuList>
+                    <MenuList
+                      sx={{
+                        maxHeight: {
+                          base: '200px',
+                          tablet: '300px',
+                          pc: '600px',
+                        },
+                        overflowY: 'scroll',
+                      }}
+                    >
                       <MenuOptionGroup
                         defaultValue={acctAddr(currentAccount)}
                         type="radio"
@@ -205,7 +139,7 @@ const AccountInfo = () => {
                             <MenuItemOption
                               key={polkadotAccount}
                               onClick={() => {
-                                hanldeSwitchAccount(index);
+                                hanldeSwitchAccount(pairs[index]);
                               }}
                               value={polkadotAccount}
                             >
@@ -225,7 +159,7 @@ const AccountInfo = () => {
                 </Box>
 
                 <Button
-                  onClick={onFaucet}
+                  onClick={faucet}
                   isLoading={isLoading}
                   sx={faucetButtonStyled}
                   variant="primary"
@@ -260,7 +194,7 @@ const AccountInfo = () => {
           <TabPanel>
             {isConnected() ? (
               account && (
-                <VStack spacing={6}>
+                <>
                   <CopyToClipboard text={account.toString()}>
                     <Button
                       w="full"
@@ -271,10 +205,10 @@ const AccountInfo = () => {
                       {shorten(account.toString())}
                     </Button>
                   </CopyToClipboard>
-                  <Button variant="primary" onClick={() => reset()}>
+                  <Button w="full" mt={4} variant="primary" onClick={reset}>
                     {t('DISCONNECT_METAMASK')}
                   </Button>
-                </VStack>
+                </>
               )
             ) : (
               <Button
@@ -296,19 +230,18 @@ const AccountInfo = () => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  flex: 2,
+  w: { base: 'full', pc: 72, '2xl': '20vw' },
+  minHeight: '470px',
   alignItems: 'center',
   bg: 'white',
-  display: 'flex',
   justifyContent: 'flex-start',
+  borderRadius: { base: '24px 24px 0 0', pc: '2xl' },
 };
 
 const titleStyled = {
   fontSize: 'xs',
   fontWeight: 'bold',
-  mb: 10,
   color: 'greyTitle',
-  alignSelf: 'flex-start',
   textTransform: 'uppercase',
 };
 

@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -8,6 +9,7 @@ import { Keyring, keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
 import { set, get } from 'lodash';
 import React, { useReducer, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import config from 'config';
@@ -274,15 +276,36 @@ const SubstrateContextProvider: React.FC<Record<string, unknown>> = props => {
 
 const useSubstrate = () => {
   const { state, dispatch } = useContext(SubstrateContext);
+  const toast = useToast();
+  const { t } = useTranslation();
+
+  const setCurrentAccount = (acct: KeyringPair) => {
+    dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });
+    dispatch({
+      type: 'SET_CURRENT_POLKADOT_ACCOUNT',
+      payload: acctAddr(acct),
+    });
+  };
 
   return {
     state,
-    setCurrentAccount: (acct: KeyringPair) => {
-      dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });
-      dispatch({
-        type: 'SET_CURRENT_POLKADOT_ACCOUNT',
-        payload: acctAddr(acct),
-      });
+    setCurrentAccount,
+    hanldeSwitchAccount: (acct: KeyringPair) => {
+      try {
+        setCurrentAccount(acct);
+        toast({
+          title: t('SWITCH_ACCOUNT_SUCCESSFUL'),
+          description: acctAddr(acct),
+          isClosable: true,
+          status: 'success',
+        });
+      } catch (error) {
+        toast({
+          description: t('SWITCH_ACCOUNT_FAIL'),
+          isClosable: true,
+          status: 'error',
+        });
+      }
     },
   };
 };

@@ -1,7 +1,7 @@
 {
   "GAFI_DASHBOARD": "GAFI DASHBOARD",
   "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per {{minute}} minutes",
-  "DISCOUNT_FEE": "Discount fee: {{discountPercent}} %",
+  "DISCOUNT_FEE": "Discount fee: {{discountPercent}}%",
   "POOL_FEE": "Fee: {{poolFee}} GAKI per {{minute}} minutes",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
