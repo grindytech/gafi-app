@@ -8,6 +8,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { mdiEraser } from '@mdi/js';
+import { VoidFn } from '@polkadot/api/types';
+import { AnyJson } from '@polkadot/types/types';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,8 +20,8 @@ const FILTERED_EVENTS = [
   'system:ExtrinsicSuccess::(phase={"applyExtrinsic":0})',
 ];
 
-const eventName = (ev: any) => `${ev.section}:${ev.method}`;
-const eventParams = (ev: any) => JSON.stringify(ev.data);
+const eventName = (ev: Record<string, AnyJson>) => `${ev.section}:${ev.method}`;
+const eventParams = (ev: Record<string, AnyJson>) => JSON.stringify(ev.data);
 
 interface IEvent {
   key: number;
@@ -32,7 +34,7 @@ const EventInfo = () => {
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
   const { t } = useTranslation();
   useEffect(() => {
-    let unsub: any;
+    let unsub: VoidFn | undefined;
     let keyNum = 0;
     const allEvents = async () => {
       unsub = await api?.query.system.events(events => {
@@ -81,7 +83,7 @@ const EventInfo = () => {
             w={10}
             h={10}
             aria-label="reset-events"
-            onClick={_ => setEventFeed([])}
+            onClick={() => setEventFeed([])}
             bg="primary"
             icon={
               <Icon w={18} h={18}>

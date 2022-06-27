@@ -64,6 +64,9 @@ module.exports = {
   plugins: ['jsx-a11y', 'prettier', 'only-warn'],
   rules: shareConfig.rules,
   settings: shareConfig.settings,
+  globals: {
+    "JSX": "readonly"
+  },
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -79,7 +82,7 @@ module.exports = {
       rules: {
         ...shareConfig.rules,
         'no-unused-vars': 0,
-        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-unused-vars': ["error", { "varsIgnorePattern": "_" }],
         'no-shadow': 0,
         '@typescript-eslint/no-shadow': ['error'],
         'react/jsx-filename-extension': [
@@ -92,6 +95,9 @@ module.exports = {
       settings: {
         ...shareConfig.settings,
       },
+      "env": {
+        "browser": true,
+      }
     },
   ],
 };

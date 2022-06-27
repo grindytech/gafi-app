@@ -69,10 +69,10 @@ const MainPanel: ComponentStyleConfig = {
     transitionTimingFunction: 'linear, linear, ease',
   },
   variants: {
-    main: (props: StyleFunctionProps) => ({
+    main: () => ({
       float: 'right',
     }),
-    rtl: (props: StyleFunctionProps) => ({
+    rtl: () => ({
       float: 'left',
     }),
   },

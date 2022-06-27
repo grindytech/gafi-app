@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
 
 export interface ITransactionRowProps {
   name: string;
@@ -8,7 +8,7 @@ export interface ITransactionRowProps {
 }
 
 function TransactionRow(props: ITransactionRowProps) {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor = useColorModeValue('gray.700', 'white');
   const { name, date, logo, price } = props;
 
   return (
@@ -18,11 +18,11 @@ function TransactionRow(props: ITransactionRowProps) {
           me="12px"
           borderRadius="50%"
           color={
-            price[0] === "+"
-              ? "green.400"
-              : price[0] === "-"
-              ? "red.400"
-              : "gray.400"
+            price[0] === '+'
+              ? 'green.400'
+              : price[0] === '-'
+              ? 'red.400'
+              : 'gray.400'
           }
           border="1px solid"
           display="flex"
@@ -35,14 +35,14 @@ function TransactionRow(props: ITransactionRowProps) {
         </Box>
         <Flex direction="column">
           <Text
-            fontSize={{ sm: "md", md: "lg", lg: "md" }}
+            fontSize={{ sm: 'md', md: 'lg', lg: 'md' }}
             color={textColor}
             fontWeight="bold"
           >
             {name}
           </Text>
           <Text
-            fontSize={{ sm: "xs", md: "sm", lg: "xs" }}
+            fontSize={{ sm: 'xs', md: 'sm', lg: 'xs' }}
             color="gray.400"
             fontWeight="semibold"
           >
@@ -52,14 +52,14 @@ function TransactionRow(props: ITransactionRowProps) {
       </Flex>
       <Box
         color={
-          price[0] === "+"
-            ? "green.400"
-            : price[0] === "-"
-            ? "red.400"
+          price[0] === '+'
+            ? 'green.400'
+            : price[0] === '-'
+            ? 'red.400'
             : { textColor }
         }
       >
-        <Text fontSize={{ sm: "md", md: "lg", lg: "md" }} fontWeight="bold">
+        <Text fontSize={{ sm: 'md', md: 'lg', lg: 'md' }} fontWeight="bold">
           {price}
         </Text>
       </Box>

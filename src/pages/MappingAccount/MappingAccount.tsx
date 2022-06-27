@@ -14,6 +14,7 @@ import {
   Switch,
 } from '@chakra-ui/react';
 import { mdiArrowLeftRight, mdiContentCopy } from '@mdi/js';
+import { ISubmittableResult } from '@polkadot/types/types';
 import { u8aToHex } from '@polkadot/util';
 import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -37,8 +38,7 @@ function MappingAccount() {
   const [isLoading, setIsLoading] = useState(false);
   const { copySuccessToast } = useMessageToast();
 
-  // @ts-ignore
-  const txResHandler = ({ status, events }) => {
+  const txResHandler = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({

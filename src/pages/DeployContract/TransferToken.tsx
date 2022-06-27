@@ -40,15 +40,8 @@ const TransferToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
   const toast = useToast();
-  const { account, connect, isConnected, reset, balance, ethereum } =
-    useWallet();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { account, ethereum } = useWallet();
+  const { register, handleSubmit } = useForm({
     defaultValues: { toUser: '', contractAddress: '' },
   });
 
@@ -76,7 +69,7 @@ const TransferToken = () => {
           gas: gasLimit,
           gasPrice: await web3.eth.getGasPrice(),
         };
-        const signed = await web3.eth.sendTransaction(options);
+        await web3.eth.sendTransaction(options);
         const newBalance = await web3.eth.getBalance(account);
         setTxnFee(
           prevTxnFee =>
@@ -97,7 +90,6 @@ const TransferToken = () => {
           isClosable: true,
           status: 'error',
         });
-        console.log('error :>> ', error);
       }
     }
     setIsLoading(false);

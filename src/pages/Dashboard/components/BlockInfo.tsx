@@ -1,6 +1,7 @@
 import { HStack, VStack, Text, Box, Image } from '@chakra-ui/react';
+import { VoidFn } from '@polkadot/api/types';
 import { BlockNumber as GafiBlockNumber } from '@polkadot/types/interfaces';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
@@ -22,21 +23,19 @@ const BlockInfo: React.FC<IProps> = ({ isFinalized }) => {
       : api?.derive.chain.bestNumber;
 
   useEffect(() => {
-    // Temporary use any. Define type later.
-    let unsubscribeAll: any = null;
+    let unsubscribeAll: VoidFn | undefined;
 
-    // Temporary use any. Define type later.
-    bestNumber &&
+    if (bestNumber) {
       bestNumber((number: GafiBlockNumber) => {
         // Append `.toLocaleString('en-US')` to display a nice thousand-separated digit.
         setBlockNumber(number.toNumber().toLocaleString('en-US'));
         setBlockNumberTimer(0);
       })
-        // Temporary use any. Define type later.
-        .then((unsub: any) => {
+        .then((unsub: VoidFn) => {
           unsubscribeAll = unsub;
         })
         .catch(console.error);
+    }
 
     return () => unsubscribeAll && unsubscribeAll();
   }, [bestNumber]);

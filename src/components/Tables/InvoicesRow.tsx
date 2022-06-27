@@ -6,7 +6,7 @@ import {
   Spacer,
   Text,
   useColorModeValue,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 export interface IInvoicesRowProps {
   date: Date;
@@ -17,11 +17,11 @@ export interface IInvoicesRowProps {
 }
 
 function InvoicesRow(props: IInvoicesRowProps) {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor = useColorModeValue('gray.700', 'white');
   const { date, code, price, format, logo } = props;
 
   return (
-    <Flex my={{ sm: "1rem", xl: "10px" }} alignItems="center">
+    <Flex my={{ sm: '1rem', xl: '10px' }} alignItems="center">
       <Flex direction="column">
         <Text fontSize="md" color={textColor} fontWeight="bold">
           {date}
