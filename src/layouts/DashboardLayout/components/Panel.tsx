@@ -1,26 +1,32 @@
 import { Box, Heading, Icon, IconButton } from '@chakra-ui/react';
-import { mdiNearMe, mdiWeatherNight } from '@mdi/js';
+import { mdiMenu } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import UserMenu from './UserMenu';
 
-const actions = [
-  {
-    icon: mdiWeatherNight,
-    bg: '#FFFFFF',
-  },
-  {
-    icon: mdiNearMe,
-    bg: '#FFFFFF',
-  },
-];
+interface IProps {
+  onOpen: () => void;
+}
 
-const Panel = () => {
+const Panel = ({ onOpen }: IProps) => {
   const userName = 'Alex';
   const { t } = useTranslation();
   return (
     <Box sx={PanelStyled}>
+      <IconButton
+        display={{ base: 'flex', pc: 'none' }}
+        onClick={onOpen}
+        w={16}
+        h={16}
+        variant="transparents"
+        aria-label="open menu"
+        icon={
+          <Icon color="primary">
+            <path fill="currentColor" d={mdiMenu} />
+          </Icon>
+        }
+      />
       <Box sx={{ display: 'flex' }}>
         <Heading>{t('HELLO')},</Heading>
         <Heading ml={2} color="primary">
@@ -32,21 +38,6 @@ const Panel = () => {
           display: 'flex',
         }}
       >
-        {/* {React.Children.toArray(
-          actions.map(action => (
-            <IconButton
-              aria-label="Search database"
-              icon={
-                <Icon w={18} h={18}>
-                  <path fill="currentColor" d={action.icon} />
-                </Icon>
-              }
-              ml={4}
-              sx={{ ...actionStyled, background: action.bg }}
-            />
-          ))
-        )} */}
-
         <UserMenu />
       </Box>
     </Box>
@@ -61,13 +52,5 @@ const PanelStyled = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  p: 8,
-};
-
-const actionStyled = {
-  bg: 'white',
-  color: 'black',
-  w: '56px',
-  h: '56px',
-  borderRadius: '50%',
+  p: { base: 'none', pc: 8 },
 };

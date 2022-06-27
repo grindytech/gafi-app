@@ -1,4 +1,13 @@
-import { Box, Heading, Icon, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  BoxProps,
+  CloseButton,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -6,21 +15,29 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Card from 'components/card/Card';
 import routes from 'routes/routes';
 
-const SideBar = () => {
+interface IProps extends BoxProps {
+  onClose?: () => void;
+}
+
+const SideBar = ({ onClose, display }: IProps) => {
   const location = useLocation();
   const { t } = useTranslation();
   const activeRoute = (routeName: string) =>
     location.pathname === routeName ? 'active' : '';
   return (
-    <Card sx={sidebarStyled}>
-      <Box sx={sidebarHead}>
-        <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
-        <Heading ml={4}>GAFI</Heading>
-      </Box>
+    <Card sx={sidebarStyled} display={display}>
+      <HStack w="full" mb={20} justifyContent="space-between">
+        <Box sx={sidebarHead}>
+          <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
+          <Heading ml={4}>GAFI</Heading>
+        </Box>
+        <CloseButton display={{ base: 'flex', pc: 'none' }} onClick={onClose} />
+      </HStack>
+
       <Box w="full">
         {React.Children.toArray(
           routes.map(route => (
-            <NavLink to={route.layout + route.path}>
+            <NavLink onClick={onClose} to={route.layout + route.path}>
               <Box
                 sx={
                   activeRoute(route.layout + route.path) === 'active'
@@ -39,7 +56,7 @@ const SideBar = () => {
           ))
         )}
       </Box>
-      <Text mt={20} opacity="inherit" fontSize="sm">
+      <Text sx={cpyRight} opacity="inherit" fontSize="sm">
         &copy; copyright by cryptoviet
       </Text>
     </Card>
@@ -49,18 +66,18 @@ const SideBar = () => {
 export default SideBar;
 
 const sidebarStyled = {
-  minWidth: '20vw',
-  flex: 2,
+  w: { base: 'full', pc: 72, '2xl': '20vw' },
+  h: { base: 'full', pc: '80vh' },
+  borderRadius: { base: 'none', pc: '2xl' },
   alignItems: 'center',
+  justifyContent: 'space-between',
   py: 10,
 };
 
 const sidebarHead = {
   display: 'flex',
-  justifyContent: 'flex-start',
   alignItems: 'center',
   width: '100%',
-  mb: 20,
   pl: 8,
 };
 
@@ -73,12 +90,15 @@ const menuItem = {
   px: 8,
   py: 6,
 };
+
 const activeMenuItem = {
   background: 'greyBg',
   color: 'primary',
   fontWeight: 'semibold',
 };
 
-const menuStyled = {
-  width: '100%',
+const cpyRight = {
+  flex: 1,
+  display: 'flex',
+  alignItems: 'flex-end',
 };

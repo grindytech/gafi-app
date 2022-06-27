@@ -1,5 +1,16 @@
-import { Box, Flex, Text, Spinner, VStack, Grid } from '@chakra-ui/react';
-import React from 'react';
+import {
+  Box,
+  Drawer,
+  DrawerContent,
+  Flex,
+  Icon,
+  IconButton,
+  Spinner,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { mdiWalletOutline } from '@mdi/js';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AccountInfo from './components/AccountInfo';
@@ -10,6 +21,18 @@ import { useSubstrateState } from 'contexts/substrateContext';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { apiState, apiError, keyringState } = useSubstrateState();
+  const [drawerOpen, setDrawerOpen] = useState('');
+  const onClose = () => {
+    setDrawerOpen('');
+  };
+
+  const onSidebarOpen = () => {
+    setDrawerOpen('sidebar');
+  };
+
+  const onAccountInfoOpen = () => {
+    setDrawerOpen('accountInfo');
+  };
   const { t } = useTranslation();
   if (apiState === 'ERROR') return message(apiError);
   if (apiState !== 'READY') return loader(t('CONNECTING_TO_SUBSTRATE'));
@@ -20,15 +43,41 @@ const DashboardLayout: React.FC = ({ children }) => {
 
   return (
     <Box sx={dashBoardStyled}>
-      <SideBar />
+      <SideBar display={{ base: 'none', pc: 'flex' }} />
+      <Drawer
+        autoFocus={false}
+        isOpen={drawerOpen === 'sidebar'}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="md"
+      >
+        <DrawerContent>
+          <SideBar onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
+      <Drawer
+        autoFocus={false}
+        isOpen={drawerOpen === 'accountInfo'}
+        placement="bottom"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="md"
+      >
+        <DrawerContent>
+          <AccountInfo onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
       <VStack
-        flex={10}
+        flex={1}
         sx={{
           background: 'greyBg',
           display: 'flex',
         }}
       >
-        <Panel />
+        <Panel onOpen={onSidebarOpen} />
         <Box
           sx={{
             display: 'flex',
@@ -39,15 +88,26 @@ const DashboardLayout: React.FC = ({ children }) => {
         >
           <Box
             sx={{
-              flex: 8,
-              px: 4,
+              flex: 1,
+              px: { base: 'none', pc: 4 },
             }}
           >
             {children}
           </Box>
-          <AccountInfo />
+          <AccountInfo display={{ base: 'none', pc: 'flex' }} />
         </Box>
       </VStack>
+      <IconButton
+        sx={accountInfoButtonStyled}
+        onClick={onAccountInfoOpen}
+        variant="outline"
+        aria-label="open menu"
+        icon={
+          <Icon color="primary">
+            <path fill="currentColor" d={mdiWalletOutline} />
+          </Icon>
+        }
+      />
     </Box>
   );
 };
@@ -59,6 +119,15 @@ const dashBoardStyled = {
   background: 'greyBg',
   alignItems: 'flex-start',
   minHeight: '100vh',
+};
+
+const accountInfoButtonStyled = {
+  display: { base: 'block', pc: 'none' },
+  w: 16,
+  h: 16,
+  position: 'fixed',
+  right: 8,
+  bottom: 8,
 };
 
 const message = (errObj: any) => {

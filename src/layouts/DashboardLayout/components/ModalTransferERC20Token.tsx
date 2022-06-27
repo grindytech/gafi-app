@@ -5,26 +5,22 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { ethers } from 'ethers';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
-import { useWallet } from 'use-wallet';
 
 import NumberInput from '../../../components/numberInput/NumberInput';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import ERC20JSON from 'contract/ERC20.json';
+import useTransferERC20, { ITransferForm } from 'hooks/useTransferERC20';
 import useWeb3 from 'hooks/useWeb3';
 
 interface Iprops {
@@ -32,33 +28,15 @@ interface Iprops {
   onClose: () => void;
 }
 
-interface ITransferForm {
-  tokenAddress: string;
-  transferTo: string;
-  amount: number;
-}
-
-interface ITokenInfo {
-  symbol: string;
-  balance: string;
-}
-
 const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const [txFee, setTxFee] = useState('');
-  const { formatUnits, parseUnits } = ethers.utils;
-  const [nativeTokenBalance, setNativeTokenBalance] = useState('');
+  const { formatUnits } = ethers.utils;
   const { chainDecimal } = useSubstrateState();
-  const [tokenInfo, setTokenInfo] = useState<ITokenInfo>();
-  const { account } = useWallet();
   const web3 = useWeb3();
-  const { toBN } = web3.utils;
-  const toast = useToast();
   const {
     register,
     handleSubmit,
     control,
-    setValue,
     formState: { errors },
   } = useForm<ITransferForm>({
     defaultValues: {
@@ -72,87 +50,19 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
     required: t('PLEASE_ENTER_THE_TOKEN_ADDRESS'),
   });
 
-  const getERC20TokenInfo = async (tokenContract: string) => {
-    try {
-      const userContract = new web3.eth.Contract(
-        ERC20JSON.abi as any,
-        tokenContract
-      );
-      const tokenBalance = await userContract.methods.balanceOf(account).call({
-        from: account,
-      });
-
-      const symbol = await userContract.methods.symbol().call({
-        from: account,
-      });
-      setTokenInfo({
-        symbol,
-        balance: tokenBalance,
-      });
-    } catch (error) {
-      setTokenInfo(undefined);
-    }
-  };
-
-  const mutation = useMutation(
-    async (data: ITransferForm) => {
-      const { tokenAddress, transferTo, amount } = data;
-      const contract = new web3.eth.Contract(
-        ERC20JSON.abi as any,
-        tokenAddress
-      );
-      return contract.methods
-        .transfer(
-          transferTo,
-          parseUnits(amount.toString(), chainDecimal).toString()
-        )
-        .send({
-          from: account,
-          gasPrice: await web3.eth.getGasPrice(),
-        });
-    },
-    {
-      mutationKey: 'transfer-erc20-token',
-      onError: (error: any) => {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: error.message,
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-      },
-      onSuccess: async data => {
-        toast({
-          description: t('TRANSACTION_SUCCESS'),
-          isClosable: true,
-          status: 'success',
-        });
-        const newBalance = await web3.eth.getBalance(account || '');
-        setTxFee(
-          formatUnits(
-            toBN(nativeTokenBalance).sub(toBN(newBalance)).toString(),
-            chainDecimal
-          )
-        );
-        getERC20TokenInfo(data.events.Transfer.address);
-        setValue('amount', 0);
-      },
-    }
-  );
-
-  const onSubmit = async (data: ITransferForm) => {
-    const beforeBalance = await web3.eth.getBalance(account || '');
-    setNativeTokenBalance(beforeBalance);
-    mutation.mutate(data);
-  };
+  const { transferERC20, isLoading, getERC20TokenInfo, tokenInfo, txFee } =
+    useTransferERC20();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{t('TRANSFER_ERC20_TOKEN')}</ModalHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit((data: ITransferForm) => {
+            transferERC20(data);
+          })}
+        >
           <ModalBody>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TOKEN_CONTRACT')}</FormLabel>
@@ -243,7 +153,7 @@ const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
               type="submit"
               size="sm"
               variant="primary"
-              isLoading={mutation.isLoading}
+              isLoading={isLoading}
             >
               {t('TRANSFER')}
             </Button>

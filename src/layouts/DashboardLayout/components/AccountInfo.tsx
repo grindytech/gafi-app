@@ -1,5 +1,8 @@
 import {
+  Box,
+  BoxProps,
   Button,
+  CloseButton,
   Flex,
   Icon,
   Image,
@@ -15,24 +18,19 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useToast,
+  useTheme,
+  VStack,
 } from '@chakra-ui/react';
 import { mdiSwapVerticalBold } from '@mdi/js';
-import { KeyringPair } from '@polkadot/keyring/types';
-import { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
-import {
-  acctAddr,
-  getFromAcct,
-  getGAKIAccountAddress,
-  handleTxError,
-  shorten,
-} from 'components/utils';
+import { acctAddr, shorten } from 'components/utils';
 import { useSubstrate } from 'contexts/substrateContext';
+import useFaucet from 'hooks/useFaucet';
+import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
 
@@ -41,116 +39,32 @@ const CHROME_EXT_URL =
 const FIREFOX_ADDON_URL =
   'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/';
 
-const AccountInfo = () => {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+interface IProps extends BoxProps {
+  onClose?: () => void;
+}
+const AccountInfo = ({ display, onClose }: IProps) => {
+  const theme = useTheme();
   const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
-  const { account, connect, isConnected } = useWallet();
-  const {
-    setCurrentAccount,
-    state: { keyring, currentAccount, api, polkadotAccounts },
-  } = useSubstrate();
-
+  const { account, connect, isConnected, reset } = useWallet();
+  const { hanldeSwitchAccount, state } = useSubstrate();
+  const { currentAccount, polkadotAccounts } = state;
   const { polkadotFormatedBalance } = usePolkadotBalance();
-  const pairs = keyring?.getPairs() || [];
-
-  const setPolkadotAccount = useCallback(async () => {
-    const response = await api?.query.proofAddressMapping.h160Mapping(account);
-    const polkadotAccount = response?.toHuman() || '';
-    const initPair = pairs.find(
-      (pair: KeyringPair) =>
-        getGAKIAccountAddress(pair.addressRaw) === polkadotAccount
-    );
-
-    if (initPair) {
-      setCurrentAccount(initPair);
-    } else if (pairs.length > 0) {
-      setCurrentAccount(pairs[0]);
-    }
-  }, [account, api, keyring]);
-
-  useEffect(() => {
-    if (!currentAccount) setPolkadotAccount();
-  }, [setPolkadotAccount]);
-
-  const hanldeSwitchAccount = (index: number) => {
-    try {
-      setCurrentAccount(pairs[index]);
-      toast({
-        description: t('SWITCH_TO_ACCOUNT_SUCCESSFUL', {
-          accountAddress: acctAddr(pairs[index]),
-        }),
-        isClosable: true,
-        status: 'success',
-      });
-    } catch (error) {
-      toast({
-        description: t('SWITCH_ACCOUNT_FAIL'),
-        isClosable: true,
-        status: 'error',
-      });
-    }
-  };
-
-  const txResHandler = ({ status, events }: any) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
-
-  // @ts-ignore
-  const txErrHandler = err => {
-    toast({
-      description: t('TRANSACTION_FAILED', {
-        errorMessage: err.toString(),
-      }),
-      isClosable: true,
-      status: 'error',
-    });
-    setIsLoading(false);
-  };
-
-  const onFaucet = async () => {
-    setIsLoading(true);
-    if (currentAccount) {
-      const [acc, options] = await getFromAcct(currentAccount);
-
-      if (api) {
-        const txExecute = api.tx.faucet.faucet();
-
-        if (options) {
-          const unsub = await txExecute
-            .signAndSend(acc, options, txResHandler)
-            .catch(txErrHandler);
-        } else {
-          const unsub = await txExecute
-            .signAndSend(acc, txResHandler)
-            .catch(txErrHandler);
-        }
-      }
-    }
-  };
+  const { pairs } = useLoadCurrentAccount();
+  const { faucet, isLoading } = useFaucet();
 
   return (
-    <Card sx={AccountInfoStyled}>
-      <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
+    <Card sx={AccountInfoStyled} display={display}>
+      <Box
+        display="flex"
+        mb={10}
+        alignItems="center"
+        justifyContent="space-between"
+        w="full"
+      >
+        <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
+        <CloseButton display={{ base: 'flex', pc: 'none' }} onClick={onClose} />
+      </Box>
 
       <Tabs variant="soft-rounded">
         <TabList>
@@ -192,7 +106,12 @@ const AccountInfo = () => {
                         <path fill="currentColor" d={mdiSwapVerticalBold} />
                       </Icon>
                     </MenuButton>
-                    <MenuList>
+                    <MenuList
+                      sx={{
+                        h: '200px',
+                        overflowY: 'scroll',
+                      }}
+                    >
                       <MenuOptionGroup
                         defaultValue={acctAddr(currentAccount)}
                         type="radio"
@@ -202,7 +121,7 @@ const AccountInfo = () => {
                             <MenuItemOption
                               key={polkadotAccount}
                               onClick={() => {
-                                hanldeSwitchAccount(index);
+                                hanldeSwitchAccount(pairs[index]);
                               }}
                               value={polkadotAccount}
                             >
@@ -218,8 +137,7 @@ const AccountInfo = () => {
                   {polkadotFormatedBalance}
                 </Text>
                 <Button
-                  mt={20}
-                  onClick={onFaucet}
+                  onClick={faucet}
                   isLoading={isLoading}
                   sx={faucetButtonStyled}
                 >
@@ -284,18 +202,18 @@ const AccountInfo = () => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  flex: 2,
+  w: { base: 'full', pc: 72, '2xl': '20vw' },
+  minHeight: '470px',
   alignItems: 'center',
   bg: 'white',
-  display: 'flex',
   justifyContent: 'flex-start',
 };
 
 const titleStyled = {
-  fontSize: 'xl',
-  fontWeight: 'medium',
-  mb: 4,
-  pt: 4,
+  fontSize: 'xs',
+  fontWeight: 'bold',
+  color: 'greyTitle',
+  textTransform: 'uppercase',
 };
 
 const balanceStyled = {
