@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Icon,
@@ -15,7 +16,9 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useTheme,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
 import { mdiSwapVerticalBold } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -45,9 +48,10 @@ const FIREFOX_ADDON_URL =
 const AccountInfo = () => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const theme = useTheme();
   const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
-  const { account, connect, isConnected } = useWallet();
+  const { account, connect, isConnected, reset } = useWallet();
   const {
     setCurrentAccount,
     state: { keyring, currentAccount, api, polkadotAccounts },
@@ -79,9 +83,8 @@ const AccountInfo = () => {
     try {
       setCurrentAccount(pairs[index]);
       toast({
-        description: t('SWITCH_TO_ACCOUNT_SUCCESSFUL', {
-          accountAddress: acctAddr(pairs[index]),
-        }),
+        title: t('SWITCH_ACCOUNT_SUCCESSFUL'),
+        description: acctAddr(pairs[index]),
         isClosable: true,
         status: 'success',
       });
@@ -98,18 +101,16 @@ const AccountInfo = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
+        title: t('FINALIZED_BLOCK_HASH'),
+        description: status.asFinalized.toString(),
         isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: status.type,
         isClosable: true,
         status: 'info',
       });
@@ -154,7 +155,7 @@ const AccountInfo = () => {
       <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
 
       <Tabs variant="soft-rounded">
-        <TabList>
+        <TabList justifyContent="space-evenly">
           <Tab>
             <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
             {t('POLKADOT')}
@@ -183,15 +184,16 @@ const AccountInfo = () => {
                   </CopyToClipboard>
 
                   <Menu>
-                    <MenuButton
-                      sx={{
-                        '&:hover': { opacity: 0.8 },
-                      }}
-                      ml={2}
-                    >
-                      <Icon color="primary">
-                        <path fill="currentColor" d={mdiSwapVerticalBold} />
-                      </Icon>
+                    <MenuButton sx={menuBtn} ml={2}>
+                      <Flex
+                        className="switch-btn"
+                        sx={switchBtn}
+                        border={`3px solid ${theme.colors.primary}`}
+                      >
+                        <Icon color="primary">
+                          <path fill="currentColor" d={mdiSwapVerticalBold} />
+                        </Icon>
+                      </Flex>
                     </MenuButton>
                     <MenuList>
                       <MenuOptionGroup
@@ -215,14 +217,18 @@ const AccountInfo = () => {
                     </MenuList>
                   </Menu>
                 </Flex>
-                <Text textAlign="center" sx={balanceStyled}>
-                  {polkadotFormatedBalance}
-                </Text>
+                <Box sx={balanceStyled}>
+                  <Text sx={balanceTextStyled}>{polkadotFormatedBalance}</Text>
+                  <Text color="primary" pl={2} pb={2}>
+                    {t('GAKI')}
+                  </Text>
+                </Box>
+
                 <Button
-                  mt={20}
                   onClick={onFaucet}
                   isLoading={isLoading}
                   sx={faucetButtonStyled}
+                  variant="primary"
                 >
                   {t('FAUCET')}
                 </Button>
@@ -254,16 +260,21 @@ const AccountInfo = () => {
           <TabPanel>
             {isConnected() ? (
               account && (
-                <CopyToClipboard text={account.toString()}>
-                  <Button
-                    w="full"
-                    variant="outline"
-                    justifyContent="center"
-                    onClick={copySuccessToast}
-                  >
-                    {shorten(account.toString())}
+                <VStack spacing={6}>
+                  <CopyToClipboard text={account.toString()}>
+                    <Button
+                      w="full"
+                      variant="outline"
+                      justifyContent="center"
+                      onClick={copySuccessToast}
+                    >
+                      {shorten(account.toString())}
+                    </Button>
+                  </CopyToClipboard>
+                  <Button variant="primary" onClick={() => reset()}>
+                    {t('DISCONNECT_METAMASK')}
                   </Button>
-                </CopyToClipboard>
+                </VStack>
               )
             ) : (
               <Button
@@ -293,20 +304,42 @@ const AccountInfoStyled = {
 };
 
 const titleStyled = {
-  fontSize: 'xl',
-  fontWeight: 'medium',
-  mb: 4,
-  pt: 4,
+  fontSize: 'xs',
+  fontWeight: 'bold',
+  mb: 10,
+  color: 'greyTitle',
+  alignSelf: 'flex-start',
+  textTransform: 'uppercase',
 };
 
-const balanceStyled = {
+const balanceTextStyled = {
   color: 'primary',
   fontWeight: 'bold',
   fontSize: '4xl',
+};
+
+const balanceStyled = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-end',
   mt: 16,
+  mb: 10,
 };
 
 const faucetButtonStyled = {
   mt: 22,
   width: '100%',
+};
+
+const switchBtn = {
+  borderRadius: '50%',
+  w: 8,
+  h: 8,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const menuBtn = {
+  '&:hover .chakra-icon': { color: 'white' },
+  '&:hover .switch-btn': { bg: 'primary' },
 };

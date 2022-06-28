@@ -1,22 +1,19 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-
-import './interfaces/augment-api';
-import './interfaces/augment-types';
-import './interfaces/types-lookup';
-
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import { Fonts, theme } from 'themes/theme';
+
+import 'translations/i18n';
 import { QueryParamProvider } from 'use-query-params';
 import { UseWalletProvider } from 'use-wallet';
 
 import App from './App';
-
-import { ChakraProvider } from '@chakra-ui/react';
-
-import { theme } from 'themes/theme';
-
-import 'translations/i18n';
+import './interfaces/augment-api';
+import './interfaces/augment-types';
+import './interfaces/types-lookup';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +38,7 @@ ReactDOM.render(
       autoConnect
     >
       <ChakraProvider theme={theme}>
+        <Fonts />
         <Router>
           <Suspense fallback="...">
             <QueryParamProvider ReactRouterRoute={Route}>

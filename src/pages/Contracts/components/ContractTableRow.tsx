@@ -55,8 +55,6 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
                 cursor="pointer"
                 ml={4}
                 color="primary"
-                w={5}
-                h={5}
               >
                 <path fill="currentColor" d={mdiContentCopy} />
               </Icon>

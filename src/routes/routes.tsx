@@ -1,7 +1,7 @@
 import {
   mdiAccountSwitch,
   mdiGamepadSquare,
-  mdiHome,
+  mdiViewDashboardOutline,
   mdiPool,
   mdiRocketLaunch,
 } from '@mdi/js';
@@ -36,7 +36,7 @@ const dashRoutes = isDisplayGameCreatorFeature
       {
         path: '/dashboard',
         name: 'DASHBOARD',
-        icon: mdiHome,
+        icon: mdiViewDashboardOutline,
         component: Dashboard,
         layout: '/admin',
       },
@@ -87,7 +87,7 @@ const dashRoutes = isDisplayGameCreatorFeature
       {
         path: '/dashboard',
         name: 'DASHBOARD',
-        icon: mdiHome,
+        icon: mdiViewDashboardOutline,
         component: Dashboard,
         layout: '/admin',
       },

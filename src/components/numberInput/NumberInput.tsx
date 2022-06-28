@@ -1,4 +1,10 @@
-import { HStack, Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
+import {
+  HStack,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,7 +31,9 @@ const NumberInput: React.FC<Props> = ({ value, onChange, max }) => {
           }}
         />
         <InputRightAddon onClick={() => onChange(Math.floor(max))}>
-          {t('MAX')}
+          <Text textTransform="uppercase" fontWeight={700}>
+            {t('MAX')}
+          </Text>
         </InputRightAddon>
       </InputGroup>
     </HStack>

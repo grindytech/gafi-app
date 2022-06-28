@@ -91,7 +91,7 @@ const loader = (text: string) => (
     w="100vw"
     h="100vh"
   >
-    <Text color="white">{text}</Text>
+    <Text color="blackAlpha.700">{text}</Text>
 
     <Spinner
       mt={4}

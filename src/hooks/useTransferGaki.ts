@@ -32,9 +32,8 @@ const useTransferGaki = (onSuccess: () => void) => {
       onSuccess();
     } else {
       toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: status.type,
         isClosable: true,
         status: 'info',
       });

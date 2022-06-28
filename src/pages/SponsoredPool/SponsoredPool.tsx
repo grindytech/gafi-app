@@ -81,11 +81,11 @@ const SponsoredPoolPage: React.FC = () => {
           />
           <HStack justifyContent="flex-end">
             <Button
-              size="sm"
+              size="xl"
               variant="primary"
               fontWeight="bold"
               rightIcon={
-                <Icon w={18} h={18}>
+                <Icon>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
               }
