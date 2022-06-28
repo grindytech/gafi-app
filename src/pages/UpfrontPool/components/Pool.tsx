@@ -5,25 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
-
-export interface IPool {
-  poolType: string;
-  discount: number;
-  rate: {
-    txLimit: number;
-    minute: number;
-  };
-  banner: string;
-  fee: {
-    gaki: string;
-    minute: number;
-  };
-  onJoin: () => void;
-  onLeave: () => void;
-  isLoading: boolean;
-  isJoined: boolean;
-  isDisabled: boolean;
-}
+import { IPool } from 'hooks/useUpfrontPool';
 
 interface IProps {
   pool: IPool;
