@@ -8,10 +8,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
-import React, { useState } from 'react';
+import React from 'react';
 import { useQueryParam } from 'use-query-params';
 
-import ModalEditPool from './ModalEditPool';
 import OwnedTableActions from './OwnedTableActions';
 import TableActions from './TableActions';
 

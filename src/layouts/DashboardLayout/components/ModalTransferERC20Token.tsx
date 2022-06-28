@@ -5,7 +5,6 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -27,7 +26,7 @@ import { useSubstrateState } from 'contexts/substrateContext';
 import ERC20JSON from 'contract/ERC20.json';
 import useWeb3 from 'hooks/useWeb3';
 
-interface Iprops {
+interface IProps {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -43,7 +42,7 @@ interface ITokenInfo {
   balance: string;
 }
 
-const ModalTransferToken: React.FC<Iprops> = ({ isOpen, onClose }) => {
+const ModalTransferToken: React.FC<IProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const [txFee, setTxFee] = useState('');
   const { formatUnits, parseUnits } = ethers.utils;

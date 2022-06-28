@@ -1,7 +1,7 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
-import { FC } from "react";
+import { Flex, FlexProps } from '@chakra-ui/react';
+import { FC } from 'react';
 
-const Separator: FC<FlexProps> = (props) => {
+const Separator: FC<FlexProps> = props => {
   // @ts-ignore
   const { variant, children, ...rest } = props;
   return (

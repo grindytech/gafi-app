@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { mdiSwapVerticalBold } from '@mdi/js';
 import { KeyringPair } from '@polkadot/keyring/types';
+import { ISubmittableResult } from '@polkadot/types/types';
 import { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
@@ -93,7 +94,7 @@ const AccountInfo = () => {
     }
   };
 
-  const txResHandler = ({ status, events }: any) => {
+  const txResHandler = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({

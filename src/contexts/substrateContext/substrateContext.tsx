@@ -122,7 +122,7 @@ const connect = (
     dispatch({ type: 'CONNECT', payload: _api });
 
     // `ready` event is not emitted upon reconnection and is checked explicitly here.
-    _api.isReady.then(_api => dispatch({ type: 'CONNECT_SUCCESS' }));
+    _api.isReady.then(() => dispatch({ type: 'CONNECT_SUCCESS' }));
   });
   _api.on('ready', () => dispatch({ type: 'CONNECT_SUCCESS' }));
   _api.on('error', err => dispatch({ type: 'CONNECT_ERROR', payload: err }));
@@ -237,7 +237,7 @@ const SubstrateContext = React.createContext<{
 
 let keyringLoadAll = false;
 
-const SubstrateContextProvider: React.FC = (props: any) => {
+const SubstrateContextProvider: React.FC<Record<string, unknown>> = props => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { account: metamaskAccount } = useWallet();

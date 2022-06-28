@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Spinner, VStack, Grid } from '@chakra-ui/react';
+import { Box, Flex, Text, Spinner, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

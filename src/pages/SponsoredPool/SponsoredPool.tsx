@@ -29,7 +29,7 @@ import * as constants from 'utils/constants';
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
-  const [type, setType] = useQueryParam('type');
+  const [type, _] = useQueryParam('type');
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const { currentAccount } = useSubstrateState();
@@ -37,11 +37,7 @@ const SponsoredPoolPage: React.FC = () => {
 
   // Example for query data from graphql.
 
-  const {
-    data: sponsoredPoolData,
-    refetch,
-    isLoading,
-  } = useSponsoredPoolsQuery(
+  const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
     {
       first: constants.SPONSORED_POOL_AMOUNT_PER_PAGE,

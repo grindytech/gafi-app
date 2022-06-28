@@ -1,7 +1,7 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
-import { FC } from "react";
+import { Flex, FlexProps } from '@chakra-ui/react';
+import { FC } from 'react';
 
-const IconBox: FC<FlexProps> = (props) => {
+const IconBox: FC<FlexProps> = props => {
   const { children, ...rest } = props;
 
   return (

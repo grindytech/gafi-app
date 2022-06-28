@@ -123,7 +123,9 @@ const Pagination = (props: IProps) => {
                     button.pageNumber !== '...' &&
                     button.pageNumber !== currentPage
                   ) {
-                    hanldleSwitchPage(parseInt(button.pageNumber.toString()));
+                    hanldleSwitchPage(
+                      parseInt(button.pageNumber.toString(), 10)
+                    );
                   }
                 }}
               >

@@ -24,9 +24,11 @@
     "test": "CI=true react-app-rewired test",
     "eject": "react-scripts eject",
     "eslint:check": "eslint --ext .tsx,.ts src/",
-    "eslint:write": "eslint --fix --ext .tsx,.ts src/",
+    "eslint-fix": "eslint --cache --fix --max-warnings=96 --ext .tsx,.ts src/",
     "prettier:check": "prettier -c src/*",
     "prettier:write": "prettier -w src/*",
+    "postinstall": "husky install",
+    "hooks:pre-commit": "lint-staged",
     "deploy": "gh-pages -d build -m '[ci skip] Updates'",
     "deploy:mainnet": "yarn build && firebase use gafi-c2fcf && firebase deploy"
   },
@@ -97,6 +99,8 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "gh-pages": "^3.2.3",
+    "husky": ">=4",
+    "lint-staged": ">=10",
     "prettier": "2.5.1",
     "react-app-rewired": "^2.2.1",
     "semistandard": "^16.0.1",
@@ -123,6 +127,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "*.(t|j)s?(x)": "yarn eslint-fix"
   },
   "packageManager": "yarn@3.1.1"
 }
