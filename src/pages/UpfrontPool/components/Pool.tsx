@@ -1,29 +1,18 @@
-import { Box, Heading, Text, Button, CSSObject } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  CSSObject,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
-
-export interface IPool {
-  poolType: string;
-  discount: number;
-  rate: {
-    txLimit: number;
-    minute: number;
-  };
-  banner: string;
-  fee: {
-    gaki: string;
-    minute: number;
-  };
-  onJoin: () => void;
-  onLeave: () => void;
-  isLoading: boolean;
-  isJoined: boolean;
-  isDisabled: boolean;
-}
+import { IPool } from 'hooks/usePool';
 
 interface IProps {
   pool: IPool;
@@ -34,6 +23,9 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
   const { formatUnits } = ethers.utils;
   const { chainDecimal } = useSubstrateState();
   const { t } = useTranslation();
+  const [isSmallScreen] = useMediaQuery(
+    '(min-width: 1024px) and (max-width: 1271px)'
+  );
   return (
     <Card sx={{ ...sx, p: 0, overflow: 'hidden' }}>
       <Box
@@ -41,24 +33,26 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           ...bannerStyled,
           background: `url(${pool.banner}) no-repeat center`,
           backgroundSize: 'cover',
+
+          height: isSmallScreen ? 24 : { base: 24, tablet: 210 },
         }}
       >
         {pool.poolType}
       </Box>
       <Box sx={contentStyled}>
-        <Heading as="h2" size="lg" pt={8} mb={4}>
+        <Heading as="h2" size="lg" pt={{ base: 4, tablet: 8 }} mb={4}>
           {t('DISCOUNT_FEE', {
             discountPercent: pool.discount / 10000,
           })}
         </Heading>
-        <Box mb={16}>
-          <Text>
+        <Box mb={{ base: 10, tablet: 16 }}>
+          <Text color="greyText">
             {t('TRANSACTIONS_RATE', {
               transactionAmount: pool.rate.txLimit,
               minute: pool.rate.minute,
             })}
           </Text>
-          <Text>
+          <Text color="greyText">
             {t('POOL_FEE', {
               poolFee: formatUnits(pool.fee.gaki, chainDecimal),
               minute: pool.fee.minute,
@@ -92,20 +86,19 @@ export default Pool;
 
 const bannerStyled = {
   width: '100%',
-  height: 210,
+  fontWeight: { base: 'bold', tablet: 'medium' },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   color: 'white',
-  fontSize: '4xl',
-  fontWeight: 'medium',
+  fontSize: { base: '2xl', tablet: '4xl' },
   textTransform: 'uppercase',
 };
 
 const contentStyled = {
+  p: { base: 6, tablet: 8 },
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  p: 8,
 };
