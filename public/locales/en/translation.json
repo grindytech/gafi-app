@@ -5,13 +5,13 @@
   "POOL_FEE": "Fee: {{poolFee}} GAKI per {{minute}} minutes",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
-    "STACKING_POOL": "Stacking pool",
+    "STAKING_POOL": "Staking pool",
     "SPONSORED_POOL": "Sponsored pool"
   },
   "POOL_DESCRIPTION": {
     "MY_SPONSORED_POOL": "We can manage pools, edit targets, name pool, and withdraw.",
     "UPFRONT_POOL": "Upfront Pool provides upfront-charge services to reduce transaction fees and enhance network security. Basic, Medium, and Advanced are the three packs you can use when you join the Upfront Pool.",
-    "STACKING_POOL": "Staking Pool provides staking-like services to reduce transaction fees and enhance network security. Basic, Medium, and Advanced are the three packs you can use when you join the Staking Pool.",
+    "STAKING_POOL": "Staking Pool provides staking-like services to reduce transaction fees and enhance network security. Basic, Medium, and Advanced are the three packs you can use when you join the Staking Pool.",
     "SPONSORED_POOL": "Gafi Pool offers the Sponsored Pool to give players more options to participate in Gafi Network and provide the method for game projects to appeal to their users."
   },
   "BASIC": "Basic",
@@ -86,7 +86,7 @@
   "MAPPING_ACCOUNT": "Mapping Account",
   "MAPPING_ACCOUNT_DESCRIPTION": "Proof Address Mapping is the easy, secure way to deal with Address Mapping to map two addresses between the Substrate(H256) address and EVM(H160) address.",
   "UPFRONT_POOL": "Upfront Pool",
-  "STACKING_POOL": "Staking Pool",
+  "STAKING_POOL": "Staking Pool",
   "SPONSORED_POOL": "Sponsored Pool",
   "GAME_CREATOR": "Game creator",
   "DEPLOY_CONTRACT": "Deploy Contract",

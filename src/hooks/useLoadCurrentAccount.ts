@@ -1,5 +1,5 @@
 import { KeyringPair } from '@polkadot/keyring/types';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useWallet } from 'use-wallet';
 
 import { useSubstrate } from 'contexts/substrateContext';
@@ -10,7 +10,7 @@ const useLoadCurrentAccount = () => {
   const { setCurrentAccount, state } = useSubstrate();
   const { api, keyring, currentAccount } = state;
 
-  const pairs = keyring?.getPairs() || [];
+  const pairs = useMemo(() => keyring?.getPairs() || [], [keyring]);
 
   const setPolkadotAccount = useCallback(async () => {
     const response = await api?.query.proofAddressMapping.h160Mapping(account);
@@ -25,11 +25,11 @@ const useLoadCurrentAccount = () => {
     } else if (pairs.length > 0) {
       setCurrentAccount(pairs[0]);
     }
-  }, [account, api, keyring]);
+  }, [account, api?.query.proofAddressMapping, pairs, setCurrentAccount]);
 
   useEffect(() => {
     if (!currentAccount) setPolkadotAccount();
-  }, [setPolkadotAccount]);
+  }, [currentAccount, setPolkadotAccount]);
 
   return {
     pairs,

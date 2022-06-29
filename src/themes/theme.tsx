@@ -99,9 +99,11 @@ const PanelContent: ComponentStyleConfig = {
 const colors = {
   primary: '#2A79D6',
   hoverPrimary: '#588aff',
-  secondary: '#64DFDF',
+  secondary: '#4AD7D7',
+  hoverSecondary: '#39a9a9',
   greyText: '#686868',
   greyBg: '#F5F7FB',
+  borderBottom: '#EEF1FF',
   greyBtnBg: '#D7D6D6',
   greyTitle: '#B0B0B0',
   gradientColor1: '#56CCF2',
@@ -262,9 +264,8 @@ export const theme = extendTheme({
         },
         secondary: {
           bg: colors.secondary,
-          opacity: 0.8,
           '&:hover': {
-            opacity: 1,
+            bg: colors.hoverSecondary,
           },
         },
         outline: {

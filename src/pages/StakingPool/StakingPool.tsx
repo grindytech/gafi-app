@@ -5,24 +5,24 @@ import { useTranslation } from 'react-i18next';
 import Pool from '../UpfrontPool/components/Pool';
 
 import Banner from 'components/Banner';
-import useStakingPool from 'hooks/useStakingPool';
-import { IPool } from 'hooks/useUpfrontPool';
+import useLoadStakingPool from 'hooks/useLoadStakingPool';
+import { IPool } from 'hooks/usePool';
 
 const StakingPool = () => {
   const { t } = useTranslation();
-  const { pools } = useStakingPool();
+  const { stakingPools } = useLoadStakingPool();
 
   return (
     <>
       <Banner
-        title={t('POOL.STACKING_POOL')}
-        subTitle={t('POOL_DESCRIPTION.STACKING_POOL')}
-        bannerBg="/assets/layout/stacking-banner-bg.png"
+        title={t('POOL.STAKING_POOL')}
+        subTitle={t('POOL_DESCRIPTION.STAKING_POOL')}
+        bannerBg="/assets/layout/staking-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/staking-pool"
       />
       <SimpleGrid mt="4" minChildWidth="308px" spacing="1em" minH="full">
         {React.Children.toArray(
-          pools.map((pool: IPool) => <Pool pool={pool} />)
+          stakingPools.map((pool: IPool) => <Pool pool={pool} />)
         )}
       </SimpleGrid>
     </>

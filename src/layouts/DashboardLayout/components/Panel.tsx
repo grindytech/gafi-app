@@ -1,4 +1,4 @@
-import { Box, Heading, IconButton, useTheme } from '@chakra-ui/react';
+import { Box, Heading, IconButton } from '@chakra-ui/react';
 import { mdiMenu } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -12,7 +12,6 @@ interface IProps {
 
 const Panel = ({ onOpen }: IProps) => {
   const userName = 'Alex';
-  const theme = useTheme();
   const { t } = useTranslation();
   return (
     <Box w="full">
@@ -23,7 +22,8 @@ const Panel = ({ onOpen }: IProps) => {
           variant="transparents"
           aria-label="open menu"
           size="lg"
-          icon={<Icon size={1.5} path={mdiMenu} color={theme.colors.primary} />}
+          color="primary"
+          icon={<Icon size={1.5} path={mdiMenu} />}
         />
         <Box
           sx={{

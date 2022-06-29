@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
-import { IPool } from 'hooks/useUpfrontPool';
+import { IPool } from 'hooks/usePool';
 
 interface IProps {
   pool: IPool;

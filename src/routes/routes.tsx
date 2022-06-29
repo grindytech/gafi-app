@@ -56,7 +56,7 @@ const dashRoutes = isDisplayGameCreatorFeature
       },
       {
         path: '/staking-pool',
-        name: 'STACKING_POOL',
+        name: 'STAKING_POOL',
         component: StakingPool,
         icon: mdiPool,
         layout: '/admin',
@@ -107,7 +107,7 @@ const dashRoutes = isDisplayGameCreatorFeature
       },
       {
         path: '/staking-pool',
-        name: 'STACKING_POOL',
+        name: 'STAKING_POOL',
         component: StakingPool,
         icon: mdiPool,
         layout: '/admin',

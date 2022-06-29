@@ -1,11 +1,12 @@
 import { SimpleGrid } from '@chakra-ui/react';
+import { IPool } from 'gafi-dashboard/hooks/usePool';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Pool from './components/Pool';
 
 import Banner from 'components/Banner';
-import useUpfrontPool, { IPool } from 'hooks/useUpfrontPool';
+import useLoadPoolInfo from 'hooks/useLoadUpfrontPool';
 
 export interface TicketType {
   upfront?: string;
@@ -14,7 +15,7 @@ export interface TicketType {
 
 const JoinPool = () => {
   const { t } = useTranslation();
-  const { pools } = useUpfrontPool();
+  const { upfrontPools } = useLoadPoolInfo();
   return (
     <>
       <Banner
@@ -25,7 +26,7 @@ const JoinPool = () => {
       />
       <SimpleGrid mt="4" minChildWidth="308px" spacing="1em" minH="full">
         {React.Children.toArray(
-          pools.map((pool: IPool) => <Pool pool={pool} />)
+          upfrontPools.map((pool: IPool) => <Pool pool={pool} />)
         )}
       </SimpleGrid>
     </>

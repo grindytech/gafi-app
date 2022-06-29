@@ -4,9 +4,9 @@ import {
   Heading,
   HStack,
   Icon,
-  IconButton,
   Image,
   Text,
+  useTheme,
 } from '@chakra-ui/react';
 import { mdiChevronLeft } from '@mdi/js';
 import React from 'react';
@@ -22,6 +22,7 @@ interface IProps extends BoxProps {
 
 const SideBar = ({ onClose, display }: IProps) => {
   const location = useLocation();
+  const theme = useTheme();
   const { t } = useTranslation();
   const activeRoute = (routeName: string) =>
     location.pathname === routeName ? 'active' : '';
@@ -30,7 +31,10 @@ const SideBar = ({ onClose, display }: IProps) => {
       <HStack
         w="full"
         mb={{ base: 5, pc: 10 }}
-        borderBottom={{ base: '1px solid #EEF1FF', pc: 'none' }}
+        borderBottom={{
+          base: `1px solid ${theme.colors.borderBottom}`,
+          pc: 'none',
+        }}
         justifyContent="space-between"
         pb={{ base: 6, pc: 0 }}
         px={{ base: 6, pc: 0 }}
