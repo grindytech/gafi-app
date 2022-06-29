@@ -50,7 +50,7 @@ const BlockInfo: React.FC<IProps> = ({ isFinalized }) => {
   }, []);
 
   return (
-    <Card flex={1}>
+    <Card h="full" justifyContent="space-between">
       <HStack justifyContent="space-between">
         <VStack alignItems="flex-start">
           <Text>{isFinalized ? t('FINALIZED_BLOCK') : t('CURRENT_BLOCK')}</Text>

@@ -27,11 +27,17 @@ const Panel = ({ onOpen }: IProps) => {
         />
         <Box
           sx={{
-            display: { base: 'none', tablet: 'flex' },
+            display: 'flex',
           }}
         >
-          <Heading>{t('HELLO')},</Heading>
-          <Heading ml={2} color="primary">
+          <Heading fontSize={{ base: '2xl', tablet: '3xl', pc: '4xl' }}>
+            {t('HELLO')},
+          </Heading>
+          <Heading
+            fontSize={{ base: '2xl', tablet: '3xl', pc: '4xl' }}
+            ml={2}
+            color="primary"
+          >
             {userName}
           </Heading>
         </Box>
@@ -44,17 +50,6 @@ const Panel = ({ onOpen }: IProps) => {
           <UserMenu />
         </Box>
       </Box>
-      <Box
-        sx={{
-          mt: 4,
-          display: { base: 'flex', tablet: 'none' },
-        }}
-      >
-        <Heading>{t('HELLO')},</Heading>
-        <Heading ml={2} color="primary">
-          {userName}
-        </Heading>
-      </Box>
     </Box>
   );
 };
@@ -63,11 +58,12 @@ export default Panel;
 
 const PanelStyled = {
   width: '100%',
-  h: { base: 16, pc: 20 },
+  h: 20,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   pb: { base: 4, pc: 'none' },
-  p: { base: 'none', pc: 8 },
+  p: { base: 4, pc: 8 },
   borderBottom: { base: '2px solid #EEF1FF', pc: 'none' },
+  bg: { base: 'white', tablet: 'transparent' },
 };

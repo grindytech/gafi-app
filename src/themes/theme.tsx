@@ -5,7 +5,8 @@ import { Global } from '@emotion/react';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    p: 6,
+    py: 6,
+    px: { base: 10, tablet: 6 },
     display: 'flex',
     flexDirection: 'column',
     width: '100%',

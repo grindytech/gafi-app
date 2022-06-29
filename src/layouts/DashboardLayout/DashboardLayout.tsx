@@ -92,6 +92,7 @@ const DashboardLayout: React.FC = ({ children }) => {
             sx={{
               flex: 1,
               px: { base: 'none', pc: 4 },
+              p: { base: 4, tablet: 0 },
             }}
           >
             {children}
@@ -116,7 +117,7 @@ const DashboardLayout: React.FC = ({ children }) => {
 export default DashboardLayout;
 
 const dashBoardStyled = {
-  p: 4,
+  p: { base: 0, tablet: 4 },
   display: 'flex',
   background: 'greyBg',
   alignItems: 'flex-start',

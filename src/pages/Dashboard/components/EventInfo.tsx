@@ -1,16 +1,17 @@
 import {
-  VStack,
-  Text,
-  HStack,
   Box,
-  Image,
+  Center,
+  HStack,
   Icon,
   IconButton,
+  Image,
+  Text,
+  useTheme,
 } from '@chakra-ui/react';
-import { mdiEraser } from '@mdi/js';
+import { mdiTrashCanOutline } from '@mdi/js';
 import { VoidFn } from '@polkadot/api/types';
 import { AnyJson } from '@polkadot/types/types';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
@@ -32,7 +33,9 @@ interface IEvent {
 const EventInfo = () => {
   const { api } = useSubstrateState();
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
+  const theme = useTheme();
   const { t } = useTranslation();
+
   useEffect(() => {
     let unsub: VoidFn | undefined;
     let keyNum = 0;
@@ -70,8 +73,8 @@ const EventInfo = () => {
   }, [api?.query.system]);
 
   return (
-    <Card flex={4}>
-      <VStack alignItems="flex-start">
+    <Card display="flex" flexDirection="column">
+      <Box alignItems="flex-start">
         <HStack
           justifyContent="space-between"
           w="full"
@@ -87,7 +90,7 @@ const EventInfo = () => {
             bg="primary"
             icon={
               <Icon w={18} h={18}>
-                <path fill="currentColor" d={mdiEraser} />
+                <path fill="currentColor" d={mdiTrashCanOutline} />
               </Icon>
             }
           />
@@ -95,27 +98,39 @@ const EventInfo = () => {
         {React.Children.toArray(
           eventFeed?.map((event, index: number) => (
             <HStack
-              gap={2}
-              borderTop={index === 0 ? '' : '1px solid #EEF1FF'}
-              w="full"
+              borderTop={
+                index === 0 ? 'none' : `1px solid ${theme.colors.borderBottom}`
+              }
               py={4}
+              alignItems="flex-start"
             >
-              <Box minW={10} mr={4} bg="greyBg" borderRadius="50%" p={2}>
+              <Center
+                bg="greyBg"
+                borderRadius="50%"
+                w={12}
+                h={12}
+                mr={{ base: 2, tablet: 4 }}
+              >
                 <Image
                   src="/assets/layout/notification.svg"
                   alt="notification"
                 />
-              </Box>
-              <VStack flex={8} alignItems="flex-start">
+              </Center>
+              <Box sx={eventContent} alignItems="flex-start">
                 <Text fontWeight="bold">{event.summary}</Text>
-                <Text w="70%">{event.content}</Text>
-              </VStack>
+                {event.content}
+              </Box>
             </HStack>
           ))
         )}
-      </VStack>
+      </Box>
     </Card>
   );
+};
+
+const eventContent = {
+  w: { base: '12.5rem', tablet: '70%' },
+  whiteSpace: { base: 'wrap', tablet: 'normal' },
 };
 
 export default EventInfo;

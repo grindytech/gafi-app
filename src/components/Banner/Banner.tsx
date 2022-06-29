@@ -89,7 +89,7 @@ const bannerStyled = {
 };
 
 const subTitleStyled = {
-  width: { base: 60, tablet: '90%', '2xl': '70%' },
+  width: { base: 48, tablet: '90%', '2xl': '70%' },
   mt: 4,
   color: 'white',
   overflow: 'hidden',
