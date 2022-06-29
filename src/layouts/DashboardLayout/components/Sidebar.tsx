@@ -113,7 +113,7 @@ const menuItem = {
   borderRadius: 48,
   alignItems: 'center',
   px: 8,
-  py: 6,
+  py: 18,
 };
 
 const activeMenuItem = {

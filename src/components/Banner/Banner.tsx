@@ -28,7 +28,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       mb={4}
       sx={{ ...bannerStyled, bg: `url(${bannerBg}) no-repeat center` }}
     >
-      <Box>
+      <Box w="80%">
         <Heading
           sx={{
             fontSize: { base: 'md', tablet: '4xl' },
@@ -58,7 +58,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       ) : (
         <IconButton
           as="a"
-          p={4}
+          w={16}
+          h={16}
           borderRadius="50%"
           aria-label="see-more-btn"
           target="_blank"

@@ -231,7 +231,7 @@ export default AccountInfo;
 
 const AccountInfoStyled = {
   w: { base: 'full', pc: 72, '2xl': '20vw' },
-  minHeight: '470px',
+  minHeight: { base: '470px', pc: 0 },
   alignItems: 'center',
   bg: 'white',
   justifyContent: 'flex-start',

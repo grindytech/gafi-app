@@ -97,7 +97,7 @@ const PanelContent: ComponentStyleConfig = {
 };
 
 const colors = {
-  primary: '#2667FF',
+  primary: '#2A79D6',
   hoverPrimary: '#588aff',
   secondary: '#64DFDF',
   greyText: '#686868',
@@ -105,7 +105,7 @@ const colors = {
   greyBtnBg: '#D7D6D6',
   greyTitle: '#B0B0B0',
   gradientColor1: '#56CCF2',
-  gradientColor2: '#3860FF',
+  gradientColor2: '#2A79D6',
   btnHover: 'rgba(255, 255, 255, 0.25)',
   successToast: '#2CBF6E',
 };
@@ -210,7 +210,7 @@ export const theme = extendTheme({
         },
 
         xl: {
-          h: '56px',
+          h: '44px',
           fontSize: 'lg',
           px: 8,
           borderRadius: '4xl',
@@ -250,7 +250,7 @@ export const theme = extendTheme({
         },
         primary: {
           bg: colors.primary,
-          fontWeight: { base: 'normal', table: 'bold' },
+          fontWeight: { base: 'normal', tablet: 'bold' },
           color: 'white',
           _hover: {
             opacity: 0.8,
@@ -293,7 +293,7 @@ export const theme = extendTheme({
       },
       defaultProps: {
         size: 'xl',
-        variant: 'solid',
+        variant: 'primary',
         colorScheme: colors.primary,
       },
     },

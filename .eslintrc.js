@@ -59,7 +59,7 @@ const shareConfig = {
 };
 
 module.exports = {
-  extends: ['airbnb', 'plugin:jsx-a11y/recommended', 'prettier'],
+  extends: ['airbnb', 'plugin:jsx-a11y/recommended', 'prettier', 'plugin:react-hooks/recommended'],
   parser: 'babel-eslint',
   plugins: ['jsx-a11y', 'prettier', 'only-warn'],
   rules: shareConfig.rules,

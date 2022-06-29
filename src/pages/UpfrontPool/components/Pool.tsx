@@ -1,4 +1,11 @@
-import { Box, Heading, Text, Button, CSSObject } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  CSSObject,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +23,9 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
   const { formatUnits } = ethers.utils;
   const { chainDecimal } = useSubstrateState();
   const { t } = useTranslation();
+  const [isSmallScreen] = useMediaQuery(
+    '(min-width: 1024px) and (max-width: 1271px)'
+  );
   return (
     <Card sx={{ ...sx, p: 0, overflow: 'hidden' }}>
       <Box
@@ -23,6 +33,8 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           ...bannerStyled,
           background: `url(${pool.banner}) no-repeat center`,
           backgroundSize: 'cover',
+
+          height: isSmallScreen ? 24 : { base: 24, tablet: 210 },
         }}
       >
         {pool.poolType}
@@ -74,20 +86,19 @@ export default Pool;
 
 const bannerStyled = {
   width: '100%',
-  height: { base: 24, tablet: 210 },
+  fontWeight: { base: 'bold', tablet: 'medium' },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   color: 'white',
   fontSize: { base: '2xl', tablet: '4xl' },
-  fontWeight: { base: 'bold', tablet: 'medium' },
   textTransform: 'uppercase',
 };
 
 const contentStyled = {
+  p: { base: 6, tablet: 8 },
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  p: { base: 6, tablet: 8 },
 };
