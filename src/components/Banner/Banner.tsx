@@ -58,8 +58,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       ) : (
         <IconButton
           as="a"
-          w={16}
-          h={16}
+          w={10}
+          h={10}
           borderRadius="50%"
           aria-label="see-more-btn"
           target="_blank"
@@ -79,6 +79,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
 export default Banner;
 
 const bannerStyled = {
+  p: 5,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',

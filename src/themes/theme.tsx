@@ -6,7 +6,7 @@ import { Global } from '@emotion/react';
 const Card: ComponentStyleConfig = {
   baseStyle: {
     py: 6,
-    px: { base: 10, tablet: 6 },
+    px: 10,
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -265,8 +265,12 @@ export const theme = extendTheme({
         },
         secondary: {
           bg: colors.secondary,
-          '&:hover': {
+          _hover: {
             bg: colors.hoverSecondary,
+            _disabled: {
+              opacity: 0.4,
+              bg: colors.hoverSecondary,
+            },
           },
         },
         outline: {
@@ -374,6 +378,35 @@ export const theme = extendTheme({
           textTransform: 'capitalize',
         },
       }),
+      sizes: {
+        sm: () => ({
+          caption: {
+            px: 4,
+            py: 5,
+            fontSize: 'sm',
+          },
+          td: {
+            px: 4,
+            py: 5,
+            fontSize: 'md',
+          },
+          th: {
+            px: 5,
+            py: 6,
+            fontSize: 'md',
+          },
+        }),
+      },
+
+      variants: {
+        simple: () => ({
+          th: {
+            fontWeight: 'normal',
+            fontSize: 'sm',
+            color: colors.greyText,
+          },
+        }),
+      },
     },
     Modal: {
       baseStyle: () => ({
@@ -385,6 +418,7 @@ export const theme = extendTheme({
         },
         dialog: {
           borderRadius: '2xl',
+          mx: 4,
         },
       }),
     },
@@ -406,6 +440,16 @@ export const theme = extendTheme({
         }),
       },
       defaultProps: { size: 'lg', variant: 'outline' },
+    },
+    Alert: {
+      baseStyle: () => ({
+        container: {
+          maxWidth: { base: '300px', tablet: 600 },
+        },
+        description: {
+          maxWidth: { base: '240px', tablet: 450 },
+        },
+      }),
     },
   },
 });

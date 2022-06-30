@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/react';
+import { useMediaQuery, useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { ethers } from 'ethers';
 import { useState } from 'react';
@@ -24,6 +24,7 @@ const useTransferGaki = (onSuccess: () => void) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
+        position: 'top-right',
         description: t('TRANSFER_SUCCESS'),
         isClosable: true,
         status: 'success',
@@ -32,6 +33,7 @@ const useTransferGaki = (onSuccess: () => void) => {
       onSuccess();
     } else {
       toast({
+        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
         isClosable: true,
@@ -53,6 +55,7 @@ const useTransferGaki = (onSuccess: () => void) => {
       mutationKey: 'transfer-gaki',
       onError: (error: any) => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: error.toString(),
           }),

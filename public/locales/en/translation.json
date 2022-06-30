@@ -19,6 +19,7 @@
   "ADVANCE": "Advance",
   "OWNER": "owner",
   "DISCOUNT": "Discount",
+  "DETAIL": "Detail",
   "TRANSACTION_LIMIT_AMOUNT_MINUTES": "Transaction limit / {{minuteAmount}} minutes",
   "TRANSACTION_LIMIT": "Transaction limit",
   "BALANCE": "Balance (GAKI)",

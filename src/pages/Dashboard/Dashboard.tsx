@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useTheme,
   VStack,
 } from '@chakra-ui/react';
 import { mdiCogOutline } from '@mdi/js';
@@ -42,6 +43,7 @@ const Dashboard = () => {
   const [metadata, setMetadata] = useState<IMetadata>();
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const theme = useTheme();
 
   useEffect(() => {
     const getMetadata = async () => {
@@ -94,7 +96,11 @@ const Dashboard = () => {
                 {nodeInfo?.chain}
               </Text>
               <Text color="black">{socket}</Text>
-              <HStack w="full" py={5} borderTop="1px solid #EEF1FF">
+              <HStack
+                w="full"
+                py={5}
+                borderTop={`1px solid ${theme.colors.borderBottom}`}
+              >
                 <Icon color="primary">
                   <path fill="currentColor" d={mdiCogOutline} />
                 </Icon>

@@ -49,7 +49,7 @@ const useLoadStakingPool = () => {
     }
   );
 
-  const { joinStakingPool, leavePool, loadingPool } = useUpfrontPool();
+  const { joinStakingPool, leavePool, loadingPool } = useUpfrontPool(refetch);
   const stakingPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
@@ -112,10 +112,6 @@ const useLoadStakingPool = () => {
       isDisabled: isJoinedPool,
     },
   ];
-
-  useEffect(() => {
-    refetch();
-  }, [loadingPool, refetch]);
 
   return {
     stakingPools,

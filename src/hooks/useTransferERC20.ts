@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/react';
+import { useMediaQuery, useToast } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -76,6 +76,7 @@ const useTransferERC20 = () => {
       mutationKey: 'transfer-erc20-token',
       onError: (error: any) => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: error.message,
           }),
@@ -85,6 +86,7 @@ const useTransferERC20 = () => {
       },
       onSuccess: async data => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_SUCCESS'),
           isClosable: true,
           status: 'success',

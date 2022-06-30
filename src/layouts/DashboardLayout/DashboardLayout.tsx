@@ -130,7 +130,7 @@ const accountInfoButtonStyled = {
   h: 16,
   position: 'fixed',
   right: 8,
-  bottom: 8,
+  bottom: 16,
 };
 
 const message = (errObj: any) => {

@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
   Text,
+  useMediaQuery,
   useToast,
   VStack,
 } from '@chakra-ui/react';
@@ -79,6 +80,7 @@ const TransferToken = () => {
             transferAmount
         );
         toast({
+          position: 'top-right',
           description: t('TRANSFER_SUCCESS'),
           isClosable: true,
           status: 'success',
@@ -86,6 +88,7 @@ const TransferToken = () => {
       } catch (error) {
         setIsLoading(false);
         toast({
+          position: 'top-right',
           description: t('TRANSFER_ERROR'),
           isClosable: true,
           status: 'error',

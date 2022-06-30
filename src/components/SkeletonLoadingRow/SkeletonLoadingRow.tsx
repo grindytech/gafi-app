@@ -1,4 +1,4 @@
-import { Skeleton, Td, Tr } from '@chakra-ui/react';
+import { Skeleton, Td, Tr, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
 
 interface IProps {
@@ -6,7 +6,8 @@ interface IProps {
 }
 
 const SkeletonLoadingRow: React.FC<IProps> = ({ columnAmount }) => {
-  const columnArray = new Array(columnAmount).fill(0);
+  const [isMobile] = useMediaQuery('(max-width: 739px)');
+  const columnArray = new Array(isMobile ? 3 : columnAmount).fill(0);
   return (
     <Tr>
       {React.Children.toArray(

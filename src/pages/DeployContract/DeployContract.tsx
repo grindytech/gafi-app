@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   Text,
+  useMediaQuery,
   useToast,
   VStack,
 } from '@chakra-ui/react';
@@ -185,6 +186,7 @@ const DeployContract = () => {
                 prevTxnFee + Number(beforeBalance) - Number(newBalance)
             );
             toast({
+              position: 'top-right',
               description: t('DEPLOY_NEW_CONTRACT_SUCCESS'),
 
               isClosable: true,

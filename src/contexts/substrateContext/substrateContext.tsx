@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/react';
+import { useMediaQuery, useToast } from '@chakra-ui/react';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -278,6 +278,7 @@ const useSubstrate = () => {
   const { state, dispatch } = useContext(SubstrateContext);
   const toast = useToast();
   const { t } = useTranslation();
+  const [isMobile] = useMediaQuery('(max-width: 739px)');
 
   const setCurrentAccount = (acct: KeyringPair) => {
     dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });
@@ -294,6 +295,7 @@ const useSubstrate = () => {
       try {
         setCurrentAccount(acct);
         toast({
+          position: 'top-right',
           title: t('SWITCH_ACCOUNT_SUCCESSFUL'),
           description: acctAddr(acct),
           isClosable: true,
@@ -301,6 +303,7 @@ const useSubstrate = () => {
         });
       } catch (error) {
         toast({
+          position: 'top-right',
           description: t('SWITCH_ACCOUNT_FAIL'),
           isClosable: true,
           status: 'error',

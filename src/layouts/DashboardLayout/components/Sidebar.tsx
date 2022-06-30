@@ -94,7 +94,7 @@ const SideBar = ({ onClose, display }: IProps) => {
 export default SideBar;
 
 const sidebarStyled = {
-  w: { base: 'full', pc: 72, '2xl': '20vw' },
+  w: { base: 'full', pc: 64, '2xl': '20vw' },
   h: { base: 'full', pc: '80vh' },
   borderRadius: { base: '0px 24px 0px 0px', pc: '2xl' },
   alignItems: 'center',
@@ -116,7 +116,7 @@ const menuItem = {
   justifyContent: 'flex-start',
   borderRadius: 48,
   alignItems: 'center',
-  px: 8,
+  px: { base: 4, '2xl': 8 },
   py: 18,
 };
 

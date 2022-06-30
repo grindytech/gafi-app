@@ -18,6 +18,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useMediaQuery,
   useTheme,
 } from '@chakra-ui/react';
 import { mdiChevronDown, mdiSwapVerticalBold } from '@mdi/js';
@@ -26,12 +27,13 @@ import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
-import { acctAddr, shorten } from 'components/utils';
+import { acctAddr } from 'components/utils';
 import { useSubstrate } from 'contexts/substrateContext';
 import useFaucet from 'hooks/useFaucet';
 import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
+import { shorten } from 'utils';
 
 const CHROME_EXT_URL =
   'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd';
@@ -52,6 +54,9 @@ const AccountInfo = ({ display, onClose }: IProps) => {
   const { pairs } = useLoadCurrentAccount();
   const { faucet, isLoading } = useFaucet();
   const theme = useTheme();
+  const [isNormalScreen] = useMediaQuery(
+    '(min-width: 1024px) and (max-width: 1456px)'
+  );
 
   return (
     <Card sx={AccountInfoStyled} display={display}>
@@ -104,7 +109,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       variant="outline"
                       onClick={copySuccessToast}
                     >
-                      {shorten(acctAddr(currentAccount))}
+                      {shorten(
+                        acctAddr(currentAccount),
+                        isNormalScreen ? 6 : undefined
+                      )}
                     </Button>
                   </CopyToClipboard>
 
@@ -143,7 +151,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                               }}
                               value={polkadotAccount}
                             >
-                              {shorten(polkadotAccount)}
+                              {shorten(
+                                polkadotAccount,
+                                isNormalScreen ? 6 : undefined
+                              )}
                             </MenuItemOption>
                           )
                         )}
@@ -202,7 +213,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       justifyContent="center"
                       onClick={copySuccessToast}
                     >
-                      {shorten(account.toString())}
+                      {shorten(
+                        account.toString(),
+                        isNormalScreen ? 6 : undefined
+                      )}
                     </Button>
                   </CopyToClipboard>
                   <Button w="full" mt={4} variant="primary" onClick={reset}>

@@ -6,6 +6,7 @@ import {
   IconButton,
   Image,
   Text,
+  useMediaQuery,
   useTheme,
 } from '@chakra-ui/react';
 import { mdiTrashCanOutline } from '@mdi/js';
@@ -35,6 +36,9 @@ const EventInfo = () => {
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
   const theme = useTheme();
   const { t } = useTranslation();
+  const [isSmallScreen] = useMediaQuery(
+    '(min-width: 1024px) and (max-width: 1271px)'
+  );
 
   useEffect(() => {
     let unsub: VoidFn | undefined;
@@ -73,64 +77,58 @@ const EventInfo = () => {
   }, [api?.query.system]);
 
   return (
-    <Card display="flex" flexDirection="column">
-      <Box alignItems="flex-start">
-        <HStack
-          justifyContent="space-between"
-          w="full"
-          mb={8}
-          alignItems="center"
-        >
-          <Text color="primary">&bull; {t('RECENT_EVENTS')}</Text>
-          <IconButton
-            w={10}
-            h={10}
-            aria-label="reset-events"
-            onClick={() => setEventFeed([])}
-            bg="primary"
-            icon={
-              <Icon w={18} h={18}>
-                <path fill="currentColor" d={mdiTrashCanOutline} />
-              </Icon>
+    <Card>
+      <HStack
+        justifyContent="space-between"
+        w="full"
+        mb={8}
+        alignItems="center"
+      >
+        <Text fontWeight={{ base: 'bold', tablet: 'normal' }} color="primary">
+          &bull; {t('RECENT_EVENTS')}
+        </Text>
+        <IconButton
+          w={10}
+          h={10}
+          aria-label="reset-events"
+          onClick={() => setEventFeed([])}
+          bg="primary"
+          icon={
+            <Icon w={18} h={18}>
+              <path fill="currentColor" d={mdiTrashCanOutline} />
+            </Icon>
+          }
+        />
+      </HStack>
+      {React.Children.toArray(
+        eventFeed?.map((event, index: number) => (
+          <HStack
+            borderTop={
+              index === 0 ? 'none' : `1px solid ${theme.colors.borderBottom}`
             }
-          />
-        </HStack>
-        {React.Children.toArray(
-          eventFeed?.map((event, index: number) => (
-            <HStack
-              borderTop={
-                index === 0 ? 'none' : `1px solid ${theme.colors.borderBottom}`
-              }
-              py={4}
-              alignItems="flex-start"
+            py={4}
+            alignItems="flex-start"
+          >
+            <Center
+              bg="greyBg"
+              borderRadius="50%"
+              w={12}
+              h={12}
+              mr={{ base: 2, tablet: 4 }}
             >
-              <Center
-                bg="greyBg"
-                borderRadius="50%"
-                w={12}
-                h={12}
-                mr={{ base: 2, tablet: 4 }}
-              >
-                <Image
-                  src="/assets/layout/notification.svg"
-                  alt="notification"
-                />
-              </Center>
-              <Box sx={eventContent} alignItems="flex-start">
-                <Text fontWeight="bold">{event.summary}</Text>
-                {event.content}
-              </Box>
-            </HStack>
-          ))
-        )}
-      </Box>
+              <Image src="/assets/layout/notification.svg" alt="notification" />
+            </Center>
+            <Box
+              w={isSmallScreen ? '12.5rem' : { base: '12.5rem', tablet: '70%' }}
+            >
+              <Text fontWeight="bold">{event.summary}</Text>
+              {event.content}
+            </Box>
+          </HStack>
+        ))
+      )}
     </Card>
   );
-};
-
-const eventContent = {
-  w: { base: '12.5rem', tablet: '70%' },
-  whiteSpace: { base: 'wrap', tablet: 'normal' },
 };
 
 export default EventInfo;

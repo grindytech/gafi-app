@@ -49,7 +49,7 @@ const useLoadUpfrontPool = () => {
     }
   );
 
-  const { joinUpfrontPool, leavePool, loadingPool } = useUpfrontPool();
+  const { joinUpfrontPool, leavePool, loadingPool } = useUpfrontPool(refetch);
   const upfrontPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
@@ -112,10 +112,6 @@ const useLoadUpfrontPool = () => {
       isDisabled: isJoinedPool,
     },
   ];
-
-  useEffect(() => {
-    refetch();
-  }, [loadingPool, refetch]);
 
   return {
     upfrontPools,
