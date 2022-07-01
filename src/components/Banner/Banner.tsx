@@ -1,17 +1,10 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  IconButton,
-  Text,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Icon, IconButton, Text } from '@chakra-ui/react';
 import { mdiArrowRightThin } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
+import useBreakPoint from 'hooks/useBreakPoint';
 
 interface IProp {
   title: string;
@@ -22,7 +15,7 @@ interface IProp {
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
-  const [isSmallsceen] = useMediaQuery('(max-width: 1200px)');
+  const { isSmallScreen, isLargeScreen } = useBreakPoint();
   return (
     <Card
       mb={4}
@@ -31,7 +24,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       <Box w="80%">
         <Heading
           sx={{
-            fontSize: { base: 'md', tablet: '4xl' },
+            fontSize: { base: 'md', md: '4xl' },
           }}
         >
           {title}
@@ -40,13 +33,13 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
           {subTitle}
         </Text>
       </Box>
-      {btnLink && !isSmallsceen ? (
+      {btnLink && !isSmallScreen && !isLargeScreen ? (
         <Button
           as="a"
           variant="white"
           target="_blank"
           href={btnLink}
-          mt={{ base: 8, tablet: 0 }}
+          mt={{ base: 8, md: 0 }}
           rightIcon={
             <Icon color="primary">
               <path fill="currentColor" d={mdiArrowRightThin} />
@@ -79,8 +72,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
 export default Banner;
 
 const bannerStyled = {
-  px: { base: 6, tablet: 8 },
-  py: { base: 8, tablet: 12 },
+  px: { base: 6, md: 8 },
+  py: { base: 8, md: 12 },
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -91,10 +84,10 @@ const bannerStyled = {
 };
 
 const subTitleStyled = {
-  width: { base: 48, tablet: '90%', '2xl': '70%' },
+  width: { base: 48, md: '90%', '2xl': '70%' },
   mt: 4,
   color: 'white',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  whiteSpace: { base: 'nowrap', tablet: 'normal' },
+  whiteSpace: { base: 'nowrap', md: 'normal' },
 };

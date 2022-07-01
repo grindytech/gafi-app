@@ -6,9 +6,10 @@ import {
   Icon,
   IconButton,
   Image,
+  StackDivider,
   Text,
-  useMediaQuery,
   useTheme,
+  VStack,
 } from '@chakra-ui/react';
 import { mdiTrashCanOutline } from '@mdi/js';
 import { VoidFn } from '@polkadot/api/types';
@@ -18,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useBreakPoint from 'hooks/useBreakPoint';
 
 const FILTERED_EVENTS = [
   'system:ExtrinsicSuccess::(phase={"applyExtrinsic":0})',
@@ -37,9 +39,6 @@ const EventInfo = () => {
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
   const theme = useTheme();
   const { t } = useTranslation();
-  const [isSmallScreen] = useMediaQuery(
-    '(min-width: 1024px) and (max-width: 1271px)'
-  );
 
   useEffect(() => {
     let unsub: VoidFn | undefined;
@@ -85,7 +84,7 @@ const EventInfo = () => {
         mb={8}
         alignItems="center"
       >
-        <Text fontWeight={{ base: 'bold', tablet: 'normal' }} color="primary">
+        <Text fontWeight={{ base: 'bold', md: 'normal' }} color="primary">
           &bull; {t('RECENT_EVENTS')}
         </Text>
         <IconButton
@@ -101,33 +100,37 @@ const EventInfo = () => {
           }
         />
       </HStack>
-      {React.Children.toArray(
-        eventFeed?.map((event, index: number) => (
-          <Flex
-            borderTop={
-              index === 0 ? 'none' : `1px solid ${theme.colors.borderBottom}`
-            }
-            py={4}
-            alignItems="flex-start"
-          >
-            <Center
-              bg="greyBg"
-              borderRadius="50%"
-              w={12}
-              h={12}
-              mr={{ base: 2, tablet: 4 }}
-            >
-              <Image src="/assets/layout/notification.svg" alt="notification" />
-            </Center>
-            <Box
-              w={isSmallScreen ? '12.5rem' : { base: '12.5rem', tablet: '70%' }}
-            >
-              <Text fontWeight="bold">{event.summary}</Text>
-              {event.content}
-            </Box>
-          </Flex>
-        ))
-      )}
+      <VStack
+        alignItems="flex-start"
+        divider={
+          <StackDivider
+            borderColor={`1px solid ${theme.colors.borderBottom}`}
+          />
+        }
+      >
+        {React.Children.toArray(
+          eventFeed?.map(event => (
+            <Flex alignItems="center" py={4}>
+              <Center
+                bg="greyBg"
+                borderRadius="50%"
+                w={12}
+                h={12}
+                mr={{ base: 2, md: 4 }}
+              >
+                <Image
+                  src="/assets/layout/notification.svg"
+                  alt="notification"
+                />
+              </Center>
+              <Box w={{ sm: '10.5rem', md: '70%', lg: '12.5rem', xl: '90%' }}>
+                <Text fontWeight="bold">{event.summary}</Text>
+                {event.content}
+              </Box>
+            </Flex>
+          ))
+        )}
+      </VStack>
     </Card>
   );
 };

@@ -24,7 +24,7 @@ const JoinPool = () => {
         bannerBg="/assets/layout/upfront-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/upfront-pool"
       />
-      <SimpleGrid mt="4" minChildWidth="308px" spacing="1em" minH="full">
+      <SimpleGrid mt="4" minChildWidth="288px" spacing="1em" minH="full">
         {React.Children.toArray(
           upfrontPools.map((pool: IPool) => <Pool pool={pool} />)
         )}

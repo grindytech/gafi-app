@@ -1,5 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
-import { SubmittableExtrinsic } from '@polkadot/api/types';
+import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

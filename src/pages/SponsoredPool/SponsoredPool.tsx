@@ -17,8 +17,8 @@ const SponsoredPoolPage: React.FC = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { isMobile, isSmallScreen } = useBreakPoint();
-  const isZoomOut = isMobile || isSmallScreen;
+  const { isSmallScreen, isLargeScreen, isExtraLargeScreen } = useBreakPoint();
+  const isZoomOut = isSmallScreen || isLargeScreen || isExtraLargeScreen;
   const {
     isOwned,
     sponsoredPools,
@@ -47,16 +47,16 @@ const SponsoredPoolPage: React.FC = () => {
           variant="primary"
           borderRadius="xl"
           fontWeight="bold"
-          w={{ base: 'full', tablet: 'auto' }}
+          w={{ base: 'full', md: 'auto' }}
           rightIcon={
-            !isMobile ? (
+            !isSmallScreen ? (
               <Icon>
                 <path fill="currentColor" d={mdiPlus} />
               </Icon>
             ) : undefined
           }
           leftIcon={
-            isMobile ? (
+            isSmallScreen ? (
               <Icon>
                 <path fill="currentColor" d={mdiPlus} />
               </Icon>

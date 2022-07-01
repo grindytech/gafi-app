@@ -80,13 +80,13 @@ const Dashboard = () => {
         gap={4}
         mb={4}
       >
-        <GridItem colSpan={{ base: 2, tablet: 1, pc: 2, xl: 1 }}>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <BlockInfo />
         </GridItem>
-        <GridItem colSpan={{ base: 2, tablet: 1, pc: 2, xl: 1 }}>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <BlockInfo isFinalized />
         </GridItem>
-        <GridItem colSpan={{ base: 2, tablet: 1, pc: 2, xl: 1 }}>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <Card h="full">
             <VStack alignItems="flex-start">
               <Text mb={4} fontWeight="bold" color="primary">
@@ -109,7 +109,7 @@ const Dashboard = () => {
             </VStack>
           </Card>
         </GridItem>
-        <GridItem colSpan={{ base: 2, tablet: 1, pc: 2, xl: 1 }}>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <Card h="full">
             <VStack
               h="full"

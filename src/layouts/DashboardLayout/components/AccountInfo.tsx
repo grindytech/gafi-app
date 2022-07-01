@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Icon,
-  IconButton,
   Image,
   Link,
   Menu,
@@ -18,7 +17,6 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useMediaQuery,
   useTheme,
 } from '@chakra-ui/react';
 import { mdiChevronDown, mdiSwapVerticalBold } from '@mdi/js';
@@ -54,9 +52,6 @@ const AccountInfo = ({ display, onClose }: IProps) => {
   const { pairs } = useLoadCurrentAccount();
   const { faucet, isLoading } = useFaucet();
   const theme = useTheme();
-  const [isNormalScreen] = useMediaQuery(
-    '(min-width: 1024px) and (max-width: 1456px)'
-  );
 
   return (
     <Card sx={AccountInfoStyled} display={display}>
@@ -69,7 +64,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
       >
         <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
         <Box
-          display={{ base: 'flex', pc: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
           onClick={onClose}
           w={10}
           h={10}
@@ -109,10 +104,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       variant="outline"
                       onClick={copySuccessToast}
                     >
-                      {shorten(
-                        acctAddr(currentAccount),
-                        isNormalScreen ? 6 : undefined
-                      )}
+                      {shorten(acctAddr(currentAccount))}
                     </Button>
                   </CopyToClipboard>
 
@@ -132,8 +124,8 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       sx={{
                         maxHeight: {
                           base: '200px',
-                          tablet: '300px',
-                          pc: '600px',
+                          md: '300px',
+                          lg: '600px',
                         },
                         overflowY: 'scroll',
                       }}
@@ -151,10 +143,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                               }}
                               value={polkadotAccount}
                             >
-                              {shorten(
-                                polkadotAccount,
-                                isNormalScreen ? 6 : undefined
-                              )}
+                              {shorten(polkadotAccount)}
                             </MenuItemOption>
                           )
                         )}
@@ -213,10 +202,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       justifyContent="center"
                       onClick={copySuccessToast}
                     >
-                      {shorten(
-                        account.toString(),
-                        isNormalScreen ? 6 : undefined
-                      )}
+                      {shorten(account.toString())}
                     </Button>
                   </CopyToClipboard>
                   <Button w="full" mt={4} variant="primary" onClick={reset}>
@@ -244,12 +230,12 @@ const AccountInfo = ({ display, onClose }: IProps) => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  w: { base: 'full', pc: 72, '2xl': '20vw' },
-  minHeight: { base: '470px', pc: 0 },
+  w: { base: 'full', lg: 72, '2xl': '20vw' },
+  minHeight: { base: '470px', lg: 0 },
   alignItems: 'center',
   bg: 'white',
   justifyContent: 'flex-start',
-  borderRadius: { base: '24px 24px 0 0', pc: '2xl' },
+  borderRadius: { base: '24px 24px 0 0', lg: '2xl' },
 };
 
 const titleStyled = {

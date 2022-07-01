@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useQueryParam } from 'use-query-params';
 
 import OwnedTableActions from './OwnedTableActions';
@@ -38,18 +37,18 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const { chainDecimal } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
-  const { isTablet, isMobile, isSmallScreen, isSuperSmallScreen } =
+  const { isMediumScreen, isSmallScreen, isLargeScreen, isExtraLargeScreen } =
     useBreakPoint();
-  const isZoomOut = isMobile || isSmallScreen;
+  const isZoomOut = isSmallScreen || isLargeScreen || isExtraLargeScreen;
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>
         <Td textAlign="center">
           <HStack>
             <Avatar
-              mr={{ base: 0, pc: 4 }}
-              w={{ base: 10, pc: isSuperSmallScreen ? 10 : 14 }}
-              h={{ base: 10, pc: isSuperSmallScreen ? 10 : 14 }}
+              mr={{ base: 0, lg: 4 }}
+              w={{ base: 10, lg: isLargeScreen ? 10 : 14 }}
+              h={{ base: 10, lg: isLargeScreen ? 10 : 14 }}
               name="Segun Adebayo"
               src="/assets/layout/contract-img-1.png"
             />
@@ -62,7 +61,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
               >
                 {shorten(
                   poolOwner || '',
-                  isMobile || isTablet || isSuperSmallScreen ? 3 : undefined
+                  isSmallScreen || isMediumScreen ? 3 : undefined
                 )}
               </Text>
               <Text fontSize="xs">Games</Text>
@@ -72,8 +71,8 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
 
         <Td textAlign="center">
           <Text
-            fontWeight={{ base: 'bold', tablet: 'normal' }}
-            fontSize={{ base: '2xl', tablet: 'md' }}
+            fontWeight={{ base: 'bold', md: 'normal' }}
+            fontSize={{ base: '2xl', md: 'md' }}
             color={textColor}
           >
             {discount / 10000} %
@@ -112,7 +111,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
           {isOwned ? (
             <OwnedTableActions poolId={pool.id} onClick={onEditClick} />
           ) : (
-            <TableActions onOpenDetail={onOpenDetail} poolId={pool.id} />
+            <TableActions poolId={pool.id} />
           )}
         </Td>
       </Tr>

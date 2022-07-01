@@ -1,6 +1,6 @@
 import { Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import React from 'react';
+import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 
@@ -9,23 +9,15 @@ import Dropzone from './components/Dropzone';
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import { shorten } from 'components/utils';
-import useBreakPoint from 'hooks/useBreakPoint';
 import useDeploy from 'hooks/useDeploy';
 import useMessageToast from 'hooks/useMessageToast';
 
 const DeployContract = () => {
+  const [contractFiles, setContractFiles] = useState<any>([]);
   const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
-  const { isMobile, isSmallScreen } = useBreakPoint();
-  const {
-    deploy,
-    contractAddresses,
-    txnFee,
-    isLoading,
-    isConnected,
-    contractFiles,
-    setContractFiles,
-  } = useDeploy();
+  const { deploy, contractAddresses, txnFee, isLoading, isConnected } =
+    useDeploy();
 
   return (
     <>
@@ -35,7 +27,7 @@ const DeployContract = () => {
         bannerBg="/assets/layout/deploycontract-banner.png"
         btnLink="https://wiki.gafi.network/learn/demo"
       />
-      <Card p={isMobile ? 4 : undefined}>
+      <Card>
         <VStack gap={4}>
           <Dropzone
             onUploadFile={files =>
@@ -48,7 +40,7 @@ const DeployContract = () => {
           {contractAddresses.length && (
             <Card
               bg="greyBg"
-              width={{ base: 'full', tablet: isSmallScreen ? 'full' : '50%' }}
+              width={{ base: 'full', md: '50%' }}
               boxShadow="none"
               border="1px dashed #B4CAFF"
               alignItems="center"
@@ -88,7 +80,9 @@ const DeployContract = () => {
             <Button
               px={8}
               colorScheme="greyBg"
-              onClick={deploy}
+              onClick={() => {
+                deploy(contractFiles);
+              }}
               isLoading={isLoading}
               disabled={contractFiles.length === 0 || !isConnected()}
             >

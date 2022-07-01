@@ -30,21 +30,21 @@ const SideBar = ({ onClose, display }: IProps) => {
     <Card sx={sidebarStyled} display={display}>
       <HStack
         w="full"
-        mb={{ base: 5, pc: 10 }}
+        mb={{ base: 5, lg: 10 }}
         borderBottom={{
           base: `1px solid ${theme.colors.borderBottom}`,
-          pc: 'none',
+          lg: 'none',
         }}
         justifyContent="space-between"
-        pb={{ base: 6, pc: 0 }}
-        px={{ base: 6, pc: 0 }}
+        pb={{ base: 6, lg: 0 }}
+        px={{ base: 6, lg: 0 }}
       >
         <Box sx={sidebarHead}>
           <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
           <Heading ml={4}>GAFI</Heading>
         </Box>
         <Box
-          display={{ base: 'flex', pc: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
           onClick={onClose}
           w={10}
           h={10}
@@ -56,7 +56,7 @@ const SideBar = ({ onClose, display }: IProps) => {
         </Box>
       </HStack>
 
-      <Box px={{ base: 6, pc: 0 }} w="full">
+      <Box px={{ base: 6, lg: 0 }} w="full">
         {React.Children.toArray(
           routes.map(route => (
             <NavLink onClick={onClose} to={route.layout + route.path}>
@@ -94,13 +94,13 @@ const SideBar = ({ onClose, display }: IProps) => {
 export default SideBar;
 
 const sidebarStyled = {
-  w: { base: 'full', pc: 64, '2xl': '20vw' },
-  h: { base: 'full', pc: '80vh' },
-  borderRadius: { base: '0px 24px 0px 0px', pc: '2xl' },
+  w: { base: 'full', lg: 64, '2xl': '20vw' },
+  h: { sm: 'full', lg: '80vh' },
+  borderRadius: { base: '0px 24px 0px 0px', lg: '2xl' },
   alignItems: 'center',
   justifyContent: 'space-between',
   py: 10,
-  px: { base: 0, pc: 6 },
+  px: { base: 0, lg: 6 },
 };
 
 const sidebarHead = {
@@ -135,13 +135,13 @@ const cpyRight = {
 const menuItemTitle = {
   fontWeight: 'normal',
   fontSize: 'md',
-  ml: { base: 5, pc: 7 },
+  ml: { base: 5, lg: 7 },
   color: 'greyText',
 };
 
 const activeMenuItemTitle = {
   fontWeight: 'bold',
-  ml: { base: 5, pc: 7 },
+  ml: { base: 5, lg: 7 },
   fontSize: 'md',
   color: 'primary',
 };

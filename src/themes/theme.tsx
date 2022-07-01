@@ -7,6 +7,7 @@ const Card: ComponentStyleConfig = {
   baseStyle: {
     py: 8,
     px: 8,
+    p: { sm: 4, md: 6, lg: 4, '2xl': 8 },
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -140,9 +141,7 @@ export const theme = extendTheme({
     md: '768px',
     lg: '960px',
     xl: '1200px',
-    '2xl': '1400px',
-    tablet: '740px',
-    pc: '1024px',
+    '2xl': '1536px',
   },
   styles: {
     global: (props: StyleFunctionProps) => ({
@@ -195,7 +194,7 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         lineHeight: 6,
-        fontSize: { base: 'sm', tablet: 'md' },
+        fontSize: { base: 'sm', md: 'md' },
         fontWeight: 'normal',
         borderRadius: '32px',
         color: 'white',
@@ -215,8 +214,8 @@ export const theme = extendTheme({
 
         xl: {
           h: '44px',
-          fontSize: { base: 'sm', tablet: 'md' },
-          fontWeight: { base: 'normal', tablet: 'bold' },
+          fontSize: { base: 'sm', md: 'md' },
+          fontWeight: { base: 'normal', md: 'bold' },
           borderRadius: '4xl',
           px: 8,
           '.chakra-icon': {
@@ -310,7 +309,7 @@ export const theme = extendTheme({
     },
     Text: {
       baseStyle: {
-        fontSize: { base: 'sm', tablet: 'md' },
+        fontSize: { base: 'sm', md: 'md' },
         fontWeight: 'normal',
         '.chakra-icon': {
           w: 5,
@@ -327,7 +326,7 @@ export const theme = extendTheme({
           bg: `linear-gradient(227.25deg, ${colors.gradientColor2} 2.24%, ${colors.gradientColor1} 127.36%)`,
           border: 'none',
           borderRadius: '3xl',
-          p: { base: 4, tablet: 6, pc: 8 },
+          p: { base: 4, md: 6, lg: 8 },
           '.chakra-menu__menuitem:last-child': {
             mb: 0,
           },
@@ -337,8 +336,8 @@ export const theme = extendTheme({
         },
         item: {
           _focus: { bg: colors.btnHover },
-          py: { base: 2, pc: 3 },
-          px: { base: 6, pc: 8 },
+          py: { base: 2, lg: 3 },
+          px: { base: 6, lg: 8 },
           m: 0,
           borderRadius: '3xl',
           color: 'white',
@@ -386,18 +385,16 @@ export const theme = extendTheme({
       sizes: {
         sm: () => ({
           caption: {
-            px: 4,
-            py: 5,
             fontSize: 'sm',
           },
           td: {
-            px: 4,
-            py: 5,
+            px: 2,
+            py: 4,
             fontSize: 'md',
           },
           th: {
-            px: 5,
-            py: 6,
+            px: 3,
+            py: 4,
             fontSize: 'md',
           },
         }),
@@ -416,14 +413,23 @@ export const theme = extendTheme({
     Modal: {
       baseStyle: () => ({
         header: {
-          mb: 4,
           fontWeight: 'bold',
           color: 'primary',
           fontSize: '2xl',
+          p: 0,
+          mb: { sm: 8 },
         },
         dialog: {
           borderRadius: '2xl',
           mx: 4,
+          p: { sm: 4, md: 6, lg: 8 },
+        },
+        body: {
+          p: 0,
+        },
+        footer: {
+          p: 0,
+          mt: { sm: 16 },
         },
       }),
     },
@@ -449,10 +455,10 @@ export const theme = extendTheme({
     Alert: {
       baseStyle: () => ({
         container: {
-          maxWidth: { base: '300px', tablet: 600 },
+          maxWidth: { base: '300px', md: 600 },
         },
         description: {
-          maxWidth: { base: '240px', tablet: 450 },
+          maxWidth: { base: '240px', md: 450 },
         },
       }),
     },

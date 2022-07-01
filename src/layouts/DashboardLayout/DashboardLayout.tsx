@@ -44,7 +44,7 @@ const DashboardLayout: React.FC = ({ children }) => {
 
   return (
     <Box sx={dashBoardStyled}>
-      <SideBar display={{ base: 'none', pc: 'flex' }} />
+      <SideBar display={{ base: 'none', lg: 'flex' }} />
       <Drawer
         autoFocus={false}
         isOpen={drawerOpen === 'sidebar'}
@@ -91,13 +91,13 @@ const DashboardLayout: React.FC = ({ children }) => {
           <Box
             sx={{
               flex: 1,
-              px: { base: 'none', pc: 4 },
-              p: { base: 4, tablet: 0 },
+              px: { base: 'none', lg: 4 },
+              p: { base: 4, md: 0 },
             }}
           >
             {children}
           </Box>
-          <AccountInfo display={{ base: 'none', pc: 'flex' }} />
+          <AccountInfo display={{ base: 'none', lg: 'flex' }} />
         </Box>
       </VStack>
       <IconButton
@@ -117,7 +117,7 @@ const DashboardLayout: React.FC = ({ children }) => {
 export default DashboardLayout;
 
 const dashBoardStyled = {
-  p: { base: 0, tablet: 4 },
+  p: { base: 0, md: 4 },
   display: 'flex',
   background: 'greyBg',
   alignItems: 'flex-start',
@@ -125,7 +125,7 @@ const dashBoardStyled = {
 };
 
 const accountInfoButtonStyled = {
-  display: { base: 'block', pc: 'none' },
+  display: { base: 'block', lg: 'none' },
   w: 16,
   h: 16,
   position: 'fixed',
@@ -163,7 +163,9 @@ const loader = (text: string) => (
     w="100vw"
     h="100vh"
   >
-    <Text color="blackAlpha.700">{text}</Text>
+    <Text textAlign="center" color="blackAlpha.700">
+      {text}
+    </Text>
 
     <Spinner
       mt={4}

@@ -32,6 +32,7 @@ const Pagination = (props: IProps) => {
     isLoading,
   } = props;
   const pageButtons = [];
+  const { isLargeScreen } = useBreakPoint();
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
   let endPage = 2 + startPage;
@@ -69,8 +70,6 @@ const Pagination = (props: IProps) => {
     // call graphQL API to reload data of page number
   };
   const fromAmount = (currentPage - 1) * resultsPerPage + 1;
-  const { isMobile, isSmallScreen } = useBreakPoint();
-  const isMobileLoading = !!totalCount && isMobile;
   const toAmount =
     currentPage * resultsPerPage > totalCount
       ? totalCount
@@ -81,23 +80,27 @@ const Pagination = (props: IProps) => {
       justifyContent="space-between"
       flexDirection={{
         base: 'column',
-        tablet: isSmallScreen ? 'column' : 'row',
+        md: 'row',
+        lg: 'column',
+        xl: 'row',
       }}
       alignItems={{
         base: 'flex-end',
-        tablet: isSmallScreen ? 'flex-end' : 'center',
+        md: 'center',
+        lg: 'flex-end',
+        xl: 'center',
       }}
     >
       <Flex
         pl={8}
-        mb={{ base: 6, tablet: isSmallScreen ? 6 : 0 }}
+        mb={{ base: 6, md: 0, lg: 6, xl: 0 }}
         flex="4"
         justifyContent="flex-start"
       >
         <SkeletonText isLoaded={!isLoading} noOfLines={1}>
           <Text
             color="greyText"
-            fontSize="md"
+            fontSize={{ sm: 'sm', md: 'md' }}
             fontWeight="normal"
             whiteSpace="nowrap"
           >
@@ -125,7 +128,7 @@ const Pagination = (props: IProps) => {
       </Flex>
       <Flex flex="14" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading}>
-          {isMobileLoading ? null : (
+          {totalCount ? null : (
             <Button
               ml={{ base: 1, xl: 2 }}
               size="sm"
@@ -164,7 +167,7 @@ const Pagination = (props: IProps) => {
               </Button>
             ))
           )}
-          {isMobileLoading ? (
+          {isLargeScreen ? (
             <IconButton
               aria-label="pre-page"
               p={4}

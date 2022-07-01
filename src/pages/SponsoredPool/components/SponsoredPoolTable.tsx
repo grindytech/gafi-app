@@ -92,11 +92,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     SponsoredPool | undefined
   >();
   const SkeletonArray = new Array(limitRow).fill(0);
-  const { isMobile, isSmallScreen } = useBreakPoint();
+  const { isSmallScreen, isLargeScreen } = useBreakPoint();
 
   return (
     <>
-      {joinedPool && (isMobile || isSmallScreen) ? (
+      {joinedPool && (
         <Card px={0} py={4} mt={4}>
           <HStack
             px={5}
@@ -104,9 +104,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
             borderBottom={`1px solid ${theme.colors.borderBottom}`}
           >
             <Avatar
-              mr={{ base: 0, tablet: 4 }}
-              w={{ base: 10, tablet: 14 }}
-              h={{ base: 10, tablet: 14 }}
+              mr={{ base: 0, md: 4 }}
+              w={{ base: 10, md: 14 }}
+              h={{ base: 10, md: 14 }}
               name="Segun Adebayo"
               src="/assets/layout/contract-img-1.png"
             />
@@ -150,7 +150,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           <Flex justifyContent="center" px={5} py={4}>
             <Button
               size="sm"
-              w={{ base: 'full', tablet: 80 }}
+              w={{ base: 'full', md: 80 }}
               variant="secondary"
               borderRadius="4xl"
               onClick={e => {
@@ -163,7 +163,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
             </Button>
           </Flex>
         </Card>
-      ) : null}
+      )}
       <Card
         px={0}
         p={0}
@@ -171,7 +171,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         mt={4}
         overflowX={{ sm: 'scroll', xl: 'hidden' }}
       >
-        <Table size="sm" variant="simple" textAlign="center">
+        <Table
+          size={isSmallScreen || isLargeScreen ? 'sm' : 'md'}
+          variant="simple"
+          textAlign="center"
+        >
           <Thead>
             <Tr pl="0px">
               {React.Children.toArray(
@@ -206,7 +210,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
             ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (
-                  <SkeletonLoadingRow columnAmount={limitRow} />
+                  <SkeletonLoadingRow
+                    columnAmount={isSmallScreen ? 3 : limitRow}
+                  />
                 ))
               )
             )}
@@ -298,9 +304,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 borderBottom={`1px solid ${theme.colors.borderBottom}`}
               >
                 <Avatar
-                  mr={{ base: 0, tablet: 4 }}
-                  w={{ base: 10, tablet: 14 }}
-                  h={{ base: 10, tablet: 14 }}
+                  mr={{ base: 0, md: 4 }}
+                  w={{ base: 10, md: 14 }}
+                  h={{ base: 10, md: 14 }}
                   name="Segun Adebayo"
                   src="/assets/layout/contract-img-1.png"
                 />
@@ -348,7 +354,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                   selectedPoolDetail.id ? (
                   <Button
                     size="sm"
-                    w={{ base: 'full', tablet: 80 }}
+                    w={{ base: 'full', md: 80 }}
                     variant="solid"
                     borderRadius="4xl"
                     onClick={e => {
@@ -362,7 +368,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 ) : (
                   <Button
                     size="sm"
-                    w={{ base: 'full', tablet: 80 }}
+                    w={{ base: 'full', md: 80 }}
                     variant="solid"
                     borderRadius="4xl"
                     onClick={e => {

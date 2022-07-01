@@ -17,7 +17,7 @@ const Panel = ({ onOpen }: IProps) => {
     <Box w="full">
       <Box sx={PanelStyled}>
         <IconButton
-          display={{ base: 'flex', pc: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
           onClick={onOpen}
           variant="transparents"
           aria-label="open menu"
@@ -30,11 +30,11 @@ const Panel = ({ onOpen }: IProps) => {
             display: 'flex',
           }}
         >
-          <Heading fontSize={{ base: '2xl', tablet: '3xl', pc: '4xl' }}>
+          <Heading fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}>
             {t('HELLO')},
           </Heading>
           <Heading
-            fontSize={{ base: '2xl', tablet: '3xl', pc: '4xl' }}
+            fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
             ml={2}
             color="primary"
           >
@@ -62,8 +62,8 @@ const PanelStyled = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  pb: { base: 4, pc: 'none' },
-  p: { base: 4, pc: 8 },
-  borderBottom: { base: '2px solid #EEF1FF', pc: 'none' },
-  bg: { base: 'white', tablet: 'transparent' },
+  pb: { base: 4, lg: 'none' },
+  p: { base: 4, lg: 8 },
+  borderBottom: { base: '2px solid #EEF1FF', lg: 'none' },
+  bg: { base: 'white', md: 'transparent' },
 };

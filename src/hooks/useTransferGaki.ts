@@ -1,4 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { ethers } from 'ethers';
 import { useState } from 'react';

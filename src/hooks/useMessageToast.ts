@@ -1,4 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const useMessageToast = () => {

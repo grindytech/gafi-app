@@ -52,8 +52,8 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
         background: 'greyBg',
         boxShadow: 'none',
         borderRadius: '2xl',
-        py: { base: 16, tablet: 16 },
-        px: { base: 12 },
+        py: { base: 8, md: 12, '2xl': 16 },
+        px: { base: 8 },
       }}
     >
       <input {...getInputProps()} />

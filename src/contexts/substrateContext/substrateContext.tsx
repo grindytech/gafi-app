@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import config from 'config';
-import useBreakPoint from 'hooks/useBreakPoint';
 import { acctAddr, getGAKIAccountAddress } from 'utils';
 
 const parsedQuery = new URLSearchParams(window.location.search);
@@ -279,7 +278,6 @@ const useSubstrate = () => {
   const { state, dispatch } = useContext(SubstrateContext);
   const toast = useToast();
   const { t } = useTranslation();
-  const { isMobile } = useBreakPoint();
 
   const setCurrentAccount = (acct: KeyringPair) => {
     dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });

@@ -18,7 +18,6 @@ export async function addAdditionalGas(
 }
 
 const useDeploy = () => {
-  const [contractFiles, setContractFiles] = useState<any>([]);
   const [contractAddresses, setContractAddresses] = useState<string[]>([]);
   const toast = useToast();
   const { account, isConnected, ethereum } = useWallet();
@@ -26,13 +25,13 @@ const useDeploy = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
-  const onDeploy = async () => {
+  const onDeploy = async (contractFiles: Array<any>) => {
     setIsLoading(true);
     if (account && ethereum && contractFiles) {
       const web3 = new Web3(ethereum);
       const beforeBalance = await web3.eth.getBalance(account);
       await Promise.all(
-        contractFiles.map(async (contractFile: any) => {
+        contractFiles.map(async contractFile => {
           const userContract = new web3.eth.Contract(contractFile.abi);
           const contractData = await userContract.deploy({
             data: contractFile.bytecode,
@@ -79,8 +78,6 @@ const useDeploy = () => {
     txnFee,
     isLoading,
     isConnected,
-    contractFiles,
-    setContractFiles,
   };
 };
 

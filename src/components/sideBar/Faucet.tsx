@@ -1,4 +1,4 @@
-import { Box, Button, Icon, useMediaQuery, useToast } from '@chakra-ui/react';
+import { Box, Button, Icon, useToast } from '@chakra-ui/react';
 import { mdiWaterPump } from '@mdi/js';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
