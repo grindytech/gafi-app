@@ -1,9 +1,9 @@
 import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
-import useUpfrontPool, { IPool } from './usePool';
+import { IPool } from './useSponsoredPool';
+import useUpfrontPool from './useUpfrontPool';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { PoolInfo } from 'interfaces/pool';

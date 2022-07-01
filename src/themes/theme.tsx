@@ -1,12 +1,12 @@
-import { color, ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 import { Global } from '@emotion/react';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    py: 6,
-    px: 10,
+    py: 8,
+    px: 8,
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -105,6 +105,7 @@ const colors = {
   greyText: '#686868',
   greyBg: '#F5F7FB',
   borderBottom: '#EEF1FF',
+  disableBtnText: '#3B3B3B',
   greyBtnBg: '#D7D6D6',
   greyTitle: '#B0B0B0',
   gradientColor1: '#56CCF2',
@@ -194,7 +195,7 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         lineHeight: 6,
-        fontSize: 'md',
+        fontSize: { base: 'sm', tablet: 'md' },
         fontWeight: 'normal',
         borderRadius: '32px',
         color: 'white',
@@ -214,9 +215,10 @@ export const theme = extendTheme({
 
         xl: {
           h: '44px',
-          fontSize: 'lg',
-          px: 8,
+          fontSize: { base: 'sm', tablet: 'md' },
+          fontWeight: { base: 'normal', tablet: 'bold' },
           borderRadius: '4xl',
+          px: 8,
           '.chakra-icon': {
             w: 6,
             h: 6,
@@ -233,7 +235,7 @@ export const theme = extendTheme({
           bg: `linear-gradient(97.48deg, ${colors.gradientColor1} -9.59%, ${colors.gradientColor2} 107.41%)`,
           _disabled: {
             bg: colors.greyBtnBg,
-            color: 'blackAlpha.700',
+            color: colors.disableBtnText,
           },
         },
         ghost: {
@@ -253,13 +255,16 @@ export const theme = extendTheme({
         },
         primary: {
           bg: colors.primary,
-          fontWeight: { base: 'normal', tablet: 'bold' },
           color: 'white',
+          _disabled: {
+            bg: colors.greyBtnBg,
+            color: colors.disableBtnText,
+          },
           _hover: {
             opacity: 0.8,
             _disabled: {
-              opacity: 0.4,
-              bg: 'primary',
+              opacity: 0.8,
+              bg: colors.greyBtnBg,
             },
           },
         },
@@ -305,7 +310,7 @@ export const theme = extendTheme({
     },
     Text: {
       baseStyle: {
-        fontSize: 'md',
+        fontSize: { base: 'sm', tablet: 'md' },
         fontWeight: 'normal',
         '.chakra-icon': {
           w: 5,

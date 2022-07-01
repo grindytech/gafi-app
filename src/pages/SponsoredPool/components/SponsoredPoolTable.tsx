@@ -1,7 +1,6 @@
 // Chakra imports
 import {
   Avatar,
-  Box,
   Button,
   Drawer,
   DrawerContent,
@@ -24,8 +23,6 @@ import {
   Th,
   Thead,
   Tr,
-  useColorModeValue,
-  useMediaQuery,
   useTheme,
   VStack,
 } from '@chakra-ui/react';
@@ -43,9 +40,10 @@ import EmptyRow from 'components/EmptyRow';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
+import useBreakPoint from 'hooks/useBreakPoint';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useMessageToast from 'hooks/useMessageToast';
-import usePool from 'hooks/usePool';
+import usePool from 'hooks/useSponsoredPool';
 import { shorten } from 'utils';
 
 export interface ISponsoredPool {
@@ -59,6 +57,7 @@ export interface ISponsoredPool {
 export interface TableCaption {
   label: string;
   fieldName: string;
+  display: boolean;
 }
 
 interface ISponsoredPoolTableProps {
@@ -78,10 +77,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const onCloseDetail = () => {
     setSelectedPoolDetail(undefined);
   };
-  const { joinSponsoredPool, isSponsoredPoolLoading, leavePool } = usePool(
-    refetch,
-    onCloseDetail
-  );
+  const {
+    joinSponsoredPool,
+    isLoading: isSponsoredPoolLoading,
+    leavePool,
+  } = usePool(refetch, onCloseDetail);
   const { copySuccessToast } = useMessageToast();
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
   const [selectedPoolDetail, setSelectedPoolDetail] = useState<
@@ -92,10 +92,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     SponsoredPool | undefined
   >();
   const SkeletonArray = new Array(limitRow).fill(0);
-  const [isMobile, isSmallScreen] = useMediaQuery([
-    '(max-width: 739px)',
-    '(min-width: 1024px) and (max-width: 1456px)',
-  ]);
+  const { isMobile, isSmallScreen } = useBreakPoint();
 
   return (
     <>
@@ -180,10 +177,9 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               {React.Children.toArray(
                 captions.map(caption => (
                   <Th
+                    sx={(!caption.display && { display: 'none' }) || {}}
                     textAlign={caption.label === 'owner' ? 'left' : 'center'}
-                    sx={{
-                      textTransform: 'capitalize',
-                    }}
+                    textTransform="capitalize"
                   >
                     {caption.label}
                   </Th>

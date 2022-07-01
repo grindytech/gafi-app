@@ -1,12 +1,14 @@
-import { Skeleton, Td, Tr, useMediaQuery } from '@chakra-ui/react';
+import { Skeleton, Td, Tr } from '@chakra-ui/react';
 import React from 'react';
+
+import useBreakPoint from 'hooks/useBreakPoint';
 
 interface IProps {
   columnAmount: number;
 }
 
 const SkeletonLoadingRow: React.FC<IProps> = ({ columnAmount }) => {
-  const [isMobile] = useMediaQuery('(max-width: 739px)');
+  const { isMobile } = useBreakPoint();
   const columnArray = new Array(isMobile ? 3 : columnAmount).fill(0);
   return (
     <Tr>

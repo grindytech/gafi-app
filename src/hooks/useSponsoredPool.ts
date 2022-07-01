@@ -1,4 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,13 +26,12 @@ export interface IPool {
   isDisabled: boolean;
 }
 
-const usePool = (refreshData: () => void, onClose?: () => void) => {
+const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
   const { t } = useTranslation();
 
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
-  const [loadingPool, setLoadingPool] = useState('');
-  const [isSponsoredPoolLoading, setIsSponsoredPoolLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -45,11 +44,8 @@ const usePool = (refreshData: () => void, onClose?: () => void) => {
         status: 'success',
       });
       refreshData();
-      setIsSponsoredPoolLoading(false);
-      setLoadingPool('');
-      if (onClose) {
-        onClose();
-      }
+      setIsLoading(false);
+      if (onClose) onClose();
     } else {
       toast({
         position: 'top-right',
@@ -61,56 +57,8 @@ const usePool = (refreshData: () => void, onClose?: () => void) => {
     }
   };
 
-  const joinUpfrontPool = async (poolPackage: string) => {
-    setLoadingPool(poolPackage);
-    const [account, options] = await getFromAcct(currentAccount);
-
-    if (api && account) {
-      const txExecute = api.tx.pool.join({ System: { Upfront: poolPackage } });
-      try {
-        await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
-        toast({
-          position: 'top-right',
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setLoadingPool('');
-      }
-    }
-  };
-
-  const joinStakingPool = async (poolPackage: string) => {
-    setLoadingPool(poolPackage);
-    const [account, options] = await getFromAcct(currentAccount);
-
-    if (api && account) {
-      const txExecute = api.tx.pool.join({ System: { Staking: poolPackage } });
-      try {
-        await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
-        toast({
-          position: 'top-right',
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setLoadingPool('');
-      }
-    }
-  };
-
-  const leavePool = async (poolPackage?: string) => {
-    if (poolPackage) {
-      setLoadingPool(poolPackage || '');
-    } else {
-      setIsSponsoredPoolLoading(true);
-    }
+  const leavePool = async () => {
+    setIsLoading(true);
     const [account, options] = await getFromAcct(currentAccount);
     if (api) {
       const txExecute = api.tx.pool.leave();
@@ -126,7 +74,7 @@ const usePool = (refreshData: () => void, onClose?: () => void) => {
             isClosable: true,
             status: 'error',
           });
-          setLoadingPool('');
+          setIsLoading(false);
         }
       } else {
         try {
@@ -140,7 +88,7 @@ const usePool = (refreshData: () => void, onClose?: () => void) => {
             isClosable: true,
             status: 'error',
           });
-          setLoadingPool('');
+          setIsLoading(false);
         }
       }
     }
@@ -163,24 +111,21 @@ const usePool = (refreshData: () => void, onClose?: () => void) => {
           isClosable: true,
           status: 'error',
         });
-        setIsSponsoredPoolLoading(false);
+        setIsLoading(false);
       },
     }
   );
 
   const joinSponsoredPool = async (poolId: string) => {
-    setIsSponsoredPoolLoading(true);
+    setIsLoading(true);
     mutation.mutate(poolId);
   };
 
   return {
-    joinUpfrontPool,
-    joinStakingPool,
     leavePool,
-    loadingPool,
     joinSponsoredPool,
-    isSponsoredPoolLoading,
+    isLoading,
   };
 };
 
-export default usePool;
+export default useSponsoredPool;

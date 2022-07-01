@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  Flex,
   HStack,
   Icon,
   IconButton,
@@ -102,7 +103,7 @@ const EventInfo = () => {
       </HStack>
       {React.Children.toArray(
         eventFeed?.map((event, index: number) => (
-          <HStack
+          <Flex
             borderTop={
               index === 0 ? 'none' : `1px solid ${theme.colors.borderBottom}`
             }
@@ -124,7 +125,7 @@ const EventInfo = () => {
               <Text fontWeight="bold">{event.summary}</Text>
               {event.content}
             </Box>
-          </HStack>
+          </Flex>
         ))
       )}
     </Card>

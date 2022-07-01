@@ -5,12 +5,13 @@ import {
   Skeleton,
   SkeletonText,
   Text,
-  useMediaQuery,
 } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+
+import useBreakPoint from 'hooks/useBreakPoint';
 
 interface IProps {
   currentPage: number;
@@ -68,10 +69,8 @@ const Pagination = (props: IProps) => {
     // call graphQL API to reload data of page number
   };
   const fromAmount = (currentPage - 1) * resultsPerPage + 1;
-  const [isMobile] = useMediaQuery('(max-width: 739px)');
-  const [isSmallScreen] = useMediaQuery(
-    '(min-width: 1024px) and (max-width: 1400px)'
-  );
+  const { isMobile, isSmallScreen } = useBreakPoint();
+  const isMobileLoading = !!totalCount && isMobile;
   const toAmount =
     currentPage * resultsPerPage > totalCount
       ? totalCount
@@ -126,7 +125,7 @@ const Pagination = (props: IProps) => {
       </Flex>
       <Flex flex="14" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading}>
-          {!!totalCount && isMobile ? null : (
+          {isMobileLoading ? null : (
             <Button
               ml={{ base: 1, xl: 2 }}
               size="sm"
@@ -165,7 +164,7 @@ const Pagination = (props: IProps) => {
               </Button>
             ))
           )}
-          {!!totalCount && isMobile ? (
+          {isMobileLoading ? (
             <IconButton
               aria-label="pre-page"
               p={4}

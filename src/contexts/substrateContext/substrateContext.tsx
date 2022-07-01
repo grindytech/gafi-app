@@ -1,4 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -7,12 +7,13 @@ import polkadotJsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { DefinitionRpcExt } from '@polkadot/types/types';
 import { Keyring, keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
-import { set, get } from 'lodash';
-import React, { useReducer, useContext, useEffect } from 'react';
+import { get, set } from 'lodash';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import config from 'config';
+import useBreakPoint from 'hooks/useBreakPoint';
 import { acctAddr, getGAKIAccountAddress } from 'utils';
 
 const parsedQuery = new URLSearchParams(window.location.search);
@@ -278,7 +279,7 @@ const useSubstrate = () => {
   const { state, dispatch } = useContext(SubstrateContext);
   const toast = useToast();
   const { t } = useTranslation();
-  const [isMobile] = useMediaQuery('(max-width: 739px)');
+  const { isMobile } = useBreakPoint();
 
   const setCurrentAccount = (acct: KeyringPair) => {
     dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: acct });

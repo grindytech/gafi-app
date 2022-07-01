@@ -79,7 +79,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
 export default Banner;
 
 const bannerStyled = {
-  p: 5,
+  px: { base: 6, tablet: 8 },
+  py: { base: 8, tablet: 12 },
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',

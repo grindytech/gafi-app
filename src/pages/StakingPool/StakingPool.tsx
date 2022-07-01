@@ -6,7 +6,7 @@ import Pool from '../UpfrontPool/components/Pool';
 
 import Banner from 'components/Banner';
 import useLoadStakingPool from 'hooks/useLoadStakingPool';
-import { IPool } from 'hooks/usePool';
+import { IPool } from 'hooks/useSponsoredPool';
 
 const StakingPool = () => {
   const { t } = useTranslation();

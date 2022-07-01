@@ -1,4 +1,4 @@
-import { useMediaQuery, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,6 @@ const useFaucet = () => {
   } = useSubstrate();
   const toast = useToast();
   const { t } = useTranslation();
-  const [isMobile] = useMediaQuery('(max-width: 739px)');
 
   const txResHandler = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {

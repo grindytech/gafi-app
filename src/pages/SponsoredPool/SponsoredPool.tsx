@@ -1,10 +1,4 @@
-import {
-  Button,
-  HStack,
-  Icon,
-  useDisclosure,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { mdiPlus } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +8,7 @@ import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
+import useBreakPoint from 'hooks/useBreakPoint';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import * as constants from 'utils/constants';
 
@@ -22,10 +17,8 @@ const SponsoredPoolPage: React.FC = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const [isMobile, isSmallScreen] = useMediaQuery([
-    '(max-width: 739px)',
-    '(min-width: 1024px) and (max-width: 1456px)',
-  ]);
+  const { isMobile, isSmallScreen } = useBreakPoint();
+  const isZoomOut = isMobile || isSmallScreen;
   const {
     isOwned,
     sponsoredPools,
@@ -75,26 +68,20 @@ const SponsoredPoolPage: React.FC = () => {
         </Button>
       </HStack>
       <SponsoredPoolTable
-        captions={
-          isMobile || isSmallScreen
-            ? [
-                { label: t('OWNER'), fieldName: 'poolOwner' },
-                { label: 'discount', fieldName: 'discount' },
-                { label: '', fieldName: 'actions' },
-              ]
-            : [
-                { label: t('OWNER'), fieldName: 'poolOwner' },
-                { label: t('DISCOUNT'), fieldName: 'discount' },
-                {
-                  label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
-                    minuteAmount: 30,
-                  }),
-                  fieldName: 'txLimit',
-                },
-                { label: t('BALANCE'), fieldName: 'amount' },
-                { label: t('ACTIONS'), fieldName: 'actions' },
-              ]
-        }
+        captions={[
+          { label: t('OWNER'), fieldName: 'poolOwner', display: true },
+          { label: t('DISCOUNT'), fieldName: 'discount', display: true },
+          { label: '', fieldName: 'actions', display: isZoomOut },
+          {
+            label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+              minuteAmount: 30,
+            }),
+            fieldName: 'txLimit',
+            display: !isZoomOut,
+          },
+          { label: t('BALANCE'), fieldName: 'amount', display: !isZoomOut },
+          { label: t('ACTIONS'), fieldName: 'actions', display: !isZoomOut },
+        ]}
         sponsoredPools={sponsoredPools}
         limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
         isLoading={isLoading}
