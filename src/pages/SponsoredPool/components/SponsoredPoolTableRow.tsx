@@ -4,6 +4,7 @@ import {
   Td,
   Text,
   Tr,
+  useBreakpointValue,
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
@@ -16,7 +17,6 @@ import TableActions from './TableActions';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
-import useBreakPoint from 'hooks/useBreakPoint';
 import { shorten } from 'utils';
 
 interface IProps {
@@ -37,9 +37,13 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const { chainDecimal } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
-  const { isMediumScreen, isSmallScreen, isLargeScreen, isExtraLargeScreen } =
-    useBreakPoint();
-  const isZoomOut = isSmallScreen || isLargeScreen || isExtraLargeScreen;
+  const display = useBreakpointValue({
+    sm: 'none',
+    md: undefined,
+    lg: 'none',
+    '2xl': undefined,
+  });
+  const amountCharacter = useBreakpointValue({ sm: 3, md: 6 });
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>
@@ -47,8 +51,8 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
           <HStack>
             <Avatar
               mr={{ base: 0, lg: 4 }}
-              w={{ base: 10, lg: isLargeScreen ? 10 : 14 }}
-              h={{ base: 10, lg: isLargeScreen ? 10 : 14 }}
+              w={{ base: 10, lg: 14 }}
+              h={{ base: 10, lg: 14 }}
               name="Segun Adebayo"
               src="/assets/layout/contract-img-1.png"
             />
@@ -59,10 +63,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
                 color={textColor}
                 minWidth="100%"
               >
-                {shorten(
-                  poolOwner || '',
-                  isSmallScreen || isMediumScreen ? 3 : undefined
-                )}
+                {shorten(poolOwner || '', amountCharacter)}
               </Text>
               <Text fontSize="xs">Games</Text>
             </VStack>
@@ -79,16 +80,12 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
           </Text>
         </Td>
 
-        <Td sx={(isZoomOut && { display: 'none' }) || {}} textAlign="center">
+        <Td sx={{ display }} textAlign="center">
           <Text fontWeight="normal" fontSize="md" color={textColor}>
             {txLimit}
           </Text>
         </Td>
-        <Td
-          sx={(isZoomOut && { display: 'none' }) || {}}
-          textAlign="center"
-          maxWidth="130px"
-        >
+        <Td sx={{ display }} textAlign="center" maxWidth="130px">
           <Text fontWeight="normal" fontSize="md" color={textColor}>
             {formatBalance(
               amount,
@@ -99,7 +96,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
         </Td>
         <Td
           onClick={e => {
-            if (isZoomOut) {
+            if (display === 'none') {
               e.stopPropagation();
               onOpenDetail();
             }

@@ -1,4 +1,12 @@
-import { Table, TableCaption, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Table,
+  TableCaption,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -7,7 +15,6 @@ import TableContent from './TableContent';
 import Card from 'components/card/Card';
 import CardBody from 'components/card/CardBody';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
-import useBreakPoint from 'hooks/useBreakPoint';
 import useLoadContracts from 'hooks/useLoadContracts';
 import * as constants from 'utils/constants';
 
@@ -18,7 +25,10 @@ export interface ICaptions {
 
 const ContractsTable: React.FC = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
-  const { isSmallScreen } = useBreakPoint();
+  const amountCharacter = useBreakpointValue({
+    sm: 3,
+    md: constants.CONTRACT_AMOUNT_PER_PAGE,
+  });
   const { t } = useTranslation();
   const captions = [
     { label: t('OWNER'), fieldName: 'poolOwner' },
@@ -48,11 +58,7 @@ const ContractsTable: React.FC = ({ children }) => {
             {isLoading ? (
               React.Children.toArray(
                 SkeletonArray.map(() => (
-                  <SkeletonLoadingRow
-                    columnAmount={
-                      isSmallScreen ? 3 : constants.CONTRACT_AMOUNT_PER_PAGE
-                    }
-                  />
+                  <SkeletonLoadingRow columnAmount={amountCharacter} />
                 ))
               )
             ) : (

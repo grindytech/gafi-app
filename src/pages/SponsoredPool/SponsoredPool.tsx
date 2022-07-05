@@ -1,4 +1,10 @@
-import { Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  HStack,
+  Icon,
+  useBreakpointValue,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { mdiPlus } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +14,6 @@ import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
-import useBreakPoint from 'hooks/useBreakPoint';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import * as constants from 'utils/constants';
 
@@ -16,9 +21,11 @@ const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const { isSmallScreen, isLargeScreen, isExtraLargeScreen } = useBreakPoint();
-  const isZoomOut = isSmallScreen || isLargeScreen || isExtraLargeScreen;
+  const isDisplay = useBreakpointValue({
+    sm: true,
+    md: false,
+    lg: true,
+  });
   const {
     isOwned,
     sponsoredPools,
@@ -49,14 +56,14 @@ const SponsoredPoolPage: React.FC = () => {
           fontWeight="bold"
           w={{ base: 'full', md: 'auto' }}
           rightIcon={
-            !isSmallScreen ? (
+            !isDisplay ? (
               <Icon>
                 <path fill="currentColor" d={mdiPlus} />
               </Icon>
             ) : undefined
           }
           leftIcon={
-            isSmallScreen ? (
+            isDisplay ? (
               <Icon>
                 <path fill="currentColor" d={mdiPlus} />
               </Icon>
@@ -71,16 +78,16 @@ const SponsoredPoolPage: React.FC = () => {
         captions={[
           { label: t('OWNER'), fieldName: 'poolOwner', display: true },
           { label: t('DISCOUNT'), fieldName: 'discount', display: true },
-          { label: '', fieldName: 'actions', display: isZoomOut },
+          { label: '', fieldName: 'actions', display: !!isDisplay },
           {
             label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
               minuteAmount: 30,
             }),
             fieldName: 'txLimit',
-            display: !isZoomOut,
+            display: !isDisplay,
           },
-          { label: t('BALANCE'), fieldName: 'amount', display: !isZoomOut },
-          { label: t('ACTIONS'), fieldName: 'actions', display: !isZoomOut },
+          { label: t('BALANCE'), fieldName: 'amount', display: !isDisplay },
+          { label: t('ACTIONS'), fieldName: 'actions', display: !isDisplay },
         ]}
         sponsoredPools={sponsoredPools}
         limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}

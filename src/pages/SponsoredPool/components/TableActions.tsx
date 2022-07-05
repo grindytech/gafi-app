@@ -20,7 +20,6 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           sm: 'block',
           md: 'none',
           lg: 'block',
-          xl: 'block',
           '2xl': 'none',
         }}
         color="primary"

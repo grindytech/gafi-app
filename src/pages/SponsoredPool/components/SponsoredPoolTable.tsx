@@ -23,6 +23,7 @@ import {
   Th,
   Thead,
   Tr,
+  useBreakpointValue,
   useTheme,
   VStack,
 } from '@chakra-ui/react';
@@ -40,7 +41,6 @@ import EmptyRow from 'components/EmptyRow';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
-import useBreakPoint from 'hooks/useBreakPoint';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useMessageToast from 'hooks/useMessageToast';
 import usePool from 'hooks/useSponsoredPool';
@@ -92,7 +92,16 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     SponsoredPool | undefined
   >();
   const SkeletonArray = new Array(limitRow).fill(0);
-  const { isSmallScreen, isLargeScreen } = useBreakPoint();
+  const tableSize = useBreakpointValue({
+    sm: 'sm',
+    md: 'md',
+    lg: 'sm',
+    xl: 'md',
+  });
+  const columnAmount = useBreakpointValue({
+    sm: 3,
+    md: limitRow,
+  });
 
   return (
     <>
@@ -171,11 +180,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         mt={4}
         overflowX={{ sm: 'scroll', xl: 'hidden' }}
       >
-        <Table
-          size={isSmallScreen || isLargeScreen ? 'sm' : 'md'}
-          variant="simple"
-          textAlign="center"
-        >
+        <Table size={tableSize} variant="simple" textAlign="center">
           <Thead>
             <Tr pl="0px">
               {React.Children.toArray(
@@ -210,9 +215,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
             ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (
-                  <SkeletonLoadingRow
-                    columnAmount={isSmallScreen ? 3 : limitRow}
-                  />
+                  <SkeletonLoadingRow columnAmount={columnAmount} />
                 ))
               )
             )}

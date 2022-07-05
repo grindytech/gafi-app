@@ -5,13 +5,12 @@ import {
   Skeleton,
   SkeletonText,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-
-import useBreakPoint from 'hooks/useBreakPoint';
 
 interface IProps {
   currentPage: number;
@@ -32,7 +31,11 @@ const Pagination = (props: IProps) => {
     isLoading,
   } = props;
   const pageButtons = [];
-  const { isLargeScreen } = useBreakPoint();
+  const isLargeScreen = useBreakpointValue({
+    base: false,
+    lg: true,
+    xl: false,
+  });
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
   let endPage = 2 + startPage;

@@ -2,7 +2,7 @@ import { Skeleton, Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 interface IProps {
-  columnAmount: number;
+  columnAmount?: number;
 }
 
 const SkeletonLoadingRow: React.FC<IProps> = ({ columnAmount }) => {

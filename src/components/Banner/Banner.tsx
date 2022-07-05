@@ -1,10 +1,17 @@
-import { Box, Button, Heading, Icon, IconButton, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Icon,
+  IconButton,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { mdiArrowRightThin } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
-import useBreakPoint from 'hooks/useBreakPoint';
 
 interface IProp {
   title: string;
@@ -15,7 +22,13 @@ interface IProp {
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
-  const { isSmallScreen, isLargeScreen } = useBreakPoint();
+
+  const isDisplaySmallBtn = useBreakpointValue({
+    sm: true,
+    md: false,
+    lg: true,
+    xl: false,
+  });
   return (
     <Card
       mb={4}
@@ -33,7 +46,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
           {subTitle}
         </Text>
       </Box>
-      {btnLink && !isSmallScreen && !isLargeScreen ? (
+      {btnLink && !isDisplaySmallBtn ? (
         <Button
           as="a"
           variant="white"

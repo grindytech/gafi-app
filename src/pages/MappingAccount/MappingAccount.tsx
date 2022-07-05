@@ -21,7 +21,6 @@ import { useWallet } from 'use-wallet';
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
-import useBreakPoint from 'hooks/useBreakPoint';
 import useMappingAccount from 'hooks/useMappingAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { shorten } from 'utils';
