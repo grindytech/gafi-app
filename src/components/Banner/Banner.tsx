@@ -8,8 +8,8 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { mdiArrowRightThin } from '@mdi/js';
+import { t } from 'i18next';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
 
@@ -21,8 +21,6 @@ interface IProp {
 }
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
-  const { t } = useTranslation();
-
   const isDisplaySmallBtn = useBreakpointValue({
     sm: true,
     md: false,
@@ -36,18 +34,20 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
     >
       <Box w="80%">
         <Heading
+          data-testid="title"
           sx={{
             fontSize: { base: 'md', md: '4xl' },
           }}
         >
           {title}
         </Heading>
-        <Text sx={subTitleStyled} fontSize="md">
+        <Text data-testid="sub-title" sx={subTitleStyled} fontSize="md">
           {subTitle}
         </Text>
       </Box>
       {btnLink && !isDisplaySmallBtn ? (
         <Button
+          data-testid="show-more-button"
           as="a"
           variant="white"
           target="_blank"
@@ -63,6 +63,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
         </Button>
       ) : (
         <IconButton
+          data-testid="show-more-button"
           as="a"
           w={10}
           h={10}
