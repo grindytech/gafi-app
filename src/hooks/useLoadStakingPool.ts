@@ -1,9 +1,9 @@
 import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
-import useUpfrontPool, { IPool } from './usePool';
+import { IPool } from './useSponsoredPool';
+import useStakingPool from './useStakingPool';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { PoolInfo } from 'interfaces/pool';
@@ -49,7 +49,7 @@ const useLoadStakingPool = () => {
     }
   );
 
-  const { joinStakingPool, leavePool, loadingPool } = useUpfrontPool();
+  const { joinStakingPool, leavePool, loadingPool } = useStakingPool(refetch);
   const stakingPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
@@ -112,10 +112,6 @@ const useLoadStakingPool = () => {
       isDisabled: isJoinedPool,
     },
   ];
-
-  useEffect(() => {
-    refetch();
-  }, [loadingPool, refetch]);
 
   return {
     stakingPools,

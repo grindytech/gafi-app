@@ -1,5 +1,7 @@
 import {
   Button,
+  Grid,
+  GridItem,
   HStack,
   Icon,
   Modal,
@@ -8,9 +10,9 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Stack,
   Text,
   useDisclosure,
+  useTheme,
   VStack,
 } from '@chakra-ui/react';
 import { mdiCogOutline } from '@mdi/js';
@@ -41,6 +43,7 @@ const Dashboard = () => {
   const [metadata, setMetadata] = useState<IMetadata>();
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const theme = useTheme();
 
   useEffect(() => {
     const getMetadata = async () => {
@@ -71,51 +74,62 @@ const Dashboard = () => {
   }, [api?.rpc.system]);
   return (
     <>
-      <VStack alignItems="flex-start">
-        <VStack spacing={4} w="full">
-          <HStack spacing={4} w="full">
-            <BlockInfo />
-            <BlockInfo isFinalized />
-          </HStack>
-          <Stack direction="row" spacing={4} w="full">
-            <Card>
-              <VStack alignItems="flex-start">
-                <Text mb={4} fontWeight="bold" color="primary">
-                  {nodeInfo?.nodeName}
-                </Text>
-                <Text fontSize="sm" fontWeight="light">
-                  {nodeInfo?.chain}
-                </Text>
-                <Text color="black">{socket}</Text>
-                <HStack w="full" py={5} borderTop="1px solid #EEF1FF">
-                  <Icon color="primary">
-                    <path fill="currentColor" d={mdiCogOutline} />
-                  </Icon>
-                  <Text>v{nodeInfo?.nodeVersion}</Text>
-                </HStack>
-              </VStack>
-            </Card>
-            <Card>
-              <VStack
-                h="full"
-                justifyContent="space-between"
-                alignItems="flex-start"
+      <Grid
+        templateRows="repeat(2, 1fr)"
+        templateColumns="repeat(2, 1fr)"
+        gap={4}
+        mb={4}
+      >
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
+          <BlockInfo />
+        </GridItem>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
+          <BlockInfo isFinalized />
+        </GridItem>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
+          <Card h="full">
+            <VStack alignItems="flex-start">
+              <Text mb={4} fontWeight="bold" color="primary">
+                {nodeInfo?.nodeName}
+              </Text>
+              <Text fontSize="sm" fontWeight="light">
+                {nodeInfo?.chain}
+              </Text>
+              <Text color="black">{socket}</Text>
+              <HStack
+                w="full"
+                py={5}
+                borderTop={`1px solid ${theme.colors.borderBottom}`}
               >
-                <Text mb={4} fontWeight="bold" color="primary">
-                  {t('METADATA')}
-                </Text>
-                <Text mb={4} fontSize="sm" fontWeight="light">
-                  v{metadata?.version}
-                </Text>
-                <Button onClick={onOpen} w="full" variant="primary">
-                  {t('SHOW_METADATA')}
-                </Button>
-              </VStack>
-            </Card>
-          </Stack>
-        </VStack>
-        <EventInfo />
-      </VStack>
+                <Icon color="primary">
+                  <path fill="currentColor" d={mdiCogOutline} />
+                </Icon>
+                <Text>v{nodeInfo?.nodeVersion}</Text>
+              </HStack>
+            </VStack>
+          </Card>
+        </GridItem>
+        <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
+          <Card h="full">
+            <VStack
+              h="full"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Text mb={4} fontWeight="bold" color="primary">
+                {t('METADATA')}
+              </Text>
+              <Text mb={4} fontSize="sm" fontWeight="light">
+                v{metadata?.version}
+              </Text>
+              <Button onClick={onOpen} w="full" variant="primary">
+                {t('SHOW_METADATA')}
+              </Button>
+            </VStack>
+          </Card>
+        </GridItem>
+      </Grid>
+      <EventInfo />
       <Modal
         isOpen={isOpen}
         onClose={onClose}

@@ -4,6 +4,7 @@ import {
   Td,
   Text,
   Tr,
+  useBreakpointValue,
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
@@ -14,36 +15,44 @@ import { useQueryParam } from 'use-query-params';
 import OwnedTableActions from './OwnedTableActions';
 import TableActions from './TableActions';
 
-import { shorten } from 'components/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
+import { shorten } from 'utils';
 
 interface IProps {
   pool: SponsoredPool;
   onClick?: () => void;
   onEditClick: () => void;
+  onOpenDetail: () => void;
 }
 
 const SponsoredPoolTableRow: React.FC<IProps> = ({
   pool,
   onClick,
   onEditClick,
+  onOpenDetail,
 }) => {
   const { poolOwner, discount, txLimit, amount } = pool;
   const textColor = useColorModeValue('gray.700', 'white');
   const { chainDecimal } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
-
+  const display = useBreakpointValue({
+    sm: 'none',
+    md: undefined,
+    lg: 'none',
+    '2xl': undefined,
+  });
+  const amountCharacter = useBreakpointValue({ sm: 3, md: 6 });
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>
-        <Td textAlign="center" minWidth={{ sm: '250px' }}>
+        <Td textAlign="center">
           <HStack>
             <Avatar
-              mr={4}
-              w={14}
-              h={14}
+              mr={{ base: 0, lg: 4 }}
+              w={{ base: 10, lg: 14 }}
+              h={{ base: 10, lg: 14 }}
               name="Segun Adebayo"
               src="/assets/layout/contract-img-1.png"
             />
@@ -54,7 +63,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
                 color={textColor}
                 minWidth="100%"
               >
-                {shorten(poolOwner || '')}
+                {shorten(poolOwner || '', amountCharacter)}
               </Text>
               <Text fontSize="xs">Games</Text>
             </VStack>
@@ -62,25 +71,40 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
         </Td>
 
         <Td textAlign="center">
-          <Text fontWeight="normal" fontSize="md" color={textColor}>
+          <Text
+            fontWeight={{ base: 'bold', md: 'normal' }}
+            fontSize={{ base: '2xl', md: 'md' }}
+            color={textColor}
+          >
             {discount / 10000} %
           </Text>
         </Td>
-        <Td textAlign="center">
+
+        <Td sx={{ display }} textAlign="center">
           <Text fontWeight="normal" fontSize="md" color={textColor}>
             {txLimit}
           </Text>
         </Td>
-        <Td textAlign="center" maxWidth="130px">
+        <Td sx={{ display }} textAlign="center" maxWidth="130px">
           <Text fontWeight="normal" fontSize="md" color={textColor}>
             {formatBalance(
               amount,
               { withSi: true, forceUnit: '-', withUnit: '' },
-              chainDecimal || 18
+              chainDecimal
             )}
           </Text>
         </Td>
-        <Td textAlign="center" fontWeight="normal" fontSize="md">
+        <Td
+          onClick={e => {
+            if (display === 'none') {
+              e.stopPropagation();
+              onOpenDetail();
+            }
+          }}
+          textAlign="center"
+          fontWeight="normal"
+          fontSize="md"
+        >
           {isOwned ? (
             <OwnedTableActions poolId={pool.id} onClick={onEditClick} />
           ) : (

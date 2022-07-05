@@ -7,6 +7,7 @@ const useMessageToast = () => {
 
   const copySuccessToast = () => {
     toast({
+      position: 'top-right',
       description: t('COPIED_TO_CLIPBOARD'),
       isClosable: true,
       status: 'success',

@@ -5,7 +5,7 @@ import {
   Icon,
   IconButton,
   Text,
-  useMediaQuery,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { mdiArrowRightThin } from '@mdi/js';
 import React from 'react';
@@ -22,7 +22,13 @@ interface IProp {
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
-  const [isSmallsceen] = useMediaQuery('(max-width: 1200px)');
+
+  const isDisplaySmallBtn = useBreakpointValue({
+    sm: true,
+    md: false,
+    lg: true,
+    xl: false,
+  });
   return (
     <Card
       mb={4}
@@ -31,7 +37,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       <Box w="80%">
         <Heading
           sx={{
-            fontSize: { base: 'md', tablet: '4xl' },
+            fontSize: { base: 'md', md: '4xl' },
           }}
         >
           {title}
@@ -40,13 +46,13 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
           {subTitle}
         </Text>
       </Box>
-      {btnLink && !isSmallsceen ? (
+      {btnLink && !isDisplaySmallBtn ? (
         <Button
           as="a"
           variant="white"
           target="_blank"
           href={btnLink}
-          mt={{ base: 8, tablet: 0 }}
+          mt={{ base: 8, md: 0 }}
           rightIcon={
             <Icon color="primary">
               <path fill="currentColor" d={mdiArrowRightThin} />
@@ -58,8 +64,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       ) : (
         <IconButton
           as="a"
-          w={16}
-          h={16}
+          w={10}
+          h={10}
           borderRadius="50%"
           aria-label="see-more-btn"
           target="_blank"
@@ -79,6 +85,8 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
 export default Banner;
 
 const bannerStyled = {
+  px: { base: 6, md: 8 },
+  py: { base: 8, md: 12 },
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -89,10 +97,10 @@ const bannerStyled = {
 };
 
 const subTitleStyled = {
-  width: { base: 60, tablet: '90%', '2xl': '70%' },
+  width: { base: 48, md: '90%', '2xl': '70%' },
   mt: 4,
   color: 'white',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  whiteSpace: { base: 'nowrap', tablet: 'normal' },
+  whiteSpace: { base: 'nowrap', md: 'normal' },
 };

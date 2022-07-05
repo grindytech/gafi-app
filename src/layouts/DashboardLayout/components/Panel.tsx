@@ -17,7 +17,7 @@ const Panel = ({ onOpen }: IProps) => {
     <Box w="full">
       <Box sx={PanelStyled}>
         <IconButton
-          display={{ base: 'flex', pc: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
           onClick={onOpen}
           variant="transparents"
           aria-label="open menu"
@@ -27,11 +27,17 @@ const Panel = ({ onOpen }: IProps) => {
         />
         <Box
           sx={{
-            display: { base: 'none', tablet: 'flex' },
+            display: 'flex',
           }}
         >
-          <Heading>{t('HELLO')},</Heading>
-          <Heading ml={2} color="primary">
+          <Heading fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}>
+            {t('HELLO')},
+          </Heading>
+          <Heading
+            fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
+            ml={2}
+            color="primary"
+          >
             {userName}
           </Heading>
         </Box>
@@ -44,17 +50,6 @@ const Panel = ({ onOpen }: IProps) => {
           <UserMenu />
         </Box>
       </Box>
-      <Box
-        sx={{
-          mt: 4,
-          display: { base: 'flex', tablet: 'none' },
-        }}
-      >
-        <Heading>{t('HELLO')},</Heading>
-        <Heading ml={2} color="primary">
-          {userName}
-        </Heading>
-      </Box>
     </Box>
   );
 };
@@ -63,11 +58,12 @@ export default Panel;
 
 const PanelStyled = {
   width: '100%',
-  h: { base: 16, pc: 20 },
+  h: 20,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  pb: { base: 4, pc: 'none' },
-  p: { base: 'none', pc: 8 },
-  borderBottom: { base: '2px solid #EEF1FF', pc: 'none' },
+  pb: { base: 4, lg: 'none' },
+  p: { base: 4, lg: 8 },
+  borderBottom: { base: '2px solid #EEF1FF', lg: 'none' },
+  bg: { base: 'white', md: 'transparent' },
 };

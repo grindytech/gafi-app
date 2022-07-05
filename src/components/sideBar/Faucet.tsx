@@ -18,6 +18,7 @@ const Faucet = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
+        position: 'top-right',
         title: t('FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
         isClosable: true,
@@ -26,6 +27,7 @@ const Faucet = () => {
       setIsLoading(false);
     } else {
       toast({
+        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
         isClosable: true,
@@ -37,6 +39,7 @@ const Faucet = () => {
   // @ts-ignore
   const txErrHandler = err => {
     toast({
+      position: 'top-right',
       description: t('TRANSACTION_FAILED', {
         errorMessage: err.toString(),
       }),

@@ -119,9 +119,9 @@ export const getFromAcct = async (
   return [address, { signer: injector.signer }];
 };
 
-export const shorten = (hash: string) => {
+export const shorten = (hash: string, length = 6) => {
   const n = hash.length;
-  return `${hash.substr(0, 10)}...${hash.substr(n - 6)}`;
+  return `${hash.substr(0, length)}...${hash.substr(n - length)}`;
 };
 
 export const handleTxError = (events: any, api: any, toast: any) => {

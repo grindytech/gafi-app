@@ -7,8 +7,8 @@ import polkadotJsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { DefinitionRpcExt } from '@polkadot/types/types';
 import { Keyring, keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
-import { set, get } from 'lodash';
-import React, { useReducer, useContext, useEffect } from 'react';
+import { get, set } from 'lodash';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
@@ -294,6 +294,7 @@ const useSubstrate = () => {
       try {
         setCurrentAccount(acct);
         toast({
+          position: 'top-right',
           title: t('SWITCH_ACCOUNT_SUCCESSFUL'),
           description: acctAddr(acct),
           isClosable: true,
@@ -301,6 +302,7 @@ const useSubstrate = () => {
         });
       } catch (error) {
         toast({
+          position: 'top-right',
           description: t('SWITCH_ACCOUNT_FAIL'),
           isClosable: true,
           status: 'error',

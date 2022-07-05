@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Icon,
-  IconButton,
   Image,
   Link,
   Menu,
@@ -26,12 +25,13 @@ import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
-import { acctAddr, shorten } from 'components/utils';
+import { acctAddr } from 'components/utils';
 import { useSubstrate } from 'contexts/substrateContext';
 import useFaucet from 'hooks/useFaucet';
 import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
+import { shorten } from 'utils';
 
 const CHROME_EXT_URL =
   'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd';
@@ -64,7 +64,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
       >
         <Text sx={titleStyled}>{t('YOUR_BALANCE')}</Text>
         <Box
-          display={{ base: 'flex', pc: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
           onClick={onClose}
           w={10}
           h={10}
@@ -124,8 +124,8 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       sx={{
                         maxHeight: {
                           base: '200px',
-                          tablet: '300px',
-                          pc: '600px',
+                          md: '300px',
+                          lg: '600px',
                         },
                         overflowY: 'scroll',
                       }}
@@ -230,12 +230,12 @@ const AccountInfo = ({ display, onClose }: IProps) => {
 export default AccountInfo;
 
 const AccountInfoStyled = {
-  w: { base: 'full', pc: 72, '2xl': '20vw' },
-  minHeight: { base: '470px', pc: 0 },
+  w: { base: 'full', lg: 72, '2xl': '20vw' },
+  minHeight: { base: '470px', lg: 0 },
   alignItems: 'center',
   bg: 'white',
   justifyContent: 'flex-start',
-  borderRadius: { base: '24px 24px 0 0', pc: '2xl' },
+  borderRadius: { base: '24px 24px 0 0', lg: '2xl' },
 };
 
 const titleStyled = {

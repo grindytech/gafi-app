@@ -1,4 +1,12 @@
-import { Button, Flex, Skeleton, SkeletonText, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  IconButton,
+  Skeleton,
+  SkeletonText,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -23,6 +31,11 @@ const Pagination = (props: IProps) => {
     isLoading,
   } = props;
   const pageButtons = [];
+  const isLargeScreen = useBreakpointValue({
+    base: false,
+    lg: true,
+    xl: false,
+  });
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
   let endPage = 2 + startPage;
@@ -66,10 +79,34 @@ const Pagination = (props: IProps) => {
       : currentPage * resultsPerPage;
 
   return (
-    <Flex justifyContent="space-between" alignItems="center">
-      <Flex pl={8} flex="4" justifyContent="flex-start">
+    <Flex
+      justifyContent="space-between"
+      flexDirection={{
+        base: 'column',
+        md: 'row',
+        lg: 'column',
+        xl: 'row',
+      }}
+      alignItems={{
+        base: 'flex-end',
+        md: 'center',
+        lg: 'flex-end',
+        xl: 'center',
+      }}
+    >
+      <Flex
+        pl={8}
+        mb={{ base: 6, md: 0, lg: 6, xl: 0 }}
+        flex="4"
+        justifyContent="flex-start"
+      >
         <SkeletonText isLoaded={!isLoading} noOfLines={1}>
-          <Text fontSize="md" fontWeight="normal" whiteSpace="nowrap">
+          <Text
+            color="greyText"
+            fontSize={{ sm: 'sm', md: 'md' }}
+            fontWeight="normal"
+            whiteSpace="nowrap"
+          >
             {currentPage * resultsPerPage < totalCount ? (
               <Trans
                 i18nKey="SHOW_FROM_A_TO_B_OF_C"
@@ -94,7 +131,7 @@ const Pagination = (props: IProps) => {
       </Flex>
       <Flex flex="14" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading}>
-          {!!totalCount && (
+          {totalCount ? null : (
             <Button
               ml={{ base: 1, xl: 2 }}
               size="sm"
@@ -133,7 +170,19 @@ const Pagination = (props: IProps) => {
               </Button>
             ))
           )}
-          {!!totalCount && (
+          {isLargeScreen ? (
+            <IconButton
+              aria-label="pre-page"
+              p={4}
+              ml={{ base: 8, xl: 2 }}
+              size="sm"
+              variant="primary"
+              onClick={() => {
+                hanldleSwitchPage(currentPage + 1);
+              }}
+              icon={<Icon size={1} path={mdiChevronRight} />}
+            />
+          ) : (
             <Button
               ml={{ base: 1, xl: 2 }}
               size="sm"

@@ -1,16 +1,20 @@
 import {
-  VStack,
-  Text,
-  HStack,
   Box,
-  Image,
+  Center,
+  Flex,
+  HStack,
   Icon,
   IconButton,
+  Image,
+  StackDivider,
+  Text,
+  useTheme,
+  VStack,
 } from '@chakra-ui/react';
-import { mdiEraser } from '@mdi/js';
+import { mdiTrashCanOutline } from '@mdi/js';
 import { VoidFn } from '@polkadot/api/types';
 import { AnyJson } from '@polkadot/types/types';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
@@ -32,7 +36,9 @@ interface IEvent {
 const EventInfo = () => {
   const { api } = useSubstrateState();
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
+  const theme = useTheme();
   const { t } = useTranslation();
+
   useEffect(() => {
     let unsub: VoidFn | undefined;
     let keyNum = 0;
@@ -70,47 +76,57 @@ const EventInfo = () => {
   }, [api?.query.system]);
 
   return (
-    <Card flex={4}>
-      <VStack alignItems="flex-start">
-        <HStack
-          justifyContent="space-between"
-          w="full"
-          mb={8}
-          alignItems="center"
-        >
-          <Text color="primary">&bull; {t('RECENT_EVENTS')}</Text>
-          <IconButton
-            w={10}
-            h={10}
-            aria-label="reset-events"
-            onClick={() => setEventFeed([])}
-            bg="primary"
-            icon={
-              <Icon w={18} h={18}>
-                <path fill="currentColor" d={mdiEraser} />
-              </Icon>
-            }
+    <Card>
+      <HStack
+        justifyContent="space-between"
+        w="full"
+        mb={8}
+        alignItems="center"
+      >
+        <Text fontWeight={{ base: 'bold', md: 'normal' }} color="primary">
+          &bull; {t('RECENT_EVENTS')}
+        </Text>
+        <IconButton
+          w={10}
+          h={10}
+          aria-label="reset-events"
+          onClick={() => setEventFeed([])}
+          bg="primary"
+          icon={
+            <Icon w={18} h={18}>
+              <path fill="currentColor" d={mdiTrashCanOutline} />
+            </Icon>
+          }
+        />
+      </HStack>
+      <VStack
+        alignItems="flex-start"
+        divider={
+          <StackDivider
+            borderColor={`1px solid ${theme.colors.borderBottom}`}
           />
-        </HStack>
+        }
+      >
         {React.Children.toArray(
-          eventFeed?.map((event, index: number) => (
-            <HStack
-              gap={2}
-              borderTop={index === 0 ? '' : '1px solid #EEF1FF'}
-              w="full"
-              py={4}
-            >
-              <Box minW={10} mr={4} bg="greyBg" borderRadius="50%" p={2}>
+          eventFeed?.map(event => (
+            <Flex alignItems="center" py={4}>
+              <Center
+                bg="greyBg"
+                borderRadius="50%"
+                w={12}
+                h={12}
+                mr={{ base: 2, md: 4 }}
+              >
                 <Image
                   src="/assets/layout/notification.svg"
                   alt="notification"
                 />
-              </Box>
-              <VStack flex={8} alignItems="flex-start">
+              </Center>
+              <Box w={{ sm: '10.5rem', md: '70%', lg: '12.5rem', xl: '90%' }}>
                 <Text fontWeight="bold">{event.summary}</Text>
-                <Text w="70%">{event.content}</Text>
-              </VStack>
-            </HStack>
+                {event.content}
+              </Box>
+            </Flex>
           ))
         )}
       </VStack>

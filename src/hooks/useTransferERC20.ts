@@ -76,6 +76,7 @@ const useTransferERC20 = () => {
       mutationKey: 'transfer-erc20-token',
       onError: (error: any) => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: error.message,
           }),
@@ -85,6 +86,7 @@ const useTransferERC20 = () => {
       },
       onSuccess: async data => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_SUCCESS'),
           isClosable: true,
           status: 'success',

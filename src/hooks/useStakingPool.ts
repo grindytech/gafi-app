@@ -6,26 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
-export interface IPool {
-  poolType: string;
-  discount: number;
-  rate: {
-    txLimit: number;
-    minute: number;
-  };
-  banner: string;
-  fee: {
-    gaki: string;
-    minute: number;
-  };
-  onJoin: () => void;
-  onLeave: () => void;
-  isLoading: boolean;
-  isJoined: boolean;
-  isDisabled: boolean;
-}
-
-const useUpfrontPool = () => {
+const useStakingPool = (refreshData: () => void) => {
   const { t } = useTranslation();
 
   const toast = useToast();
@@ -36,14 +17,17 @@ const useUpfrontPool = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
+        position: 'top-right',
         title: t('FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
         isClosable: true,
         status: 'success',
       });
+      refreshData();
       setLoadingPool('');
     } else {
       toast({
+        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
         isClosable: true,
@@ -51,24 +35,39 @@ const useUpfrontPool = () => {
       });
     }
   };
-
-  const joinUpfrontPool = async (poolPackage: string) => {
+  const leavePool = async (poolPackage: string) => {
     setLoadingPool(poolPackage);
     const [account, options] = await getFromAcct(currentAccount);
-
-    if (api && account) {
-      const txExecute = api.tx.pool.join({ System: { Upfront: poolPackage } });
-      try {
-        await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setLoadingPool('');
+    if (api) {
+      const txExecute = api.tx.pool.leave();
+      if (options) {
+        try {
+          await txExecute.signAndSend(account, options, txCallback);
+        } catch (err: any) {
+          toast({
+            position: 'top-right',
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
+            isClosable: true,
+            status: 'error',
+          });
+          setLoadingPool('');
+        }
+      } else {
+        try {
+          await txExecute.signAndSend(account, txCallback);
+        } catch (err: any) {
+          toast({
+            position: 'top-right',
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
+            isClosable: true,
+            status: 'error',
+          });
+          setLoadingPool('');
+        }
       }
     }
   };
@@ -83,6 +82,7 @@ const useUpfrontPool = () => {
         await txExecute.signAndSend(account, options || {}, txCallback);
       } catch (err: any) {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: err.toString(),
           }),
@@ -94,47 +94,11 @@ const useUpfrontPool = () => {
     }
   };
 
-  const leavePool = async (poolPackage: string) => {
-    setLoadingPool(poolPackage);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api) {
-      const txExecute = api.tx.pool.leave();
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoadingPool('');
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoadingPool('');
-        }
-      }
-    }
-  };
-
   return {
-    joinUpfrontPool,
+    loadingPool,
     joinStakingPool,
     leavePool,
-    loadingPool,
   };
 };
 
-export default useUpfrontPool;
+export default useStakingPool;

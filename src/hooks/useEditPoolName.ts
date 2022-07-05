@@ -17,6 +17,7 @@ const useEditPool = (onSuccess: () => void) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
+        position: 'top-right',
         title: t('FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
         isClosable: true,
@@ -26,6 +27,7 @@ const useEditPool = (onSuccess: () => void) => {
       onSuccess();
     } else {
       toast({
+        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
         isClosable: true,
@@ -51,6 +53,7 @@ const useEditPool = (onSuccess: () => void) => {
       mutationKey: 'update-pool-name',
       onError: (error: any) => {
         toast({
+          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: error.toString(),
           }),

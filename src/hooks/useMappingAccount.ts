@@ -1,18 +1,20 @@
 import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
+import { u8aToHex } from '@polkadot/util';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWallet } from 'use-wallet';
+import Web3 from 'web3';
 
-import { useSubstrate } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct, handleTxError } from 'components/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 
-const useFaucet = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const {
-    state: { currentAccount, api },
-  } = useSubstrate();
+const useMappingAccount = () => {
   const toast = useToast();
   const { t } = useTranslation();
+  const { account, ethereum } = useWallet();
+  const { api, currentAccount } = useSubstrateState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const txResHandler = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -48,24 +50,35 @@ const useFaucet = () => {
     setIsLoading(false);
   };
 
-  const onFaucet = async () => {
+  const mappingAccount = async (isWithdraw: boolean) => {
     setIsLoading(true);
-    if (currentAccount) {
-      const [acc, options] = await getFromAcct(currentAccount);
-
+    if (account && ethereum) {
+      const [accountAddress, options] = await getFromAcct(currentAccount);
+      const web3 = new Web3(ethereum);
+      const data = u8aToHex(currentAccount?.publicKey, undefined, false);
+      const signature = await web3.eth.personal.sign(
+        `Bond Gafi Network account:${data.toString()}`,
+        account,
+        ''
+      );
       if (api) {
-        const txExecute = api.tx.faucet.faucet();
+        const txExecute = api.tx.proofAddressMapping.bond(
+          signature,
+          account,
+          isWithdraw
+        );
+
         await txExecute
-          .signAndSend(acc, options || {}, txResHandler)
+          .signAndSend(accountAddress, options || {}, txResHandler)
           .catch(txErrHandler);
       }
     }
   };
 
   return {
-    faucet: onFaucet,
     isLoading,
+    mappingAccount,
   };
 };
 
-export default useFaucet;
+export default useMappingAccount;

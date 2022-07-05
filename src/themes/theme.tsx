@@ -1,11 +1,13 @@
-import { color, ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 import { Global } from '@emotion/react';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    p: 6,
+    py: 8,
+    px: 8,
+    p: { sm: 4, md: 6, lg: 4, '2xl': 8 },
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -104,6 +106,7 @@ const colors = {
   greyText: '#686868',
   greyBg: '#F5F7FB',
   borderBottom: '#EEF1FF',
+  disableBtnText: '#3B3B3B',
   greyBtnBg: '#D7D6D6',
   greyTitle: '#B0B0B0',
   gradientColor1: '#56CCF2',
@@ -138,9 +141,7 @@ export const theme = extendTheme({
     md: '768px',
     lg: '960px',
     xl: '1200px',
-    '2xl': '1400px',
-    tablet: '740px',
-    pc: '1024px',
+    '2xl': '1536px',
   },
   styles: {
     global: (props: StyleFunctionProps) => ({
@@ -193,7 +194,7 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         lineHeight: 6,
-        fontSize: 'md',
+        fontSize: { base: 'sm', md: 'md' },
         fontWeight: 'normal',
         borderRadius: '32px',
         color: 'white',
@@ -213,9 +214,10 @@ export const theme = extendTheme({
 
         xl: {
           h: '44px',
-          fontSize: 'lg',
-          px: 8,
+          fontSize: { base: 'sm', md: 'md' },
+          fontWeight: { base: 'normal', md: 'bold' },
           borderRadius: '4xl',
+          px: 8,
           '.chakra-icon': {
             w: 6,
             h: 6,
@@ -232,7 +234,7 @@ export const theme = extendTheme({
           bg: `linear-gradient(97.48deg, ${colors.gradientColor1} -9.59%, ${colors.gradientColor2} 107.41%)`,
           _disabled: {
             bg: colors.greyBtnBg,
-            color: 'blackAlpha.700',
+            color: colors.disableBtnText,
           },
         },
         ghost: {
@@ -252,20 +254,27 @@ export const theme = extendTheme({
         },
         primary: {
           bg: colors.primary,
-          fontWeight: { base: 'normal', tablet: 'bold' },
           color: 'white',
+          _disabled: {
+            bg: colors.greyBtnBg,
+            color: colors.disableBtnText,
+          },
           _hover: {
             opacity: 0.8,
             _disabled: {
-              opacity: 0.4,
-              bg: 'primary',
+              opacity: 0.8,
+              bg: colors.greyBtnBg,
             },
           },
         },
         secondary: {
           bg: colors.secondary,
-          '&:hover': {
+          _hover: {
             bg: colors.hoverSecondary,
+            _disabled: {
+              opacity: 0.4,
+              bg: colors.hoverSecondary,
+            },
           },
         },
         outline: {
@@ -300,7 +309,7 @@ export const theme = extendTheme({
     },
     Text: {
       baseStyle: {
-        fontSize: 'md',
+        fontSize: { base: 'sm', md: 'md' },
         fontWeight: 'normal',
         '.chakra-icon': {
           w: 5,
@@ -317,7 +326,7 @@ export const theme = extendTheme({
           bg: `linear-gradient(227.25deg, ${colors.gradientColor2} 2.24%, ${colors.gradientColor1} 127.36%)`,
           border: 'none',
           borderRadius: '3xl',
-          p: { base: 4, tablet: 6, pc: 8 },
+          p: { base: 4, md: 6, lg: 8 },
           '.chakra-menu__menuitem:last-child': {
             mb: 0,
           },
@@ -327,8 +336,8 @@ export const theme = extendTheme({
         },
         item: {
           _focus: { bg: colors.btnHover },
-          py: { base: 2, pc: 3 },
-          px: { base: 6, pc: 8 },
+          py: { base: 2, lg: 3 },
+          px: { base: 6, lg: 8 },
           m: 0,
           borderRadius: '3xl',
           color: 'white',
@@ -373,17 +382,54 @@ export const theme = extendTheme({
           textTransform: 'capitalize',
         },
       }),
+      sizes: {
+        sm: () => ({
+          caption: {
+            fontSize: 'sm',
+          },
+          td: {
+            px: 2,
+            py: 4,
+            fontSize: 'md',
+          },
+          th: {
+            px: 3,
+            py: 4,
+            fontSize: 'md',
+          },
+        }),
+      },
+
+      variants: {
+        simple: () => ({
+          th: {
+            fontWeight: 'normal',
+            fontSize: 'sm',
+            color: colors.greyText,
+          },
+        }),
+      },
     },
     Modal: {
       baseStyle: () => ({
         header: {
-          mb: 4,
           fontWeight: 'bold',
           color: 'primary',
           fontSize: '2xl',
+          p: 0,
+          mb: { sm: 8 },
         },
         dialog: {
           borderRadius: '2xl',
+          mx: 4,
+          p: { sm: 4, md: 6, lg: 8 },
+        },
+        body: {
+          p: 0,
+        },
+        footer: {
+          p: 0,
+          mt: { sm: 16 },
         },
       }),
     },
@@ -405,6 +451,16 @@ export const theme = extendTheme({
         }),
       },
       defaultProps: { size: 'lg', variant: 'outline' },
+    },
+    Alert: {
+      baseStyle: () => ({
+        container: {
+          maxWidth: { base: '300px', md: 600 },
+        },
+        description: {
+          maxWidth: { base: '240px', md: 450 },
+        },
+      }),
     },
   },
 });

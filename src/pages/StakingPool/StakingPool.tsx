@@ -6,7 +6,7 @@ import Pool from '../UpfrontPool/components/Pool';
 
 import Banner from 'components/Banner';
 import useLoadStakingPool from 'hooks/useLoadStakingPool';
-import { IPool } from 'hooks/usePool';
+import { IPool } from 'hooks/useSponsoredPool';
 
 const StakingPool = () => {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ const StakingPool = () => {
         bannerBg="/assets/layout/staking-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/staking-pool"
       />
-      <SimpleGrid mt="4" minChildWidth="308px" spacing="1em" minH="full">
+      <SimpleGrid mt="4" minChildWidth="288px" spacing="1em" minH="full">
         {React.Children.toArray(
           stakingPools.map((pool: IPool) => <Pool pool={pool} />)
         )}

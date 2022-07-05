@@ -1,4 +1,12 @@
-import { Table, TableCaption, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Table,
+  TableCaption,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +25,10 @@ export interface ICaptions {
 
 const ContractsTable: React.FC = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
+  const amountCharacter = useBreakpointValue({
+    sm: 3,
+    md: constants.CONTRACT_AMOUNT_PER_PAGE,
+  });
   const { t } = useTranslation();
   const captions = [
     { label: t('OWNER'), fieldName: 'poolOwner' },
@@ -46,9 +58,7 @@ const ContractsTable: React.FC = ({ children }) => {
             {isLoading ? (
               React.Children.toArray(
                 SkeletonArray.map(() => (
-                  <SkeletonLoadingRow
-                    columnAmount={constants.CONTRACT_AMOUNT_PER_PAGE}
-                  />
+                  <SkeletonLoadingRow columnAmount={amountCharacter} />
                 ))
               )
             ) : (

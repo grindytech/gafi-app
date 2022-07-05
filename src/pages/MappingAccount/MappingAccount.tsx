@@ -1,268 +1,166 @@
 import {
   Box,
   Button,
-  Checkbox,
+  Flex,
   FormControl,
   FormLabel,
   HStack,
   Icon,
-  Input,
-  Text,
-  useToast,
-  VStack,
   Image,
+  SimpleGrid,
   Switch,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
-import { mdiArrowLeftRight, mdiContentCopy } from '@mdi/js';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { u8aToHex } from '@polkadot/util';
+import { mdiContentCopy } from '@mdi/js';
 import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
-import Web3 from 'web3';
 
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
-import featureFlag from 'components/FeatureFlags';
-import { getFromAcct, handleTxError, shorten } from 'components/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useMappingAccount from 'hooks/useMappingAccount';
 import useMessageToast from 'hooks/useMessageToast';
+import { shorten } from 'utils';
 
 function MappingAccount() {
-  const toast = useToast();
   const { t } = useTranslation();
-  const { account, connect, isConnected, reset, ethereum } = useWallet();
-  const { api, currentAccount } = useSubstrateState();
+  const { account, connect, isConnected } = useWallet();
+  const { currentAccount } = useSubstrateState();
   const [isWithdraw, setIsWithdraw] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const { copySuccessToast } = useMessageToast();
 
-  const txResHandler = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
-
-  // @ts-ignore
-  const txErrHandler = err => {
-    toast({
-      description: t('TRANSACTION_FAILED', {
-        errorMessage: err.toString(),
-      }),
-      isClosable: true,
-      status: 'error',
-    });
-    setIsLoading(false);
-  };
-
-  const onWithdraw = async () => {
-    setIsLoading(true);
-    if (account && ethereum) {
-      const [accountAddress, options] = await getFromAcct(currentAccount);
-      const web3 = new Web3(ethereum);
-      const data = u8aToHex(currentAccount?.publicKey, undefined, false);
-      const signature = await web3.eth.personal.sign(
-        `Bond Gafi Network account:${data.toString()}`,
-        account,
-        ''
-      );
-      if (api) {
-        const txExecute = api.tx.proofAddressMapping.bond(
-          signature,
-          account,
-          isWithdraw
-        );
-
-        if (options) {
-          const unsub = await txExecute
-            .signAndSend(accountAddress, options, txResHandler)
-            .catch(txErrHandler);
-        } else {
-          const unsub = await txExecute
-            .signAndSend(accountAddress, txResHandler)
-            .catch(txErrHandler);
-        }
-      }
-    }
-  };
+  const { isLoading, mappingAccount } = useMappingAccount();
 
   return (
     <>
-      {featureFlag.isDisplayNewDashboardUI ? (
-        <>
-          <Banner
-            title={t('MAPPING_ACCOUNT')}
-            subTitle={t('MAPPING_ACCOUNT_DESCRIPTION')}
-            bannerBg="/assets/layout/mapping-account-banner.png"
-            btnLink="https://wiki.gafi.network/learn/proof-address-mapping"
-          />
-          <Card>
-            <VStack width="full" gap={2}>
-              <HStack alignItems="flex-start" gap={2} width="full">
-                <Card
-                  border="2px solid #EEF1FF"
-                  boxShadow="none"
-                  py={12}
-                  justifyContent="flex-start"
-                  alignItems="center"
-                >
-                  <HStack mb={6}>
-                    <Text>{t('METAMASK_ADDRESS')}</Text>
-                    <Box>
-                      <Image src="/assets/layout/metamask.png" />
-                    </Box>
-                  </HStack>
-                  {isConnected() ? (
-                    account && (
-                      <CopyToClipboard text={account.toString()}>
-                        <Button
-                          mb={4}
-                          variant="ghost"
-                          onClick={copySuccessToast}
-                          w="full"
-                          rightIcon={
-                            <Icon color="primary">
-                              <path fill="currentColor" d={mdiContentCopy} />
-                            </Icon>
-                          }
-                        >
-                          {shorten(account.toString())}
-                        </Button>
-                      </CopyToClipboard>
-                    )
-                  ) : (
+      <Banner
+        title={t('MAPPING_ACCOUNT')}
+        subTitle={t('MAPPING_ACCOUNT_DESCRIPTION')}
+        bannerBg="/assets/layout/mapping-account-banner.png"
+        btnLink="https://wiki.gafi.network/learn/proof-address-mapping"
+      />
+      <Card>
+        <VStack width="full" gap={2}>
+          <SimpleGrid
+            w="full"
+            columns={{ sm: 1, md: 2, lg: 1, xl: 2 }}
+            spacing={4}
+          >
+            <Card
+              border="2px solid #EEF1FF"
+              boxShadow="none"
+              py={{ sm: 8, lg: 12 }}
+              px={{ sm: 4, lg: 12 }}
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <HStack mb={6}>
+                <Text>{t('METAMASK_ADDRESS')}</Text>
+                <Box>
+                  <Image src="/assets/layout/metamask.png" />
+                </Box>
+              </HStack>
+              {isConnected() ? (
+                account && (
+                  <CopyToClipboard text={account.toString()}>
                     <Button
                       mb={4}
                       variant="ghost"
-                      w="full"
-                      onClick={() => connect('injected')}
+                      onClick={copySuccessToast}
+                      w={{ sm: 'full' }}
+                      rightIcon={
+                        <Icon color="primary">
+                          <path fill="currentColor" d={mdiContentCopy} />
+                        </Icon>
+                      }
                     >
-                      {t('CONNECT_METAMASK')}
+                      {shorten(account.toString())}
                     </Button>
-                  )}
-                </Card>
-                <Card
-                  border="2px solid #EEF1FF"
-                  boxShadow="none"
-                  py={12}
-                  justifyContent="flex-start"
-                  alignItems="center"
+                  </CopyToClipboard>
+                )
+              ) : (
+                <Button
+                  mb={4}
+                  variant="ghost"
+                  w="full"
+                  onClick={() => connect('injected')}
                 >
-                  <HStack mb={6}>
-                    <Text>{t('POLKADOT_ADDRESS')}</Text>
-                    <Box>
-                      <Image src="/assets/layout/polkadot.png" />
-                    </Box>
-                  </HStack>
-                  {currentAccount && (
-                    <CopyToClipboard text={currentAccount.address.toString()}>
-                      <Button
-                        mb={4}
-                        variant="ghost"
-                        w="full"
-                        onClick={copySuccessToast}
-                        rightIcon={
-                          <Icon color="primary">
-                            <path fill="currentColor" d={mdiContentCopy} />
-                          </Icon>
-                        }
-                      >
-                        {shorten(currentAccount.address.toString())}
-                      </Button>
-                    </CopyToClipboard>
-                  )}
-                </Card>
+                  {t('CONNECT_METAMASK')}
+                </Button>
+              )}
+            </Card>
+            <Card
+              border="2px solid #EEF1FF"
+              boxShadow="none"
+              py={{ sm: 8, lg: 12 }}
+              px={{ sm: 4, lg: 12 }}
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <HStack mb={6}>
+                <Text>{t('POLKADOT_ADDRESS')}</Text>
+                <Box>
+                  <Image src="/assets/layout/polkadot.png" />
+                </Box>
               </HStack>
-              <FormControl
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Switch
-                  checked={isWithdraw}
-                  defaultChecked
-                  onChange={event => setIsWithdraw(event.target.checked)}
-                  size="md"
-                  id="isWithdraw"
-                />
-                <FormLabel htmlFor="isWithdraw" ml={4} mb={0}>
-                  {t('WITHDRAW')}
-                </FormLabel>
-              </FormControl>
-              <Button px={20} onClick={onWithdraw} isLoading={isLoading}>
-                {t('MAPPING')}
-              </Button>
-            </VStack>
-          </Card>
-        </>
-      ) : (
-        <Box pt={{ base: '120px', md: '75px' }}>
-          <Text fontWeight="bold" fontSize="2xl" mb={5}>
-            Mapping Account
-          </Text>
-          <VStack width="full" gap={2}>
-            <FormControl>
-              <Checkbox
-                checked={isWithdraw}
-                defaultChecked={isWithdraw}
-                onChange={event => setIsWithdraw(event.target.checked)}
-              >
-                Withdraw
-              </Checkbox>
-            </FormControl>
-            <HStack gap={2} width="full">
-              <VStack width="full">
-                {isConnected() && (
-                  <FormControl>
-                    <FormLabel htmlFor="metamask">Metamask Address</FormLabel>
-                    <Input id="metamask" type="text" value={account || ''} />
-                  </FormControl>
-                )}
-                {isConnected() ? (
-                  <Button onClick={() => reset()}>Disconnect Metamask</Button>
-                ) : (
-                  <Button onClick={() => connect('injected')}>
-                    Connect Metamask
+              {currentAccount && (
+                <CopyToClipboard text={currentAccount.address.toString()}>
+                  <Button
+                    mb={4}
+                    variant="ghost"
+                    w="full"
+                    onClick={copySuccessToast}
+                    rightIcon={
+                      <Icon color="primary">
+                        <path fill="currentColor" d={mdiContentCopy} />
+                      </Icon>
+                    }
+                  >
+                    {shorten(currentAccount.address.toString())}
                   </Button>
-                )}
-              </VStack>
-              <Box alignSelf="center">
-                <Icon color="black" width="30px" height="30px">
-                  <path fill="currentColor" d={mdiArrowLeftRight} />
-                </Icon>
-              </Box>
-              <VStack width="full" alignSelf="flex-start">
-                <FormControl>
-                  <FormLabel htmlFor="polkadot">Polkadot Address</FormLabel>
-                  <Input
-                    id="polkadot"
-                    type="text"
-                    value={currentAccount?.address || ''}
-                  />
-                </FormControl>
-              </VStack>
-            </HStack>
-            <Button onClick={onWithdraw} isLoading={isLoading}>
-              Map
+                </CopyToClipboard>
+              )}
+            </Card>
+          </SimpleGrid>
+          <Flex
+            w="full"
+            direction={{ sm: 'row', md: 'column' }}
+            h={24}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <FormControl
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Switch
+                checked={isWithdraw}
+                defaultChecked
+                onChange={event => setIsWithdraw(event.target.checked)}
+                size="lg"
+                id="isWithdraw"
+              />
+              <FormLabel htmlFor="isWithdraw" ml={4} mb={0}>
+                <Text>{t('WITHDRAW')}</Text>
+              </FormLabel>
+            </FormControl>
+            <Button
+              variant="solid"
+              px={{ sm: 6, md: 20 }}
+              onClick={() => {
+                mappingAccount(isWithdraw);
+              }}
+              isLoading={isLoading}
+            >
+              {t('MAPPING')}
             </Button>
-          </VStack>
-        </Box>
-      )}
+          </Flex>
+        </VStack>
+      </Card>
     </>
   );
 }
