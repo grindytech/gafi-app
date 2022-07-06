@@ -1,9 +1,10 @@
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { setDefaultOptions } from 'expect-puppeteer';
+import 'expect-puppeteer';
 
 setDefaultOptions({ timeout: 2000 });
 
-const createWalletAccount = async extensionPage => {
+const createWalletAccount = async (extensionPage) => {
   const [button] = await extensionPage.$x('//button');
 
   if (button) {
@@ -48,7 +49,7 @@ const createWalletAccount = async extensionPage => {
   if (buttonNext2) {
     await buttonNext2.click();
   }
-
+  
   extensionPage.close();
 };
 
@@ -73,7 +74,7 @@ const createExtensionPage = async (extensionID, extensionPopupHtml) => {
  * sign button, and closes the extension page.
  * @param extensionPage - The extension page that is opened.
  */
-const extensionSignTransaction = async extensionPage => {
+const extensionSignTransaction = async (extensionPage) => {
   await page.waitForTimeout(1000);
   const [inputPassword] = await extensionPage.$x('//input');
 
