@@ -1,13 +1,7 @@
-# Substrate Front End Template
+# GAFI Dashboard Front End
 
-This template allows you to create a front-end application that connects to a
-[Substrate](https://github.com/paritytech/substrate) node back-end with minimal
-configuration. To learn about Substrate itself, visit the
-[Substrate Documentation](https://docs.substrate.io).
-
-The template is built with [Create React App](https://github.com/facebook/create-react-app)
-and [Polkadot js API](https://polkadot.js.org/docs/api/). Familiarity with these tools
-will be helpful, but the template strives to be self-explanatory.
+The dashboard is built with [Create React App](https://github.com/facebook/create-react-app), [Chakra UI](https://chakra-ui.com/)
+and [Polkadot js API](https://polkadot.js.org/docs/api/).
 
 ## Using The Template
 
@@ -48,7 +42,6 @@ https://substrate-developer-hub.github.io/substrate-front-end-template?rpc=ws://
 
 Connecting to the development Substrate node `wss://dev-node.substrate.dev`:<br/>
 https://substrate-developer-hub.github.io/substrate-front-end-template
-
 
 ## Configuration
 
@@ -143,3 +136,13 @@ it also displays the user's token balance. It is included in the template alread
   ```
 
   Refer to [this doc page](https://github.com/vacp2p/docs.wakuconnect.dev/blob/develop/content/docs/guides/07_reactjs_relay.md).
+
+## E2E test
+
+If you want to run E2E test, you need to follow these steps:
+
+- Download the polkadot extension zip file for puppeteer to interact with when running test.
+- Extract the downloaded zip file.
+- Change the `CRX_PATH` in `jest-puppeteer.config.js` to the place that you've extracted the file.
+- Run the dashboard by command `yarn start` or run it in production mode if you don't have the local node on your machine.
+- In another terminal, run command `yarn test`.
