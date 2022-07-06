@@ -1,4 +1,12 @@
-import { Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Text,
+  useBreakpointValue,
+  VStack,
+} from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
 import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -27,70 +35,71 @@ const DeployContract = () => {
         bannerBg="/assets/layout/deploycontract-banner.png"
         btnLink="https://wiki.gafi.network/learn/demo"
       />
-      <Card>
-        <VStack gap={4}>
-          <Dropzone
-            onUploadFile={files =>
-              setContractFiles((prevContractFiles: any) => [
-                ...prevContractFiles,
-                ...files,
-              ])
-            }
-          />
-          {contractAddresses.length && (
-            <Card
-              bg="greyBg"
-              width={{ base: 'full', md: '50%' }}
-              boxShadow="none"
-              border="1px dashed #B4CAFF"
-              alignItems="center"
-            >
-              {contractAddresses.map(contractAddress => (
-                <HStack mb={3}>
-                  <Text>{shorten(contractAddress)}</Text>
-                  <CopyToClipboard text={contractAddress}>
-                    <Icon
-                      onClick={copySuccessToast}
-                      cursor="pointer"
-                      ml={4}
-                      color="primary"
-                    >
-                      <path fill="currentColor" d={mdiContentCopy} />
-                    </Icon>
-                  </CopyToClipboard>
-                </HStack>
-              ))}
-              {txnFee && (
-                <Text
-                  sx={{
-                    span: {
-                      color: 'primary',
-                      fontWeight: 'bold',
-                    },
-                  }}
-                >
-                  {t('TOTAL_TRANSACTION_FEE')}{' '}
-                  <span>{(txnFee / 10 ** 18).toFixed(5)}</span>
-                </Text>
-              )}
-            </Card>
-          )}
+      <Box p={{ sm: 4, md: 0 }}>
+        <Card>
+          <VStack gap={4}>
+            <Dropzone
+              onUploadFile={files =>
+                setContractFiles((prevContractFiles: any) => [
+                  ...prevContractFiles,
+                  ...files,
+                ])
+              }
+            />
+            {contractAddresses.length && (
+              <Card
+                bg="greyBg"
+                width={{ base: 'full', md: '50%' }}
+                boxShadow="none"
+                border="1px dashed #B4CAFF"
+                alignItems="center"
+              >
+                {contractAddresses.map(contractAddress => (
+                  <HStack mb={3}>
+                    <Text>{shorten(contractAddress)}</Text>
+                    <CopyToClipboard text={contractAddress}>
+                      <Icon
+                        onClick={copySuccessToast}
+                        cursor="pointer"
+                        ml={4}
+                        color="primary"
+                      >
+                        <path fill="currentColor" d={mdiContentCopy} />
+                      </Icon>
+                    </CopyToClipboard>
+                  </HStack>
+                ))}
+                {txnFee && (
+                  <Text
+                    sx={{
+                      span: {
+                        color: 'primary',
+                        fontWeight: 'bold',
+                      },
+                    }}
+                  >
+                    {t('TOTAL_TRANSACTION_FEE')}{' '}
+                    <span>{(txnFee / 10 ** 18).toFixed(5)}</span>
+                  </Text>
+                )}
+              </Card>
+            )}
 
-          <VStack gap={2}>
-            <Button
-              px={8}
-              colorScheme="greyBg"
-              onClick={() => {
-                deploy(contractFiles);
-              }}
-              isLoading={isLoading}
-              disabled={contractFiles.length === 0 || !isConnected()}
-            >
-              {t('DEPLOY')}
-            </Button>
+            <VStack gap={2}>
+              <Button
+                px={8}
+                onClick={() => {
+                  deploy(contractFiles);
+                }}
+                isLoading={isLoading}
+                disabled={contractFiles.length === 0 || !isConnected()}
+              >
+                {t('DEPLOY')}
+              </Button>
+            </VStack>
           </VStack>
-        </VStack>
-      </Card>
+        </Card>
+      </Box>
     </>
   );
 };

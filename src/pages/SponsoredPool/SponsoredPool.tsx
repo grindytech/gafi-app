@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   HStack,
   Icon,
@@ -23,8 +24,7 @@ const SponsoredPoolPage: React.FC = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisplay = useBreakpointValue({
     sm: true,
-    md: false,
-    lg: true,
+    '2xl': false,
   });
   const {
     isOwned,
@@ -48,60 +48,62 @@ const SponsoredPoolPage: React.FC = () => {
         bannerBg="/assets/layout/sponsored-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/sponsored-pool"
       />
-      <HStack justifyContent="flex-end">
-        <Button
-          size="xl"
-          variant="primary"
-          borderRadius="xl"
-          fontWeight="bold"
-          w={{ base: 'full', md: 'auto' }}
-          rightIcon={
-            !isDisplay ? (
-              <Icon>
-                <path fill="currentColor" d={mdiPlus} />
-              </Icon>
-            ) : undefined
-          }
-          leftIcon={
-            isDisplay ? (
-              <Icon>
-                <path fill="currentColor" d={mdiPlus} />
-              </Icon>
-            ) : undefined
-          }
-          onClick={onOpen}
-        >
-          {t('ADD_POOL')}
-        </Button>
-      </HStack>
-      <SponsoredPoolTable
-        captions={[
-          { label: t('OWNER'), fieldName: 'poolOwner', display: true },
-          { label: t('DISCOUNT'), fieldName: 'discount', display: true },
-          { label: '', fieldName: 'actions', display: !!isDisplay },
-          {
-            label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
-              minuteAmount: 30,
-            }),
-            fieldName: 'txLimit',
-            display: !isDisplay,
-          },
-          { label: t('BALANCE'), fieldName: 'amount', display: !isDisplay },
-          { label: t('ACTIONS'), fieldName: 'actions', display: !isDisplay },
-        ]}
-        sponsoredPools={sponsoredPools}
-        limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-        isLoading={isLoading}
-      >
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalCount={totalCount}
-          resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-          totalPage={totalPage}
+      <Box p={{ sm: 4, md: 0 }}>
+        <HStack justifyContent="flex-end">
+          <Button
+            size="xl"
+            variant="primary"
+            borderRadius="xl"
+            fontWeight="bold"
+            w={{ base: 'full', md: 'auto' }}
+            rightIcon={
+              !isDisplay ? (
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              ) : undefined
+            }
+            leftIcon={
+              isDisplay ? (
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              ) : undefined
+            }
+            onClick={onOpen}
+          >
+            {t('ADD_POOL')}
+          </Button>
+        </HStack>
+        <SponsoredPoolTable
+          captions={[
+            { label: t('OWNER'), fieldName: 'poolOwner', display: true },
+            { label: t('DISCOUNT'), fieldName: 'discount', display: true },
+            { label: '', fieldName: 'actions', display: !!isDisplay },
+            {
+              label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+                minuteAmount: 30,
+              }),
+              fieldName: 'txLimit',
+              display: !isDisplay,
+            },
+            { label: t('BALANCE'), fieldName: 'amount', display: !isDisplay },
+            { label: t('ACTIONS'), fieldName: 'actions', display: !isDisplay },
+          ]}
+          sponsoredPools={sponsoredPools}
+          limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
           isLoading={isLoading}
-        />
-      </SponsoredPoolTable>
+        >
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalCount={totalCount}
+            resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+            totalPage={totalPage}
+            isLoading={isLoading}
+          />
+        </SponsoredPoolTable>
+      </Box>
       {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
     </>
   );

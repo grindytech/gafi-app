@@ -18,8 +18,6 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       <Text
         display={{
           sm: 'block',
-          md: 'none',
-          lg: 'block',
           '2xl': 'none',
         }}
         color="primary"
@@ -35,9 +33,6 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           }}
           display={{
             sm: 'none',
-            md: 'block',
-            lg: 'none',
-            xl: 'none',
             '2xl': 'block',
           }}
           borderRadius="4xl"
@@ -55,9 +50,6 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           size="sm"
           display={{
             sm: 'none',
-            md: 'block',
-            lg: 'none',
-            xl: 'none',
             '2xl': 'block',
           }}
           sx={{

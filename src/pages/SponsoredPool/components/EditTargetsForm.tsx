@@ -24,6 +24,7 @@ interface IModalEditTargesProps {
   poolId: string;
   targets: string[];
   onClose: () => void;
+  onCloseDetail: () => void;
 }
 
 export type ITargets = {
@@ -34,6 +35,7 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   onClose,
   poolId,
   targets,
+  onCloseDetail,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -62,6 +64,7 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   });
 
   const { editPoolTargets, isLoading } = useEditPoolTargets(() => {
+    onCloseDetail();
     onClose();
     history.push('/admin/sponsored-pool?type=owned');
   });

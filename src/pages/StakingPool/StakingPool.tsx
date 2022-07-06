@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,7 +11,6 @@ import { IPool } from 'hooks/useSponsoredPool';
 const StakingPool = () => {
   const { t } = useTranslation();
   const { stakingPools } = useLoadStakingPool();
-
   return (
     <>
       <Banner
@@ -20,11 +19,13 @@ const StakingPool = () => {
         bannerBg="/assets/layout/staking-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/staking-pool"
       />
-      <SimpleGrid mt="4" minChildWidth="288px" spacing="1em" minH="full">
-        {React.Children.toArray(
-          stakingPools.map((pool: IPool) => <Pool pool={pool} />)
-        )}
-      </SimpleGrid>
+      <Box p={{ sm: 4, md: 0 }}>
+        <SimpleGrid minChildWidth="288px" spacing="1em" minH="full">
+          {React.Children.toArray(
+            stakingPools.map((pool: IPool) => <Pool pool={pool} />)
+          )}
+        </SimpleGrid>
+      </Box>
     </>
   );
 };

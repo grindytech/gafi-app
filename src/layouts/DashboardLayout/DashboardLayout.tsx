@@ -72,7 +72,8 @@ const DashboardLayout: React.FC = ({ children }) => {
           <AccountInfo onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <VStack
+      <Flex
+        direction="column"
         flex={1}
         sx={{
           background: 'greyBg',
@@ -92,14 +93,14 @@ const DashboardLayout: React.FC = ({ children }) => {
             sx={{
               flex: 1,
               px: { base: 'none', lg: 4 },
-              p: { base: 4, md: 0 },
+              p: 0,
             }}
           >
             {children}
           </Box>
           <AccountInfo display={{ base: 'none', lg: 'flex' }} />
         </Box>
-      </VStack>
+      </Flex>
       <IconButton
         sx={accountInfoButtonStyled}
         onClick={onAccountInfoOpen}

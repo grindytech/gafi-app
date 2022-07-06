@@ -1,7 +1,9 @@
 import {
+  Box,
   Button,
   Grid,
   GridItem,
+  Heading,
   HStack,
   Icon,
   Modal,
@@ -11,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useBreakpointValue,
   useDisclosure,
   useTheme,
   VStack,
@@ -73,7 +76,7 @@ const Dashboard = () => {
     getInfo();
   }, [api?.rpc.system]);
   return (
-    <>
+    <Box p={{ sm: 4, md: 0 }}>
       <Grid
         templateRows="repeat(2, 1fr)"
         templateColumns="repeat(2, 1fr)"
@@ -89,12 +92,10 @@ const Dashboard = () => {
         <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <Card h="full">
             <VStack alignItems="flex-start">
-              <Text mb={4} fontWeight="bold" color="primary">
+              <Heading mb={4} size="sm" color="primary">
                 {nodeInfo?.nodeName}
-              </Text>
-              <Text fontSize="sm" fontWeight="light">
-                {nodeInfo?.chain}
-              </Text>
+              </Heading>
+              <Text fontWeight="light">{nodeInfo?.chain}</Text>
               <Text color="black">{socket}</Text>
               <HStack
                 w="full"
@@ -116,10 +117,10 @@ const Dashboard = () => {
               justifyContent="space-between"
               alignItems="flex-start"
             >
-              <Text mb={4} fontWeight="bold" color="primary">
+              <Heading size="sm" color="primary">
                 {t('METADATA')}
-              </Text>
-              <Text mb={4} fontSize="sm" fontWeight="light">
+              </Heading>
+              <Text pb={8} fontWeight="light">
                 v{metadata?.version}
               </Text>
               <Button onClick={onOpen} w="full" variant="primary">
@@ -147,7 +148,7 @@ const Dashboard = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 };
 
