@@ -62,6 +62,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
             onClick={pool.onJoin}
             isLoading={pool.isLoading}
             variant="primary"
+            data-test={`btn-${pool.poolType}`}
             isDisabled={pool.isDisabled}
           >
             {t('JOIN')}
