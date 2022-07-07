@@ -6,7 +6,6 @@ module.exports = {
     headless: false,
     defaultViewport: null,
     product: 'chrome',
-    loadExtension: '',
     args: [
       `--disable-extensions-except=${CRX_PATH}`,
       `--load-extension=${CRX_PATH}`,

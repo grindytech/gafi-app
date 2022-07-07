@@ -74,6 +74,7 @@ module.exports = {
     JSX: 'readonly',
     page: true,
     browser: true,
+    jestPuppeteer: true,
   },
   overrides: [
     {
