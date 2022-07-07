@@ -14,23 +14,43 @@ describe('Gafi Dashboard', () => {
   const extensionPopupHtml = 'index.html';
 
   beforeAll(async () => {
+    // access page
     await page.goto('http://localhost:8000');
     await page.waitForTimeout(2000);
+
+    // get all tabs in browser
     const targets = await browser.targets();
+
+    // get extension
     const extensionTarget = targets.find(target =>
       target.url().includes('chrome-extension')
     );
-    const partialExtensionUrl = extensionTarget.url() || '';
-    const [, , spreadExtensionID] = partialExtensionUrl.split('/');
 
+    // get extension URL
+    const partialExtensionUrl = extensionTarget.url() || '';
+
+    // get extension ID
+    const [, , spreadExtensionID] = partialExtensionUrl.split('/');
     extensionID = spreadExtensionID;
 
-    const extensionPage = await createExtensionPage(
+    // open extension in new tab
+    let extensionPage = await createExtensionPage(
       browser,
       extensionID,
       extensionPopupHtml
     );
 
+    // create account and close extension tab
+    await createWalletAccount(extensionPage);
+
+    // create account 2
+    // open extension in new tab
+    extensionPage = await createExtensionPage(
+      browser,
+      extensionID,
+      extensionPopupHtml
+    );
+    // create account 2 and close extension tab
     await createWalletAccount(extensionPage);
 
     await page.reload();
@@ -139,9 +159,35 @@ describe('Gafi Dashboard', () => {
   it('Should switch account', async () => {
     await expect(page).toClick('[data-testid*="switch-btn"]');
     await expect(page).toClick('[data-testid*="swich-account-btn-1"]');
-    await expect(page).toMatch('Switch successful!', {
-      text: '0',
-      timeout: 1000,
-    });
+    await expect(page).toMatch('Switch successful!');
+  });
+
+  it('Should Add sponsored pool', async () => {
+    // access sponsored pools page
+    await page.goto('http://localhost:8000/admin/sponsored-pool');
+    // click add pool
+    await expect(page).toClick('button', { text: 'Add pool' });
+    // enter pool amount, discount, txLimit, target address
+    const [poolAmount, discount, txLimit, target1] = await page.$x('//input');
+    await poolAmount.type('1000');
+    await discount.type('63');
+    await txLimit.type('93');
+    await target1.type('0x2C6581F6471ec74DD155C9F2b829962C77357188');
+    // click confirm
+    await expect(page).toClick('button', { text: 'Save' });
+    await page.waitForTimeout(2000);
+
+    // verify polkadot account
+    const extensionPage = await createExtensionPage(
+      browser,
+      extensionID,
+      extensionPopupHtml
+    );
+    await extensionSignTransaction(page, extensionPage);
+    // wait for update my sponsored pool
+    await page.waitForTimeout(20000);
+    await page.reload();
+    // check create pool successfully
+    await expect(page).toMatch('63 %');
   });
 });

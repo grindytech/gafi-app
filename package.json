@@ -21,7 +21,7 @@
     "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package gafi-dashboard/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
     "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package gafi-dashboard/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
     "generate:graphql": "graphql-codegen",
-    "test:app": "react-app-rewired test App.js --env=puppeteer --testTimeout=30000 ",
+    "test:app": "react-app-rewired test App.js --env=puppeteer --testTimeout=50000 ",
     "test:faucet": "react-app-rewired test Faucet.js --env=puppeteer --testTimeout=30000 ",
     "eject": "react-scripts eject",
     "eslint:check": "eslint --ext .tsx,.ts src/",

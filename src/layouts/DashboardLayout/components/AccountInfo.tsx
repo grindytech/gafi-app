@@ -153,9 +153,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                   </Menu>
                 </Flex>
                 <Box sx={balanceStyled}>
-                  <Text data-testid="balance-amount" sx={balanceTextStyled}>
-                    {polkadotFormatedBalance}
-                  </Text>
+                  <Text sx={balanceTextStyled}>{polkadotFormatedBalance}</Text>
                   <Text color="primary" pl={2} pb={2}>
                     {t('GAKI')}
                   </Text>
