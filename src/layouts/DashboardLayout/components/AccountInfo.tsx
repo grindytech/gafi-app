@@ -109,7 +109,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                   </CopyToClipboard>
 
                   <Menu>
-                    <MenuButton sx={menuBtn} ml={2}>
+                    <MenuButton data-testid="switch-btn" sx={menuBtn} ml={2}>
                       <Flex
                         className="switch-btn"
                         sx={switchBtn}
@@ -137,6 +137,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                         {polkadotAccounts?.map(
                           (polkadotAccount: string, index: number) => (
                             <MenuItemOption
+                              data-testid={`swich-account-btn-${index}`}
                               key={polkadotAccount}
                               onClick={() => {
                                 hanldeSwitchAccount(pairs[index]);
@@ -152,7 +153,9 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                   </Menu>
                 </Flex>
                 <Box sx={balanceStyled}>
-                  <Text sx={balanceTextStyled}>{polkadotFormatedBalance}</Text>
+                  <Text data-testid="balance-amount" sx={balanceTextStyled}>
+                    {polkadotFormatedBalance}
+                  </Text>
                   <Text color="primary" pl={2} pb={2}>
                     {t('GAKI')}
                   </Text>

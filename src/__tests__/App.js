@@ -1,5 +1,10 @@
-import { createExtensionPage, createWalletAccount, extensionSignTransaction } from 'utils/test'
 import { setDefaultOptions } from 'expect-puppeteer';
+
+import {
+  createExtensionPage,
+  createWalletAccount,
+  extensionSignTransaction,
+} from 'utils/test';
 import 'expect-puppeteer'; // eslint-disable-line
 
 setDefaultOptions({ timeout: 2000 });
@@ -20,7 +25,8 @@ describe('Gafi Dashboard', () => {
 
     extensionID = spreadExtensionID;
 
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -37,7 +43,8 @@ describe('Gafi Dashboard', () => {
   it('should allow user to faucet', async () => {
     await expect(page).toClick('button', { text: 'Faucet' });
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -52,7 +59,8 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toClick('[data-test*="btn-Basic"]');
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -66,7 +74,8 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toClick('button', { text: 'Leave', delay: 500 });
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -83,7 +92,8 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toClick('[data-test*="btn-Basic"]', { delay: 100 });
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -97,7 +107,8 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toClick('button', { text: 'Leave', delay: 500 });
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -114,7 +125,8 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toClick('[data-test*="btn-Advance"]');
     await page.waitForTimeout(2000);
-    const extensionPage = await createExtensionPage(browser, 
+    const extensionPage = await createExtensionPage(
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -122,5 +134,14 @@ describe('Gafi Dashboard', () => {
 
     await expect(page).toMatch('InsufficientBalance', { timeout: 20000 });
     await page.waitForTimeout(1000);
+  });
+
+  it('Should switch account', async () => {
+    await expect(page).toClick('[data-testid*="switch-btn"]');
+    await expect(page).toClick('[data-testid*="swich-account-btn-1"]');
+    await expect(page).toMatch('Switch successful!', {
+      text: '0',
+      timeout: 1000,
+    });
   });
 });

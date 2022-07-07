@@ -1,52 +1,112 @@
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 
-export const createWalletAccount = async (extensionPage) => {
+export const createWalletAccount = async extensionPage => {
+  // click next
   const [button] = await extensionPage.$x('//button');
-
   if (button) {
     await button.click();
   }
+  // click next
   const [button2] = await extensionPage.$x('//button');
   if (button2) {
     await button2.click();
   }
   await extensionPage.waitForTimeout(100);
-  const [element] = await extensionPage.$x("//div[@class='popupToggle']");
-  if (element) {
-    await element.click();
+  let addButton;
+  let importButton;
+  let mnemonicSeed;
+  let buttonNext;
+  let inputName;
+  let inputPassword;
+  let inputRePassword;
+  let confirmButton;
+
+  // click (+) button
+  [addButton] = await extensionPage.$x("//div[@class='popupToggle']");
+  if (addButton) {
+    await addButton.click();
   }
+  // click import account button
   await extensionPage.waitForTimeout(100);
-  const [createAccount] = await extensionPage.$x(
+  [importButton] = await extensionPage.$x(
     "//span[contains(., 'Import account')]"
   );
-  if (createAccount) {
-    await createAccount.click();
+  if (importButton) {
+    await importButton.click();
   }
-
-  const mnemonicSeed = mnemonicGenerate();
-
+  // enter mnemonic seed
+  mnemonicSeed = mnemonicGenerate();
   await extensionPage.type('textarea', mnemonicSeed);
-  const [buttonNext] = await extensionPage.$x('//button');
+  // click next
+  [buttonNext] = await extensionPage.$x('//button');
   if (buttonNext) {
     await buttonNext.click();
   }
+  // enter username and password
   await extensionPage.waitForTimeout(100);
-  const [inputName, inputPassword] = await extensionPage.$x('//input');
+  [inputName, inputPassword] = await extensionPage.$x('//input');
   if (inputName) {
-    await inputName.type('Account Test');
+    await inputName.type(`Account Test1`);
   }
   if (inputPassword) {
     await inputPassword.type('Password1');
   }
-  const [, , inputRePassword] = await extensionPage.$x('//input');
+
+  // enter re-password
+  [, , inputRePassword] = await extensionPage.$x('//input');
   if (inputRePassword) {
     await inputRePassword.type('Password1');
   }
-  const [, buttonNext2] = await extensionPage.$x('//button');
-  if (buttonNext2) {
-    await buttonNext2.click();
+
+  // click confirm
+  [, confirmButton] = await extensionPage.$x('//button');
+  if (confirmButton) {
+    await confirmButton.click();
   }
-  
+  await extensionPage.waitForTimeout(500);
+  // Create account 2
+  // click (+) button
+  [addButton] = await extensionPage.$x("//div[@class='popupToggle']");
+  if (addButton) {
+    await addButton.click();
+  }
+  // click import account button
+  await extensionPage.waitForTimeout(100);
+  [importButton] = await extensionPage.$x(
+    "//span[contains(., 'Import account')]"
+  );
+  if (importButton) {
+    await importButton.click();
+  }
+  // enter mnemonic seed
+  mnemonicSeed = mnemonicGenerate();
+  await extensionPage.type('textarea', mnemonicSeed);
+  // click next
+  [buttonNext] = await extensionPage.$x('//button');
+  if (buttonNext) {
+    await buttonNext.click();
+  }
+  // enter username and password
+  [inputName, inputPassword] = await extensionPage.$x('//input');
+  if (inputName) {
+    await inputName.type(`Account Test2`);
+  }
+  if (inputPassword) {
+    await inputPassword.type('Password1');
+  }
+
+  // enter re-password
+  [, , inputRePassword] = await extensionPage.$x('//input');
+  if (inputRePassword) {
+    await inputRePassword.type('Password1');
+  }
+
+  // click confirm
+  [, confirmButton] = await extensionPage.$x('//button');
+  if (confirmButton) {
+    await confirmButton.click();
+  }
+
   extensionPage.close();
 };
 
@@ -57,7 +117,11 @@ export const createWalletAccount = async (extensionPage) => {
  * @param extensionPopupHtml - The name of the HTML file that will be loaded in the extension page.
  * @returns The extensionPage object.
  */
-export const createExtensionPage = async (browser, extensionID, extensionPopupHtml) => {
+export const createExtensionPage = async (
+  browser,
+  extensionID,
+  extensionPopupHtml
+) => {
   const extensionPage = await browser.newPage();
 
   await extensionPage.goto(
