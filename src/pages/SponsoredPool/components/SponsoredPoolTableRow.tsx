@@ -39,11 +39,9 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const isOwned = type === 'owned';
   const display = useBreakpointValue({
     sm: 'none',
-    md: undefined,
-    lg: 'none',
     '2xl': undefined,
   });
-  const amountCharacter = useBreakpointValue({ sm: 3, md: 6 });
+  const amountCharacter = useBreakpointValue({ sm: 3, md: 6, lg: 3, xl: 6 });
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>

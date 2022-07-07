@@ -7,7 +7,7 @@ import { useMutation } from 'react-query';
 import { getFromAcct, handleTxError } from 'components/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
 
-const useWithdraw = () => {
+const useWithdraw = (onClose?: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
@@ -24,6 +24,7 @@ const useWithdraw = () => {
         status: 'success',
       });
       setIsLoading(false);
+      if (onClose) onClose();
     } else {
       toast({
         position: 'top-right',

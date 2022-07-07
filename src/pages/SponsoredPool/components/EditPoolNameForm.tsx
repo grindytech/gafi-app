@@ -20,11 +20,13 @@ export interface IEditPoolNameForm {
 interface IModalEditPoolNameProps {
   onClose: () => void;
   poolId: string;
+  onCloseDetail: () => void;
 }
 
 const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({
   poolId,
   onClose,
+  onCloseDetail,
 }) => {
   const { t } = useTranslation();
   const {
@@ -44,6 +46,7 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({
 
   const { editPoolName, isLoading } = useEditPoolName(() => {
     onClose();
+    onCloseDetail();
   });
 
   return (
