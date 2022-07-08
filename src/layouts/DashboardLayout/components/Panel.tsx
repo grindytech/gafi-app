@@ -1,4 +1,4 @@
-import { Box, Heading, IconButton } from '@chakra-ui/react';
+import { Box, Heading, IconButton, useToken } from '@chakra-ui/react';
 import { mdiMenu } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -13,9 +13,13 @@ interface IProps {
 const Panel = ({ onOpen }: IProps) => {
   const userName = 'Alex';
   const { t } = useTranslation();
+  const borderBottomColor = useToken('colors', 'borderBottom');
   return (
     <Box w="full">
-      <Box sx={PanelStyled}>
+      <Box
+        sx={PanelStyled}
+        borderBottom={{ base: `2px solid ${borderBottomColor}`, md: 'none' }}
+      >
         <IconButton
           display={{ base: 'flex', lg: 'none' }}
           onClick={onOpen}
@@ -58,12 +62,12 @@ export default Panel;
 
 const PanelStyled = {
   width: '100%',
-  h: 20,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   pb: { base: 4, lg: 'none' },
-  p: { base: 4, lg: 8 },
-  borderBottom: { base: '2px solid #EEF1FF', lg: 'none' },
+  px: { base: 4, lg: 6 },
+  py: { base: 2, lg: 4 },
+
   bg: { base: 'white', md: 'transparent' },
 };
