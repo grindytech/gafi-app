@@ -2,6 +2,7 @@ import {
   Box,
   Center,
   Flex,
+  Heading,
   HStack,
   Icon,
   IconButton,
@@ -9,6 +10,7 @@ import {
   StackDivider,
   Text,
   useTheme,
+  useToken,
   VStack,
 } from '@chakra-ui/react';
 import { mdiTrashCanOutline } from '@mdi/js';
@@ -38,6 +40,7 @@ const EventInfo = () => {
   const [eventFeed, setEventFeed] = useState<Array<IEvent>>();
   const theme = useTheme();
   const { t } = useTranslation();
+  const borderBottom = useToken('colors', 'borderBottom');
 
   useEffect(() => {
     let unsub: VoidFn | undefined;
@@ -76,16 +79,17 @@ const EventInfo = () => {
   }, [api?.query.system]);
 
   return (
-    <Card>
+    <Card p={0}>
       <HStack
         justifyContent="space-between"
         w="full"
-        mb={8}
+        p={6}
         alignItems="center"
+        borderBottom={`1px solid ${borderBottom}`}
       >
-        <Text fontWeight={{ base: 'bold', md: 'normal' }} color="primary">
+        <Heading size="sm" color="primary">
           &bull; {t('RECENT_EVENTS')}
-        </Text>
+        </Heading>
         <IconButton
           w={10}
           h={10}
@@ -100,6 +104,7 @@ const EventInfo = () => {
         />
       </HStack>
       <VStack
+        p={6}
         alignItems="flex-start"
         divider={
           <StackDivider
@@ -113,9 +118,9 @@ const EventInfo = () => {
               <Center
                 bg="greyBg"
                 borderRadius="50%"
-                w={12}
-                h={12}
-                mr={{ base: 2, md: 4 }}
+                w={{ sm: 10, md: 12, lg: 10, xl: 12 }}
+                h={{ sm: 10, md: 12, lg: 10, xl: 12 }}
+                mr={{ base: 4, md: 8 }}
               >
                 <Image
                   src="/assets/layout/notification.svg"
@@ -123,8 +128,8 @@ const EventInfo = () => {
                 />
               </Center>
               <Box w={{ sm: '10.5rem', md: '70%', lg: '12.5rem', xl: '90%' }}>
-                <Text fontWeight="bold">{event.summary}</Text>
-                {event.content}
+                <Heading size="sm">{event.summary}</Heading>
+                <Text>{event.content}</Text>
               </Box>
             </Flex>
           ))

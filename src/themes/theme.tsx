@@ -5,9 +5,7 @@ import { Global } from '@emotion/react';
 
 const Card: ComponentStyleConfig = {
   baseStyle: {
-    py: 8,
-    px: 8,
-    p: { sm: 4, md: 6, lg: 4, '2xl': 8 },
+    p: { sm: 6, '2xl': 8 },
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -34,7 +32,7 @@ const Card: ComponentStyleConfig = {
       bg: props.colorMode === 'dark' ? 'gray.700' : colors.greyBg,
       width: '100%',
       borderRadius: 'var(--chakra-radii-2xl)',
-      border: '2px dashed #EEF1FF',
+      border: `2px dashed ${colors.borderBottom}`,
       boxShadow: 'none',
     }),
   },
@@ -54,47 +52,6 @@ const CardHeader: ComponentStyleConfig = {
   baseStyle: {
     display: 'flex',
     width: '100%',
-  },
-};
-
-const MainPanel: ComponentStyleConfig = {
-  baseStyle: {
-    float: 'right',
-    maxWidth: '100%',
-    overflow: 'auto',
-    position: 'relative',
-    maxHeight: '100%',
-    transition: 'all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)',
-    transitionDuration: '.2s, .2s, .35s',
-    transitionProperty: 'top, bottom, width',
-    transitionTimingFunction: 'linear, linear, ease',
-  },
-  variants: {
-    main: () => ({
-      float: 'right',
-    }),
-    rtl: () => ({
-      float: 'left',
-    }),
-  },
-  defaultProps: {
-    variant: 'main',
-  },
-};
-
-const PanelContainer: ComponentStyleConfig = {
-  baseStyle: {
-    p: '30px 15px',
-    minHeight: 'calc(100vh - 123px)',
-  },
-};
-
-const PanelContent: ComponentStyleConfig = {
-  baseStyle: {
-    ms: 'auto',
-    me: 'auto',
-    ps: '15px',
-    pe: '15px',
   },
 };
 
@@ -173,9 +130,6 @@ export const theme = extendTheme({
     Card,
     CardBody,
     CardHeader,
-    MainPanel,
-    PanelContainer,
-    PanelContent,
     Link: {
       variants: {
         'no-underline': {
@@ -241,8 +195,6 @@ export const theme = extendTheme({
           bg: colors.greyBg,
           px: 10,
           py: 5,
-          fontSize: 'md',
-          fontWeight: 'normal',
           '&:hover': {
             bg: 'gray.200',
           },
@@ -250,6 +202,7 @@ export const theme = extendTheme({
         white: {
           bg: 'white',
           color: 'black',
+          fontWeight: 'normal',
           boxShadow: '0px 4px 17px rgba(0, 0, 0, 0.2)',
         },
         primary: {
@@ -361,17 +314,26 @@ export const theme = extendTheme({
           fontWeight: 'bold',
           lineHeight: 6,
         },
-        tablist: {
-          justifyContent: 'flex-start',
-          '.chakra-tabs__tab': {
-            _selected: { color: 'primary', bg: 'greyBg' },
-          },
-        },
         tabpanel: {
           p: 0,
           mt: 8,
         },
       }),
+      variants: {
+        'soft-rounded': () => ({
+          tablist: {
+            justifyContent: 'space-evenly',
+            '.chakra-tabs__tab': {
+              _selected: { color: 'primary', bg: 'greyBg' },
+            },
+          },
+        }),
+        enclosed: () => ({
+          tab: {
+            _selected: { color: 'primary' },
+          },
+        }),
+      },
     },
     Table: {
       baseStyle: () => ({

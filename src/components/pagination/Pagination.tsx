@@ -31,10 +31,9 @@ const Pagination = (props: IProps) => {
     isLoading,
   } = props;
   const pageButtons = [];
-  const isLargeScreen = useBreakpointValue({
-    base: false,
-    lg: true,
-    xl: false,
+  const isZoomOutButton = useBreakpointValue({
+    base: true,
+    md: false,
   });
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
@@ -170,7 +169,7 @@ const Pagination = (props: IProps) => {
               </Button>
             ))
           )}
-          {isLargeScreen ? (
+          {isZoomOutButton ? (
             <IconButton
               aria-label="pre-page"
               p={4}

@@ -22,12 +22,14 @@ interface IModalEditPoolProps {
   pool?: SponsoredPool;
   isOpen: boolean;
   onClose: () => void;
+  onCloseDetail: () => void;
 }
 
 const ModalEditPool: React.FC<IModalEditPoolProps> = ({
   pool,
   isOpen,
   onClose,
+  onCloseDetail,
 }) => {
   const { t } = useTranslation();
 
@@ -52,13 +54,18 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
                 <TabPanels>
                   <TabPanel>
                     <EditTargetsForm
+                      onCloseDetail={onCloseDetail}
                       onClose={onClose}
                       poolId={pool.id}
                       targets={pool.targets}
                     />
                   </TabPanel>
                   <TabPanel>
-                    <EditPoolNameForm onClose={onClose} poolId={pool.id} />
+                    <EditPoolNameForm
+                      onCloseDetail={onCloseDetail}
+                      onClose={onClose}
+                      poolId={pool.id}
+                    />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
