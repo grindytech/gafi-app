@@ -21,6 +21,7 @@ import useDeploy from 'hooks/useDeploy';
 import useMessageToast from 'hooks/useMessageToast';
 
 const DeployContract = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [contractFiles, setContractFiles] = useState<any>([]);
   const { copySuccessToast } = useMessageToast();
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ const DeployContract = () => {
           <VStack gap={4}>
             <Dropzone
               onUploadFile={files =>
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 setContractFiles((prevContractFiles: any) => [
                   ...prevContractFiles,
                   ...files,
@@ -84,7 +86,6 @@ const DeployContract = () => {
                 )}
               </Card>
             )}
-
             <VStack gap={2}>
               <Button
                 px={8}
