@@ -165,14 +165,18 @@ describe('Gafi Dashboard', () => {
   it('Should Add sponsored pool', async () => {
     // access sponsored pools page
     await page.goto('http://localhost:8000/admin/sponsored-pool');
+
     // click add pool
     await expect(page).toClick('button', { text: 'Add pool' });
+
     // enter pool amount, discount, txLimit, target address
-    const [poolAmount, discount, txLimit, target1] = await page.$x('//input');
-    await poolAmount.type('1000');
-    await discount.type('63');
-    await txLimit.type('93');
-    await target1.type('0x2C6581F6471ec74DD155C9F2b829962C77357188');
+    await expect(page).toFillForm('form[name="add-pool-form"]', {
+      poolAmount: '1000',
+      discount: '63',
+      txLimit: '93',
+      'targets.0.contractAddress': '0x2C6581F6471ec74DD155C9F2b829962C77357188',
+    });
+
     // click confirm
     await expect(page).toClick('button', { text: 'Save' });
     await page.waitForTimeout(2000);
@@ -184,10 +188,37 @@ describe('Gafi Dashboard', () => {
       extensionPopupHtml
     );
     await extensionSignTransaction(page, extensionPage);
+
     // wait for update my sponsored pool
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(15000);
     await page.reload();
+
     // check create pool successfully
     await expect(page).toMatch('63 %');
   });
+
+  // it('Should withdraw sponsored pool', async () => {
+  //   // access sponsored pools page
+  //   await page.goto('http://localhost:8000/admin/sponsored-pool?type=owned');
+  //   await page.waitForTimeout(300);
+
+  //   // click add pool
+  //   await expect(page).toClick('button', { text: 'withdraw' });
+  //   await page.waitForTimeout(2000);
+
+  //   // verify polkadot account
+  //   const extensionPage = await createExtensionPage(
+  //     browser,
+  //     extensionID,
+  //     extensionPopupHtml
+  //   );
+  //   await extensionSignTransaction(page, extensionPage);
+
+  //   // wait for update my sponsored pool
+  //   await page.waitForTimeout(15000);
+  //   await page.reload();
+
+  //   // check withdraw pool successfully
+  //   await expect(page).toMatch('Empty data!');
+  // });
 });

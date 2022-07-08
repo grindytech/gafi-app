@@ -62,6 +62,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
       >
         <ModalHeader>{t('CREATE_SPONSORED_POOL')}</ModalHeader>
         <form
+          name="add-pool-form"
           onSubmit={handleSubmit((data: ISponsoredPoolForm) => {
             createPool(data);
           })}
@@ -76,6 +77,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
                 name="poolAmount"
                 render={({ field }) => (
                   <NumberInput
+                    inputName="poolAmount"
                     value={field.value}
                     onChange={field.onChange}
                     max={parseFloat(polkadotBalance?.toString() || '0')}
