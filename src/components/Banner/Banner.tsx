@@ -12,6 +12,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Card from 'components/card/Card';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 
 interface IProp {
   title: string;
@@ -22,6 +23,7 @@ interface IProp {
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
+  const gaEventTracker = useAnalyticsEventTracker('Banner');
   const isDisplaySmallBtn = useBreakpointValue({
     sm: true,
     md: false,
@@ -49,6 +51,9 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
             as="a"
             variant="white"
             target="_blank"
+            onClick={() => {
+              gaEventTracker('more detail');
+            }}
             href={btnLink}
             mt={{ base: 8, md: 0 }}
             rightIcon={

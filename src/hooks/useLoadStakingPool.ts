@@ -2,6 +2,7 @@ import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
+import useAnalyticsEventTracker from './useAnalyticsEventTracker';
 import { IPool } from './useSponsoredPool';
 import useStakingPool from './useStakingPool';
 
@@ -10,6 +11,7 @@ import { PoolInfo } from 'interfaces/pool';
 
 const useLoadStakingPool = () => {
   const { api, currentAccount } = useSubstrateState();
+  const gaEventTracker = useAnalyticsEventTracker('Staking pool');
   const { t } = useTranslation();
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
@@ -63,8 +65,14 @@ const useLoadStakingPool = () => {
         gaki: poolInfo?.basic.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinStakingPool('Basic'),
-      onLeave: () => leavePool('Basic'),
+      onJoin: () => {
+        gaEventTracker('join basic');
+        joinStakingPool('Basic');
+      },
+      onLeave: () => {
+        gaEventTracker('leave basic');
+        leavePool('Basic');
+      },
       isLoading: loadingPool === 'Basic',
       isJoined:
         isJoinedStakingPool &&
@@ -83,8 +91,14 @@ const useLoadStakingPool = () => {
         gaki: poolInfo?.medium.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinStakingPool('Medium'),
-      onLeave: () => leavePool('Medium'),
+      onJoin: () => {
+        gaEventTracker('join Medium');
+        joinStakingPool('Medium');
+      },
+      onLeave: () => {
+        gaEventTracker('leave Medium');
+        leavePool('Medium');
+      },
       isLoading: loadingPool === 'Medium',
       isJoined:
         isJoinedStakingPool &&
@@ -103,8 +117,14 @@ const useLoadStakingPool = () => {
         gaki: poolInfo?.advance.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinStakingPool('Advance'),
-      onLeave: () => leavePool('Advance'),
+      onJoin: () => {
+        gaEventTracker('join Advance');
+        joinStakingPool('Advance');
+      },
+      onLeave: () => {
+        gaEventTracker('leave Advance');
+        leavePool('Advance');
+      },
       isLoading: loadingPool === 'Advance',
       isJoined:
         isJoinedStakingPool &&

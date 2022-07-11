@@ -2,6 +2,7 @@ import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
+import useAnalyticsEventTracker from './useAnalyticsEventTracker';
 import { IPool } from './useSponsoredPool';
 import useUpfrontPool from './useUpfrontPool';
 
@@ -10,6 +11,7 @@ import { PoolInfo } from 'interfaces/pool';
 
 const useLoadUpfrontPool = () => {
   const { api, currentAccount } = useSubstrateState();
+  const gaEventTracker = useAnalyticsEventTracker('Upfront pool');
   const { t } = useTranslation();
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
@@ -63,8 +65,14 @@ const useLoadUpfrontPool = () => {
         gaki: upfrontPoolInfo?.basic.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinUpfrontPool('Basic'),
-      onLeave: () => leavePool('Basic'),
+      onJoin: () => {
+        gaEventTracker('join basic');
+        joinUpfrontPool('Basic');
+      },
+      onLeave: () => {
+        gaEventTracker('leave basic');
+        leavePool('Basic');
+      },
       isLoading: loadingPool === 'Basic',
       isJoined:
         isJoinedUpfrontPool &&
@@ -83,8 +91,14 @@ const useLoadUpfrontPool = () => {
         gaki: upfrontPoolInfo?.medium.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinUpfrontPool('Medium'),
-      onLeave: () => leavePool('Medium'),
+      onJoin: () => {
+        gaEventTracker('join Medium');
+        joinUpfrontPool('Medium');
+      },
+      onLeave: () => {
+        gaEventTracker('leave Medium');
+        leavePool('Medium');
+      },
       isLoading: loadingPool === 'Medium',
       isJoined:
         isJoinedUpfrontPool &&
@@ -103,8 +117,14 @@ const useLoadUpfrontPool = () => {
         gaki: upfrontPoolInfo?.advance.value.toString() || '0',
         minute: 30,
       },
-      onJoin: () => joinUpfrontPool('Advance'),
-      onLeave: () => leavePool('Advance'),
+      onJoin: () => {
+        gaEventTracker('join Advance');
+        joinUpfrontPool('Advance');
+      },
+      onLeave: () => {
+        gaEventTracker('leave Advance');
+        leavePool('Advance');
+      },
       isLoading: loadingPool === 'Advance',
       isJoined:
         isJoinedUpfrontPool &&
