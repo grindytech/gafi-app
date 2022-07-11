@@ -1,7 +1,7 @@
 import { Box, Heading, IconButton, useToken } from '@chakra-ui/react';
 import { mdiMenu } from '@mdi/js';
 import Icon from '@mdi/react';
-import React from 'react';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 import UserMenu from './UserMenu';
@@ -15,7 +15,13 @@ const Panel = ({ onOpen }: IProps) => {
   const { t } = useTranslation();
   const borderBottomColor = useToken('colors', 'borderBottom');
   return (
-    <Box w="full">
+    <Box
+      as={motion.div}
+      initial={{ y: -50 }}
+      animate={{ y: 0 }}
+      transition={{ ease: 'easeOut' }}
+      w="full"
+    >
       <Box
         sx={PanelStyled}
         borderBottom={{ base: `2px solid ${borderBottomColor}`, md: 'none' }}

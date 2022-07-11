@@ -11,7 +11,6 @@ import {
   SimpleGrid,
   Switch,
   Text,
-  useBreakpointValue,
   useToken,
   VStack,
 } from '@chakra-ui/react';

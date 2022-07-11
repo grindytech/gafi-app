@@ -9,6 +9,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { mdiChevronLeft } from '@mdi/js';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -27,67 +28,74 @@ const SideBar = ({ onClose, display }: IProps) => {
   const activeRoute = (routeName: string) =>
     location.pathname === routeName ? 'active' : '';
   return (
-    <Card sx={sidebarStyled} display={display}>
-      <HStack
-        w="full"
-        mb={{ base: 5, lg: 10 }}
-        borderBottom={{
-          base: `1px solid ${theme.colors.borderBottom}`,
-          lg: 'none',
-        }}
-        justifyContent="space-between"
-        pb={{ base: 6, lg: 0 }}
-        px={{ base: 6, lg: 0 }}
-      >
-        <Box sx={sidebarHead}>
-          <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
-          <Heading ml={4}>GAFI</Heading>
-        </Box>
-        <Box
-          display={{ base: 'flex', lg: 'none' }}
-          onClick={onClose}
-          w={10}
-          h={10}
-          cursor="pointer"
+    <Box
+      as={motion.div}
+      initial={{ x: -100 }}
+      animate={{ x: 0 }}
+      transition={{ ease: 'easeOut' }}
+    >
+      <Card sx={sidebarStyled} display={display}>
+        <HStack
+          w="full"
+          mb={{ base: 5, lg: 10 }}
+          borderBottom={{
+            base: `1px solid ${theme.colors.borderBottom}`,
+            lg: 'none',
+          }}
+          justifyContent="space-between"
+          pb={{ base: 6, lg: 0 }}
+          px={{ base: 6, lg: 0 }}
         >
-          <Icon color="primary" w={10} h={10}>
-            <path fill="currentColor" d={mdiChevronLeft} />
-          </Icon>
-        </Box>
-      </HStack>
+          <Box sx={sidebarHead}>
+            <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
+            <Heading ml={4}>GAFI</Heading>
+          </Box>
+          <Box
+            display={{ base: 'flex', lg: 'none' }}
+            onClick={onClose}
+            w={10}
+            h={10}
+            cursor="pointer"
+          >
+            <Icon color="primary" w={10} h={10}>
+              <path fill="currentColor" d={mdiChevronLeft} />
+            </Icon>
+          </Box>
+        </HStack>
 
-      <Box px={{ base: 6, lg: 0 }} w="full">
-        {React.Children.toArray(
-          routes.map(route => (
-            <NavLink onClick={onClose} to={route.layout + route.path}>
-              <Box
-                sx={
-                  activeRoute(route.layout + route.path) === 'active'
-                    ? { ...activeMenuItem, ...menuItem }
-                    : menuItem
-                }
-              >
-                <Icon w={18} h={18}>
-                  <path fill="currentColor" d={route.icon} />
-                </Icon>
-                <Text
+        <Box px={{ base: 6, lg: 0 }} w="full">
+          {React.Children.toArray(
+            routes.map(route => (
+              <NavLink onClick={onClose} to={route.layout + route.path}>
+                <Box
                   sx={
                     activeRoute(route.layout + route.path) === 'active'
-                      ? activeMenuItemTitle
-                      : menuItemTitle
+                      ? { ...activeMenuItem, ...menuItem }
+                      : menuItem
                   }
                 >
-                  {t(route.name)}
-                </Text>
-              </Box>
-            </NavLink>
-          ))
-        )}
-      </Box>
-      <Text sx={cpyRight} opacity="inherit" fontSize="sm">
-        &copy; copyright by cryptoviet
-      </Text>
-    </Card>
+                  <Icon w={18} h={18}>
+                    <path fill="currentColor" d={route.icon} />
+                  </Icon>
+                  <Text
+                    sx={
+                      activeRoute(route.layout + route.path) === 'active'
+                        ? activeMenuItemTitle
+                        : menuItemTitle
+                    }
+                  >
+                    {t(route.name)}
+                  </Text>
+                </Box>
+              </NavLink>
+            ))
+          )}
+        </Box>
+        <Text sx={cpyRight} opacity="inherit" fontSize="sm">
+          &copy; copyright by cryptoviet
+        </Text>
+      </Card>
+    </Box>
   );
 };
 

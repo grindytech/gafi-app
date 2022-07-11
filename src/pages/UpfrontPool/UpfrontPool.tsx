@@ -1,4 +1,5 @@
-import { Box, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +25,12 @@ const JoinPool = () => {
         bannerBg="/assets/layout/upfront-banner-bg.png"
         btnLink="https://wiki.gafi.network/learn/upfront-pool"
       />
-      <Box p={{ sm: 4, md: 0 }}>
+      <Box
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        as={motion.div}
+        p={{ sm: 4, md: 0 }}
+      >
         <SimpleGrid minChildWidth="288px" spacing="1em" minH="full">
           {React.Children.toArray(
             upfrontPools.map((pool: IPool) => <Pool pool={pool} />)

@@ -13,7 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useBreakpointValue,
   useDisclosure,
   useTheme,
   VStack,
