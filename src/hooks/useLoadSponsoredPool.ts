@@ -60,9 +60,6 @@ const useLoadSponsoredPool = () => {
     : [];
   const totalCount = sponsoredPoolData?.sponsoredPools
     ?.totalCount as Scalars['Int'];
-  const totalPage = Math.ceil(
-    totalCount / constants.SPONSORED_POOL_AMOUNT_PER_PAGE
-  );
   useEffect(() => {
     if (joinedPoolInfo?.ticketType.isCustom) {
       const joinedPoolId =
@@ -80,7 +77,6 @@ const useLoadSponsoredPool = () => {
     isOwned,
     sponsoredPools,
     totalCount,
-    totalPage,
     setCurrentPage,
     currentPage,
     isLoading,

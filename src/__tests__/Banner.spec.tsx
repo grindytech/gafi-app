@@ -17,10 +17,12 @@ describe('Render banner', () => {
     const title = screen.getByTestId('title');
     expect(title.innerHTML).toBe('deploy contract');
   });
+
   it('display correctly subTitle', () => {
     const subTitle = screen.getByTestId('sub-title');
     expect(subTitle.innerHTML).toBe('Description');
   });
+
   it('button redirect correctly', () => {
     const showMoreButton = screen.getByTestId('show-more-button');
     expect(showMoreButton.getAttribute('href')).toBe(

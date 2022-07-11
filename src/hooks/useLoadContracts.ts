@@ -36,11 +36,6 @@ const useLoadContracts = () => {
         ) as IResponseContract[];
         return {
           contracts: contractArray as IResponseContract[],
-          totalPage: contractArray.length
-            ? Math.ceil(
-                contractArray.length / constants.CONTRACT_AMOUNT_PER_PAGE
-              )
-            : 0,
         };
       }
     }
@@ -79,7 +74,6 @@ const useLoadContracts = () => {
     refetch,
     isLoading,
     maxCount: data?.contracts.length,
-    totalPage: data?.totalPage,
   };
 };
 

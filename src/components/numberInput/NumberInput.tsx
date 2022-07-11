@@ -12,14 +12,16 @@ interface Props {
   value: string | number;
   onChange: (value: string | number) => void;
   max: number;
+  inputName?: string;
 }
 
-const NumberInput: React.FC<Props> = ({ value, onChange, max }) => {
+const NumberInput: React.FC<Props> = ({ value, onChange, max, inputName }) => {
   const { t } = useTranslation();
   return (
     <HStack spacing={0}>
       <InputGroup overflow="hidden">
         <Input
+          name={inputName}
           type="number"
           value={value}
           onChange={e => {

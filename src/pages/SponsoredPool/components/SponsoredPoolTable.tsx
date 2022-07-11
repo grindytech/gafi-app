@@ -32,6 +32,7 @@ import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
+import { useQueryParam } from 'use-query-params';
 
 import ModalEditPool from './ModalEditPool';
 import SponsoredPoolData from './SponsoredPoolData';
@@ -43,6 +44,7 @@ import { SponsoredPool } from 'graphQL/generates';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useMessageToast from 'hooks/useMessageToast';
 import usePool from 'hooks/useSponsoredPool';
+import useWithdraw from 'hooks/useWithdraw';
 import { shorten } from 'utils';
 
 export interface ISponsoredPool {
@@ -71,11 +73,14 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { captions, sponsoredPools, children, limitRow, isLoading } = props;
-  const { joinedPoolInfo, isJoinedPool, refetch, joinedPool } =
-    useLoadSponsoredPool();
   const onCloseDetail = () => {
     setSelectedPoolDetail(undefined);
   };
+  const { withdrawPoolBalance, isLoading: withdrawLoading } =
+    useWithdraw(onCloseDetail);
+  const { joinedPoolInfo, isJoinedPool, refetch, joinedPool } =
+    useLoadSponsoredPool();
+
   const {
     joinSponsoredPool,
     isLoading: isSponsoredPoolLoading,
@@ -83,6 +88,8 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   } = usePool(refetch, onCloseDetail);
   const { copySuccessToast } = useMessageToast();
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
+  const [type, _] = useQueryParam('type');
+  const isOwned = type === 'owned';
   const [selectedPoolDetail, setSelectedPoolDetail] = useState<
     SponsoredPool | undefined
   >();
@@ -91,6 +98,12 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     SponsoredPool | undefined
   >();
   const SkeletonArray = new Array(limitRow).fill(0);
+  const isDisplayJoinedPool = useBreakpointValue({
+    sm: true,
+    md: false,
+    lg: true,
+    '2xl': false,
+  });
   const tableSize = useBreakpointValue({
     sm: 'sm',
     md: 'md',
@@ -104,10 +117,10 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
 
   return (
     <>
-      {joinedPool && (
-        <Card px={0} py={4} mt={4}>
+      {joinedPool && isDisplayJoinedPool && (
+        <Card p={0} mt={4}>
           <HStack
-            px={5}
+            justifyContent="center"
             py={4}
             borderBottom={`1px solid ${theme.colors.borderBottom}`}
           >
@@ -218,6 +231,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
       {children}
 
       <ModalEditPool
+        onCloseDetail={onCloseDetail}
         pool={selectedEditPool}
         isOpen={!!selectedEditPool}
         onClose={() => {
@@ -342,40 +356,66 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                   </Text>
                 </Flex>
               </Flex>
-              <Flex justifyContent="center" px={5} py={4}>
-                {joinedPoolInfo?.ticketType.isCustom &&
-                joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() ===
-                  selectedPoolDetail.id ? (
+
+              {isOwned ? (
+                <Flex justifyContent="space-evenly" py={4}>
                   <Button
-                    size="sm"
                     w={{ base: 'full', md: 80 }}
-                    variant="solid"
-                    borderRadius="4xl"
                     onClick={e => {
-                      e.stopPropagation();
-                      leavePool();
+                      setSelectedEditPool(selectedPoolDetail);
                     }}
-                    isLoading={isSponsoredPoolLoading}
+                    variant="primary"
                   >
-                    {t('LEAVE')}
+                    {t('EDIT')}
                   </Button>
-                ) : (
                   <Button
-                    size="sm"
                     w={{ base: 'full', md: 80 }}
-                    variant="solid"
-                    borderRadius="4xl"
                     onClick={e => {
-                      e.stopPropagation();
-                      joinSponsoredPool(selectedPoolDetail.id);
+                      withdrawPoolBalance(selectedPoolDetail.id);
                     }}
-                    disabled={isJoinedPool}
-                    isLoading={isSponsoredPoolLoading}
+                    ml={3}
+                    variant="outline"
+                    isLoading={withdrawLoading}
                   >
-                    {t('JOIN')}
+                    {t('WITHDRAW')}
                   </Button>
-                )}
-              </Flex>
+                </Flex>
+              ) : (
+                <Flex justifyContent="center" px={5} py={4}>
+                  {joinedPoolInfo?.ticketType.isCustom &&
+                  joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() ===
+                    selectedPoolDetail.id ? (
+                    <Button
+                      size="sm"
+                      w={{ base: 'full', md: 80 }}
+                      variant="solid"
+                      borderRadius="4xl"
+                      onClick={e => {
+                        e.stopPropagation();
+                        leavePool();
+                      }}
+                      isLoading={isSponsoredPoolLoading}
+                    >
+                      {t('LEAVE')}
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      w={{ base: 'full', md: 80 }}
+                      variant="solid"
+                      borderRadius="4xl"
+                      onClick={e => {
+                        e.stopPropagation();
+                        joinSponsoredPool(selectedPoolDetail.id);
+                      }}
+                      disabled={isJoinedPool}
+                      isLoading={isSponsoredPoolLoading}
+                    >
+                      {t('JOIN')}
+                    </Button>
+                  )}
+                </Flex>
+              )}
             </Card>
           </DrawerContent>
         </Drawer>

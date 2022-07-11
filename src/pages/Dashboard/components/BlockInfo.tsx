@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Box, Image } from '@chakra-ui/react';
+import { HStack, VStack, Text, Box, Image, Heading } from '@chakra-ui/react';
 import { VoidFn } from '@polkadot/api/types';
 import { BlockNumber as GafiBlockNumber } from '@polkadot/types/interfaces';
 import React, { useEffect, useState } from 'react';
@@ -53,7 +53,9 @@ const BlockInfo: React.FC<IProps> = ({ isFinalized }) => {
     <Card h="full" justifyContent="space-between">
       <HStack justifyContent="space-between">
         <VStack alignItems="flex-start">
-          <Text>{isFinalized ? t('FINALIZED_BLOCK') : t('CURRENT_BLOCK')}</Text>
+          <Heading size="sm" fontWeight="normal">
+            {isFinalized ? t('FINALIZED_BLOCK') : t('CURRENT_BLOCK')}
+          </Heading>
           <Text color="primary" fontWeight="bold" fontSize="4xl">
             {blockNumber}
           </Text>

@@ -59,13 +59,22 @@ const shareConfig = {
 };
 
 module.exports = {
-  extends: ['airbnb', 'plugin:jsx-a11y/recommended', 'prettier', 'plugin:react-hooks/recommended'],
-  parser: 'babel-eslint',
-  plugins: ['jsx-a11y', 'prettier', 'only-warn'],
+  extends: [
+    'airbnb',
+    'plugin:jsx-a11y/recommended',
+    'prettier',
+    'plugin:react-hooks/recommended',
+    'plugin:jest/recommended',
+  ],
+  parser: '@babel/eslint-parser',
+  plugins: ['jsx-a11y', 'prettier', 'only-warn', 'jest'],
   rules: shareConfig.rules,
   settings: shareConfig.settings,
   globals: {
-    "JSX": "readonly"
+    JSX: 'readonly',
+    page: true,
+    browser: true,
+    jestPuppeteer: true,
   },
   overrides: [
     {
@@ -82,7 +91,10 @@ module.exports = {
       rules: {
         ...shareConfig.rules,
         'no-unused-vars': 0,
-        '@typescript-eslint/no-unused-vars': ["error", { "varsIgnorePattern": "_" }],
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { varsIgnorePattern: '_' },
+        ],
         'no-shadow': 0,
         '@typescript-eslint/no-shadow': ['error'],
         'react/jsx-filename-extension': [
@@ -95,9 +107,10 @@ module.exports = {
       settings: {
         ...shareConfig.settings,
       },
-      "env": {
-        "browser": true,
-      }
+      env: {
+        browser: true,
+        'jest/globals': true,
+      },
     },
   ],
 };
