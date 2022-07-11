@@ -23,7 +23,6 @@
     "generate:graphql": "graphql-codegen",
     "test:app": "react-app-rewired test App.js --env=puppeteer --testTimeout=50000 ",
     "test:faucet": "react-app-rewired test Faucet.js --env=puppeteer --testTimeout=30000 ",
-    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "eslint:check": "eslint --ext .tsx,.ts src/",
     "eslint-fix": "eslint --cache --fix --max-warnings=88 --ext .tsx,.ts src/",

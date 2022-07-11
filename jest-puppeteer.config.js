@@ -1,4 +1,4 @@
-const CRX_PATH = '/Users/kuro/Desktop/polkadot--js--extension';
+const CRX_PATH = '/Users/trungluu.hoang/Downloads/polkadot--js--extension';
 
 module.exports = {
   launch: {
