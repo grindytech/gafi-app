@@ -1,10 +1,15 @@
-import { createExtensionPage, createWalletAccount, extensionSignTransaction } from "utils/test";
 import { setDefaultOptions } from 'expect-puppeteer';
+
+import {
+  createExtensionPage,
+  createWalletAccount,
+  extensionSignTransaction,
+} from 'utils/test';
 import 'expect-puppeteer'; // eslint-disable-line
 
 setDefaultOptions({ timeout: 2000 });
 
-describe('Gafi Dashboard faucet', () => { 
+describe('Gafi Dashboard faucet', () => {
   let extensionID = '';
   const extensionPopupHtml = 'index.html';
 
@@ -47,7 +52,7 @@ describe('Gafi Dashboard faucet', () => {
     await expect(page).toClick('button', { text: 'Faucet', delay: 200 });
     await page.waitForTimeout(2000);
     extensionPage = await createExtensionPage(
-      browser, 
+      browser,
       extensionID,
       extensionPopupHtml
     );
@@ -56,4 +61,4 @@ describe('Gafi Dashboard faucet', () => {
 
     await expect(page).toMatch('PleaseWait', { timeout: 20000 });
   });
-})
+});

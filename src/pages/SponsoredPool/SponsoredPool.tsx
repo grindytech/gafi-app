@@ -31,7 +31,6 @@ const SponsoredPoolPage: React.FC = () => {
     isOwned,
     sponsoredPools,
     totalCount,
-    totalPage,
     setCurrentPage,
     currentPage,
     isLoading,
@@ -103,7 +102,6 @@ const SponsoredPoolPage: React.FC = () => {
             setCurrentPage={setCurrentPage}
             totalCount={totalCount}
             resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-            totalPage={totalPage}
             isLoading={isLoading}
           />
         </SponsoredPoolTable>

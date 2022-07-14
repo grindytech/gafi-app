@@ -38,17 +38,21 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
       >
         <Box w="80%">
           <Heading
+            data-testid="title"
             sx={{
               fontSize: { base: 'md', md: '4xl' },
             }}
           >
             {title}
           </Heading>
-          <Text sx={subTitleStyled}>{subTitle}</Text>
+          <Text data-testid="sub-title" sx={subTitleStyled} fontSize="md">
+            {subTitle}
+          </Text>
         </Box>
         {btnLink && !isDisplaySmallBtn ? (
           <Button
             as="a"
+            data-testid="show-more-button"
             variant="white"
             target="_blank"
             onClick={() => {
@@ -68,6 +72,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
           <IconButton
             as="a"
             w={10}
+            data-testid="show-more-button"
             h={10}
             borderRadius="50%"
             aria-label="see-more-btn"

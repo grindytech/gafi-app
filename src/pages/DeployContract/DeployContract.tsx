@@ -8,10 +8,10 @@ import Dropzone from './components/Dropzone';
 
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
-import { shorten } from 'components/utils';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useDeploy from 'hooks/useDeploy';
 import useMessageToast from 'hooks/useMessageToast';
+import { shorten } from 'utils';
 
 const DeployContract = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

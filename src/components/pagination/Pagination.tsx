@@ -17,24 +17,18 @@ interface IProps {
   setCurrentPage: (pageNumber: number) => void;
   totalCount: number;
   resultsPerPage: number;
-  totalPage: number;
   isLoading: boolean;
 }
 
 const Pagination = (props: IProps) => {
-  const {
-    currentPage,
-    setCurrentPage,
-    totalCount,
-    resultsPerPage,
-    totalPage,
-    isLoading,
-  } = props;
+  const { currentPage, setCurrentPage, totalCount, resultsPerPage, isLoading } =
+    props;
   const pageButtons = [];
   const isZoomOutButton = useBreakpointValue({
     base: true,
     md: false,
   });
+  const totalPage = Math.ceil(totalCount / resultsPerPage);
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
   let endPage = 2 + startPage;
@@ -101,6 +95,7 @@ const Pagination = (props: IProps) => {
       >
         <SkeletonText isLoaded={!isLoading} noOfLines={1}>
           <Text
+            data-testid="pagination-info"
             color="greyText"
             fontSize={{ sm: 'sm', md: 'md' }}
             fontWeight="normal"
@@ -130,7 +125,7 @@ const Pagination = (props: IProps) => {
       </Flex>
       <Flex flex="14" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading}>
-          {totalCount ? null : (
+          {totalCount && (
             <Button
               ml={{ base: 1, xl: 2 }}
               size="sm"

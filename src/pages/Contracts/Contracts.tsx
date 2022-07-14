@@ -14,7 +14,7 @@ const Contracts = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { currentPage, setCurrentPage, isLoading, maxCount, totalPage } =
+  const { currentPage, setCurrentPage, isLoading, maxCount } =
     useLoadContracts();
 
   return (
@@ -48,7 +48,6 @@ const Contracts = () => {
           setCurrentPage={setCurrentPage}
           totalCount={maxCount || 0}
           resultsPerPage={constants.CONTRACT_AMOUNT_PER_PAGE}
-          totalPage={totalPage || 0}
           isLoading={isLoading}
         />
       </ContractTable>

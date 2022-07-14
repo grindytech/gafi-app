@@ -35,10 +35,9 @@ import { useTranslation } from 'react-i18next';
 import { useQueryParam } from 'use-query-params';
 
 import ModalEditPool from './ModalEditPool';
-import SponsoredPoolTableRow from './SponsoredPoolTableRow';
+import SponsoredPoolData from './SponsoredPoolData';
 
 import Card from 'components/card/Card';
-import EmptyRow from 'components/EmptyRow';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
@@ -211,20 +210,12 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           </Thead>
           <Tbody justifyContent="flex-start">
             {!isLoading ? (
-              sponsoredPools.length ? (
-                React.Children.toArray(
-                  sponsoredPools.map(pool => (
-                    <SponsoredPoolTableRow
-                      onOpenDetail={() => setSelectedPoolDetail(pool)}
-                      pool={pool}
-                      onClick={() => setSelectedPool(pool)}
-                      onEditClick={() => setSelectedEditPool(pool)}
-                    />
-                  ))
-                )
-              ) : (
-                <EmptyRow columnAmount={6} />
-              )
+              <SponsoredPoolData
+                setSelectedPoolDetail={setSelectedPoolDetail}
+                sponsoredPools={sponsoredPools}
+                setSelectedPool={setSelectedPool}
+                setSelectedEditPool={setSelectedEditPool}
+              />
             ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (
