@@ -370,7 +370,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 <Flex justifyContent="space-evenly" py={4}>
                   <Button
                     w={{ base: 'full', md: 80 }}
-                    onClick={e => {
+                    onClick={() => {
                       setSelectedEditPool(selectedPoolDetail);
                     }}
                     variant="primary"
@@ -379,7 +379,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                   </Button>
                   <Button
                     w={{ base: 'full', md: 80 }}
-                    onClick={e => {
+                    onClick={() => {
                       withdrawPoolBalance(selectedPoolDetail.id);
                     }}
                     ml={3}

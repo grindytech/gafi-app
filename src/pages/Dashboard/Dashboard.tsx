@@ -127,7 +127,7 @@ const Dashboard = () => {
               </Text>
               <Button
                 onClick={() => {
-                  gaEventTracker('show metadata');
+                  gaEventTracker({ action: 'Click Show metadata' });
                   onOpen();
                 }}
                 w="full"

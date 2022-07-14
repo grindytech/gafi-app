@@ -84,7 +84,7 @@ const DeployContract = () => {
               <Button
                 px={8}
                 onClick={() => {
-                  gaEventTracker('deploy');
+                  gaEventTracker({ action: 'Click Deploy contract' });
                   deploy(contractFiles);
                 }}
                 isLoading={isLoading}

@@ -66,11 +66,11 @@ const useLoadUpfrontPool = () => {
         minute: 30,
       },
       onJoin: () => {
-        gaEventTracker('join basic');
+        gaEventTracker({ action: 'Join basic' });
         joinUpfrontPool('Basic');
       },
       onLeave: () => {
-        gaEventTracker('leave basic');
+        gaEventTracker({ action: 'Leave basic' });
         leavePool('Basic');
       },
       isLoading: loadingPool === 'Basic',
@@ -92,11 +92,11 @@ const useLoadUpfrontPool = () => {
         minute: 30,
       },
       onJoin: () => {
-        gaEventTracker('join Medium');
+        gaEventTracker({ action: 'Join Medium' });
         joinUpfrontPool('Medium');
       },
       onLeave: () => {
-        gaEventTracker('leave Medium');
+        gaEventTracker({ action: 'Leave Medium' });
         leavePool('Medium');
       },
       isLoading: loadingPool === 'Medium',
@@ -118,11 +118,11 @@ const useLoadUpfrontPool = () => {
         minute: 30,
       },
       onJoin: () => {
-        gaEventTracker('join Advance');
+        gaEventTracker({ action: 'Join Advance' });
         joinUpfrontPool('Advance');
       },
       onLeave: () => {
-        gaEventTracker('leave Advance');
+        gaEventTracker({ action: 'Leave Advance' });
         leavePool('Advance');
       },
       isLoading: loadingPool === 'Advance',

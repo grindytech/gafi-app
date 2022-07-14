@@ -1,15 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import React, { ReactNode, useEffect } from 'react';
-import ReactGA from 'react-ga';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { SubstrateContextProvider } from './contexts/substrateContext';
 
-import config from 'config';
 import DashboardLayout from 'layouts/DashboardLayout';
 import routes, { IRoute } from 'routes/routes';
-
-ReactGA.initialize(config.TRACKING_ID);
 
 function PageContent() {
   const getRoutes = (routeList: IRoute[]): ReactNode[] =>
@@ -39,10 +35,6 @@ function PageContent() {
 }
 
 export default function App() {
-  useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
-
   return (
     <SubstrateContextProvider>
       <DashboardLayout>

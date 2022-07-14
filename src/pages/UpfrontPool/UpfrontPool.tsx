@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

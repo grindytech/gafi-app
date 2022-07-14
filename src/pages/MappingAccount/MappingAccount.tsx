@@ -11,7 +11,6 @@ import {
   SimpleGrid,
   Switch,
   Text,
-  useBreakpointValue,
   useToken,
   VStack,
 } from '@chakra-ui/react';
@@ -158,7 +157,7 @@ function MappingAccount() {
                 variant="solid"
                 px={{ sm: 6, md: 20 }}
                 onClick={() => {
-                  gaEventTracker('mapping');
+                  gaEventTracker({ action: 'Click Mapping account' });
                   mappingAccount(isWithdraw);
                 }}
                 isLoading={isLoading}

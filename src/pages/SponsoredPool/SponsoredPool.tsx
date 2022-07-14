@@ -72,7 +72,7 @@ const SponsoredPoolPage: React.FC = () => {
               ) : undefined
             }
             onClick={() => {
-              gaEventTracker('add sponsored pool');
+              gaEventTracker({ action: 'Click Add sponsored pool' });
               onOpen();
             }}
           >

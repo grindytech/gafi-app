@@ -105,7 +105,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       px={0}
                       variant="outline"
                       onClick={() => {
-                        gaEventTracker('copy polkadot address');
+                        gaEventTracker({ action: 'Copy wallet address' });
                         copySuccessToast();
                       }}
                     >
@@ -166,7 +166,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
 
                 <Button
                   onClick={() => {
-                    gaEventTracker('faucet');
+                    gaEventTracker({ action: 'Faucet' });
                     faucet();
                   }}
                   isLoading={isLoading}
@@ -210,7 +210,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       variant="outline"
                       justifyContent="center"
                       onClick={() => {
-                        gaEventTracker('copy metamask address');
+                        gaEventTracker({ action: 'Copy Metamask address' });
                         copySuccessToast();
                       }}
                     >

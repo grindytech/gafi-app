@@ -23,7 +23,7 @@ interface IProp {
 
 const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
   const { t } = useTranslation();
-  const gaEventTracker = useAnalyticsEventTracker('Banner');
+  const gaEventTracker = useAnalyticsEventTracker(`${title} Banner`);
   const isDisplaySmallBtn = useBreakpointValue({
     sm: true,
     md: false,
@@ -52,7 +52,7 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
             variant="white"
             target="_blank"
             onClick={() => {
-              gaEventTracker('more detail');
+              gaEventTracker({ action: 'More detail' });
             }}
             href={btnLink}
             mt={{ base: 8, md: 0 }}
@@ -72,6 +72,9 @@ const Banner: React.FC<IProp> = ({ title, subTitle, bannerBg, btnLink }) => {
             borderRadius="50%"
             aria-label="see-more-btn"
             target="_blank"
+            onClick={() => {
+              gaEventTracker({ action: 'More detail' });
+            }}
             href={btnLink}
             variant="white"
             icon={
