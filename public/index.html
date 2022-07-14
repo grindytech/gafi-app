@@ -27,6 +27,21 @@
     />
     <link rel="stylesheet" href="%PUBLIC_URL%/assets/main.css" />
     <title>GAFI DASHBOARD</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-PB9GEPCD66"
+    ></script>
+    <script>
+      if (window.location.hostname === '%REACT_APP_GA_HOSTNAME%') {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-PB9GEPCD66');
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -15,12 +15,13 @@ import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import * as constants from 'utils/constants';
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
-
+  const gaEventTracker = useAnalyticsEventTracker('Sponsored pool');
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisplay = useBreakpointValue({
     sm: true,
@@ -70,7 +71,10 @@ const SponsoredPoolPage: React.FC = () => {
                 </Icon>
               ) : undefined
             }
-            onClick={onOpen}
+            onClick={() => {
+              gaEventTracker({ action: 'Click Add sponsored pool' });
+              onOpen();
+            }}
           >
             {t('ADD_POOL')}
           </Button>

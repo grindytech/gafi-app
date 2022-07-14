@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { SubstrateContextProvider } from './contexts/substrateContext';

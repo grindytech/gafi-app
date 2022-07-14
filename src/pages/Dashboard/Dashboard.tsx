@@ -28,6 +28,7 @@ import EventInfo from './components/EventInfo';
 
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 
 interface IMetadata {
   data: any;
@@ -45,6 +46,7 @@ const Dashboard = () => {
   const { api, socket } = useSubstrateState();
   const [metadata, setMetadata] = useState<IMetadata>();
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
+  const gaEventTracker = useAnalyticsEventTracker('Dashboard');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();
 
@@ -123,7 +125,14 @@ const Dashboard = () => {
               <Text pb={8} fontWeight="light">
                 v{metadata?.version}
               </Text>
-              <Button onClick={onOpen} w="full" variant="primary">
+              <Button
+                onClick={() => {
+                  gaEventTracker({ action: 'Click Show metadata' });
+                  onOpen();
+                }}
+                w="full"
+                variant="primary"
+              >
                 {t('SHOW_METADATA')}
               </Button>
             </VStack>

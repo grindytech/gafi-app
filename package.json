@@ -15,7 +15,9 @@
   "scripts": {
     "start": "react-app-rewired start",
     "start:prod": "env-cmd -f .env.production react-app-rewired start",
+    "start:rococo": "env-cmd -f .env.rococo react-app-rewired start",
     "build": "env-cmd -f .env.production react-app-rewired build",
+    "build:rococo": "env-cmd -f .env.rococo react-app-rewired build",
     "typegen": "yarn generate:defs && yarn generate:meta",
     "mainnet:typegen": "yarn mainnet:generate:defs && yarn mainnet:generate:meta",
     "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package gafi-dashboard/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
@@ -31,7 +33,8 @@
     "postinstall": "husky install",
     "hooks:pre-commit": "lint-staged",
     "deploy": "gh-pages -d build -m '[ci skip] Updates'",
-    "deploy:mainnet": "yarn build && firebase use gafi-c2fcf && firebase deploy"
+    "deploy:mainnet": "yarn build && firebase use gafi-c2fcf && firebase deploy",
+    "deploy:rococo:preview": "yarn build:rococo && firebase use gafi-c2fcf && firebase hosting:channel:deploy gari-dashboard"
   },
   "jest": {
     "preset": "jest-puppeteer"
@@ -72,6 +75,7 @@
     "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.2",
     "react-dropzone": "^12.0.4",
+    "react-ga": "^3.3.1",
     "react-hook-form": "^7.30.0",
     "react-i18next": "^11.16.9",
     "react-query": "^3.34.19",
