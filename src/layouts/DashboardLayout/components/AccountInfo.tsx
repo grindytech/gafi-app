@@ -26,6 +26,7 @@ import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
 import { useSubstrate } from 'contexts/substrateContext';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useFaucet from 'hooks/useFaucet';
 import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
@@ -51,6 +52,7 @@ const AccountInfo = ({ display, onClose }: IProps) => {
   const { pairs } = useLoadCurrentAccount();
   const { faucet, isLoading } = useFaucet();
   const theme = useTheme();
+  const gaEventTracker = useAnalyticsEventTracker('Account info');
 
   return (
     <Card sx={AccountInfoStyled} display={display}>
@@ -101,7 +103,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       w="full"
                       px={0}
                       variant="outline"
-                      onClick={copySuccessToast}
+                      onClick={() => {
+                        gaEventTracker({ action: 'Copy wallet address' });
+                        copySuccessToast();
+                      }}
                     >
                       {shorten(acctAddr(currentAccount))}
                     </Button>
@@ -159,7 +164,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                 </Box>
 
                 <Button
-                  onClick={faucet}
+                  onClick={() => {
+                    gaEventTracker({ action: 'Faucet' });
+                    faucet();
+                  }}
                   isLoading={isLoading}
                   sx={faucetButtonStyled}
                   variant="primary"
@@ -200,7 +208,10 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                       w="full"
                       variant="outline"
                       justifyContent="center"
-                      onClick={copySuccessToast}
+                      onClick={() => {
+                        gaEventTracker({ action: 'Copy Metamask address' });
+                        copySuccessToast();
+                      }}
                     >
                       {shorten(account.toString())}
                     </Button>

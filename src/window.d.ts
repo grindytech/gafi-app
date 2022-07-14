@@ -4,4 +4,6 @@ declare global {
   interface Window {
     web3: Web3;
   }
+
+  function gtag(...args: any);
 }

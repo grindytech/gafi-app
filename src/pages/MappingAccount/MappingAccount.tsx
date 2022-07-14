@@ -11,7 +11,6 @@ import {
   SimpleGrid,
   Switch,
   Text,
-  useBreakpointValue,
   useToken,
   VStack,
 } from '@chakra-ui/react';
@@ -24,6 +23,7 @@ import { useWallet } from 'use-wallet';
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useMappingAccount from 'hooks/useMappingAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { shorten } from 'utils';
@@ -36,6 +36,7 @@ function MappingAccount() {
   const { copySuccessToast } = useMessageToast();
   const { isLoading, mappingAccount } = useMappingAccount();
   const borderBottom = useToken('colors', 'borderBottom');
+  const gaEventTracker = useAnalyticsEventTracker('Mapping account');
 
   return (
     <>
@@ -156,6 +157,7 @@ function MappingAccount() {
                 variant="solid"
                 px={{ sm: 6, md: 20 }}
                 onClick={() => {
+                  gaEventTracker({ action: 'Click Mapping account' });
                   mappingAccount(isWithdraw);
                 }}
                 isLoading={isLoading}
