@@ -34,18 +34,10 @@ const Panel = ({ onOpen }: IProps) => {
             display: 'flex',
           }}
         >
-          <Heading fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}>
-            {t('HELLO')},
-          </Heading>
-          <Heading
-            fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
-            ml={2}
-            color="primary"
-          >
-            {userName}
+          <Heading fontSize={{ base: '2xl' }}>
+            {t('HELLO')}, {userName}
           </Heading>
         </Box>
-
         <Box
           sx={{
             display: 'flex',

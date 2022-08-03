@@ -76,7 +76,7 @@ export default UserMenu;
 const actionStyled = {
   bg: 'white',
   color: 'black',
-  w: '56px',
-  h: '56px',
+  w: '40px',
+  h: '40px',
   borderRadius: '50%',
 };

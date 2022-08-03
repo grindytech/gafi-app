@@ -27,7 +27,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           height: { sm: 24, md: 210, lg: 24, xl: 210 },
         }}
       >
-        {pool.poolType}
+        <Heading> {pool.poolType}</Heading>
       </Box>
       <Box sx={contentStyled}>
         <Heading as="h2" size="lg" pt={{ base: 4, md: 8 }} mb={4}>
@@ -77,11 +77,10 @@ export default Pool;
 
 const bannerStyled = {
   width: '100%',
-  fontWeight: { base: 'bold', md: 'medium' },
+  fontWeight: { base: 'bold' },
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  color: 'white',
   fontSize: { base: '2xl', md: '4xl' },
   textTransform: 'uppercase',
 };

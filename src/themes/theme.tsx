@@ -278,8 +278,8 @@ export const theme = extendTheme({
         list: {
           bg: `linear-gradient(227.25deg, ${colors.gradientColor2} 2.24%, ${colors.gradientColor1} 127.36%)`,
           border: 'none',
-          borderRadius: '3xl',
-          p: { base: 4, md: 6, lg: 8 },
+          borderRadius: '2xl',
+          p: { base: 4 },
           '.chakra-menu__menuitem:last-child': {
             mb: 0,
           },
@@ -289,10 +289,10 @@ export const theme = extendTheme({
         },
         item: {
           _focus: { bg: colors.btnHover },
-          py: { base: 2, lg: 3 },
-          px: { base: 6, lg: 8 },
+          py: { base: 2 },
+          px: { base: 6 },
           m: 0,
-          borderRadius: '3xl',
+          borderRadius: '2xl',
           color: 'white',
           mb: 2,
         },

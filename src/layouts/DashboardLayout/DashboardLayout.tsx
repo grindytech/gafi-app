@@ -118,7 +118,7 @@ const DashboardLayout: React.FC = ({ children }) => {
 export default DashboardLayout;
 
 const dashBoardStyled = {
-  p: { base: 0, md: 4 },
+  p: { base: '0 10px 0 0' },
   display: 'flex',
   background: 'greyBg',
   alignItems: 'flex-start',

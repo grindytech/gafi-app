@@ -21,7 +21,7 @@ const JoinPool = () => {
       <Banner
         title={t('POOL.UPFRONT_POOL')}
         subTitle={t('POOL_DESCRIPTION.UPFRONT_POOL')}
-        bannerBg="/assets/layout/upfront-banner-bg.png"
+        bannerBg="/assets/layout/upfront-banner-bg.svg"
         btnLink="https://wiki.gafi.network/learn/upfront-pool"
       />
       <Box p={{ sm: 4, md: 0 }}>

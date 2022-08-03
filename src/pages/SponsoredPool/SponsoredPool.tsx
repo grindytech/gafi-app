@@ -45,7 +45,7 @@ const SponsoredPoolPage: React.FC = () => {
             ? t('POOL_DESCRIPTION.MY_SPONSORED_POOL')
             : t('POOL_DESCRIPTION.SPONSORED_POOL')
         }
-        bannerBg="/assets/layout/sponsored-banner-bg.png"
+        bannerBg="/assets/layout/sponsored-banner-bg.svg"
         btnLink="https://wiki.gafi.network/learn/sponsored-pool"
       />
       <Box p={{ sm: 4, md: 0 }}>

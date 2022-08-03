@@ -43,7 +43,7 @@ function MappingAccount() {
       <Banner
         title={t('MAPPING_ACCOUNT')}
         subTitle={t('MAPPING_ACCOUNT_DESCRIPTION')}
-        bannerBg="/assets/layout/mapping-account-banner.png"
+        bannerBg="/assets/layout/mapping-account-banner.svg"
         btnLink="https://wiki.gafi.network/learn/proof-address-mapping"
       />
       <Box p={{ sm: 4, md: 0 }}>

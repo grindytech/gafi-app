@@ -60,7 +60,7 @@ const useLoadUpfrontPool = () => {
         txLimit: upfrontPoolInfo?.basic.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-1.png',
+      banner: '/assets/layout/pool-banner-1.svg',
       fee: {
         gaki: upfrontPoolInfo?.basic.value.toString() || '0',
         minute: 30,
@@ -86,7 +86,7 @@ const useLoadUpfrontPool = () => {
         txLimit: upfrontPoolInfo?.medium.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-2.png',
+      banner: '/assets/layout/pool-banner-2.svg',
       fee: {
         gaki: upfrontPoolInfo?.medium.value.toString() || '0',
         minute: 30,
@@ -112,7 +112,7 @@ const useLoadUpfrontPool = () => {
         txLimit: upfrontPoolInfo?.advance.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-3.png',
+      banner: '/assets/layout/pool-banner-3.svg',
       fee: {
         gaki: upfrontPoolInfo?.advance.value.toString() || '0',
         minute: 30,

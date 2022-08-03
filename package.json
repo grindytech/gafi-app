@@ -40,9 +40,6 @@
   "jest": {
     "preset": "jest-puppeteer"
   },
-  "jest": {
-    "preset": "jest-puppeteer"
-  },
   "dependencies": {
     "@chakra-ui/react": "^1.8.7",
     "@chakra-ui/theme-tools": "^2.0.2",

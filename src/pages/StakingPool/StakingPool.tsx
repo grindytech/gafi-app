@@ -16,7 +16,7 @@ const StakingPool = () => {
       <Banner
         title={t('POOL.STAKING_POOL')}
         subTitle={t('POOL_DESCRIPTION.STAKING_POOL')}
-        bannerBg="/assets/layout/staking-banner-bg.png"
+        bannerBg="/assets/layout/staking-banner-bg.svg"
         btnLink="https://wiki.gafi.network/learn/staking-pool"
       />
       <Box p={{ sm: 4, md: 0 }}>

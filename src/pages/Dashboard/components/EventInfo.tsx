@@ -87,9 +87,8 @@ const EventInfo = () => {
         alignItems="center"
         borderBottom={`1px solid ${borderBottom}`}
       >
-        <Heading size="sm" color="primary">
-          &bull; {t('RECENT_EVENTS')}
-        </Heading>
+        <Heading size="sm">{t('RECENT_EVENTS')}</Heading>
+
         <IconButton
           w={10}
           h={10}

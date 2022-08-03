@@ -27,7 +27,7 @@ const DeployContract = () => {
       <Banner
         title={t('DEPLOY_CONTRACT')}
         subTitle={t('DEPLOY_CONTRACT_DESCRIPTION')}
-        bannerBg="/assets/layout/deploycontract-banner.png"
+        bannerBg="/assets/layout/deploycontract-banner.svg"
         btnLink="https://wiki.gafi.network/learn/demo"
       />
       <Box p={{ sm: 4, md: 0 }}>

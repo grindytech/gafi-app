@@ -1,5 +1,6 @@
 import {
   Box,
+  Badge,
   Button,
   Grid,
   GridItem,
@@ -94,14 +95,19 @@ const Dashboard = () => {
         <GridItem colSpan={{ base: 2, md: 1, lg: 2, xl: 1 }}>
           <Card h="full">
             <VStack alignItems="flex-start">
-              <Heading mb={4} size="sm" color="primary">
+              <Heading mb={4} size="sm">
                 {nodeInfo?.nodeName}
               </Heading>
-              <Text fontWeight="light">{nodeInfo?.chain}</Text>
-              <Text color="black">{socket}</Text>
+              <Text fontWeight="light">
+                <Badge colorScheme="yellow" mr={2}>
+                  {nodeInfo?.chain}
+                </Badge>
+                {socket}
+              </Text>
+              {/* <Text color="black"></Text> */}
               <HStack
                 w="full"
-                py={5}
+                pt={4}
                 borderTop={`1px solid ${theme.colors.borderBottom}`}
               >
                 <Icon color="primary">
@@ -119,10 +125,8 @@ const Dashboard = () => {
               justifyContent="space-between"
               alignItems="flex-start"
             >
-              <Heading size="sm" color="primary">
-                {t('METADATA')}
-              </Heading>
-              <Text pb={8} fontWeight="light">
+              <Heading size="sm">{t('METADATA')}</Heading>
+              <Text pb={4} fontWeight="light">
                 v{metadata?.version}
               </Text>
               <Button

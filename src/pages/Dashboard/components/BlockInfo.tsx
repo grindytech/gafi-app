@@ -53,7 +53,7 @@ const BlockInfo: React.FC<IProps> = ({ isFinalized }) => {
     <Card h="full" justifyContent="space-between">
       <HStack justifyContent="space-between">
         <VStack alignItems="flex-start">
-          <Heading size="sm" fontWeight="normal">
+          <Heading size="sm">
             {isFinalized ? t('FINALIZED_BLOCK') : t('CURRENT_BLOCK')}
           </Heading>
           <Text color="primary" fontWeight="bold" fontSize="4xl">
@@ -61,8 +61,6 @@ const BlockInfo: React.FC<IProps> = ({ isFinalized }) => {
           </Text>
         </VStack>
         <Box
-          bg="greyBg"
-          p={4}
           sx={{
             borderRadius: '50%',
           }}

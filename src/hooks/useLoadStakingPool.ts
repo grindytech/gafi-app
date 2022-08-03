@@ -60,7 +60,7 @@ const useLoadStakingPool = () => {
         txLimit: poolInfo?.basic.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-4.png',
+      banner: '/assets/layout/pool-banner-4.svg',
       fee: {
         gaki: poolInfo?.basic.value.toString() || '0',
         minute: 30,
@@ -86,7 +86,7 @@ const useLoadStakingPool = () => {
         txLimit: poolInfo?.medium.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-5.png',
+      banner: '/assets/layout/pool-banner-5.svg',
       fee: {
         gaki: poolInfo?.medium.value.toString() || '0',
         minute: 30,
@@ -112,7 +112,7 @@ const useLoadStakingPool = () => {
         txLimit: poolInfo?.advance.service.txLimit.toNumber() || 0,
         minute: 30,
       },
-      banner: '/assets/layout/pool-banner-6.png',
+      banner: '/assets/layout/pool-banner-6.svg',
       fee: {
         gaki: poolInfo?.advance.value.toString() || '0',
         minute: 30,

@@ -41,7 +41,6 @@ const SideBar = ({ onClose, display }: IProps) => {
       >
         <Box sx={sidebarHead}>
           <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
-          <Heading ml={4}>GAFI</Heading>
         </Box>
         <Box
           display={{ base: 'flex', lg: 'none' }}
@@ -85,7 +84,7 @@ const SideBar = ({ onClose, display }: IProps) => {
         )}
       </Box>
       <Text sx={cpyRight} opacity="inherit" fontSize="sm">
-        &copy; copyright by cryptoviet
+        &copy; copyright by Grindy Techonologies
       </Text>
     </Card>
   );
@@ -95,12 +94,13 @@ export default SideBar;
 
 const sidebarStyled = {
   w: { base: 'full', lg: 64, '2xl': '20vw' },
-  h: { sm: 'full', lg: '80vh' },
-  borderRadius: { base: '0px 24px 0px 0px', lg: '2xl' },
+  h: { sm: 'full', lg: '100vh' },
+  // borderRadius: { base: '0px 24px 0px 0px', lg: '2xl' },
   alignItems: 'center',
   justifyContent: 'space-between',
-  py: 10,
+  py: { base: 0 },
   px: { base: 0, lg: 6 },
+  borderRadius: 0,
 };
 
 const sidebarHead = {
@@ -114,7 +114,7 @@ const menuItem = {
   cursor: 'pointer',
   display: 'flex',
   justifyContent: 'flex-start',
-  borderRadius: 48,
+  borderRadius: 10,
   alignItems: 'center',
   px: { base: 4, '2xl': 8 },
   py: 18,
@@ -135,13 +135,13 @@ const cpyRight = {
 const menuItemTitle = {
   fontWeight: 'normal',
   fontSize: 'md',
-  ml: { base: 5, lg: 7 },
+  ml: { base: 2, lg: 3 },
   color: 'greyText',
 };
 
 const activeMenuItemTitle = {
   fontWeight: 'bold',
-  ml: { base: 5, lg: 7 },
+  ml: { base: 2, lg: 3 },
   fontSize: 'md',
   color: 'primary',
 };
