@@ -40,7 +40,7 @@ const SideBar = ({ onClose, display }: IProps) => {
         px={{ base: 6, lg: 0 }}
       >
         <Box sx={sidebarHead}>
-          <Image src="/assets/layout/logo.svg" alt="Gafi logo" />
+          <Image src="/assets/layout/logo-gafi.svg" alt="Gafi logo" />
         </Box>
         <Box
           display={{ base: 'flex', lg: 'none' }}

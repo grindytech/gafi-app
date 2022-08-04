@@ -23,6 +23,7 @@ import { mdiCogOutline } from '@mdi/js';
 import { Text as PolText } from '@polkadot/types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ReactJson from 'react-json-view';
 
 import BlockInfo from './components/BlockInfo';
 import EventInfo from './components/EventInfo';
@@ -55,6 +56,7 @@ const Dashboard = () => {
     const getMetadata = async () => {
       try {
         const data = await api?.rpc.state.getMetadata();
+        // console.log(data);
         setMetadata({ data, version: data?.version ? data?.version : 0 });
       } catch (e) {
         console.error(e);
@@ -155,9 +157,15 @@ const Dashboard = () => {
           <ModalHeader>{t('RUNTIME_METADATA')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <pre>
+            <ReactJson
+              collapsed={4}
+              src={
+                metadata ? JSON.parse(metadata?.data) : { data: 'loading...' }
+              }
+            />
+            {/* <pre>
               <code>{JSON.stringify(metadata?.data, null, 2)}</code>
-            </pre>
+            </pre> */}
           </ModalBody>
         </ModalContent>
       </Modal>

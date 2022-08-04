@@ -20,6 +20,7 @@ const useLoadUpfrontPool = () => {
         const res = await api.query.pool.tickets(
           currentAccount?.address as string
         );
+        // console.log('res', res)
         if (res.isSome) {
           return res.unwrap();
         }
@@ -35,13 +36,17 @@ const useLoadUpfrontPool = () => {
     !!joinedPoolInfo &&
     joinedPoolInfo.ticketType.isSystem &&
     joinedPoolInfo.ticketType.asSystem.isUpfront;
+
   const { data: upfrontPoolInfo } = useQuery(
     'getPoolInfo',
     async (): Promise<PoolInfo | undefined> => {
       if (api) {
-        const basic = await api.query.upfrontPool.services('Basic');
+        // console.log('loading')
+        const basic = await api.query.upfrontPool.services('Medium');
+        // console.log('result: ', basic )
         const medium = await api.query.upfrontPool.services('Medium');
         const advance = await api.query.upfrontPool.services('Advance');
+
         return {
           basic: basic.unwrap(),
           medium: medium.unwrap(),
@@ -50,6 +55,8 @@ const useLoadUpfrontPool = () => {
       }
     }
   );
+
+  // console.log('upfrontPoolInfo', upfrontPoolInfo)
 
   const { joinUpfrontPool, leavePool, loadingPool } = useUpfrontPool(refetch);
   const upfrontPools: Array<IPool> = [
