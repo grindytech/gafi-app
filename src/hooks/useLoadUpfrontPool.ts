@@ -42,7 +42,7 @@ const useLoadUpfrontPool = () => {
     async (): Promise<PoolInfo | undefined> => {
       if (api) {
         // console.log('loading')
-        const basic = await api.query.upfrontPool.services('Medium');
+        const basic = await api.query.upfrontPool.services('Basic');
         // console.log('result: ', basic )
         const medium = await api.query.upfrontPool.services('Medium');
         const advance = await api.query.upfrontPool.services('Advance');
