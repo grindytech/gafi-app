@@ -13,7 +13,7 @@ const useLoadCurrentAccount = () => {
   const pairs = useMemo(() => keyring?.getPairs() || [], [keyring]);
 
   const setPolkadotAccount = useCallback(async () => {
-    const response = await api?.query.proofAddressMapping.h160Mapping(account);
+    const response = await api?.query.addressMapping.h160Mapping(account);
     const gafiAddress = response?.toHuman() || '';
     const initPair = pairs.find(
       (pair: KeyringPair) =>
@@ -25,7 +25,7 @@ const useLoadCurrentAccount = () => {
     } else if (pairs.length > 0) {
       setCurrentAccount(pairs[0]);
     }
-  }, [account, api?.query.proofAddressMapping, pairs, setCurrentAccount]);
+  }, [account, api?.query.addressMapping, pairs, setCurrentAccount]);
 
   useEffect(() => {
     if (!currentAccount) setPolkadotAccount();
