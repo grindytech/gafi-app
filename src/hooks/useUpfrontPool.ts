@@ -77,7 +77,9 @@ const useUpfrontPool = (refreshData: () => void) => {
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api && account) {
-      const txExecute = api.tx.pool.join({ System: { Upfront: poolPackage } });
+      const txExecute = api.tx.pool.join({
+        Upfront: poolPackage,
+      });
       try {
         await txExecute.signAndSend(account, options || {}, txCallback);
       } catch (err: any) {

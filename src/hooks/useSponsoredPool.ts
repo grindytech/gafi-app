@@ -97,7 +97,11 @@ const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
   const mutation = useMutation(
     async (poolId: string) => {
       const [account, options] = await getFromAcct(currentAccount);
-      const txExecute = api?.tx.pool.join({ Custom: { Sponsored: poolId } });
+
+      const txExecute = api?.tx.pool.join({
+        Sponsored: poolId,
+      });
+
       return txExecute?.signAndSend(account, options || {}, txCallback);
     },
     {

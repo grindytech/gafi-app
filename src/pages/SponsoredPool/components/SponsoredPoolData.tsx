@@ -33,7 +33,6 @@ const SponsoredPoolData = ({
     ) : (
       <EmptyRow columnAmount={6} />
     )}
-    ;
   </>
 );
 

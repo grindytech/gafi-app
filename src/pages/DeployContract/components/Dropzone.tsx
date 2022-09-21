@@ -43,6 +43,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
 
   return (
     <Card
+      // {...getRootProps({
+      //   refKey: "refs"
+      // })}
       {...getRootProps()}
       sx={{
         justifyContent: 'center',

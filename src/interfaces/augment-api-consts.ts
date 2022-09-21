@@ -4,11 +4,20 @@
 import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Bytes, Vec, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
-import type { Permill } from '@polkadot/types/interfaces/runtime';
 import type { FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/consts' {
   export interface AugmentedConsts<ApiType extends ApiTypes> {
+    addressMapping: {
+      /**
+       * Message Prefix for signing messages using ecdsa signature
+       **/
+      messagePrefix: Bytes & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
+    };
     balances: {
       /**
        * The minimum amount required to keep an account open.
@@ -29,24 +38,7 @@ declare module '@polkadot/api-base/types/consts' {
       [key: string]: Codec;
     };
     faucet: {
-      /**
-       * Number of accounts that will send the tokens for user.
-       **/
       maxGenesisAccount: u32 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    gameCreator: {
-      /**
-       * A maximum number of contracts can be owned
-       **/
-      maxContractOwned: u32 & AugmentedConst<ApiType>;
-      /**
-       * Balance reserve for the claim of ownership
-       **/
-      reservationFee: u128 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -57,69 +49,6 @@ declare module '@polkadot/api-base/types/consts' {
        * Max Authorities in use
        **/
       maxAuthorities: u32 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    poolName: {
-      /**
-       * The maximum length a name may be.
-       **/
-      maxLength: u32 & AugmentedConst<ApiType>;
-      /**
-       * The minimum length a name may be.
-       **/
-      minLength: u32 & AugmentedConst<ApiType>;
-      /**
-       * Reservation fee.
-       **/
-      reservationFee: u128 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    proofAddressMapping: {
-      /**
-       * Message Prefix for signing messages using ecdsa signature
-       **/
-      messagePrefix: Bytes & AugmentedConst<ApiType>;
-      reservationFee: u128 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    sponsoredPool: {
-      /**
-       * The maximum discount percent when creating the pool
-       **/
-      maxDiscountPercent: Permill & AugmentedConst<ApiType>;
-      /**
-       * The maximum number of pool that sponsor can create
-       **/
-      maxPoolOwned: u32 & AugmentedConst<ApiType>;
-      /**
-       * The maximum number of contract address can added to the pool
-       **/
-      maxPoolTarget: u32 & AugmentedConst<ApiType>;
-      /**
-       * The maximum tx limit when creating the pool
-       **/
-      maxTxLimit: u32 & AugmentedConst<ApiType>;
-      /**
-       * The minimum discount percent when creating the pool
-       **/
-      minDiscountPercent: Permill & AugmentedConst<ApiType>;
-      /**
-       * The minimum balance owner have to deposit when creating the pool
-       **/
-      minPoolBalance: u128 & AugmentedConst<ApiType>;
-      /**
-       * The minimum tx limit when creating the pool
-       **/
-      minTxLimit: u32 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -174,10 +103,6 @@ declare module '@polkadot/api-base/types/consts' {
     };
     transactionPayment: {
       /**
-       * The polynomial that is applied in order to derive fee from length.
-       **/
-      lengthToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> & AugmentedConst<ApiType>;
-      /**
        * A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their
        * `priority`
        * 
@@ -202,19 +127,13 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       operationalFeeMultiplier: u8 & AugmentedConst<ApiType>;
       /**
+       * The fee to be paid for making a transaction; the per-byte portion.
+       **/
+      transactionByteFee: u128 & AugmentedConst<ApiType>;
+      /**
        * The polynomial that is applied in order to derive fee from weight.
        **/
       weightToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    txHandler: {
-      /**
-       * percentage of transaction fee reward to game-creator
-       **/
-      gameCreatorReward: Permill & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
