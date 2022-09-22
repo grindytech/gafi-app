@@ -2,36 +2,16 @@ import { useToast } from '@chakra-ui/react';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
-export interface IPool {
-  poolType: string;
-  discount: number;
-  rate: {
-    txLimit: number;
-    minute: number;
-  };
-  banner: string;
-  fee: {
-    gaki: string;
-    minute: number;
-  };
-  onJoin: () => void;
-  onLeave: () => void;
-  isLoading: boolean;
-  isJoined: boolean;
-  isDisabled: boolean;
-}
-
-const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
+const useLeavePool = (refreshData: () => void) => {
   const { t } = useTranslation();
-
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [leaveLoadingPool, setLeaveLoadingPool] = useState('');
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
@@ -44,8 +24,7 @@ const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
         status: 'success',
       });
       refreshData();
-      setIsLoading(false);
-      if (onClose) onClose();
+      setLeaveLoadingPool('');
     } else {
       toast({
         position: 'top-right',
@@ -57,19 +36,19 @@ const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
     }
   };
 
-  const mutation = useMutation(
-    async (poolId: string) => {
-      const [account, options] = await getFromAcct(currentAccount);
+  const leavePool = async (poolPackage: string) => {
+    setLeaveLoadingPool(poolPackage);
 
-      const txExecute = api?.tx.pool.join({
-        Sponsored: poolId,
-      });
+    const [account, options] = await getFromAcct(currentAccount);
 
-      return txExecute?.signAndSend(account, options || {}, txCallback);
-    },
-    {
-      mutationKey: 'join-sponsored-pool',
-      onError: (error: any) => {
+    if (api) {
+      const txExecute = api.tx.pool.leave();
+
+      try {
+        return options
+          ? await txExecute.signAndSend(account, options, txCallback)
+          : await txExecute.signAndSend(account, txCallback);
+      } catch (error: any) {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {
@@ -78,20 +57,15 @@ const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
           isClosable: true,
           status: 'error',
         });
-        setIsLoading(false);
-      },
+        setLeaveLoadingPool('');
+      }
     }
-  );
-
-  const joinSponsoredPool = async (poolId: string) => {
-    setIsLoading(true);
-    mutation.mutate(poolId);
   };
 
   return {
-    joinSponsoredPool,
-    isLoading,
+    leavePool,
+    leaveLoadingPool,
   };
 };
 
-export default useSponsoredPool;
+export default useLeavePool;

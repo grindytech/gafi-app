@@ -2,6 +2,7 @@ import { Button, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import useLeavePool from 'hooks/useLeavePool';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useSponsoredPool from 'hooks/useSponsoredPool';
 
@@ -12,7 +13,9 @@ interface IProps {
 const TableActions: React.FC<IProps> = ({ poolId }) => {
   const { t } = useTranslation();
   const { joinedPoolInfo, isJoinedPool, refetch } = useLoadSponsoredPool();
-  const { joinSponsoredPool, isLoading, leavePool } = useSponsoredPool(refetch);
+  const { leavePool } = useLeavePool(refetch);
+  const { joinSponsoredPool, isLoading } = useSponsoredPool(refetch);
+
   return (
     <>
       <Text
@@ -24,8 +27,9 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       >
         {t('DETAIL')}
       </Text>
-      {joinedPoolInfo?.ticketType.isCustom &&
-      joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() === poolId ? (
+
+      {(joinedPoolInfo?.isSponsored &&
+        joinedPoolInfo?.asSponsored.toHuman()) === poolId ? (
         <Button
           size="sm"
           sx={{
@@ -39,7 +43,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           variant="primary"
           onClick={e => {
             e.stopPropagation();
-            leavePool();
+            leavePool(isLoading.toString());
           }}
           isLoading={isLoading}
         >

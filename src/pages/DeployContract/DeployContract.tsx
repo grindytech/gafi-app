@@ -1,24 +1,39 @@
 import { Box, Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+
+// Chakra
+
+// React
+
+// Mdi
+
+// Components
 import { useTranslation } from 'react-i18next';
 
 import Dropzone from './components/Dropzone';
 
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
+
+// Translation
+
+// Hooks
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useDeploy from 'hooks/useDeploy';
 import useMessageToast from 'hooks/useMessageToast';
+
+// Utils
 import { shorten } from 'utils';
 
 const DeployContract = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [contractFiles, setContractFiles] = useState<any>([]);
   const { copySuccessToast } = useMessageToast();
-  const gaEventTracker = useAnalyticsEventTracker('Deploy contract');
   const { t } = useTranslation();
+  const gaEventTracker = useAnalyticsEventTracker('Deploy contract');
+
+  const [contractFiles, setContractFiles] = useState<any>([]);
+
   const { deploy, contractAddresses, txnFee, isLoading, isConnected } =
     useDeploy();
 

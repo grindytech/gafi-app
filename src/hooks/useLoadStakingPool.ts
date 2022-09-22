@@ -1,8 +1,9 @@
-import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
+import { GafiPrimitivesPoolTicketType } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
+import useLeavePool from './useLeavePool';
 import { IPool } from './useSponsoredPool';
 import useStakingPool from './useStakingPool';
 
@@ -11,11 +12,12 @@ import { PoolInfo } from 'interfaces/pool';
 
 const useLoadStakingPool = () => {
   const { api, currentAccount } = useSubstrateState();
-  const gaEventTracker = useAnalyticsEventTracker('Staking pool');
   const { t } = useTranslation();
+  const gaEventTracker = useAnalyticsEventTracker('Staking pool');
+
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
+    async (): Promise<GafiPrimitivesPoolTicketType | undefined> => {
       if (api) {
         const res = await api.query.pool.tickets(
           currentAccount?.address as string
@@ -30,11 +32,6 @@ const useLoadStakingPool = () => {
       enabled: !!currentAccount,
     }
   );
-  const isJoinedPool = !!joinedPoolInfo?.ticketType.toHuman();
-  const isJoinedStakingPool =
-    !!joinedPoolInfo &&
-    joinedPoolInfo.ticketType.isSystem &&
-    joinedPoolInfo.ticketType.asSystem.isStaking;
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
     async (): Promise<PoolInfo | undefined> => {
@@ -42,22 +39,28 @@ const useLoadStakingPool = () => {
         const basic = await api.query.stakingPool.services('Basic');
         const medium = await api.query.stakingPool.services('Medium');
         const advance = await api.query.stakingPool.services('Advance');
+
         return {
-          basic: basic.unwrap(),
-          medium: medium.unwrap(),
-          advance: advance.unwrap(),
+          basic,
+          medium,
+          advance,
         };
       }
     }
   );
 
-  const { joinStakingPool, leavePool, loadingPool } = useStakingPool(refetch);
+  const isJoinedPool = !!joinedPoolInfo?.toHuman();
+  const isJoinedStakingPool = !!joinedPoolInfo && joinedPoolInfo.isStaking;
+
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
+  const { joinStakingPool, loadingPool } = useStakingPool(refetch);
+
   const stakingPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
-      discount: poolInfo?.basic.service.discount.toNumber() || 0,
+      discount: poolInfo?.basic.discount.toNumber() || 0,
       rate: {
-        txLimit: poolInfo?.basic.service.txLimit.toNumber() || 0,
+        txLimit: poolInfo?.basic.txLimit.toNumber() || 0,
         minute: 30,
       },
       banner: '/assets/layout/pool-banner-4.svg',
@@ -73,17 +76,16 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave basic' });
         leavePool('Basic');
       },
-      isLoading: loadingPool === 'Basic',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Basic',
       isJoined:
-        isJoinedStakingPool &&
-        joinedPoolInfo?.ticketType.asSystem.asStaking.type === 'Basic',
+        isJoinedStakingPool && joinedPoolInfo.asStaking.type === 'Basic',
       isDisabled: isJoinedPool,
     },
     {
       poolType: t('MEDIUM'),
-      discount: poolInfo?.medium.service.discount.toNumber() || 0,
+      discount: poolInfo?.medium.discount.toNumber() || 0,
       rate: {
-        txLimit: poolInfo?.medium.service.txLimit.toNumber() || 0,
+        txLimit: poolInfo?.medium.txLimit.toNumber() || 0,
         minute: 30,
       },
       banner: '/assets/layout/pool-banner-5.svg',
@@ -99,17 +101,15 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave Medium' });
         leavePool('Medium');
       },
-      isLoading: loadingPool === 'Medium',
-      isJoined:
-        isJoinedStakingPool &&
-        joinedPoolInfo?.ticketType.asSystem.asStaking.isMedium,
+      isLoading: (loadingPool || leaveLoadingPool) === 'Medium',
+      isJoined: isJoinedStakingPool && joinedPoolInfo.asStaking.isMedium,
       isDisabled: isJoinedPool,
     },
     {
       poolType: t('ADVANCE'),
-      discount: poolInfo?.advance.service.discount.toNumber() || 0,
+      discount: poolInfo?.advance.discount.toNumber() || 0,
       rate: {
-        txLimit: poolInfo?.advance.service.txLimit.toNumber() || 0,
+        txLimit: poolInfo?.advance.txLimit.toNumber() || 0,
         minute: 30,
       },
       banner: '/assets/layout/pool-banner-6.svg',
@@ -125,10 +125,8 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave Advance' });
         leavePool('Advance');
       },
-      isLoading: loadingPool === 'Advance',
-      isJoined:
-        isJoinedStakingPool &&
-        joinedPoolInfo?.ticketType.asSystem.asStaking.isAdvance,
+      isLoading: (loadingPool || leaveLoadingPool) === 'Advance',
+      isJoined: isJoinedStakingPool && joinedPoolInfo.asStaking.isAdvance,
       isDisabled: isJoinedPool,
     },
   ];

@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Avatar,
   Button,
@@ -34,70 +33,56 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useQueryParam } from 'use-query-params';
 
+import { ISponsoredPoolTableProps } from './Interface';
 import ModalEditPool from './ModalEditPool';
 import SponsoredPoolData from './SponsoredPoolData';
+import { poolDetail } from './Styled';
 
 import Card from 'components/card/Card';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
+import useLeavePool from 'hooks/useLeavePool';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useMessageToast from 'hooks/useMessageToast';
 import usePool from 'hooks/useSponsoredPool';
 import useWithdraw from 'hooks/useWithdraw';
 import { shorten } from 'utils';
 
-export interface ISponsoredPool {
-  id: string | undefined;
-  amount: string | undefined;
-  owner: string | undefined;
-  discount: number | undefined;
-  limit: number | undefined;
-}
-
-export interface TableCaption {
-  label: string;
-  fieldName: string;
-  display: boolean;
-}
-
-interface ISponsoredPoolTableProps {
-  captions: TableCaption[];
-  sponsoredPools: SponsoredPool[];
-  children: React.ReactNode;
-  limitRow: number;
-  isLoading: boolean;
-}
-
 const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { captions, sponsoredPools, children, limitRow, isLoading } = props;
+
   const onCloseDetail = () => {
     setSelectedPoolDetail(undefined);
   };
+
   const { withdrawPoolBalance, isLoading: withdrawLoading } =
     useWithdraw(onCloseDetail);
   const { joinedPoolInfo, isJoinedPool, refetch, joinedPool } =
     useLoadSponsoredPool();
-
-  const {
-    joinSponsoredPool,
-    isLoading: isSponsoredPoolLoading,
-    leavePool,
-  } = usePool(refetch, onCloseDetail);
+  const { joinSponsoredPool, isLoading: isSponsoredPoolLoading } = usePool(
+    refetch,
+    onCloseDetail
+  );
+  const { leavePool } = useLeavePool(refetch);
   const { copySuccessToast } = useMessageToast();
+
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
   const [type, _] = useQueryParam('type');
+
   const isOwned = type === 'owned';
   const [selectedPoolDetail, setSelectedPoolDetail] = useState<
     SponsoredPool | undefined
   >();
-  const { chainDecimal } = useSubstrateState();
   const [selectedEditPool, setSelectedEditPool] = useState<
     SponsoredPool | undefined
   >();
+
+  const { chainDecimal } = useSubstrateState();
   const SkeletonArray = new Array(limitRow).fill(0);
+
   const isDisplayJoinedPool = useBreakpointValue({
     sm: true,
     md: false,
@@ -168,6 +153,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               </Text>
             </Flex>
           </Flex>
+
           <Flex justifyContent="center" px={5} py={4}>
             <Button
               size="sm"
@@ -176,7 +162,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               borderRadius="4xl"
               onClick={e => {
                 e.stopPropagation();
-                leavePool();
+                leavePool(isLoading.toString());
               }}
               isLoading={isSponsoredPoolLoading}
             >
@@ -228,6 +214,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           {/* <TableCaption>{}</TableCaption> */}
         </Table>
       </Card>
+
       {children}
 
       <ModalEditPool
@@ -382,8 +369,8 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 </Flex>
               ) : (
                 <Flex justifyContent="center" px={5} py={4}>
-                  {joinedPoolInfo?.ticketType.isCustom &&
-                  joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() ===
+                  {joinedPoolInfo?.isSponsored &&
+                  joinedPoolInfo?.asSponsored.toHuman() ===
                     selectedPoolDetail.id ? (
                     <Button
                       size="sm"
@@ -392,7 +379,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                       borderRadius="4xl"
                       onClick={e => {
                         e.stopPropagation();
-                        leavePool();
+                        leavePool(isLoading.toString());
                       }}
                       isLoading={isSponsoredPoolLoading}
                     >
@@ -425,8 +412,3 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
 };
 
 export default SponsoredPoolTable;
-
-const poolDetail = {
-  h: '400px',
-  borderRadius: '24px 24px 0px 0px',
-};

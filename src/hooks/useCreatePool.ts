@@ -42,13 +42,16 @@ const useCreatePool = (onSuccess: () => void) => {
   const createPoolMutation = useMutation(
     async (data: ISponsoredPoolForm) => {
       const [account, options] = await getFromAcct(currentAccount);
+
       const targets = data.targets.map(target => target.contractAddress);
+
       const txExecute = api?.tx.sponsoredPool.createPool(
         targets,
         parseUnits(data.poolAmount.toString(), chainDecimal).toString(),
         parseFloat(data.discount) * 10000,
         data.txLimit
       );
+
       return txExecute?.signAndSend(account, options || {}, txCallback);
     },
     {
@@ -69,8 +72,8 @@ const useCreatePool = (onSuccess: () => void) => {
 
   return {
     createPool: (data: ISponsoredPoolForm) => {
-      setIsLoading(true);
       createPoolMutation.mutate(data);
+      setIsLoading(true);
     },
     isLoading,
   };

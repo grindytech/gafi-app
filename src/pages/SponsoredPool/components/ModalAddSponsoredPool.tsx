@@ -37,23 +37,92 @@ export interface ISponsoredPoolForm {
 
 const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
-    defaultValues: { targets: [{ contractAddress: '' }] },
-  });
   const history = useHistory();
+  const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
+    defaultValues: {
+      targets: [
+        {
+          contractAddress: '',
+        },
+      ],
+    },
+  });
+
   const { polkadotBalance } = usePolkadotBalance();
   const { createPool, isLoading } = useCreatePool(() => {
     onClose();
     history.push('/admin/sponsored-pool?type=owned');
   });
+
   const { fields, append, remove } = useFieldArray<ISponsoredPoolForm>({
     control,
     name: 'targets',
   });
 
+  const formList = [
+    {
+      key: '0',
+      t: t('POOL_AMOUNT'),
+      id: 'pool',
+      controller: (
+        <Controller
+          control={control}
+          name="poolAmount"
+          render={({ field }) => (
+            <NumberInput
+              inputName="poolAmount"
+              value={field.value}
+              onChange={field.onChange}
+              max={parseFloat(polkadotBalance?.toString() || '0')}
+            />
+          )}
+          rules={{
+            required: {
+              value: true,
+              message: 'REQUIRED_VALIDATION',
+            },
+          }}
+        />
+      ),
+    },
+    {
+      key: '1',
+      t: t('DISCOUNT'),
+      size: 'lg',
+      type: 'text',
+      id: 'discount',
+      input: true,
+      register: {
+        ...register('discount', {
+          required: true,
+        }),
+      },
+    },
+    {
+      key: '2',
+      t: t('TRANSACTION_LIMIT'),
+      id: 'txLimit',
+      input: true,
+      register: {
+        ...register('txLimit', {
+          required: true,
+        }),
+      },
+    },
+    {
+      key: '3',
+      t: t('TARGETS'),
+      id: 'target',
+      targetFields: (
+        <TargetFields fields={fields} remove={remove} register={register} />
+      ),
+    },
+  ];
+
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
       <ModalOverlay />
+
       <ModalContent
         sx={{
           borderRadius: '16px',
@@ -61,6 +130,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
         p={3}
       >
         <ModalHeader>{t('CREATE_SPONSORED_POOL')}</ModalHeader>
+
         <form
           name="add-pool-form"
           onSubmit={handleSubmit((data: ISponsoredPoolForm) => {
@@ -68,61 +138,24 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
           })}
         >
           <ModalBody>
-            <FormControl mb={4}>
-              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
-                {t('POOL_AMOUNT')}
-              </FormLabel>
-              <Controller
-                control={control}
-                name="poolAmount"
-                render={({ field }) => (
-                  <NumberInput
-                    inputName="poolAmount"
-                    value={field.value}
-                    onChange={field.onChange}
-                    max={parseFloat(polkadotBalance?.toString() || '0')}
+            {formList.map(item => (
+              <FormControl mb={4} key={item.key}>
+                <FormLabel fontSize="md" fontWeight="normal" htmlFor={item.id}>
+                  {item.t}
+                </FormLabel>
+
+                {item.input && (
+                  <Input
+                    size={item.size}
+                    id={item.id}
+                    type={item.type}
+                    {...item.register}
                   />
                 )}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'REQUIRED_VALIDATION',
-                  },
-                }}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
-                {t('DISCOUNT')}
-              </FormLabel>
-              <Input
-                size="lg"
-                id="discount"
-                type="text"
-                {...register('discount', { required: true })}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
-                {t('TRANSACTION_LIMIT')}
-              </FormLabel>
-              <Input
-                size="lg"
-                id="txLimit"
-                type="text"
-                {...register('txLimit', { required: true })}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
-                {t('TARGETS')}
-              </FormLabel>
-              <TargetFields
-                fields={fields}
-                remove={remove}
-                register={register}
-              />
-            </FormControl>
+                {item.controller && item.controller}
+                {item.targetFields && item.targetFields}
+              </FormControl>
+            ))}
 
             <Button
               disabled={fields.length >= 5}
@@ -138,6 +171,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
               {t('ADD_TARGETS')}
             </Button>
           </ModalBody>
+
           <ModalFooter>
             <Button size="sm" variant="transparent" mr={3} onClick={onClose}>
               {t('CANCEL')}

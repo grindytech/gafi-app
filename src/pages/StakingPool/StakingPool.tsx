@@ -11,6 +11,7 @@ import { IPool } from 'hooks/useSponsoredPool';
 const StakingPool = () => {
   const { t } = useTranslation();
   const { stakingPools } = useLoadStakingPool();
+
   return (
     <>
       <Banner

@@ -11,9 +11,13 @@ import { getFromAcct, handleTxError } from 'utils';
 
 const useMappingAccount = () => {
   const toast = useToast();
+
   const { t } = useTranslation();
+
   const { account, ethereum } = useWallet();
+
   const { api, currentAccount } = useSubstrateState();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const txResHandler = ({ status, events }: ISubmittableResult) => {
@@ -52,6 +56,7 @@ const useMappingAccount = () => {
 
   const mappingAccount = async (isWithdraw: boolean) => {
     setIsLoading(true);
+
     if (account && ethereum) {
       const [accountAddress, options] = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
@@ -61,17 +66,32 @@ const useMappingAccount = () => {
         account,
         ''
       );
+
       if (api) {
-        const txExecute = api.tx.proofAddressMapping.bond(
+        const txExecute = api.tx.addressMapping.bond(
           signature,
           account,
           isWithdraw
         );
 
+        // còn 1 bug là khi mapping MetaMask Notification show lên mà cancel sẽ bug , còn nếu sign xong hiện polkadot cancel thì không sao
         await txExecute
           .signAndSend(accountAddress, options || {}, txResHandler)
           .catch(txErrHandler);
       }
+    } else {
+      toast({
+        position: 'top-right',
+        title: t('CURRENT_TRANSACTION_STATUS'),
+        description: `you can't mapping without connect to metamask`,
+        isClosable: true,
+        status: 'info',
+      });
+
+      // timeOut to show effect loading
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   };
 

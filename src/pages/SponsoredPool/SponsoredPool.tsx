@@ -6,27 +6,43 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
+
+// Hooks
 import { mdiPlus } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ModalAddSponsoredPool from './components/ModalAddSponsoredPool';
+
+// Components
 import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
+
+// Translation
+
+// Mdi
+
+// Utils
 import * as constants from 'utils/constants';
+
+// React
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
+
   const gaEventTracker = useAnalyticsEventTracker('Sponsored pool');
+
   const { isOpen, onClose, onOpen } = useDisclosure();
+
   const isDisplay = useBreakpointValue({
     sm: true,
     '2xl': false,
   });
+
   const {
     isOwned,
     sponsoredPools,
@@ -35,6 +51,41 @@ const SponsoredPoolPage: React.FC = () => {
     currentPage,
     isLoading,
   } = useLoadSponsoredPool();
+
+  const captions = [
+    {
+      label: t('OWNER'),
+      fieldName: 'poolOwner',
+      display: true,
+    },
+    {
+      label: t('DISCOUNT'),
+      fieldName: 'discount',
+      display: true,
+    },
+    {
+      label: '',
+      fieldName: 'actions',
+      display: !!isDisplay,
+    },
+    {
+      label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+        minuteAmount: 30,
+      }),
+      fieldName: 'txLimit',
+      display: !isDisplay,
+    },
+    {
+      label: t('BALANCE'),
+      fieldName: 'amount',
+      display: !isDisplay,
+    },
+    {
+      label: t('ACTIONS'),
+      fieldName: 'actions',
+      display: !isDisplay,
+    },
+  ];
 
   return (
     <>
@@ -48,6 +99,7 @@ const SponsoredPoolPage: React.FC = () => {
         bannerBg="/assets/layout/sponsored-banner-bg.svg"
         btnLink="https://wiki.gafi.network/learn/sponsored-pool"
       />
+
       <Box p={{ sm: 4, md: 0 }}>
         <HStack justifyContent="flex-end">
           <Button
@@ -78,21 +130,9 @@ const SponsoredPoolPage: React.FC = () => {
             {t('ADD_POOL')}
           </Button>
         </HStack>
+
         <SponsoredPoolTable
-          captions={[
-            { label: t('OWNER'), fieldName: 'poolOwner', display: true },
-            { label: t('DISCOUNT'), fieldName: 'discount', display: true },
-            { label: '', fieldName: 'actions', display: !!isDisplay },
-            {
-              label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
-                minuteAmount: 30,
-              }),
-              fieldName: 'txLimit',
-              display: !isDisplay,
-            },
-            { label: t('BALANCE'), fieldName: 'amount', display: !isDisplay },
-            { label: t('ACTIONS'), fieldName: 'actions', display: !isDisplay },
-          ]}
+          captions={captions}
           sponsoredPools={sponsoredPools}
           limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
           isLoading={isLoading}
@@ -106,6 +146,7 @@ const SponsoredPoolPage: React.FC = () => {
           />
         </SponsoredPoolTable>
       </Box>
+
       {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
     </>
   );

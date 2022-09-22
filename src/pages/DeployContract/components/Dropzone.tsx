@@ -12,7 +12,9 @@ interface DropzoneProps {
 
 const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
   const [files, setFiles] = useState<File[]>([]);
+
   const { t } = useTranslation();
+
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (acceptedFiles && acceptedFiles.length > 0) {
@@ -43,6 +45,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
 
   return (
     <Card
+      // {...getRootProps({
+      //   refKey: "refs"
+      // })}
       {...getRootProps()}
       sx={{
         justifyContent: 'center',
@@ -58,9 +63,11 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
       }}
     >
       <input {...getInputProps()} />
+
       <Icon mb={4} color="primary" w={40} h={30}>
         <path fill="currentColor" d={mdiCloudUploadOutline} />
       </Icon>
+
       {isDragActive ? (
         <Text color="gray.500">{t('DROP_THE_FILES_HERE')}</Text>
       ) : (
@@ -77,6 +84,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUploadFile }) => {
           files.
         </Text>
       )}
+
       {React.Children.toArray(
         fileList.map(file => (
           <Text mt={3} color="grey">

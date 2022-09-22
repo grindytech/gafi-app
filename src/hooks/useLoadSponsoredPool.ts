@@ -1,4 +1,4 @@
-import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
+import { GafiPrimitivesPoolTicketType } from '@polkadot/types/lookup';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useQueryParam } from 'use-query-params';
@@ -21,7 +21,7 @@ const useLoadSponsoredPool = () => {
   const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketInfo | undefined> => {
+    async (): Promise<GafiPrimitivesPoolTicketType | undefined> => {
       if (api && currentAccount?.address) {
         const res = await api.query.pool.tickets(currentAccount?.address);
         if (res.isSome) {
@@ -34,7 +34,8 @@ const useLoadSponsoredPool = () => {
       enabled: !!currentAccount,
     }
   );
-  const isJoinedPool = !!joinedPoolInfo?.ticketType.toHuman();
+
+  const isJoinedPool = !!joinedPoolInfo?.toHuman();
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
@@ -58,12 +59,13 @@ const useLoadSponsoredPool = () => {
   const sponsoredPools = sponsoredPoolData
     ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
     : [];
+
   const totalCount = sponsoredPoolData?.sponsoredPools
     ?.totalCount as Scalars['Int'];
+
   useEffect(() => {
-    if (joinedPoolInfo?.ticketType.isCustom) {
-      const joinedPoolId =
-        joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman();
+    if (joinedPoolInfo?.isSponsored) {
+      const joinedPoolId = joinedPoolInfo?.asSponsored.toHuman();
       const foundPool = sponsoredPools.find(pool => pool.id === joinedPoolId);
       setJoinedPool(foundPool);
     } else {

@@ -1,3 +1,4 @@
+// Chakra
 import {
   Box,
   Button,
@@ -14,28 +15,52 @@ import {
   useToken,
   VStack,
 } from '@chakra-ui/react';
+
+// Mdi
 import { mdiContentCopy } from '@mdi/js';
-import React, { useState } from 'react';
+
+// React
+import { useState } from 'react';
+
+// Coppy
 import CopyToClipboard from 'react-copy-to-clipboard';
+
+// Translation
 import { useTranslation } from 'react-i18next';
+
+// Wallet
 import { useWallet } from 'use-wallet';
 
+// Components
 import Banner from 'components/Banner';
 import Card from 'components/card/Card';
+
+// Hooks
 import { useSubstrateState } from 'contexts/substrateContext';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useMappingAccount from 'hooks/useMappingAccount';
 import useMessageToast from 'hooks/useMessageToast';
+
+// Utils
 import { shorten } from 'utils';
+
+// Context
 
 function MappingAccount() {
   const { t } = useTranslation();
+
   const { account, connect, isConnected } = useWallet();
+
   const { currentAccount } = useSubstrateState();
+
   const [isWithdraw, setIsWithdraw] = useState(true);
+
   const { copySuccessToast } = useMessageToast();
+
   const { isLoading, mappingAccount } = useMappingAccount();
+
   const borderBottom = useToken('colors', 'borderBottom');
+
   const gaEventTracker = useAnalyticsEventTracker('Mapping account');
 
   return (
