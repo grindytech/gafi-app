@@ -17,7 +17,6 @@ const JoinPool = () => {
   const { t } = useTranslation();
   const { upfrontPools } = useLoadPoolInfo();
 
-  console.log('upfrontPools', upfrontPools);
   return (
     <>
       <Banner

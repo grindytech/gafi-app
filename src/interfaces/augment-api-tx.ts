@@ -4,11 +4,46 @@
 import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Bytes, Compact, Option, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { AnyNumber, ITuple } from '@polkadot/types-codec/types';
-import type { AccountId32, Call, H160, H256, MultiAddress, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-import type { EthereumTransactionTransactionV2, GafiPrimitivesTicketTicketType, SpCoreVoid, SpFinalityGrandpaEquivocationProof } from '@polkadot/types/lookup';
+import type { Call, H160, H256, MultiAddress, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
+import type { EthereumTransactionTransactionV2, GafiPrimitivesPoolTicketType, SpCoreVoid, SpFinalityGrandpaEquivocationProof } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/submittable' {
   export interface AugmentedSubmittables<ApiType extends ApiTypes> {
+    addressMapping: {
+      /**
+       * Bond Substrate(H256) address with EVM(H160) address
+       * 
+       * The origin must be Signed
+       * 
+       * Parameters:
+       * - `signature`: signature of the address that signed the message contain hex format of origin
+       * 
+       * - `address`: EVM(H160) address that you want to bond
+       * 
+       * - `withdraw`: true/false withdraw all the balance of original account of address trasfer to
+       * the origin, always KeepAlive original address
+       * 
+       * Emits `Bonded` event when successful.
+       * 
+       * Weight: `O(1)`
+       **/
+      bond: AugmentedSubmittable<(signature: U8aFixed | string | Uint8Array, address: H160 | string | Uint8Array, withdraw: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed, H160, bool]>;
+      /**
+       * Unbonded Substrate(H256) address to EVM(H160) address remove
+       * the bond so both two accounts will be using the default AddressMapping
+       * 
+       * The origin must be Signed
+       * 
+       * Emits `Unbonded` event when successful.
+       * 
+       * Weight: `O(1)`
+       **/
+      unbond: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
     balances: {
       /**
        * Exactly as `transfer`, except the origin must be root and the source account may be
@@ -148,71 +183,8 @@ declare module '@polkadot/api-base/types/submittable' {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
     faucet: {
-      /**
-       * donate
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `amount`: donation amount
-       * 
-       * Weight: `O(1)`
-       **/
       donate: AugmentedSubmittable<(amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128]>;
-      /**
-       * faucet
-       * 
-       * The origin must be Signed
-       * 
-       * Weight: `O(1)`
-       **/
       faucet: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
-    gameCreator: {
-      /**
-       * Change the contract ownership
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `contract`: smart-contract address to change
-       * - `new_owner`: new contract owner
-       * 
-       * Emits `Changed` event when successful.
-       * 
-       * Weight: `O(1)`
-       **/
-      changeOwnership: AugmentedSubmittable<(contract: H160 | string | Uint8Array, newOwner: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160, AccountId32]>;
-      /**
-       * Claim the contract as an origin contract creator
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `contract`: smart-contract address to claim
-       * 
-       * Emits `Claimed` event when successful.
-       * 
-       * Weight: `O(1)`
-       **/
-      claimContract: AugmentedSubmittable<(contract: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160]>;
-      /**
-       * Withdraw the ownership
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `contract`: smart-contract address
-       * 
-       * Emits `Withdrew` event when successful.
-       * 
-       * Weight: `O(1)`
-       **/
-      withdrawContract: AugmentedSubmittable<(contract: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H160]>;
       /**
        * Generic tx
        **/
@@ -253,18 +225,6 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    palletCache: {
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
-    palletCacheFaucet: {
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
     player: {
       createPlayer: AugmentedSubmittable<(name: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
       /**
@@ -273,115 +233,8 @@ declare module '@polkadot/api-base/types/submittable' {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
     pool: {
-      /**
-       * join pool
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `ticket`: ticket type
-       * 
-       * Weight: `O(1)`
-       **/
-      join: AugmentedSubmittable<(ticket: GafiPrimitivesTicketTicketType | { System: any } | { Custom: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [GafiPrimitivesTicketTicketType]>;
-      /**
-       * leave pool
-       * 
-       * The origin must be Signed
-       * 
-       * Weight: `O(1)`
-       **/
+      join: AugmentedSubmittable<(ticket: GafiPrimitivesPoolTicketType | { Upfront: any } | { Staking: any } | { Sponsored: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [GafiPrimitivesPoolTicketType]>;
       leave: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
-    poolName: {
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
-    proofAddressMapping: {
-      /**
-       * Bond Substrate(H256) address with EVM(H160) address
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `signature`: signature of the address that signed the message contain hex format of origin
-       * 
-       * - `address`: EVM(H160) address that you want to bond
-       * 
-       * - `withdraw`: true/false withdraw all the balance of original account of address trasfer to
-       * the origin, always KeepAlive original address
-       * 
-       * Emits `Bonded` event when successful.
-       * 
-       * Weight: `O(1)`
-       **/
-      bond: AugmentedSubmittable<(signature: U8aFixed | string | Uint8Array, address: H160 | string | Uint8Array, withdraw: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed, H160, bool]>;
-      /**
-       * Unbonded Substrate(H256) address to EVM(H160) address remove
-       * the bond so both two accounts will be using the default AddressMapping
-       * 
-       * The origin must be Signed
-       * 
-       * Emits `Unbonded` event when successful.
-       * 
-       * Weight: `O(1)`
-       **/
-      unbond: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
-    sponsoredPool: {
-      clearPoolName: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
-      /**
-       * Create Pool
-       * 
-       * Create new pool and deposit amount of `value` to the pool,
-       * the origin must be Signed
-       * 
-       * Parameters:
-       * - `targets`: smart-contract addresses
-       * - `value`: the amount token deposit to the pool
-       * - `discount`: transaction fee discount
-       * - `tx_limit`: the number of discounted transaction per period of time
-       * 
-       * Weight: `O(1)`
-       **/
-      createPool: AugmentedSubmittable<(targets: Vec<H160> | (H160 | string | Uint8Array)[], value: u128 | AnyNumber | Uint8Array, discount: Permill | AnyNumber | Uint8Array, txLimit: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<H160>, u128, Permill, u32]>;
-      killPoolName: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
-      /**
-       * New Targets
-       * 
-       * change the contract addresses by replace old addresses with the new one
-       * the origin as the owner of the pool must be Signed
-       * 
-       * Parameters:
-       * - `pool_id`: the id of the pool
-       * - `targets`: new smart-contract addresses
-       * 
-       * Weight: `O(1)`
-       **/
-      newTargets: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array, targets: Vec<H160> | (H160 | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [U8aFixed, Vec<H160>]>;
-      setPoolName: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array, name: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed, Bytes]>;
-      /**
-       * Withdraw Pool
-       * 
-       * withdraw all the balances remain in the pool and destroy the pool,
-       * the origin as the owner of the pool must be Signed
-       * 
-       * Parameters:
-       * - `pool_id`: the id of the pool
-       * 
-       * Weight: `O(1)`
-       **/
-      withdrawPool: AugmentedSubmittable<(poolId: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
       /**
        * Generic tx
        **/
@@ -531,6 +384,21 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
+    template: {
+      /**
+       * An example dispatchable that may throw a custom error.
+       **/
+      causeError: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      /**
+       * An example dispatchable that takes a singles value as a parameter, writes the value to
+       * storage and emits an event. This function must be dispatched by a signed extrinsic.
+       **/
+      doSomething: AugmentedSubmittable<(something: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
     timestamp: {
       /**
        * Set the current time.
@@ -557,16 +425,6 @@ declare module '@polkadot/api-base/types/submittable' {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
     txHandler: {
-      /**
-       * Set Gas Price
-       * 
-       * The root must be Signed
-       * 
-       * Parameters:
-       * - `new_gas_price`: new gas_price value
-       * 
-       * Weight: `O(1)`
-       **/
       setGasPrice: AugmentedSubmittable<(newGasPrice: U256 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [U256]>;
       /**
        * Generic tx

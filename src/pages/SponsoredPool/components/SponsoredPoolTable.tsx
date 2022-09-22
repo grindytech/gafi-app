@@ -168,6 +168,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               </Text>
             </Flex>
           </Flex>
+
           <Flex justifyContent="center" px={5} py={4}>
             <Button
               size="sm"
@@ -228,6 +229,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           {/* <TableCaption>{}</TableCaption> */}
         </Table>
       </Card>
+
       {children}
 
       <ModalEditPool
@@ -382,8 +384,8 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 </Flex>
               ) : (
                 <Flex justifyContent="center" px={5} py={4}>
-                  {joinedPoolInfo?.ticketType.isCustom &&
-                  joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() ===
+                  {joinedPoolInfo?.isSponsored &&
+                  joinedPoolInfo?.asSponsored.toHuman() ===
                     selectedPoolDetail.id ? (
                     <Button
                       size="sm"

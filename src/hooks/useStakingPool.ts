@@ -35,6 +35,7 @@ const useStakingPool = (refreshData: () => void) => {
       });
     }
   };
+
   const leavePool = async (poolPackage: string) => {
     setLoadingPool(poolPackage);
     const [account, options] = await getFromAcct(currentAccount);
@@ -77,7 +78,10 @@ const useStakingPool = (refreshData: () => void) => {
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api && account) {
-      const txExecute = api.tx.pool.join({ System: { Staking: poolPackage } });
+      const txExecute = api.tx.pool.join({
+        Staking: poolPackage,
+      });
+
       try {
         await txExecute.signAndSend(account, options || {}, txCallback);
       } catch (err: any) {

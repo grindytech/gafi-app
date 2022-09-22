@@ -24,8 +24,8 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       >
         {t('DETAIL')}
       </Text>
-      {joinedPoolInfo?.ticketType.isCustom &&
-      joinedPoolInfo?.ticketType.asCustom.asSponsored.toHuman() === poolId ? (
+      {joinedPoolInfo?.isSponsored &&
+      joinedPoolInfo?.asSponsored.toHuman() === poolId ? (
         <Button
           size="sm"
           sx={{
