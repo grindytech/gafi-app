@@ -10,7 +10,7 @@ import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
 const useMappingAccount = () => {
-  const toast = useToast();
+  const toast = useToast({ position: 'top-right', isClosable: true });
 
   const { t } = useTranslation();
 
@@ -24,25 +24,22 @@ const useMappingAccount = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        position: 'top-right',
         title: t('FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
-        isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
-        isClosable: true,
         status: 'info',
       });
     }
   };
 
   const txErrHandler = (err: any) => {
+    console.log('txErrHandler');
     toast({
       position: 'top-right',
       description: t('TRANSACTION_FAILED', {
@@ -61,37 +58,34 @@ const useMappingAccount = () => {
       const [accountAddress, options] = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount?.publicKey, undefined, false);
-      const signature = await web3.eth.personal.sign(
-        `Bond Gafi Network account:${data.toString()}`,
-        account,
-        ''
-      );
+      let signature = '';
+      try {
+        signature = await web3.eth.personal.sign(
+          `Bond Gafi Network account:${data.toString()}`,
+          account,
+          ''
+        );
+      } catch (error) {
+        setIsLoading(false);
+      }
 
-      if (api) {
+      if (api && signature) {
         const txExecute = api.tx.addressMapping.bond(
           signature,
           account,
           isWithdraw
         );
 
-        // còn 1 bug là khi mapping MetaMask Notification show lên mà cancel sẽ bug , còn nếu sign xong hiện polkadot cancel thì không sao
         await txExecute
           .signAndSend(accountAddress, options || {}, txResHandler)
           .catch(txErrHandler);
       }
     } else {
       toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: `you can't mapping without connect to metamask`,
-        isClosable: true,
+        title: t('INSTALL_METAMASK'),
+        description: t('NEED_TO_INSTALL_METAMASK'),
         status: 'info',
       });
-
-      // timeOut to show effect loading
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
     }
   };
 
