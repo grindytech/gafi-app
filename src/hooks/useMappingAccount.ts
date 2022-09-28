@@ -10,7 +10,10 @@ import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
 const useMappingAccount = () => {
-  const toast = useToast();
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+  });
   const { t } = useTranslation();
   const { account, ethereum } = useWallet();
   const { api, currentAccount } = useSubstrateState();
@@ -20,31 +23,24 @@ const useMappingAccount = () => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        position: 'top-right',
         title: t('FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
-        isClosable: true,
         status: 'success',
       });
       setIsLoading(false);
     } else {
       toast({
-        position: 'top-right',
         title: t('CURRENT_TRANSACTION_STATUS'),
         description: status.type,
-        isClosable: true,
         status: 'info',
       });
     }
   };
-
   const txErrHandler = (err: any) => {
     toast({
-      position: 'top-right',
       description: t('TRANSACTION_FAILED', {
         errorMessage: err.toString(),
       }),
-      isClosable: true,
       status: 'error',
     });
     setIsLoading(false);
@@ -52,17 +48,25 @@ const useMappingAccount = () => {
 
   const mappingAccount = async (isWithdraw: boolean) => {
     setIsLoading(true);
+
     if (account && ethereum) {
       const [accountAddress, options] = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount?.publicKey, undefined, false);
-      const signature = await web3.eth.personal.sign(
-        `Bond Gafi Network account:${data.toString()}`,
-        account,
-        ''
-      );
-      if (api) {
-        const txExecute = api.tx.proofAddressMapping.bond(
+      let signature = '';
+
+      try {
+        signature = await web3.eth.personal.sign(
+          `Bond Gafi Network account:${data.toString()}`,
+          account,
+          ''
+        );
+      } catch (error) {
+        setIsLoading(false);
+      }
+
+      if (api && signature) {
+        const txExecute = api.tx.addressMapping.bond(
           signature,
           account,
           isWithdraw
@@ -72,6 +76,13 @@ const useMappingAccount = () => {
           .signAndSend(accountAddress, options || {}, txResHandler)
           .catch(txErrHandler);
       }
+    } else {
+      toast({
+        title: t('INSTALL_METAMASK'),
+        description: t('NEED_TO_INSTALL_METAMASK'),
+        status: 'info',
+      });
+      setIsLoading(false);
     }
   };
 

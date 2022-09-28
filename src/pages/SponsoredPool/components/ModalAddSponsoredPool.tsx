@@ -37,15 +37,23 @@ export interface ISponsoredPoolForm {
 
 const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
-    defaultValues: { targets: [{ contractAddress: '' }] },
-  });
   const history = useHistory();
+  const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
+    defaultValues: {
+      targets: [
+        {
+          contractAddress: '',
+        },
+      ],
+    },
+  });
+
   const { polkadotBalance } = usePolkadotBalance();
   const { createPool, isLoading } = useCreatePool(() => {
     onClose();
     history.push('/admin/sponsored-pool?type=owned');
   });
+
   const { fields, append, remove } = useFieldArray<ISponsoredPoolForm>({
     control,
     name: 'targets',
@@ -54,6 +62,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
       <ModalOverlay />
+
       <ModalContent
         sx={{
           borderRadius: '16px',
@@ -61,6 +70,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
         p={3}
       >
         <ModalHeader>{t('CREATE_SPONSORED_POOL')}</ModalHeader>
+
         <form
           name="add-pool-form"
           onSubmit={handleSubmit((data: ISponsoredPoolForm) => {
@@ -138,6 +148,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
               {t('ADD_TARGETS')}
             </Button>
           </ModalBody>
+
           <ModalFooter>
             <Button size="sm" variant="transparent" mr={3} onClick={onClose}>
               {t('CANCEL')}

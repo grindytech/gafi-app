@@ -7,48 +7,50 @@ import useTxCallback from './useTxCallback';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
 
-const useUpfrontPool = (refetch: () => void) => {
+const useLeavePool = (refetch: () => void) => {
   const { t } = useTranslation();
   const toast = useToast();
-  const [loadingPool, setLoadingPool] = useState('');
   const { api, currentAccount } = useSubstrateState();
 
+  const [leaveLoadingPool, setLeaveLoadingPool] = useState('');
+
   const onSucess = () => {
-    setLoadingPool('');
     refetch();
+    setLeaveLoadingPool('');
   };
 
   const txCallback = useTxCallback(onSucess);
 
-  const joinUpfrontPool = async (poolPackage: string) => {
-    setLoadingPool(poolPackage);
+  const leavePool = async (poolPackage: string) => {
+    setLeaveLoadingPool(poolPackage);
 
     const [account, options] = await getFromAcct(currentAccount);
 
-    if (api && account) {
-      const txExecute = api.tx.pool.join({
-        Upfront: poolPackage,
-      });
+    if (api) {
+      const txExecute = api.tx.pool.leave();
+
       try {
-        await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
+        return options
+          ? await txExecute.signAndSend(account, options, txCallback)
+          : await txExecute.signAndSend(account, txCallback);
+      } catch (error: any) {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
+            errorMessage: error.toString(),
           }),
           isClosable: true,
           status: 'error',
         });
-        setLoadingPool('');
+        setLeaveLoadingPool('');
       }
     }
   };
 
   return {
-    loadingPool,
-    joinUpfrontPool,
+    leavePool,
+    leaveLoadingPool,
   };
 };
 
-export default useUpfrontPool;
+export default useLeavePool;

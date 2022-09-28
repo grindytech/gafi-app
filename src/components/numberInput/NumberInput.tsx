@@ -15,8 +15,14 @@ interface Props {
   inputName?: string;
 }
 
-const NumberInput: React.FC<Props> = ({ value, onChange, max, inputName }) => {
+const NumberInput: React.FC<Props> = ({
+  value = '', // empty string to not warns "uncontrolled input"
+  onChange,
+  max,
+  inputName,
+}) => {
   const { t } = useTranslation();
+
   return (
     <HStack spacing={0}>
       <InputGroup overflow="hidden">
@@ -24,13 +30,11 @@ const NumberInput: React.FC<Props> = ({ value, onChange, max, inputName }) => {
           name={inputName}
           type="number"
           value={value}
-          onChange={e => {
-            if (parseFloat(e.target.value) > max) {
-              onChange(Math.floor(max));
-            } else {
-              onChange(e.target.value);
-            }
-          }}
+          onChange={event =>
+            parseFloat(event.target.value) > max
+              ? onChange(Math.floor(max))
+              : onChange(event.target.value)
+          }
         />
         <InputRightAddon onClick={() => onChange(Math.floor(max))}>
           <Text textTransform="uppercase" fontWeight={700}>

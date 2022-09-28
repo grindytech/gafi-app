@@ -59,8 +59,10 @@ const useLoadSponsoredPool = () => {
   const sponsoredPools = sponsoredPoolData
     ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
     : [];
+
   const totalCount = sponsoredPoolData?.sponsoredPools
     ?.totalCount as Scalars['Int'];
+
   useEffect(() => {
     if (joinedPoolInfo?.isSponsored) {
       const joinedPoolId = joinedPoolInfo?.asSponsored.toHuman();

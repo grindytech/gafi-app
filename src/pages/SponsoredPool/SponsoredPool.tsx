@@ -134,6 +134,7 @@ const SponsoredPoolPage: React.FC = () => {
           />
         </SponsoredPoolTable>
       </Box>
+
       {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
     </>
   );

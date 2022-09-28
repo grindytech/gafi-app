@@ -201,7 +201,7 @@ const loadCurrentAccount = (
     dispatch({ type: 'LOAD_CURRENT_ACCOUNT' });
     try {
       const pairs = keyring?.getPairs() || [];
-      const response = await api?.query.proofAddressMapping.h160Mapping(
+      const response = await api?.query.addressMapping.h160Mapping(
         metamaskAccount
       );
       const polkadotAccountWasMapped = (await response?.toHuman()) || '';

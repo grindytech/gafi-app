@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
+import useLeavePool from './useLeavePool';
 import { IPool } from './useSponsoredPool';
 import useUpfrontPool from './useUpfrontPool';
 
@@ -13,6 +14,7 @@ const useLoadUpfrontPool = () => {
   const { api, currentAccount } = useSubstrateState();
   const gaEventTracker = useAnalyticsEventTracker('Upfront pool');
   const { t } = useTranslation();
+
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
     async (): Promise<GafiPrimitivesPoolTicketType | undefined> => {
@@ -20,7 +22,6 @@ const useLoadUpfrontPool = () => {
         const res = await api.query.pool.tickets(
           currentAccount?.address as string
         );
-        // console.log('res', res)
         if (res.isSome) {
           return res.unwrap();
         }
@@ -31,9 +32,6 @@ const useLoadUpfrontPool = () => {
       enabled: !!currentAccount,
     }
   );
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
-  const isJoinedUpfrontPool = !!joinedPoolInfo && joinedPoolInfo.isUpfront;
-
   const { data: upfrontPoolInfo } = useQuery(
     'getPoolInfo',
     async (): Promise<PoolInfo | undefined> => {
@@ -51,7 +49,12 @@ const useLoadUpfrontPool = () => {
     }
   );
 
-  const { joinUpfrontPool, leavePool, loadingPool } = useUpfrontPool(refetch);
+  const isJoinedPool = !!joinedPoolInfo?.toHuman();
+  const isJoinedUpfrontPool = !!joinedPoolInfo && joinedPoolInfo.isUpfront;
+
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
+  const { joinUpfrontPool, loadingPool } = useUpfrontPool(refetch);
+
   const upfrontPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
@@ -73,7 +76,7 @@ const useLoadUpfrontPool = () => {
         gaEventTracker({ action: 'Leave basic' });
         leavePool('Basic');
       },
-      isLoading: loadingPool === 'Basic',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Basic',
       isJoined:
         isJoinedUpfrontPool && joinedPoolInfo.asUpfront.type === 'Basic',
       isDisabled: isJoinedPool,
@@ -98,7 +101,7 @@ const useLoadUpfrontPool = () => {
         gaEventTracker({ action: 'Leave Medium' });
         leavePool('Medium');
       },
-      isLoading: loadingPool === 'Medium',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Medium',
       isJoined: isJoinedUpfrontPool && joinedPoolInfo?.asUpfront.isMedium,
       isDisabled: isJoinedPool,
     },
@@ -122,7 +125,7 @@ const useLoadUpfrontPool = () => {
         gaEventTracker({ action: 'Leave Advance' });
         leavePool('Advance');
       },
-      isLoading: loadingPool === 'Advance',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Advance',
       isJoined: isJoinedUpfrontPool && joinedPoolInfo.asUpfront.isAdvance,
       isDisabled: isJoinedPool,
     },

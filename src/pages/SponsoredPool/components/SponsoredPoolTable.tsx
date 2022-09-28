@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Avatar,
   Button,
@@ -41,21 +40,14 @@ import Card from 'components/card/Card';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { SponsoredPool } from 'graphQL/generates';
+import useLeavePool from 'hooks/useLeavePool';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useMessageToast from 'hooks/useMessageToast';
 import usePool from 'hooks/useSponsoredPool';
 import useWithdraw from 'hooks/useWithdraw';
 import { shorten } from 'utils';
 
-export interface ISponsoredPool {
-  id: string | undefined;
-  amount: string | undefined;
-  owner: string | undefined;
-  discount: number | undefined;
-  limit: number | undefined;
-}
-
-export interface TableCaption {
+interface TableCaption {
   label: string;
   fieldName: string;
   display: boolean;
@@ -73,31 +65,36 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { captions, sponsoredPools, children, limitRow, isLoading } = props;
+
   const onCloseDetail = () => {
     setSelectedPoolDetail(undefined);
   };
+
   const { withdrawPoolBalance, isLoading: withdrawLoading } =
     useWithdraw(onCloseDetail);
   const { joinedPoolInfo, isJoinedPool, refetch, joinedPool } =
     useLoadSponsoredPool();
-
-  const {
-    joinSponsoredPool,
-    isLoading: isSponsoredPoolLoading,
-    leavePool,
-  } = usePool(refetch, onCloseDetail);
+  const { joinSponsoredPool, isLoading: isSponsoredPoolLoading } = usePool(
+    refetch,
+    onCloseDetail
+  );
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { copySuccessToast } = useMessageToast();
+
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
   const [type, _] = useQueryParam('type');
+
   const isOwned = type === 'owned';
   const [selectedPoolDetail, setSelectedPoolDetail] = useState<
     SponsoredPool | undefined
   >();
-  const { chainDecimal } = useSubstrateState();
   const [selectedEditPool, setSelectedEditPool] = useState<
     SponsoredPool | undefined
   >();
+
+  const { chainDecimal } = useSubstrateState();
   const SkeletonArray = new Array(limitRow).fill(0);
+
   const isDisplayJoinedPool = useBreakpointValue({
     sm: true,
     md: false,
@@ -177,7 +174,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               borderRadius="4xl"
               onClick={e => {
                 e.stopPropagation();
-                leavePool();
+                leavePool(leaveLoadingPool);
               }}
               isLoading={isSponsoredPoolLoading}
             >
@@ -394,7 +391,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                       borderRadius="4xl"
                       onClick={e => {
                         e.stopPropagation();
-                        leavePool();
+                        leavePool(leaveLoadingPool);
                       }}
                       isLoading={isSponsoredPoolLoading}
                     >

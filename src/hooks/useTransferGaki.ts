@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
+import useTxCallback from './useTxCallback';
+
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
@@ -13,34 +15,19 @@ interface IMutationParams {
   amount: number;
 }
 
-const useTransferGaki = (onSuccess: () => void) => {
+const useTransferGaki = (refetch: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount, chainDecimal } = useSubstrateState();
   const toast = useToast();
   const { t } = useTranslation();
   const { parseUnits } = ethers.utils;
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        position: 'top-right',
-        description: t('TRANSFER_SUCCESS'),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-      onSuccess();
-    } else {
-      toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
+  const onSucess = () => {
+    setIsLoading(false);
+    refetch();
   };
+
+  const txCallback = useTxCallback(onSucess, 'TRANSFER_SUCCESS');
 
   const mutation = useMutation(
     async ({ transferTo, amount }: IMutationParams) => {

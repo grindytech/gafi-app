@@ -14,8 +14,13 @@ interface IProps {
 
 const Pool: React.FC<IProps> = ({ pool, sx }) => {
   const { formatUnits } = ethers.utils;
+
   const { chainDecimal } = useSubstrateState();
+
   const { t } = useTranslation();
+
+  const currentDiscount = 10000;
+
   return (
     <Card sx={{ ...sx, p: 0, overflow: 'hidden' }}>
       <Box
@@ -23,18 +28,19 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           ...bannerStyled,
           background: `url(${pool.banner}) no-repeat center`,
           backgroundSize: 'cover',
-
           height: { sm: 24, md: 210, lg: 24, xl: 210 },
         }}
       >
         <Heading> {pool.poolType}</Heading>
       </Box>
+
       <Box sx={contentStyled}>
         <Heading as="h2" size="lg" pt={{ base: 4, md: 8 }} mb={4}>
           {t('DISCOUNT_FEE', {
-            discountPercent: pool.discount / 10000,
+            discountPercent: pool.discount / currentDiscount,
           })}
         </Heading>
+
         <Box mb={{ base: 10, md: 16 }}>
           <Text color="greyText">
             {t('TRANSACTIONS_RATE', {
@@ -42,6 +48,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
               minute: pool.rate.minute,
             })}
           </Text>
+
           <Text color="greyText">
             {t('POOL_FEE', {
               poolFee: formatUnits(pool.fee.gaki, chainDecimal),
@@ -49,6 +56,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
             })}
           </Text>
         </Box>
+
         {pool.isJoined ? (
           <Button
             onClick={pool.onLeave}

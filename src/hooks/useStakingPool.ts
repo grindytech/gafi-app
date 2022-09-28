@@ -1,80 +1,28 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import useTxCallback from './useTxCallback';
+
 import { useSubstrateState } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct } from 'utils';
 
-const useStakingPool = (refreshData: () => void) => {
+const useStakingPool = (refetch: () => void) => {
   const { t } = useTranslation();
-
   const toast = useToast();
-  const { api, currentAccount } = useSubstrateState();
   const [loadingPool, setLoadingPool] = useState('');
+  const { api, currentAccount } = useSubstrateState();
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        position: 'top-right',
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      refreshData();
-      setLoadingPool('');
-    } else {
-      toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
+  const onSucess = () => {
+    setLoadingPool('');
+    refetch();
   };
 
-  const leavePool = async (poolPackage: string) => {
-    setLoadingPool(poolPackage);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api) {
-      const txExecute = api.tx.pool.leave();
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            position: 'top-right',
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoadingPool('');
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            position: 'top-right',
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoadingPool('');
-        }
-      }
-    }
-  };
+  const txCallback = useTxCallback(onSucess);
 
   const joinStakingPool = async (poolPackage: string) => {
     setLoadingPool(poolPackage);
+
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api && account) {
@@ -84,11 +32,11 @@ const useStakingPool = (refreshData: () => void) => {
 
       try {
         await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
+      } catch (error: any) {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
+            errorMessage: error.toString(),
           }),
           isClosable: true,
           status: 'error',
@@ -99,9 +47,8 @@ const useStakingPool = (refreshData: () => void) => {
   };
 
   return {
-    loadingPool,
     joinStakingPool,
-    leavePool,
+    loadingPool,
   };
 };
 

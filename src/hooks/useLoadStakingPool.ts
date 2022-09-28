@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
+import useLeavePool from './useLeavePool';
 import { IPool } from './useSponsoredPool';
 import useStakingPool from './useStakingPool';
 
@@ -33,9 +34,6 @@ const useLoadStakingPool = () => {
       enabled: !!currentAccount,
     }
   );
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
-  const isJoinedStakingPool = !!joinedPoolInfo && joinedPoolInfo.isStaking;
-
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
     async (): Promise<PoolInfo | undefined> => {
@@ -53,7 +51,12 @@ const useLoadStakingPool = () => {
     }
   );
 
-  const { joinStakingPool, leavePool, loadingPool } = useStakingPool(refetch);
+  const isJoinedPool = !!joinedPoolInfo?.toHuman();
+  const isJoinedStakingPool = !!joinedPoolInfo && joinedPoolInfo.isStaking;
+
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
+  const { joinStakingPool, loadingPool } = useStakingPool(refetch);
+
   const stakingPools: Array<IPool> = [
     {
       poolType: t('BASIC'),
@@ -75,7 +78,7 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave basic' });
         leavePool('Basic');
       },
-      isLoading: loadingPool === 'Basic',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Basic',
       isJoined:
         isJoinedStakingPool && joinedPoolInfo.asStaking.type === 'Basic',
       isDisabled: isJoinedPool,
@@ -100,7 +103,7 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave Medium' });
         leavePool('Medium');
       },
-      isLoading: loadingPool === 'Medium',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Medium',
       isJoined: isJoinedStakingPool && joinedPoolInfo.asStaking.isMedium,
       isDisabled: isJoinedPool,
     },
@@ -124,7 +127,7 @@ const useLoadStakingPool = () => {
         gaEventTracker({ action: 'Leave Advance' });
         leavePool('Advance');
       },
-      isLoading: loadingPool === 'Advance',
+      isLoading: (loadingPool || leaveLoadingPool) === 'Advance',
       isJoined: isJoinedStakingPool && joinedPoolInfo.asStaking.isAdvance,
       isDisabled: isJoinedPool,
     },

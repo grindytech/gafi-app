@@ -15,7 +15,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
