@@ -12,8 +12,10 @@ import { PoolInfo } from 'interfaces/pool';
 
 const useLoadStakingPool = () => {
   const { api, currentAccount } = useSubstrateState();
-  const { t } = useTranslation();
+
   const gaEventTracker = useAnalyticsEventTracker('Staking pool');
+
+  const { t } = useTranslation();
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
