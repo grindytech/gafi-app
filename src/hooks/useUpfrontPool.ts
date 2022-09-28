@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import useSignAndSend from './useSignAndSend';
+import useTxCallback from './useTxCallback';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
@@ -18,7 +18,7 @@ const useUpfrontPool = (refetch: () => void) => {
     refetch();
   };
 
-  const txCallback = useSignAndSend(onSucess);
+  const txCallback = useTxCallback(onSucess);
 
   const joinUpfrontPool = async (poolPackage: string) => {
     setLoadingPool(poolPackage);

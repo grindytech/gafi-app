@@ -78,7 +78,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
     refetch,
     onCloseDetail
   );
-  const { leavePool } = useLeavePool(refetch);
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { copySuccessToast } = useMessageToast();
 
   const [selectedPool, setSelectedPool] = useState<SponsoredPool | undefined>();
@@ -174,7 +174,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               borderRadius="4xl"
               onClick={e => {
                 e.stopPropagation();
-                leavePool(isLoading.toString());
+                leavePool(leaveLoadingPool);
               }}
               isLoading={isSponsoredPoolLoading}
             >
@@ -391,7 +391,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                       borderRadius="4xl"
                       onClick={e => {
                         e.stopPropagation();
-                        leavePool(isLoading.toString());
+                        leavePool(leaveLoadingPool);
                       }}
                       isLoading={isSponsoredPoolLoading}
                     >

@@ -13,7 +13,7 @@ interface IProps {
 const TableActions: React.FC<IProps> = ({ poolId }) => {
   const { t } = useTranslation();
   const { joinedPoolInfo, isJoinedPool, refetch } = useLoadSponsoredPool();
-  const { leavePool } = useLeavePool(refetch);
+  const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { joinSponsoredPool, isLoading } = useSponsoredPool(refetch);
 
   return (
@@ -43,7 +43,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           variant="primary"
           onClick={e => {
             e.stopPropagation();
-            leavePool(isLoading.toString());
+            leavePool(leaveLoadingPool);
           }}
           isLoading={isLoading}
         >

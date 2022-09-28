@@ -37,7 +37,6 @@ const useMappingAccount = () => {
     }
   };
   const txErrHandler = (err: any) => {
-    console.log('txErrHandler');
     toast({
       description: t('TRANSACTION_FAILED', {
         errorMessage: err.toString(),
