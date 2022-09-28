@@ -5,22 +5,25 @@ import { useTranslation } from 'react-i18next';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { handleTxError } from 'utils';
 
-export default function useSignAndSend(onSuccess: () => void) {
+export default function useTxCallback(onSucess: () => void, sucess?: string) {
+  const { api } = useSubstrateState();
+
   const { t } = useTranslation();
 
-  const toast = useToast({ position: 'top-right', isClosable: true });
-
-  const { api } = useSubstrateState();
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+  });
 
   const txCallback = ({ status, events }: ISubmittableResult) => {
     if (status.isFinalized) {
       handleTxError(events, api, toast);
       toast({
-        title: t('FINALIZED_BLOCK_HASH'),
+        title: t(sucess ?? 'FINALIZED_BLOCK_HASH'),
         description: status.asFinalized.toString(),
         status: 'success',
       });
-      onSuccess();
+      onSucess();
     } else {
       toast({
         title: t('CURRENT_TRANSACTION_STATUS'),

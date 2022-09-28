@@ -6,30 +6,18 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-
-// Hooks
 import { mdiPlus } from '@mdi/js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ModalAddSponsoredPool from './components/ModalAddSponsoredPool';
-
-// Components
 import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
-
-// Translation
-
-// Mdi
-
-// Utils
 import * as constants from 'utils/constants';
-
-// React
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();

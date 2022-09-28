@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
+import useTxCallback from './useTxCallback';
+
 import { useSubstrateState } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct } from 'utils';
 
 export interface IPool {
   poolType: string;
@@ -26,36 +28,14 @@ export interface IPool {
   isDisabled: boolean;
 }
 
-const useSponsoredPool = (refreshData: () => void, onClose?: () => void) => {
+const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
   const { t } = useTranslation();
 
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        position: 'top-right',
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      refreshData();
-      setIsLoading(false);
-      if (onClose) onClose();
-    } else {
-      toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
+  const txCallback = useTxCallback(refetch);
 
   const mutation = useMutation(
     async (poolId: string) => {

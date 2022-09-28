@@ -1,20 +1,12 @@
-// Translation
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-// React
-
-// Chakra
-
-// Hooks
 import Pool from './components/Pool';
 
 import Banner from 'components/Banner';
 import useLoadPoolInfo from 'hooks/useLoadUpfrontPool';
 import { IPool } from 'hooks/useSponsoredPool';
-
-// Components
 
 export interface TicketType {
   upfront?: string;

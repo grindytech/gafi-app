@@ -1,11 +1,12 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
+import useTxCallback from './useTxCallback';
+
 import { useSubstrateState } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct } from 'utils';
 
 const useWithdraw = (onClose?: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,28 +14,13 @@ const useWithdraw = (onClose?: () => void) => {
   const toast = useToast();
   const { t } = useTranslation();
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        position: 'top-right',
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-      if (onClose) onClose();
-    } else {
-      toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
+  const onSucess = () => {
+    if (onClose) onClose();
+
+    setIsLoading(false);
   };
+
+  const txCallback = useTxCallback(onSucess);
 
   const mutation = useMutation(
     async (poolId: string) => {

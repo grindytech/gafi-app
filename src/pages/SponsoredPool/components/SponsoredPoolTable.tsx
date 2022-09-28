@@ -33,10 +33,8 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useQueryParam } from 'use-query-params';
 
-import { ISponsoredPoolTableProps } from './Interface';
 import ModalEditPool from './ModalEditPool';
 import SponsoredPoolData from './SponsoredPoolData';
-import { poolDetail } from './Styled';
 
 import Card from 'components/card/Card';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
@@ -48,6 +46,20 @@ import useMessageToast from 'hooks/useMessageToast';
 import usePool from 'hooks/useSponsoredPool';
 import useWithdraw from 'hooks/useWithdraw';
 import { shorten } from 'utils';
+
+interface TableCaption {
+  label: string;
+  fieldName: string;
+  display: boolean;
+}
+
+interface ISponsoredPoolTableProps {
+  captions: TableCaption[];
+  sponsoredPools: SponsoredPool[];
+  children: React.ReactNode;
+  limitRow: number;
+  isLoading: boolean;
+}
 
 const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const { t } = useTranslation();
@@ -412,3 +424,8 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
 };
 
 export default SponsoredPoolTable;
+
+const poolDetail = {
+  h: '400px',
+  borderRadius: '24px 24px 0px 0px',
+};

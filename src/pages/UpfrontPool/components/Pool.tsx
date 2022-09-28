@@ -3,8 +3,6 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { bannerStyled, contentStyled } from './Styled';
-
 import Card from 'components/card/Card';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { IPool } from 'hooks/useSponsoredPool';
@@ -84,3 +82,21 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
 };
 
 export default Pool;
+
+const bannerStyled = {
+  width: '100%',
+  fontWeight: { base: 'bold' },
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: { base: '2xl', md: '4xl' },
+  textTransform: 'uppercase',
+};
+
+const contentStyled = {
+  p: { base: 6, md: 8 },
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+};

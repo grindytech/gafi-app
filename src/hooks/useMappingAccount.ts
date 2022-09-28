@@ -10,14 +10,13 @@ import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct, handleTxError } from 'utils';
 
 const useMappingAccount = () => {
-  const toast = useToast({ position: 'top-right', isClosable: true });
-
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+  });
   const { t } = useTranslation();
-
   const { account, ethereum } = useWallet();
-
   const { api, currentAccount } = useSubstrateState();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const txResHandler = ({ status, events }: ISubmittableResult) => {
@@ -37,15 +36,12 @@ const useMappingAccount = () => {
       });
     }
   };
-
   const txErrHandler = (err: any) => {
     console.log('txErrHandler');
     toast({
-      position: 'top-right',
       description: t('TRANSACTION_FAILED', {
         errorMessage: err.toString(),
       }),
-      isClosable: true,
       status: 'error',
     });
     setIsLoading(false);
@@ -59,6 +55,7 @@ const useMappingAccount = () => {
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount?.publicKey, undefined, false);
       let signature = '';
+
       try {
         signature = await web3.eth.personal.sign(
           `Bond Gafi Network account:${data.toString()}`,
@@ -86,6 +83,7 @@ const useMappingAccount = () => {
         description: t('NEED_TO_INSTALL_METAMASK'),
         status: 'info',
       });
+      setIsLoading(false);
     }
   };
 

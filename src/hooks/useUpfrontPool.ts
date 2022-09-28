@@ -1,31 +1,24 @@
-// Translation
 import { useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Chakra
-
-// Utils
-import useSignAndSend from './useCallbackSignAndSend';
+import useSignAndSend from './useSignAndSend';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
 
-// React
-
 const useUpfrontPool = (refetch: () => void) => {
   const { t } = useTranslation();
   const toast = useToast();
-
-  const { api, currentAccount } = useSubstrateState();
   const [loadingPool, setLoadingPool] = useState('');
+  const { api, currentAccount } = useSubstrateState();
 
-  const onSuccess = () => {
-    refetch();
+  const onSucess = () => {
     setLoadingPool('');
+    refetch();
   };
 
-  const txCallback = useSignAndSend(onSuccess);
+  const txCallback = useSignAndSend(onSucess);
 
   const joinUpfrontPool = async (poolPackage: string) => {
     setLoadingPool(poolPackage);
