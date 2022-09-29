@@ -1,4 +1,6 @@
 import {
+  Button,
+  HStack,
   Table,
   TableCaption,
   Tbody,
@@ -23,31 +25,63 @@ export interface ICaptions {
   fieldName: string;
 }
 
-const ContractsTable: React.FC = ({ children }) => {
+interface IContractTableProps {
+  children: React.ReactNode;
+}
+
+const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
   const amountCharacter = useBreakpointValue({
     sm: 3,
     md: constants.CONTRACT_AMOUNT_PER_PAGE,
   });
   const { t } = useTranslation();
+
+  const isDisplay = useBreakpointValue({
+    md: true,
+  });
+
+  const breakpoints = isDisplay || false;
+
   const captions = [
-    { label: t('OWNER'), fieldName: 'poolOwner' },
-    { label: t('CONTRACT_ADDRESS'), fieldName: 'contractAddress' },
-    { label: t('ACTIONS'), fieldName: 'actions' },
+    {
+      label: t('OWNER'),
+      fieldName: 'poolOwner',
+      display: true,
+    },
+    {
+      label: t('CONTRACT_ADDRESS'),
+      fieldName: 'contractAddress',
+      display: breakpoints,
+    },
+    {
+      label: t('ACTIONS'),
+      fieldName: 'actions',
+      display: breakpoints,
+    },
   ];
 
   const { isLoading } = useLoadContracts();
 
   return (
-    <Card pt={0} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
-      <CardBody>
-        <Table variant="simple">
-          <TableCaption>{children}</TableCaption>
+    <>
+      <Card
+        px={0}
+        p={0}
+        mb={8}
+        mt={4}
+        overflowX={{ sm: 'scroll', xl: 'hidden' }}
+      >
+        <Table variant="simple" textAlign="center">
           <Thead>
             <Tr>
               {React.Children.toArray(
                 captions.map(caption => (
-                  <Th textAlign={caption.label === 'owner' ? 'left' : 'center'}>
+                  <Th
+                    sx={!caption.display ? { display: 'none' } : {}}
+                    textAlign={caption.label === 'owner' ? 'left' : 'center'}
+                    textTransform="capitalize"
+                  >
                     {caption.label}
                   </Th>
                 ))
@@ -55,19 +89,21 @@ const ContractsTable: React.FC = ({ children }) => {
             </Tr>
           </Thead>
           <Tbody justifyContent="flex-start">
-            {isLoading ? (
+            {!isLoading ? (
+              <TableContent captions={captions.length} />
+            ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (
                   <SkeletonLoadingRow columnAmount={amountCharacter} />
                 ))
               )
-            ) : (
-              <TableContent />
             )}
           </Tbody>
         </Table>
-      </CardBody>
-    </Card>
+      </Card>
+
+      {children}
+    </>
   );
 };
 

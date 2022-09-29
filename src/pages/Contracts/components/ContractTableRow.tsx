@@ -46,6 +46,7 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
             </VStack>
           </HStack>
         </Td>
+
         <Td>
           <HStack justify="center">
             <Text>{shorten(contract.address)}</Text>
@@ -61,6 +62,7 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
             </CopyToClipboard>
           </HStack>
         </Td>
+
         <Td textAlign="center">
           <Button
             onClick={() => {
@@ -77,6 +79,7 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
           </Button>
         </Td>
       </Tr>
+
       <ModalChangeContractOwner
         contractAddress={contractChanging}
         onClose={() => {

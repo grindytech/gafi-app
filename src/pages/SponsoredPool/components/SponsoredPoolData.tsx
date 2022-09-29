@@ -10,6 +10,7 @@ interface IProps {
   setSelectedPoolDetail: (pool: SponsoredPool) => void;
   setSelectedPool: (pool: SponsoredPool) => void;
   setSelectedEditPool: (pool: SponsoredPool) => void;
+  captions: number;
 }
 
 const SponsoredPoolData = ({
@@ -17,6 +18,7 @@ const SponsoredPoolData = ({
   setSelectedPoolDetail,
   setSelectedPool,
   setSelectedEditPool,
+  captions,
 }: IProps) => (
   <>
     {sponsoredPools.length ? (
@@ -31,7 +33,7 @@ const SponsoredPoolData = ({
         ))
       )
     ) : (
-      <EmptyRow columnAmount={6} />
+      <EmptyRow columnAmount={captions} />
     )}
   </>
 );

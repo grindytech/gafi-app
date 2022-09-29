@@ -192,11 +192,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
       >
         <Table size={tableSize} variant="simple" textAlign="center">
           <Thead>
-            <Tr pl="0px">
+            <Tr>
               {React.Children.toArray(
                 captions.map(caption => (
                   <Th
-                    sx={(!caption.display && { display: 'none' }) || {}}
+                    sx={!caption.display ? { display: 'none' } : {}}
                     textAlign={caption.label === 'owner' ? 'left' : 'center'}
                     textTransform="capitalize"
                   >
@@ -209,6 +209,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           <Tbody justifyContent="flex-start">
             {!isLoading ? (
               <SponsoredPoolData
+                captions={captions.length}
                 setSelectedPoolDetail={setSelectedPoolDetail}
                 sponsoredPools={sponsoredPools}
                 setSelectedPool={setSelectedPool}
@@ -222,8 +223,6 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               )
             )}
           </Tbody>
-
-          {/* <TableCaption>{}</TableCaption> */}
         </Table>
       </Card>
 

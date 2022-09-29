@@ -119,13 +119,13 @@ const dashRoutes = isDisplayGameCreatorFeature
         icon: mdiPool,
         layout: '/admin',
       },
-      // {
-      //   path: '/contracts',
-      //   name: 'GAME_CREATOR',
-      //   component: Contracts,
-      //   icon: mdiGamepadSquare,
-      //   layout: '/admin',
-      // },
+      {
+        path: '/contracts',
+        name: 'GAME_CREATOR',
+        component: Contracts,
+        icon: mdiGamepadSquare,
+        layout: '/admin',
+      },
       {
         path: '/deploy-contract',
         name: 'DEPLOY_CONTRACT',

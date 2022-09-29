@@ -27,9 +27,10 @@ const SponsoredPoolPage: React.FC = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const isDisplay = useBreakpointValue({
-    sm: true,
-    '2xl': false,
+    md: true,
   });
+
+  const breakpoints = isDisplay || false;
 
   const {
     isOwned,
@@ -54,24 +55,24 @@ const SponsoredPoolPage: React.FC = () => {
     {
       label: '',
       fieldName: 'actions',
-      display: !!isDisplay,
+      display: breakpoints,
     },
     {
       label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
         minuteAmount: 30,
       }),
       fieldName: 'txLimit',
-      display: !isDisplay,
+      display: breakpoints,
     },
     {
       label: t('BALANCE'),
       fieldName: 'amount',
-      display: !isDisplay,
+      display: breakpoints,
     },
     {
       label: t('ACTIONS'),
       fieldName: 'actions',
-      display: !isDisplay,
+      display: breakpoints,
     },
   ];
 
@@ -97,18 +98,18 @@ const SponsoredPoolPage: React.FC = () => {
             fontWeight="bold"
             w={{ base: 'full', md: 'auto' }}
             rightIcon={
-              !isDisplay ? (
+              breakpoints ? (
                 <Icon>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
               ) : undefined
             }
             leftIcon={
-              isDisplay ? (
+              breakpoints ? undefined : (
                 <Icon>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
-              ) : undefined
+              )
             }
             onClick={() => {
               gaEventTracker({ action: 'Click Add sponsored pool' });

@@ -5,8 +5,13 @@ import ContractTableRow from './ContractTableRow';
 import EmptyRow from 'components/EmptyRow';
 import useLoadContracts from 'hooks/useLoadContracts';
 
-const TableContent = () => {
+interface ITableContentProps {
+  captions: number;
+}
+
+const TableContent = ({ captions }: ITableContentProps) => {
   const { listContract } = useLoadContracts();
+
   return (
     <>
       {listContract?.length ? (
@@ -16,7 +21,7 @@ const TableContent = () => {
           ))
         )
       ) : (
-        <EmptyRow columnAmount={3} />
+        <EmptyRow columnAmount={captions} />
       )}
     </>
   );
