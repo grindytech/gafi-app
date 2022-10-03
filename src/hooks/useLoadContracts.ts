@@ -73,7 +73,7 @@ const useLoadContracts = () => {
     setCurrentPage,
     refetch,
     isLoading,
-    maxCount: data?.contracts.length ?? 0,
+    maxCount: data?.contracts.length as number,
   };
 };
 

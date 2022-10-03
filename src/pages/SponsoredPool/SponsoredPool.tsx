@@ -30,7 +30,7 @@ const SponsoredPoolPage: React.FC = () => {
     md: true,
   });
 
-  const breakpoints = isDisplay || false;
+  const breakpointsTablet = isDisplay ?? false;
 
   const {
     isOwned,
@@ -55,24 +55,24 @@ const SponsoredPoolPage: React.FC = () => {
     {
       label: '',
       fieldName: 'actions',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
     {
       label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
         minuteAmount: 30,
       }),
       fieldName: 'txLimit',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
     {
       label: t('BALANCE'),
       fieldName: 'amount',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
     {
       label: t('ACTIONS'),
       fieldName: 'actions',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
   ];
 
@@ -98,14 +98,14 @@ const SponsoredPoolPage: React.FC = () => {
             fontWeight="bold"
             w={{ base: 'full', md: 'auto' }}
             rightIcon={
-              breakpoints ? (
+              breakpointsTablet ? (
                 <Icon>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
               ) : undefined
             }
             leftIcon={
-              breakpoints ? undefined : (
+              breakpointsTablet ? undefined : (
                 <Icon>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>

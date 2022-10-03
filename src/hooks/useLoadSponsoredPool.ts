@@ -5,11 +5,7 @@ import { useQueryParam } from 'use-query-params';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
-import {
-  Scalars,
-  SponsoredPool,
-  useSponsoredPoolsQuery,
-} from 'graphQL/generates';
+import { SponsoredPool, useSponsoredPoolsQuery } from 'graphQL/generates';
 import { getGAKIAccountAddress } from 'utils';
 import * as constants from 'utils/constants';
 
@@ -60,8 +56,7 @@ const useLoadSponsoredPool = () => {
     ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
     : [];
 
-  const totalCount = sponsoredPoolData?.sponsoredPools
-    ?.totalCount as Scalars['Int'];
+  const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
 
   useEffect(() => {
     if (joinedPoolInfo?.isSponsored) {

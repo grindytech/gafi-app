@@ -6,10 +6,10 @@ import EmptyRow from 'components/EmptyRow';
 import useLoadContracts from 'hooks/useLoadContracts';
 
 interface ITableContentProps {
-  captions: number;
+  captionAmounts: number;
 }
 
-const TableContent = ({ captions }: ITableContentProps) => {
+const TableContent = ({ captionAmounts }: ITableContentProps) => {
   const { listContract } = useLoadContracts();
 
   return (
@@ -21,7 +21,7 @@ const TableContent = ({ captions }: ITableContentProps) => {
           ))
         )
       ) : (
-        <EmptyRow columnAmount={captions} />
+        <EmptyRow columnAmount={captionAmounts} />
       )}
     </>
   );

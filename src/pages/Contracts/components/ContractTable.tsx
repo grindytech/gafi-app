@@ -1,8 +1,5 @@
 import {
-  Button,
-  HStack,
   Table,
-  TableCaption,
   Tbody,
   Th,
   Thead,
@@ -15,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import TableContent from './TableContent';
 
 import Card from 'components/card/Card';
-import CardBody from 'components/card/CardBody';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
 import useLoadContracts from 'hooks/useLoadContracts';
 import * as constants from 'utils/constants';
@@ -25,11 +21,7 @@ export interface ICaptions {
   fieldName: string;
 }
 
-interface IContractTableProps {
-  children: React.ReactNode;
-}
-
-const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
+const ContractsTable: React.FC = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
   const amountCharacter = useBreakpointValue({
     sm: 3,
@@ -41,7 +33,7 @@ const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
     md: true,
   });
 
-  const breakpoints = isDisplay || false;
+  const breakpointsTablet = isDisplay ?? false;
 
   const captions = [
     {
@@ -52,12 +44,12 @@ const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
     {
       label: t('CONTRACT_ADDRESS'),
       fieldName: 'contractAddress',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
     {
       label: t('ACTIONS'),
       fieldName: 'actions',
-      display: breakpoints,
+      display: breakpointsTablet,
     },
   ];
 
@@ -65,13 +57,7 @@ const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
 
   return (
     <>
-      <Card
-        px={0}
-        p={0}
-        mb={8}
-        mt={4}
-        overflowX={{ sm: 'scroll', xl: 'hidden' }}
-      >
+      <Card p={0} mb={8} mt={4} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
         <Table variant="simple" textAlign="center">
           <Thead>
             <Tr>
@@ -90,7 +76,7 @@ const ContractsTable: React.FC<IContractTableProps> = ({ children }) => {
           </Thead>
           <Tbody justifyContent="flex-start">
             {!isLoading ? (
-              <TableContent captions={captions.length} />
+              <TableContent captionAmounts={captions.length} />
             ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (
