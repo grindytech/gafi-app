@@ -18,11 +18,15 @@ import AccountInfo from './components/AccountInfo';
 import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
-import { useSubstrateState } from 'contexts/substrateContext';
+import { useSubstrate, useSubstrateState } from 'contexts/substrateContext';
+import WalletConnect, {
+  IButtonWalletProps,
+} from 'layouts/WalletConnect/WalletConnect';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { apiState, apiError, keyringState } = useSubstrateState();
   const [drawerOpen, setDrawerOpen] = useState('');
+  const { state } = useSubstrate();
   const onClose = () => {
     setDrawerOpen('');
   };
@@ -42,77 +46,91 @@ const DashboardLayout: React.FC = ({ children }) => {
     return loader(t('LOADING_ACCOUNTS_NOTIFY'));
   }
 
+  const { polkadotAccounts } = state;
+  const checkPolkadotAccounts = !polkadotAccounts.length;
+
+  const ClickWalletConnect = (button: IButtonWalletProps) => {
+    console.log(button);
+  };
+
   return (
-    <Box sx={dashBoardStyled}>
-      <SideBar display={{ base: 'none', lg: 'flex' }} />
-      <Drawer
-        autoFocus={false}
-        isOpen={drawerOpen === 'sidebar'}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-      >
-        <DrawerOverlay />
-        <DrawerContent bg="transparent">
-          <SideBar onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      <Drawer
-        autoFocus={false}
-        isOpen={drawerOpen === 'accountInfo'}
-        placement="bottom"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="md"
-      >
-        <DrawerOverlay />
-        <DrawerContent bg="transparent">
-          <AccountInfo onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      <Flex
-        direction="column"
-        flex={1}
-        sx={{
-          background: 'greyBg',
-          display: 'flex',
-        }}
-      >
-        <Panel onOpen={onSidebarOpen} />
-        <Box
+    <>
+      <WalletConnect
+        onClick={ClickWalletConnect}
+        isOpen={checkPolkadotAccounts}
+      />
+
+      <Box sx={dashBoardStyled}>
+        <SideBar display={{ base: 'none', lg: 'flex' }} />
+        <Drawer
+          autoFocus={false}
+          isOpen={drawerOpen === 'sidebar'}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+        >
+          <DrawerOverlay />
+          <DrawerContent bg="transparent">
+            <SideBar onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        <Drawer
+          autoFocus={false}
+          isOpen={drawerOpen === 'accountInfo'}
+          placement="bottom"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="md"
+        >
+          <DrawerOverlay />
+          <DrawerContent bg="transparent">
+            <AccountInfo onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        <Flex
+          direction="column"
+          flex={1}
           sx={{
+            background: 'greyBg',
             display: 'flex',
-            alignItems: 'flex-start',
-            width: '100%',
-            height: '100%',
           }}
         >
+          <Panel onOpen={onSidebarOpen} />
           <Box
             sx={{
-              flex: 1,
-              px: { base: 'none', lg: 4 },
-              p: 0,
+              display: 'flex',
+              alignItems: 'flex-start',
+              width: '100%',
+              height: '100%',
             }}
           >
-            {children}
+            <Box
+              sx={{
+                flex: 1,
+                px: { base: 'none', lg: 4 },
+                p: 0,
+              }}
+            >
+              {children}
+            </Box>
+            <AccountInfo display={{ base: 'none', lg: 'flex' }} />
           </Box>
-          <AccountInfo display={{ base: 'none', lg: 'flex' }} />
-        </Box>
-      </Flex>
-      <IconButton
-        sx={accountInfoButtonStyled}
-        onClick={onAccountInfoOpen}
-        variant="white"
-        aria-label="open menu"
-        icon={
-          <Icon color="primary">
-            <path fill="currentColor" d={mdiWalletOutline} />
-          </Icon>
-        }
-      />
-    </Box>
+        </Flex>
+        <IconButton
+          sx={accountInfoButtonStyled}
+          onClick={onAccountInfoOpen}
+          variant="white"
+          aria-label="open menu"
+          icon={
+            <Icon color="primary">
+              <path fill="currentColor" d={mdiWalletOutline} />
+            </Icon>
+          }
+        />
+      </Box>
+    </>
   );
 };
 export default DashboardLayout;
