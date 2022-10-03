@@ -17,7 +17,7 @@ const useLoadContracts = () => {
     useState<IResponseContract[]>();
 
   const loadingContract = async () => {
-    const response = await api?.query.gameCreator.contractOwner.entries();
+    const response = await api?.query.gameCreator?.contractOwner.entries();
 
     if (response && keyring) {
       let contractArray = response.map(([key, exposure]) => {
@@ -73,7 +73,7 @@ const useLoadContracts = () => {
     setCurrentPage,
     refetch,
     isLoading,
-    maxCount: data?.contracts.length,
+    maxCount: data?.contracts.length as number,
   };
 };
 

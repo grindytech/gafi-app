@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { mdiCashMultiple } from '@mdi/js';
 import { useTranslation } from 'react-i18next';
 
@@ -25,32 +25,36 @@ const Contracts = () => {
         bannerBg="/assets/layout/game-creator-banner.png"
         btnLink="https://wiki.gafi.network/learn/game-creator"
       />
-      <HStack mb={4} justifyContent="flex-end">
-        <Button
-          background="primary"
-          size="sm"
-          color="white"
-          variant="solid"
-          rightIcon={
-            <Icon>
-              <path fill="currentColor" d={mdiCashMultiple} />
-            </Icon>
-          }
-          onClick={onOpen}
-        >
-          {t('CLAIM_CONTRACT')}
-        </Button>
-      </HStack>
 
-      <ContractTable>
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalCount={maxCount || 0}
-          resultsPerPage={constants.CONTRACT_AMOUNT_PER_PAGE}
-          isLoading={isLoading}
-        />
-      </ContractTable>
+      <Box p={{ sm: 4, md: 0 }}>
+        <HStack justifyContent="flex-end">
+          <Button
+            size="xl"
+            variant="primary"
+            borderRadius="xl"
+            fontWeight="bold"
+            w={{ base: 'full', md: 'auto' }}
+            rightIcon={
+              <Icon>
+                <path fill="currentColor" d={mdiCashMultiple} />
+              </Icon>
+            }
+            onClick={onOpen}
+          >
+            {t('CLAIM_CONTRACT')}
+          </Button>
+        </HStack>
+
+        <ContractTable>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalCount={maxCount}
+            resultsPerPage={constants.CONTRACT_AMOUNT_PER_PAGE}
+            isLoading={isLoading}
+          />
+        </ContractTable>
+      </Box>
       {isOpen && <ModalClaimContract isOpen={isOpen} onClose={onClose} />}
     </>
   );

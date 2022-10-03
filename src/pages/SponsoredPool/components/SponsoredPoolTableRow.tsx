@@ -41,7 +41,11 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
     sm: 'none',
     '2xl': undefined,
   });
+
   const amountCharacter = useBreakpointValue({ sm: 3, md: 6, lg: 3, xl: 6 });
+
+  const currentDiscount = 10000;
+
   return (
     <>
       <Tr cursor="pointer" onClick={onClick}>
@@ -74,7 +78,7 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
             fontSize={{ base: '2xl', md: 'md' }}
             color={textColor}
           >
-            {discount / 10000} %
+            {discount / currentDiscount} %
           </Text>
         </Td>
 

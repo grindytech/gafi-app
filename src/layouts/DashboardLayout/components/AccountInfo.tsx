@@ -143,9 +143,11 @@ const AccountInfo = ({ display, onClose }: IProps) => {
                             <MenuItemOption
                               data-testid={`swich-account-btn-${index}`}
                               key={polkadotAccount}
-                              onClick={() => {
-                                hanldeSwitchAccount(pairs[index]);
-                              }}
+                              onClick={() =>
+                                polkadotAccount === currentAccount.address
+                                  ? null
+                                  : hanldeSwitchAccount(pairs[index])
+                              }
                               value={polkadotAccount}
                             >
                               {shorten(polkadotAccount)}

@@ -183,20 +183,14 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           </Flex>
         </Card>
       )}
-      <Card
-        px={0}
-        p={0}
-        mb={8}
-        mt={4}
-        overflowX={{ sm: 'scroll', xl: 'hidden' }}
-      >
+      <Card p={0} mb={8} mt={4} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
         <Table size={tableSize} variant="simple" textAlign="center">
           <Thead>
-            <Tr pl="0px">
+            <Tr>
               {React.Children.toArray(
                 captions.map(caption => (
                   <Th
-                    sx={(!caption.display && { display: 'none' }) || {}}
+                    sx={!caption.display ? { display: 'none' } : {}}
                     textAlign={caption.label === 'owner' ? 'left' : 'center'}
                     textTransform="capitalize"
                   >
@@ -209,6 +203,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           <Tbody justifyContent="flex-start">
             {!isLoading ? (
               <SponsoredPoolData
+                captionAmounts={captions.length}
                 setSelectedPoolDetail={setSelectedPoolDetail}
                 sponsoredPools={sponsoredPools}
                 setSelectedPool={setSelectedPool}
@@ -222,8 +217,6 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               )
             )}
           </Tbody>
-
-          {/* <TableCaption>{}</TableCaption> */}
         </Table>
       </Card>
 
