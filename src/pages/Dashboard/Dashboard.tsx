@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { mdiCogOutline } from '@mdi/js';
 import { Text as PolText } from '@polkadot/types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactJson from 'react-json-view';
 

@@ -1,9 +1,8 @@
-import { ApiPromise } from '@polkadot/api';
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
-import { web3FromSource } from '@polkadot/extension-dapp';
 import { KeyringPair } from '@polkadot/keyring/types';
-import { EventRecord } from '@polkadot/types/interfaces';
 import { encodeAddress } from '@polkadot/util-crypto';
+
+import { getSigner } from 'contexts/substrateContext';
 
 interface ContractValueParams {
   amount: number;
@@ -117,8 +116,8 @@ export const getFromAcct = async (
 
   // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
   // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
-  const injector = await web3FromSource(source);
-  return [address, { signer: injector.signer }];
+  const signer = await getSigner();
+  return [address, { signer }];
 };
 
 export const shorten = (hash: string, length = 6) => {

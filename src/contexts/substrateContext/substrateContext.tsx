@@ -1,12 +1,17 @@
 import { useToast } from '@chakra-ui/react';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import {
+  Injected,
+  InjectedAccountWithMeta,
+  InjectedAccount,
+} from '@polkadot/extension-inject/types';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { TypeRegistry } from '@polkadot/types/create';
 import polkadotJsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { DefinitionRpcExt } from '@polkadot/types/types';
 import { Keyring, keyring as KeyringPolkadot } from '@polkadot/ui-keyring';
 import { isTestChain } from '@polkadot/util';
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { get, set } from 'lodash';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +19,7 @@ import { useWallet } from 'use-wallet';
 
 import config from 'config';
 import { acctAddr, getGAKIAccountAddress } from 'utils';
+import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
 
 const parsedQuery = new URLSearchParams(window.location.search);
 // Using temporary 'as'. Remove when add type for config.
@@ -144,19 +150,67 @@ const retrieveChainInfo = async (api: ApiPromise | null) => {
   };
 };
 
+const connectWallet = async (extensionName: string) => {
+  const result: Injected = await window.injectedWeb3[extensionName].enable(
+    config.APP_NAME
+  );
+
+  return result.accounts.get();
+};
+
+export async function getSigner() {
+  const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
+  if (extensionName) {
+    const result: Injected = await window.injectedWeb3[extensionName].enable(
+      config.APP_NAME
+    );
+
+    return result.signer;
+  }
+}
+
+export function mapAccounts(
+  source: string,
+  list: InjectedAccount[],
+  ss58Format?: number
+): InjectedAccountWithMeta[] {
+  return list.map(
+    ({ address, genesisHash, name, type }): InjectedAccountWithMeta => ({
+      address:
+        address.length === 42
+          ? address
+          : encodeAddress(decodeAddress(address), ss58Format),
+      meta: { genesisHash, name, source },
+      type,
+    })
+  );
+}
+
 const loadAccounts = (
+  extensionName: string,
   state: SubstrateContextState,
   dispatch: React.Dispatch<Action>
-) => {
+): Promise<string> => {
   const { api } = state;
   dispatch({ type: 'LOAD_KEYRING' });
 
   const asyncLoadAccounts = async () => {
+    let accounts;
     try {
-      await web3Enable(config.APP_NAME);
-      let allAccounts = await web3Accounts();
+      accounts = await connectWallet(extensionName);
+    } catch (error) {
+      dispatch({ type: 'KEYRING_ERROR' });
+      return 'PLEASE_ALLOW_WALLET';
+    }
 
-      allAccounts = allAccounts.map(({ address, meta }) => ({
+    const mappedAccounts = mapAccounts(
+      extensionName,
+      accounts.filter(({ type }) => type && true),
+      undefined
+    );
+
+    try {
+      const allAccounts = mappedAccounts.map(({ address, meta }: any) => ({
         address,
         meta: { ...meta, name: `${meta.name} (${meta.source})` },
       }));
@@ -177,18 +231,22 @@ const loadAccounts = (
 
       KeyringPolkadot.loadAll({}, allAccounts);
 
-      dispatch({ type: 'SET_KEYRING', payload: KeyringPolkadot });
-
       const pairs = KeyringPolkadot?.getPairs() || [];
       const polkadotAccounts = pairs.map((key: KeyringPair) => acctAddr(key));
       dispatch({ type: 'SET_POLKADOT_ACCOUNTS', payload: polkadotAccounts });
+      dispatch({ type: 'SET_KEYRING', payload: KeyringPolkadot });
+
+      // Successfully connected.
+      localStorage.setItem(GAFI_WALLET_STORAGE_KEY, extensionName);
+      return '';
     } catch (e) {
       console.error(e);
       dispatch({ type: 'KEYRING_ERROR' });
+      return '';
     }
   };
 
-  asyncLoadAccounts();
+  return asyncLoadAccounts();
 };
 
 const loadCurrentAccount = (
@@ -201,7 +259,7 @@ const loadCurrentAccount = (
     dispatch({ type: 'LOAD_CURRENT_ACCOUNT' });
     try {
       const pairs = keyring?.getPairs() || [];
-      const response = await api?.query.addressMapping.h160Mapping(
+      const response = await api?.query.proofAddressMapping.h160Mapping(
         metamaskAccount
       );
       const polkadotAccountWasMapped = (await response?.toHuman()) || '';
@@ -255,11 +313,18 @@ const SubstrateContextProvider: React.FC<Record<string, unknown>> = props => {
   connect(state, dispatch);
 
   useEffect(() => {
+    const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY) || '';
     const { apiState, keyringState } = state;
-    if (apiState === 'READY' && !keyringState && !keyringLoadAll) {
-      keyringLoadAll = true;
-      loadAccounts(state, dispatch);
+
+    async function prepareLoadAccounts() {
+      if (apiState === 'READY' && !keyringState && !keyringLoadAll) {
+        keyringLoadAll = true;
+
+        loadAccounts(extensionName, state, dispatch);
+      }
     }
+
+    prepareLoadAccounts();
   }, [state, dispatch]);
 
   //   useEffect(() => {
@@ -287,6 +352,9 @@ const useSubstrate = () => {
     });
   };
 
+  const setAccounts = (extensionName: string) =>
+    loadAccounts(extensionName, state, dispatch);
+
   return {
     state,
     setCurrentAccount,
@@ -309,6 +377,7 @@ const useSubstrate = () => {
         });
       }
     },
+    setAccounts,
   };
 };
 

@@ -8,11 +8,6 @@ import Banner from 'components/Banner';
 import useLoadPoolInfo from 'hooks/useLoadUpfrontPool';
 import { IPool } from 'hooks/useSponsoredPool';
 
-export interface TicketType {
-  upfront?: string;
-  staking?: string;
-}
-
 const JoinPool = () => {
   const { t } = useTranslation();
   const { upfrontPools } = useLoadPoolInfo();
@@ -28,7 +23,7 @@ const JoinPool = () => {
       <Box p={{ sm: 4, md: 0 }}>
         <SimpleGrid minChildWidth="288px" spacing="1em" minH="full">
           {React.Children.toArray(
-            upfrontPools.map((pool: IPool) => <Pool pool={pool} />)
+            upfrontPools?.map((pool: IPool) => <Pool pool={pool} />)
           )}
         </SimpleGrid>
       </Box>

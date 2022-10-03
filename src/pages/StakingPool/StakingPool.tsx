@@ -23,7 +23,7 @@ const StakingPool = () => {
       <Box p={{ sm: 4, md: 0 }}>
         <SimpleGrid minChildWidth="288px" spacing="1em" minH="full">
           {React.Children.toArray(
-            stakingPools.map((pool: IPool) => <Pool pool={pool} />)
+            stakingPools?.map((pool: IPool) => <Pool pool={pool} />)
           )}
         </SimpleGrid>
       </Box>

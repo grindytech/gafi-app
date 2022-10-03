@@ -27,7 +27,7 @@ const useLeavePool = (refetch: () => void) => {
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api) {
-      const txExecute = api.tx.pool.leave();
+      const txExecute = api.tx.pool.leave(poolPackage);
 
       try {
         return options
