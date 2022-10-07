@@ -1,5 +1,4 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -41,9 +40,7 @@ const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
     async (poolId: string) => {
       const [account, options] = await getFromAcct(currentAccount);
 
-      const txExecute = api?.tx.pool.join({
-        Sponsored: poolId,
-      });
+      const txExecute = api?.tx.pool.join(poolId);
 
       return txExecute?.signAndSend(account, options || {}, txCallback);
     },

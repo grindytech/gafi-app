@@ -18,15 +18,13 @@ import AccountInfo from './components/AccountInfo';
 import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
-import { useSubstrate, useSubstrateState } from 'contexts/substrateContext';
-import WalletConnect, {
-  IButtonWalletProps,
-} from 'layouts/WalletConnect/WalletConnect';
+import { useSubstrateState } from 'contexts/substrateContext';
+import WalletConnect from 'layouts/WalletConnect/WalletConnect';
+import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
 
 const DashboardLayout: React.FC = ({ children }) => {
-  const { apiState, apiError, keyringState } = useSubstrateState();
+  const { apiState, apiError } = useSubstrateState();
   const [drawerOpen, setDrawerOpen] = useState('');
-  const { state } = useSubstrate();
   const onClose = () => {
     setDrawerOpen('');
   };
@@ -42,23 +40,11 @@ const DashboardLayout: React.FC = ({ children }) => {
   if (apiState === 'ERROR') return message(apiError);
   if (apiState !== 'READY') return loader(t('CONNECTING_TO_SUBSTRATE'));
 
-  if (keyringState !== 'READY') {
-    return loader(t('LOADING_ACCOUNTS_NOTIFY'));
-  }
-
-  const { polkadotAccounts } = state;
-  const checkPolkadotAccounts = !polkadotAccounts.length;
-
-  const ClickWalletConnect = (button: IButtonWalletProps) => {
-    console.log(button);
-  };
+  const checkPolkadotAccounts = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
 
   return (
     <>
-      <WalletConnect
-        onClick={ClickWalletConnect}
-        isOpen={checkPolkadotAccounts}
-      />
+      <WalletConnect isOpen={!checkPolkadotAccounts} />
 
       <Box sx={dashBoardStyled}>
         <SideBar display={{ base: 'none', lg: 'flex' }} />

@@ -26,11 +26,9 @@ const useStakingPool = (refetch: () => void) => {
     const [account, options] = await getFromAcct(currentAccount);
 
     if (api && account) {
-      const txExecute = api.tx.pool.join({
-        Staking: poolPackage,
-      });
-
       try {
+        const txExecute = await api.tx.pool.join(poolPackage);
+
         await txExecute.signAndSend(account, options || {}, txCallback);
       } catch (error: any) {
         toast({

@@ -19,9 +19,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
 
   const { t } = useTranslation();
 
-  const currentDiscount = 10000;
-
-  return (
+  return pool ? (
     <Card sx={{ ...sx, p: 0, overflow: 'hidden' }}>
       <Box
         sx={{
@@ -37,7 +35,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
       <Box sx={contentStyled}>
         <Heading as="h2" size="lg" pt={{ base: 4, md: 8 }} mb={4}>
           {t('DISCOUNT_FEE', {
-            discountPercent: pool.discount / currentDiscount,
+            discountPercent: pool.discount,
           })}
         </Heading>
 
@@ -51,7 +49,10 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
 
           <Text color="greyText">
             {t('POOL_FEE', {
-              poolFee: formatUnits(pool.fee.gaki, chainDecimal),
+              poolFee: formatUnits(
+                pool.fee.gaki.replaceAll(',', ''),
+                chainDecimal
+              ), // reason replaceAll: value from 15,00 to 1500 because error BigNumber string
               minute: pool.fee.minute,
             })}
           </Text>
@@ -78,7 +79,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
         )}
       </Box>
     </Card>
-  );
+  ) : null;
 };
 
 export default Pool;

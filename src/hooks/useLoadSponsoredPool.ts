@@ -1,4 +1,4 @@
-import { GafiPrimitivesPoolTicketType } from '@polkadot/types/lookup';
+import { GafiPrimitivesTicketTicketType } from '@polkadot/types/lookup';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useQueryParam } from 'use-query-params';
@@ -15,15 +15,14 @@ const useLoadSponsoredPool = () => {
   const isOwned = type === 'owned';
   const [currentPage, setCurrentPage] = useState(1);
   const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
+
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesPoolTicketType | undefined> => {
-      if (api && currentAccount?.address) {
-        const res = await api.query.pool.tickets(currentAccount?.address);
-        if (res.isSome) {
-          return res.unwrap();
-        }
-        return undefined;
+    async (): Promise<GafiPrimitivesTicketTicketType | undefined> => {
+      if (api && currentAccount) {
+        const res = await api.query.pool.tickets(currentAccount.address, null);
+
+        return res as GafiPrimitivesTicketTicketType;
       }
     },
     {

@@ -1,62 +1,57 @@
 import {
   Button,
   ButtonGroup,
+  FormControl,
+  FormErrorMessage,
   Image,
   Link,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const StyledWalletModal = {
-  ':not(:first-child)': {
-    mt: 4,
-  },
-  '-webkit-margin-start': '0 !important',
-  justifyContent: 'start',
-  pl: 4,
-};
+import { useSubstrate } from 'contexts/substrateContext';
 
 export interface IButtonWalletProps {
   key: number;
   title: string;
-  icon: string | JSX.Element;
+  icon: string;
 }
 
 interface IWalletConnectProps {
-  onClick: (props: IButtonWalletProps) => void;
   onCloseWallet?: () => void;
   isOpen: boolean;
 }
 
 export default function WalletConnect({
-  onClick,
   onCloseWallet,
   isOpen,
 }: IWalletConnectProps) {
   const { t } = useTranslation();
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const ButtonModal = [
+  const { setAccounts } = useSubstrate();
+
+  const connectWalletButtons = [
     {
-      key: 0,
-      title: t('POLKADOT_CONNECT'),
-      icon: '/assets/layout/polkadot.png',
+      title: t('POLKADOT_WALLET'),
+      icon: '/assets/logo/polkadot-js.svg',
+      extensionName: 'polkadot-js',
     },
     {
-      key: 1,
-      title: t('METAMASK_CONNECT'),
-      icon: '/assets/layout/metamask.png',
+      title: t('SUBWALLET'),
+      icon: '/assets/logo/subwallet.png',
+      extensionName: 'subwallet-js',
     },
     {
-      key: 2,
-      title: t('METAMASK_CONNECT'),
-      icon: '/assets/layout/metamask.png',
+      title: t('CLOVER_WALLET'),
+      icon: '/assets/logo/clover.svg',
+      extensionName: 'clover',
     },
   ];
 
@@ -65,23 +60,45 @@ export default function WalletConnect({
       <ModalOverlay />
 
       <ModalContent p={4}>
-        <ModalHeader>{t('CONNECT_WALLET_POLKADOT')}</ModalHeader>
+        <ModalHeader>{t('CONNECT_WALLET')}</ModalHeader>
 
-        <ModalBody>
-          <ButtonGroup display="flex" flexDirection="column" flex={1}>
-            {ButtonModal.map(button => [
-              <Button
-                leftIcon={<Image src={button.icon} />}
-                iconSpacing={4}
-                key={button.key}
-                variant="ghost"
-                size="md"
-                onClick={() => onClick(button)}
-                sx={StyledWalletModal}
-              >
-                {button.title}
-              </Button>,
-            ])}
+        <ModalBody alignSelf="center">
+          <ButtonGroup
+            flexDirection="column"
+            spacing={0}
+            gap={4}
+            variant="ghost"
+            size="md"
+          >
+            {React.Children.toArray(
+              connectWalletButtons.map(button => [
+                <Button
+                  justifyContent="start"
+                  w="full"
+                  leftIcon={
+                    <Image
+                      w="32px"
+                      height="32px"
+                      src={button.icon}
+                      alt={button.title}
+                    />
+                  }
+                  iconSpacing={4}
+                  onClick={async () => {
+                    const message = await setAccounts(button.extensionName);
+                    setErrorMessage(message);
+                  }}
+                  disabled={!window.injectedWeb3[button.extensionName]}
+                >
+                  {button.title}
+                </Button>,
+              ])
+            )}
+            <FormControl isInvalid={!!errorMessage}>
+              <FormErrorMessage textAlign="center">
+                {t(errorMessage)}
+              </FormErrorMessage>
+            </FormControl>
           </ButtonGroup>
         </ModalBody>
 
