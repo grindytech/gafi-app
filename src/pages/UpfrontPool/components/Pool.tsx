@@ -17,6 +17,8 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
 
   const { chainDecimal } = useSubstrateState();
 
+  const currentDiscount = 10000;
+
   const { t } = useTranslation();
 
   return pool ? (
@@ -35,7 +37,7 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
       <Box sx={contentStyled}>
         <Heading as="h2" size="lg" pt={{ base: 4, md: 8 }} mb={4}>
           {t('DISCOUNT_FEE', {
-            discountPercent: pool.discount,
+            discountPercent: pool.discount / currentDiscount,
           })}
         </Heading>
 
