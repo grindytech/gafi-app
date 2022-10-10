@@ -22,15 +22,13 @@ const useLoadSponsoredPool = () => {
       if (api && currentAccount) {
         const res = await api.query.pool.tickets(currentAccount.address, null);
 
-        return res as GafiPrimitivesTicketTicketType;
+        return res.toHuman() as GafiPrimitivesTicketTicketType | undefined;
       }
     },
     {
       enabled: !!currentAccount,
     }
   );
-
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
@@ -54,6 +52,8 @@ const useLoadSponsoredPool = () => {
   const sponsoredPools = sponsoredPoolData
     ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
     : [];
+
+  const isJoinedPool = !!joinedPoolInfo;
 
   const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
 
