@@ -1,14 +1,13 @@
-import { GafiPrimitivesPoolTicketType } from '@polkadot/types/lookup';
+import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
 import useLeavePool from './useLeavePool';
-import { IPool } from './useSponsoredPool';
+import { IStakingServiceProps } from './useLoadStakingPool';
 import useUpfrontPool from './useUpfrontPool';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import { PoolInfo } from 'interfaces/pool';
 
 const useLoadUpfrontPool = () => {
   const { api, currentAccount } = useSubstrateState();
@@ -17,119 +16,101 @@ const useLoadUpfrontPool = () => {
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesPoolTicketType | undefined> => {
-      if (api) {
-        const res = await api.query.pool.tickets(
-          currentAccount?.address as string
+    async (): Promise<GafiPrimitivesTicketTicketInfo[] | undefined> => {
+      if (api && currentAccount) {
+        const res = await api.query.pool.tickets.entries(
+          currentAccount.address
         );
-        if (res.isSome) {
-          return res.unwrap();
-        }
-        return undefined;
+
+        const tickets = res
+          .map(([{}, exposure]) => {
+            if (exposure.isSome) {
+              return exposure.unwrap();
+            }
+          })
+          .filter((item): item is GafiPrimitivesTicketTicketInfo => !!item);
+
+        return tickets;
       }
     },
     {
       enabled: !!currentAccount,
     }
   );
-  const { data: upfrontPoolInfo } = useQuery(
-    'getPoolInfo',
-    async (): Promise<PoolInfo | undefined> => {
-      if (api) {
-        const basic = await api.query.upfrontPool.services('Basic');
-        const medium = await api.query.upfrontPool.services('Medium');
-        const advance = await api.query.upfrontPool.services('Advance');
 
-        return {
-          basic,
-          medium,
-          advance,
-        };
+  const { data: poolInfo } = useQuery(
+    'getPoolInfo',
+    async (): Promise<IStakingServiceProps[] | undefined> => {
+      if (api) {
+        const res = await api.query.upfrontPool.services.entries();
+
+        const services = res
+          .map(([{}, exposure]) => {
+            if (exposure.isSome) {
+              const service = exposure.unwrap();
+
+              return {
+                service: service.service,
+                id: service.id.toHex(),
+                value: service.value.toHuman(),
+              };
+            }
+          })
+          .filter((item): item is IStakingServiceProps => !!item)
+          .sort((item1, item2) =>
+            item1.service.discount.cmp(item2.service.discount)
+          );
+
+        return services;
       }
     }
   );
 
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
-  const isJoinedUpfrontPool = !!joinedPoolInfo && joinedPoolInfo.isUpfront;
-
   const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { joinUpfrontPool, loadingPool } = useUpfrontPool(refetch);
 
-  const upfrontPools: Array<IPool> = [
-    {
-      poolType: t('BASIC'),
-      discount: upfrontPoolInfo?.basic.discount.toNumber() || 0,
-      rate: {
-        txLimit: upfrontPoolInfo?.basic.txLimit.toNumber() || 0,
-        minute: 30,
-      },
-      banner: '/assets/layout/pool-banner-1.svg',
-      fee: {
-        gaki: upfrontPoolInfo?.basic.value.toString() || '0',
-        minute: 30,
-      },
-      onJoin: () => {
-        gaEventTracker({ action: 'Join basic' });
-        joinUpfrontPool('Basic');
-      },
-      onLeave: () => {
-        gaEventTracker({ action: 'Leave basic' });
-        leavePool('Basic');
-      },
-      isLoading: (loadingPool || leaveLoadingPool) === 'Basic',
-      isJoined:
-        isJoinedUpfrontPool && joinedPoolInfo.asUpfront.type === 'Basic',
-      isDisabled: isJoinedPool,
-    },
-    {
-      poolType: t('MEDIUM'),
-      discount: upfrontPoolInfo?.medium.discount.toNumber() || 0,
-      rate: {
-        txLimit: upfrontPoolInfo?.medium.txLimit.toNumber() || 0,
-        minute: 30,
-      },
-      banner: '/assets/layout/pool-banner-2.svg',
-      fee: {
-        gaki: upfrontPoolInfo?.medium.value.toString() || '0',
-        minute: 30,
-      },
-      onJoin: () => {
-        gaEventTracker({ action: 'Join Medium' });
-        joinUpfrontPool('Medium');
-      },
-      onLeave: () => {
-        gaEventTracker({ action: 'Leave Medium' });
-        leavePool('Medium');
-      },
-      isLoading: (loadingPool || leaveLoadingPool) === 'Medium',
-      isJoined: isJoinedUpfrontPool && joinedPoolInfo?.asUpfront.isMedium,
-      isDisabled: isJoinedPool,
-    },
-    {
-      poolType: t('ADVANCE'),
-      discount: upfrontPoolInfo?.advance.discount.toNumber() || 0,
-      rate: {
-        txLimit: upfrontPoolInfo?.advance.txLimit.toNumber() || 0,
-        minute: 30,
-      },
-      banner: '/assets/layout/pool-banner-3.svg',
-      fee: {
-        gaki: upfrontPoolInfo?.advance.value.toString() || '0',
-        minute: 30,
-      },
-      onJoin: () => {
-        gaEventTracker({ action: 'Join Advance' });
-        joinUpfrontPool('Advance');
-      },
-      onLeave: () => {
-        gaEventTracker({ action: 'Leave Advance' });
-        leavePool('Advance');
-      },
-      isLoading: (loadingPool || leaveLoadingPool) === 'Advance',
-      isJoined: isJoinedUpfrontPool && joinedPoolInfo.asUpfront.isAdvance,
-      isDisabled: isJoinedPool,
-    },
+  const poolType = [
+    { poolType: t('BASIC'), banner: '/assets/layout/pool-banner-4.svg' },
+    { poolType: t('MEDIUM'), banner: '/assets/layout/pool-banner-5.svg' },
+    { poolType: t('ADVANCE'), banner: '/assets/layout/pool-banner-6.svg' },
   ];
+
+  const upfrontPools = poolInfo?.map((pool, index) => {
+    const isJoinedPoolTicket =
+      (!!joinedPoolInfo && joinedPoolInfo[index]?.ticketType.isUpfront) ??
+      false;
+    const isJoinedPool = !!joinedPoolInfo?.length;
+
+    return {
+      ...poolType[index],
+      poolType: poolType[index].poolType,
+      discount: pool.service.discount.toNumber(),
+      rate: {
+        txLimit: pool.service.txLimit.toNumber(),
+        minute: 30,
+      },
+      banner: poolType[index].banner,
+      fee: {
+        gaki: pool.value,
+        minute: 30,
+      },
+      onJoin: () => {
+        gaEventTracker({
+          action: `Join ${poolType[index].poolType}`,
+        });
+        joinUpfrontPool(pool.id);
+      },
+      onLeave: () => {
+        gaEventTracker({
+          action: `Leave ${poolType[index].poolType}`,
+        });
+        leavePool(pool.id);
+      },
+      isLoading: (loadingPool || leaveLoadingPool) === pool.id,
+      isJoined: isJoinedPoolTicket,
+      isDisabled: isJoinedPool,
+    };
+  });
 
   return {
     upfrontPools,

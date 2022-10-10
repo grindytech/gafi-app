@@ -1,4 +1,5 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
+import { AnyJson } from '@polkadot/types/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,7 +24,7 @@ const StakingPool = () => {
       <Box p={{ sm: 4, md: 0 }}>
         <SimpleGrid minChildWidth="288px" spacing="1em" minH="full">
           {React.Children.toArray(
-            stakingPools.map((pool: IPool) => <Pool pool={pool} />)
+            stakingPools?.map((pool: IPool) => <Pool pool={pool} />)
           )}
         </SimpleGrid>
       </Box>
