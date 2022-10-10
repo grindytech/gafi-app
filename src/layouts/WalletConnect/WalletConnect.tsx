@@ -11,11 +11,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useSubstrate } from 'contexts/substrateContext';
+import { CHROME_EXT_URL, FIREFOX_ADDON_URL } from 'utils/constants';
 
 export interface IButtonWalletProps {
   key: number;
@@ -71,7 +73,7 @@ export default function WalletConnect({
             size="md"
           >
             {React.Children.toArray(
-              connectWalletButtons.map(button => [
+              connectWalletButtons.map(button => (
                 <Button
                   justifyContent="start"
                   w="full"
@@ -88,11 +90,14 @@ export default function WalletConnect({
                     const message = await setAccounts(button.extensionName);
                     setErrorMessage(message);
                   }}
-                  disabled={!window.injectedWeb3[button.extensionName]}
+                  disabled={
+                    !window.injectedWeb3 ||
+                    !window.injectedWeb3[button.extensionName]
+                  }
                 >
                   {button.title}
-                </Button>,
-              ])
+                </Button>
+              ))
             )}
             <FormControl isInvalid={!!errorMessage}>
               <FormErrorMessage textAlign="center">
@@ -103,7 +108,29 @@ export default function WalletConnect({
         </ModalBody>
 
         <ModalFooter justifyContent="center" letterSpacing={1}>
-          FAQ: why we need connect to wallet? <Link ml={2}>here</Link>
+          {!window.injectedWeb3 && (
+            <Text textAlign="center">
+              Create an account with Polkadot-JS Extension (
+              <Link
+                color="primary"
+                target="_blank"
+                rel="noreferrer"
+                href={CHROME_EXT_URL}
+              >
+                Chrome
+              </Link>
+              ,&nbsp;
+              <Link
+                color="primary"
+                target="_blank"
+                rel="noreferrer"
+                href={FIREFOX_ADDON_URL}
+              >
+                Firefox
+              </Link>
+              )&nbsp;
+            </Text>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

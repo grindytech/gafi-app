@@ -32,11 +32,7 @@ import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
 import { acctAddr, shorten } from 'utils';
-
-const CHROME_EXT_URL =
-  'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd';
-const FIREFOX_ADDON_URL =
-  'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/';
+import { CHROME_EXT_URL, FIREFOX_ADDON_URL } from 'utils/constants';
 
 interface IProps extends BoxProps {
   onClose?: () => void;
