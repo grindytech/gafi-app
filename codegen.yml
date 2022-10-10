@@ -1,4 +1,4 @@
-schema: https://api.subquery.network/sq/lhtrung307/gafi-query__bGh0c
+schema: http://115.79.142.60:8000/
 documents: './src/**/*.ts'
 generates:
   ./src/graphQL/generates.ts:

@@ -39,3 +39,20 @@ const transferQuery = gql`
     }
   }
 `;
+
+const claimedContractQuery = gql`
+  query ClaimedContracts {
+    claimedContracts {
+      nodes {
+        id
+        contractAddress
+        accountId
+      }
+      totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;

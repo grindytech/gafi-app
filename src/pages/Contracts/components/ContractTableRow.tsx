@@ -7,6 +7,7 @@ import {
   HStack,
   VStack,
   Avatar,
+  IconButton,
 } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
 import React, { useState } from 'react';
@@ -15,12 +16,12 @@ import { useTranslation } from 'react-i18next';
 
 import ModalChangeContractOwner from './ModalChangeContractOwner';
 
-import { IResponseContract } from 'hooks/useLoadContracts';
+import { ClaimedContract } from 'graphQL/generates';
 import useMessageToast from 'hooks/useMessageToast';
 import { shorten } from 'utils';
 
 interface IProps {
-  contract: IResponseContract;
+  contract: ClaimedContract;
 }
 const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
             />
             <VStack ml={0} alignItems="flex-start">
               <Text fontWeight="bold" fontSize="md" minWidth="100%">
-                {shorten(contract.owner)}
+                {shorten(contract.accountId)}
               </Text>
               <Text fontSize="xs">Games</Text>
             </VStack>
@@ -49,16 +50,19 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
 
         <Td>
           <HStack justify="center">
-            <Text>{shorten(contract.address)}</Text>
-            <CopyToClipboard text={contract.address}>
-              <Icon
+            <Text>{shorten(contract.contractAddress)}</Text>
+            <CopyToClipboard text={contract.contractAddress}>
+              <IconButton
+                aria-label="copy to clipboard"
                 onClick={copySuccessToast}
-                cursor="pointer"
                 ml={4}
-                color="primary"
-              >
-                <path fill="currentColor" d={mdiContentCopy} />
-              </Icon>
+                variant="link"
+                icon={
+                  <Icon>
+                    <path fill="currentColor" d={mdiContentCopy} />
+                  </Icon>
+                }
+              />
             </CopyToClipboard>
           </HStack>
         </Td>
@@ -66,7 +70,7 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
         <Td textAlign="center">
           <Button
             onClick={() => {
-              const contractAddress = contract.address?.toString();
+              const contractAddress = contract.contractAddress?.toString();
               if (contractAddress) {
                 setContractChanging(contractAddress);
               }

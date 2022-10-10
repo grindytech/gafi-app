@@ -107,6 +107,10 @@ export const theme = extendTheme({
         minHeight: '100vh',
         bg: mode('gray.50', 'gray.800')(props),
       },
+      '*:focus:not(:focus-visible)': {
+        outline: 'none',
+        'box-shadow': 'none !important',
+      },
     }),
   },
   colors,

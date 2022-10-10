@@ -1,79 +1,41 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+
+import { ClaimedContract } from '../graphQL/generates';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import { acctAddr } from 'utils';
-import * as constants from 'utils/constants';
-
-export interface IResponseContract {
-  owner: string;
-  address: string;
-}
+import client from 'graphQL/client';
+import { useClaimedContractsQuery } from 'graphQL/generates';
 
 const useLoadContracts = () => {
-  const { api, currentAccount, keyring } = useSubstrateState();
+  const { currentAccount } = useSubstrateState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [contractsDisplay, setContractsDisplay] =
-    useState<IResponseContract[]>();
 
-  const loadingContract = async () => {
-    const response = await api?.query.gameCreator?.contractOwner.entries();
-
-    if (response && keyring) {
-      let contractArray = response.map(([key, exposure]) => {
-        const addresses = key.args.map(k => k.toHuman());
-        const ownerAddress = keyring.getPair(
-          exposure.toHuman()?.toString() || ''
-        );
-        return {
-          owner: acctAddr(ownerAddress),
-          address: addresses[0]?.toString() || '',
-        };
-      });
-      if (currentAccount) {
-        contractArray = contractArray.filter(
-          contract => contract.owner === acctAddr(currentAccount)
-        ) as IResponseContract[];
-        return {
-          contracts: contractArray as IResponseContract[],
-        };
-      }
-    }
-  };
-
-  // loading contracts
-  const { data, refetch, isLoading } = useQuery(
-    ['loading-contract', currentAccount],
-    loadingContract,
+  const {
+    data: claimedContractsData,
+    isLoading,
+    refetch,
+  } = useClaimedContractsQuery(
+    client,
+    {},
     {
-      enabled: !!currentAccount,
+      enabled: !!currentAccount?.addressRaw,
     }
   );
 
-  useEffect(() => {
-    if (currentAccount) {
-      setCurrentPage(1);
-    }
-  }, [currentAccount]);
+  const claimedContracts = claimedContractsData
+    ? (claimedContractsData.claimedContracts?.nodes as ClaimedContract[])
+    : [];
 
-  // display contracts
-  useEffect(() => {
-    setContractsDisplay(
-      data?.contracts?.slice(
-        (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE,
-        (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE +
-          constants.CONTRACT_AMOUNT_PER_PAGE
-      )
-    );
-  }, [currentPage, data?.contracts]);
+  const totalCount = claimedContractsData?.claimedContracts
+    ?.totalCount as number;
 
   return {
-    listContract: contractsDisplay,
+    listContract: claimedContracts,
     currentPage,
     setCurrentPage,
     refetch,
     isLoading,
-    maxCount: data?.contracts.length as number,
+    totalCount,
   };
 };
 

@@ -14,7 +14,7 @@ const Contracts = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { currentPage, setCurrentPage, isLoading, maxCount } =
+  const { currentPage, setCurrentPage, isLoading, totalCount } =
     useLoadContracts();
 
   return (
@@ -49,7 +49,7 @@ const Contracts = () => {
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            totalCount={maxCount}
+            totalCount={totalCount}
             resultsPerPage={constants.CONTRACT_AMOUNT_PER_PAGE}
             isLoading={isLoading}
           />
