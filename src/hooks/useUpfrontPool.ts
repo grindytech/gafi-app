@@ -9,7 +9,13 @@ import { getFromAcct } from 'utils';
 
 const useUpfrontPool = (refetch: () => void) => {
   const { t } = useTranslation();
-  const toast = useToast();
+
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+    status: 'error',
+  });
+
   const [loadingPool, setLoadingPool] = useState('');
   const { api, currentAccount } = useSubstrateState();
 
@@ -21,6 +27,12 @@ const useUpfrontPool = (refetch: () => void) => {
   const txCallback = useTxCallback(onSucess);
 
   const joinUpfrontPool = async (poolPackage: string) => {
+    if (!currentAccount) {
+      return toast({
+        description: t('POLKADOT_ADDRESS'),
+      });
+    }
+
     setLoadingPool(poolPackage);
 
     const [account, options] = await getFromAcct(currentAccount);
@@ -32,12 +44,9 @@ const useUpfrontPool = (refetch: () => void) => {
         await txExecute.signAndSend(account, options || {}, txCallback);
       } catch (err: any) {
         toast({
-          position: 'top-right',
           description: t('TRANSACTION_FAILED', {
             errorMessage: err.toString(),
           }),
-          isClosable: true,
-          status: 'error',
         });
         setLoadingPool('');
       }

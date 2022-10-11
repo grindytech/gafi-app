@@ -30,8 +30,6 @@ const useLoadSponsoredPool = () => {
     }
   );
 
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
-
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
     {
@@ -56,6 +54,8 @@ const useLoadSponsoredPool = () => {
     : [];
 
   const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
+
+  const isJoinedPool = !!joinedPoolInfo?.toHuman();
 
   useEffect(() => {
     if (joinedPoolInfo?.isSponsored) {

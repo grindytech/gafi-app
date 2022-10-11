@@ -1,7 +1,4 @@
 import { useToast } from '@chakra-ui/react';
-import { u32 } from '@polkadot/types';
-import { Permill } from '@polkadot/types/interfaces';
-import { AnyJson } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';

@@ -77,8 +77,8 @@ const useLoadUpfrontPool = () => {
 
   const upfrontPools = poolInfo?.map((pool, index) => {
     const isJoinedPoolTicket =
-      (!!joinedPoolInfo && joinedPoolInfo[index]?.ticketType.isUpfront) ??
-      false;
+      (!!joinedPoolInfo &&
+        joinedPoolInfo[index]?.ticketType.asUpfront.toHex()) === pool.id;
     const isJoinedPool = !!joinedPoolInfo?.length;
 
     return {
