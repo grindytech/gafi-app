@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 import { mdiTrashCanOutline } from '@mdi/js';
 import { VoidFn } from '@polkadot/api/types';
-import { AnyJson } from '@polkadot/types/types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,9 +24,6 @@ import { useSubstrateState } from 'contexts/substrateContext';
 const FILTERED_EVENTS = [
   'system:ExtrinsicSuccess::(phase={"applyExtrinsic":0})',
 ];
-
-const eventName = (ev: Record<string, AnyJson>) => `${ev.section}:${ev.method}`;
-const eventParams = (ev: Record<string, AnyJson>) => JSON.stringify(ev.data);
 
 interface IEvent {
   key: number;
@@ -53,9 +49,8 @@ const EventInfo = () => {
           const { event, phase } = record;
 
           // show what we are busy with
-          const evHuman = event.toHuman();
-          const evName = eventName(evHuman);
-          const evParams = eventParams(evHuman);
+          const evName = `${event.section}:${event.method}`;
+          const evParams = event.data.toString();
           const evNamePhase = `${evName}::(phase=${phase.toString()})`;
 
           if (FILTERED_EVENTS.includes(evNamePhase)) return;
@@ -128,7 +123,9 @@ const EventInfo = () => {
               </Center>
               <Box w={{ sm: '10.5rem', md: '70%', lg: '12.5rem', xl: '90%' }}>
                 <Heading size="sm">{event.summary}</Heading>
-                <Text>{event.content}</Text>
+                <Text noOfLines={2} wordBreak="break-word">
+                  {event.content}
+                </Text>
               </Box>
             </Flex>
           ))

@@ -19,6 +19,12 @@ export type Scalars = {
   Float: number;
   /** A floating point number that requires more precision than IEEE 754 binary 64 */
   BigFloat: any;
+  /**
+   * A signed eight-byte integer. The upper big integer values are greater than the
+   * max value for a JavaScript number. Therefore all big integers will be output as
+   * strings and not numbers.
+   */
+  BigInt: any;
   /** A location in a connection that can be used for resuming pagination. */
   Cursor: any;
   /** The day, does not include a time. */
@@ -95,14 +101,70 @@ export type BlockEntitiesEdge = {
 export enum BlockEntitiesGroupBy {
   Field1 = 'FIELD1',
   Field4 = 'FIELD4',
+  Field4TruncatedToDay = 'FIELD4_TRUNCATED_TO_DAY',
+  Field4TruncatedToHour = 'FIELD4_TRUNCATED_TO_HOUR',
   Field5 = 'FIELD5',
   Field6 = 'FIELD6'
 }
+
+export type BlockEntitiesHavingAverageInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingDistinctCountInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
 
 /** Conditions for `BlockEntity` aggregates. */
 export type BlockEntitiesHavingInput = {
   AND?: InputMaybe<Array<BlockEntitiesHavingInput>>;
   OR?: InputMaybe<Array<BlockEntitiesHavingInput>>;
+  average?: InputMaybe<BlockEntitiesHavingAverageInput>;
+  distinctCount?: InputMaybe<BlockEntitiesHavingDistinctCountInput>;
+  max?: InputMaybe<BlockEntitiesHavingMaxInput>;
+  min?: InputMaybe<BlockEntitiesHavingMinInput>;
+  stddevPopulation?: InputMaybe<BlockEntitiesHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<BlockEntitiesHavingStddevSampleInput>;
+  sum?: InputMaybe<BlockEntitiesHavingSumInput>;
+  variancePopulation?: InputMaybe<BlockEntitiesHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<BlockEntitiesHavingVarianceSampleInput>;
+};
+
+export type BlockEntitiesHavingMaxInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingMinInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingStddevPopulationInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingStddevSampleInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingSumInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingVariancePopulationInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BlockEntitiesHavingVarianceSampleInput = {
+  field1?: InputMaybe<HavingIntFilter>;
+  field4?: InputMaybe<HavingDatetimeFilter>;
 };
 
 /** Methods to use when ordering `BlockEntity`. */
@@ -135,7 +197,45 @@ export type BlockEntity = Node & {
 
 export type BlockEntityAggregates = {
   __typename?: 'BlockEntityAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<BlockEntityAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<BlockEntityDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<BlockEntityMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<BlockEntityMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<BlockEntityStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<BlockEntityStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<BlockEntitySumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<BlockEntityVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<BlockEntityVarianceSampleAggregates>;
+};
+
+export type BlockEntityAverageAggregates = {
+  __typename?: 'BlockEntityAverageAggregates';
+  /** Mean average of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigFloat']>;
+};
+
+export type BlockEntityDistinctCountAggregates = {
+  __typename?: 'BlockEntityDistinctCountAggregates';
+  /** Distinct count of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of field4 across the matching connection */
+  field4?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of field5 across the matching connection */
+  field5?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of field6 across the matching connection */
+  field6?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
 };
 
 /** A filter to be used against `BlockEntity` object types. All fields are combined with a logical ‘and.’ */
@@ -156,6 +256,48 @@ export type BlockEntityFilter = {
   not?: InputMaybe<BlockEntityFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<BlockEntityFilter>>;
+};
+
+export type BlockEntityMaxAggregates = {
+  __typename?: 'BlockEntityMaxAggregates';
+  /** Maximum of field1 across the matching connection */
+  field1?: Maybe<Scalars['Int']>;
+};
+
+export type BlockEntityMinAggregates = {
+  __typename?: 'BlockEntityMinAggregates';
+  /** Minimum of field1 across the matching connection */
+  field1?: Maybe<Scalars['Int']>;
+};
+
+export type BlockEntityStddevPopulationAggregates = {
+  __typename?: 'BlockEntityStddevPopulationAggregates';
+  /** Population standard deviation of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigFloat']>;
+};
+
+export type BlockEntityStddevSampleAggregates = {
+  __typename?: 'BlockEntityStddevSampleAggregates';
+  /** Sample standard deviation of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigFloat']>;
+};
+
+export type BlockEntitySumAggregates = {
+  __typename?: 'BlockEntitySumAggregates';
+  /** Sum of field1 across the matching connection */
+  field1: Scalars['BigInt'];
+};
+
+export type BlockEntityVariancePopulationAggregates = {
+  __typename?: 'BlockEntityVariancePopulationAggregates';
+  /** Population variance of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigFloat']>;
+};
+
+export type BlockEntityVarianceSampleAggregates = {
+  __typename?: 'BlockEntityVarianceSampleAggregates';
+  /** Sample variance of field1 across the matching connection */
+  field1?: Maybe<Scalars['BigFloat']>;
 };
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
@@ -184,6 +326,358 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+export type ClaimedContract = Node & {
+  __typename?: 'ClaimedContract';
+  /** Reads a single `User` that is related to this `ClaimedContract`. */
+  account?: Maybe<User>;
+  accountId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  createdAt?: Maybe<Scalars['Datetime']>;
+  id: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  updatedAt?: Maybe<Scalars['Datetime']>;
+};
+
+export type ClaimedContractAggregates = {
+  __typename?: 'ClaimedContractAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<ClaimedContractDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ClaimedContractDistinctCountAggregates = {
+  __typename?: 'ClaimedContractDistinctCountAggregates';
+  /** Distinct count of accountId across the matching connection */
+  accountId?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of contractAddress across the matching connection */
+  contractAddress?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `ClaimedContract` object types. All fields are combined with a logical ‘and.’ */
+export type ClaimedContractFilter = {
+  /** Filter by the object’s `accountId` field. */
+  accountId?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ClaimedContractFilter>>;
+  /** Filter by the object’s `contractAddress` field. */
+  contractAddress?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ClaimedContractFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ClaimedContractFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** A connection to a list of `ClaimedContract` values. */
+export type ClaimedContractsConnection = {
+  __typename?: 'ClaimedContractsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<ClaimedContractAggregates>;
+  /** A list of edges which contains the `ClaimedContract` and cursor to aid in pagination. */
+  edges: Array<ClaimedContractsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<ClaimedContractAggregates>>;
+  /** A list of `ClaimedContract` objects. */
+  nodes: Array<Maybe<ClaimedContract>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `ClaimedContract` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `ClaimedContract` values. */
+export type ClaimedContractsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<ClaimedContractsGroupBy>;
+  having?: InputMaybe<ClaimedContractsHavingInput>;
+};
+
+/** A `ClaimedContract` edge in the connection. */
+export type ClaimedContractsEdge = {
+  __typename?: 'ClaimedContractsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `ClaimedContract` at the end of the edge. */
+  node?: Maybe<ClaimedContract>;
+};
+
+/** Grouping methods for `ClaimedContract` for usage during aggregation. */
+export enum ClaimedContractsGroupBy {
+  AccountId = 'ACCOUNT_ID',
+  ContractAddress = 'CONTRACT_ADDRESS',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type ClaimedContractsHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `ClaimedContract` aggregates. */
+export type ClaimedContractsHavingInput = {
+  AND?: InputMaybe<Array<ClaimedContractsHavingInput>>;
+  OR?: InputMaybe<Array<ClaimedContractsHavingInput>>;
+  average?: InputMaybe<ClaimedContractsHavingAverageInput>;
+  distinctCount?: InputMaybe<ClaimedContractsHavingDistinctCountInput>;
+  max?: InputMaybe<ClaimedContractsHavingMaxInput>;
+  min?: InputMaybe<ClaimedContractsHavingMinInput>;
+  stddevPopulation?: InputMaybe<ClaimedContractsHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<ClaimedContractsHavingStddevSampleInput>;
+  sum?: InputMaybe<ClaimedContractsHavingSumInput>;
+  variancePopulation?: InputMaybe<ClaimedContractsHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<ClaimedContractsHavingVarianceSampleInput>;
+};
+
+export type ClaimedContractsHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ClaimedContractsHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `ClaimedContract`. */
+export enum ClaimedContractsOrderBy {
+  AccountIdAsc = 'ACCOUNT_ID_ASC',
+  AccountIdDesc = 'ACCOUNT_ID_DESC',
+  ContractAddressAsc = 'CONTRACT_ADDRESS_ASC',
+  ContractAddressDesc = 'CONTRACT_ADDRESS_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+export type CreatedContract = Node & {
+  __typename?: 'CreatedContract';
+  /** Reads a single `User` that is related to this `CreatedContract`. */
+  account?: Maybe<User>;
+  accountId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  createdAt?: Maybe<Scalars['Datetime']>;
+  id: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  updatedAt?: Maybe<Scalars['Datetime']>;
+};
+
+export type CreatedContractAggregates = {
+  __typename?: 'CreatedContractAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<CreatedContractDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']>>;
+};
+
+export type CreatedContractDistinctCountAggregates = {
+  __typename?: 'CreatedContractDistinctCountAggregates';
+  /** Distinct count of accountId across the matching connection */
+  accountId?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of contractAddress across the matching connection */
+  contractAddress?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `CreatedContract` object types. All fields are combined with a logical ‘and.’ */
+export type CreatedContractFilter = {
+  /** Filter by the object’s `accountId` field. */
+  accountId?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<CreatedContractFilter>>;
+  /** Filter by the object’s `contractAddress` field. */
+  contractAddress?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<CreatedContractFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<CreatedContractFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** A connection to a list of `CreatedContract` values. */
+export type CreatedContractsConnection = {
+  __typename?: 'CreatedContractsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<CreatedContractAggregates>;
+  /** A list of edges which contains the `CreatedContract` and cursor to aid in pagination. */
+  edges: Array<CreatedContractsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<CreatedContractAggregates>>;
+  /** A list of `CreatedContract` objects. */
+  nodes: Array<Maybe<CreatedContract>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `CreatedContract` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `CreatedContract` values. */
+export type CreatedContractsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<CreatedContractsGroupBy>;
+  having?: InputMaybe<CreatedContractsHavingInput>;
+};
+
+/** A `CreatedContract` edge in the connection. */
+export type CreatedContractsEdge = {
+  __typename?: 'CreatedContractsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `CreatedContract` at the end of the edge. */
+  node?: Maybe<CreatedContract>;
+};
+
+/** Grouping methods for `CreatedContract` for usage during aggregation. */
+export enum CreatedContractsGroupBy {
+  AccountId = 'ACCOUNT_ID',
+  ContractAddress = 'CONTRACT_ADDRESS',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type CreatedContractsHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `CreatedContract` aggregates. */
+export type CreatedContractsHavingInput = {
+  AND?: InputMaybe<Array<CreatedContractsHavingInput>>;
+  OR?: InputMaybe<Array<CreatedContractsHavingInput>>;
+  average?: InputMaybe<CreatedContractsHavingAverageInput>;
+  distinctCount?: InputMaybe<CreatedContractsHavingDistinctCountInput>;
+  max?: InputMaybe<CreatedContractsHavingMaxInput>;
+  min?: InputMaybe<CreatedContractsHavingMinInput>;
+  stddevPopulation?: InputMaybe<CreatedContractsHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<CreatedContractsHavingStddevSampleInput>;
+  sum?: InputMaybe<CreatedContractsHavingSumInput>;
+  variancePopulation?: InputMaybe<CreatedContractsHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<CreatedContractsHavingVarianceSampleInput>;
+};
+
+export type CreatedContractsHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CreatedContractsHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `CreatedContract`. */
+export enum CreatedContractsOrderBy {
+  AccountIdAsc = 'ACCOUNT_ID_ASC',
+  AccountIdDesc = 'ACCOUNT_ID_DESC',
+  ContractAddressAsc = 'CONTRACT_ADDRESS_ASC',
+  ContractAddressDesc = 'CONTRACT_ADDRESS_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -208,6 +702,33 @@ export type DatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
+};
+
+export type HavingBigfloatFilter = {
+  equalTo?: InputMaybe<Scalars['BigFloat']>;
+  greaterThan?: InputMaybe<Scalars['BigFloat']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['BigFloat']>;
+  lessThan?: InputMaybe<Scalars['BigFloat']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['BigFloat']>;
+  notEqualTo?: InputMaybe<Scalars['BigFloat']>;
+};
+
+export type HavingDatetimeFilter = {
+  equalTo?: InputMaybe<Scalars['Datetime']>;
+  greaterThan?: InputMaybe<Scalars['Datetime']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
+  lessThan?: InputMaybe<Scalars['Datetime']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
+  notEqualTo?: InputMaybe<Scalars['Datetime']>;
+};
+
+export type HavingIntFilter = {
+  equalTo?: InputMaybe<Scalars['Int']>;
+  greaterThan?: InputMaybe<Scalars['Int']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  lessThan?: InputMaybe<Scalars['Int']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  notEqualTo?: InputMaybe<Scalars['Int']>;
 };
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
@@ -300,6 +821,16 @@ export type Query = Node & {
   blockEntity?: Maybe<BlockEntity>;
   /** Reads a single `BlockEntity` using its globally unique `ID`. */
   blockEntityByNodeId?: Maybe<BlockEntity>;
+  claimedContract?: Maybe<ClaimedContract>;
+  /** Reads a single `ClaimedContract` using its globally unique `ID`. */
+  claimedContractByNodeId?: Maybe<ClaimedContract>;
+  /** Reads and enables pagination through a set of `ClaimedContract`. */
+  claimedContracts?: Maybe<ClaimedContractsConnection>;
+  createdContract?: Maybe<CreatedContract>;
+  /** Reads a single `CreatedContract` using its globally unique `ID`. */
+  createdContractByNodeId?: Maybe<CreatedContract>;
+  /** Reads and enables pagination through a set of `CreatedContract`. */
+  createdContracts?: Maybe<CreatedContractsConnection>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -319,11 +850,16 @@ export type Query = Node & {
   transferByNodeId?: Maybe<Transfer>;
   /** Reads and enables pagination through a set of `Transfer`. */
   transfers?: Maybe<TransfersConnection>;
+  user?: Maybe<User>;
+  /** Reads a single `User` using its globally unique `ID`. */
+  userByNodeId?: Maybe<User>;
   userJoinedPool?: Maybe<UserJoinedPool>;
   /** Reads a single `UserJoinedPool` using its globally unique `ID`. */
   userJoinedPoolByNodeId?: Maybe<UserJoinedPool>;
   /** Reads and enables pagination through a set of `UserJoinedPool`. */
   userJoinedPools?: Maybe<UserJoinedPoolsConnection>;
+  /** Reads and enables pagination through a set of `User`. */
+  users?: Maybe<UsersConnection>;
 };
 
 
@@ -348,6 +884,54 @@ export type QueryBlockEntityArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryClaimedContractArgs = {
+  id: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryClaimedContractByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryClaimedContractsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<ClaimedContractFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ClaimedContractsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCreatedContractArgs = {
+  id: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCreatedContractByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCreatedContractsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<CreatedContractFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CreatedContractsOrderBy>>;
 };
 
 
@@ -406,6 +990,18 @@ export type QueryTransfersArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryUserArgs = {
+  id: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolArgs = {
   id: Scalars['String'];
 };
@@ -428,6 +1024,18 @@ export type QueryUserJoinedPoolsArgs = {
   orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
 };
 
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUsersArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
 export type SponsoredPool = Node & {
   __typename?: 'SponsoredPool';
   amount: Scalars['BigFloat'];
@@ -440,8 +1048,11 @@ export type SponsoredPool = Node & {
   targets: Scalars['JSON'];
   totalUsers: Scalars['Int'];
   txLimit: Scalars['Int'];
+  updatedAt?: Maybe<Scalars['Datetime']>;
   /** Reads and enables pagination through a set of `UserJoinedPool`. */
   userJoinedPoolsByPoolId: UserJoinedPoolsConnection;
+  /** Reads and enables pagination through a set of `User`. */
+  usersByUserJoinedPoolPoolIdAndAccountId: SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection;
 };
 
 
@@ -455,9 +1066,72 @@ export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
   orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
 };
 
+
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
 export type SponsoredPoolAggregates = {
   __typename?: 'SponsoredPoolAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<SponsoredPoolAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<SponsoredPoolDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<SponsoredPoolMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<SponsoredPoolMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<SponsoredPoolStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<SponsoredPoolStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<SponsoredPoolSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<SponsoredPoolVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<SponsoredPoolVarianceSampleAggregates>;
+};
+
+export type SponsoredPoolAverageAggregates = {
+  __typename?: 'SponsoredPoolAverageAggregates';
+  /** Mean average of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Mean average of discount across the matching connection */
+  discount?: Maybe<Scalars['BigFloat']>;
+  /** Mean average of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigFloat']>;
+  /** Mean average of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigFloat']>;
+};
+
+export type SponsoredPoolDistinctCountAggregates = {
+  __typename?: 'SponsoredPoolDistinctCountAggregates';
+  /** Distinct count of amount across the matching connection */
+  amount?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of discount across the matching connection */
+  discount?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of poolOwner across the matching connection */
+  poolOwner?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of targets across the matching connection */
+  targets?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']>;
 };
 
 /** A filter to be used against `SponsoredPool` object types. All fields are combined with a logical ‘and.’ */
@@ -484,6 +1158,139 @@ export type SponsoredPoolFilter = {
   totalUsers?: InputMaybe<IntFilter>;
   /** Filter by the object’s `txLimit` field. */
   txLimit?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+export type SponsoredPoolMaxAggregates = {
+  __typename?: 'SponsoredPoolMaxAggregates';
+  /** Maximum of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Maximum of discount across the matching connection */
+  discount?: Maybe<Scalars['Int']>;
+  /** Maximum of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['Int']>;
+  /** Maximum of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['Int']>;
+};
+
+export type SponsoredPoolMinAggregates = {
+  __typename?: 'SponsoredPoolMinAggregates';
+  /** Minimum of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Minimum of discount across the matching connection */
+  discount?: Maybe<Scalars['Int']>;
+  /** Minimum of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['Int']>;
+  /** Minimum of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['Int']>;
+};
+
+export type SponsoredPoolStddevPopulationAggregates = {
+  __typename?: 'SponsoredPoolStddevPopulationAggregates';
+  /** Population standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Population standard deviation of discount across the matching connection */
+  discount?: Maybe<Scalars['BigFloat']>;
+  /** Population standard deviation of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigFloat']>;
+  /** Population standard deviation of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigFloat']>;
+};
+
+export type SponsoredPoolStddevSampleAggregates = {
+  __typename?: 'SponsoredPoolStddevSampleAggregates';
+  /** Sample standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Sample standard deviation of discount across the matching connection */
+  discount?: Maybe<Scalars['BigFloat']>;
+  /** Sample standard deviation of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigFloat']>;
+  /** Sample standard deviation of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigFloat']>;
+};
+
+export type SponsoredPoolSumAggregates = {
+  __typename?: 'SponsoredPoolSumAggregates';
+  /** Sum of amount across the matching connection */
+  amount: Scalars['BigFloat'];
+  /** Sum of discount across the matching connection */
+  discount: Scalars['BigInt'];
+  /** Sum of totalUsers across the matching connection */
+  totalUsers: Scalars['BigInt'];
+  /** Sum of txLimit across the matching connection */
+  txLimit: Scalars['BigInt'];
+};
+
+/** A connection to a list of `User` values, with data from `UserJoinedPool`. */
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection = {
+  __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<UserAggregates>;
+  /** A list of edges which contains the `User`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
+  edges: Array<SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<UserAggregates>>;
+  /** A list of `User` objects. */
+  nodes: Array<Maybe<User>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `User` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `User` values, with data from `UserJoinedPool`. */
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnectionGroupedAggregatesArgs = {
+  groupBy: Array<UsersGroupBy>;
+  having?: InputMaybe<UsersHavingInput>;
+};
+
+/** A `User` edge in the connection, with data from `UserJoinedPool`. */
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge = {
+  __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `User` at the end of the edge. */
+  node?: Maybe<User>;
+  /** Reads and enables pagination through a set of `UserJoinedPool`. */
+  userJoinedPoolsByAccountId: UserJoinedPoolsConnection;
+};
+
+
+/** A `User` edge in the connection, with data from `UserJoinedPool`. */
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdgeUserJoinedPoolsByAccountIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+};
+
+export type SponsoredPoolVariancePopulationAggregates = {
+  __typename?: 'SponsoredPoolVariancePopulationAggregates';
+  /** Population variance of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Population variance of discount across the matching connection */
+  discount?: Maybe<Scalars['BigFloat']>;
+  /** Population variance of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigFloat']>;
+  /** Population variance of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigFloat']>;
+};
+
+export type SponsoredPoolVarianceSampleAggregates = {
+  __typename?: 'SponsoredPoolVarianceSampleAggregates';
+  /** Sample variance of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Sample variance of discount across the matching connection */
+  discount?: Maybe<Scalars['BigFloat']>;
+  /** Sample variance of totalUsers across the matching connection */
+  totalUsers?: Maybe<Scalars['BigFloat']>;
+  /** Sample variance of txLimit across the matching connection */
+  txLimit?: Maybe<Scalars['BigFloat']>;
 };
 
 /** A connection to a list of `SponsoredPool` values. */
@@ -523,17 +1330,112 @@ export type SponsoredPoolsEdge = {
 export enum SponsoredPoolsGroupBy {
   Amount = 'AMOUNT',
   CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Discount = 'DISCOUNT',
   PoolOwner = 'POOL_OWNER',
   Targets = 'TARGETS',
   TotalUsers = 'TOTAL_USERS',
-  TxLimit = 'TX_LIMIT'
+  TxLimit = 'TX_LIMIT',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
 }
+
+export type SponsoredPoolsHavingAverageInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingDistinctCountInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
 
 /** Conditions for `SponsoredPool` aggregates. */
 export type SponsoredPoolsHavingInput = {
   AND?: InputMaybe<Array<SponsoredPoolsHavingInput>>;
   OR?: InputMaybe<Array<SponsoredPoolsHavingInput>>;
+  average?: InputMaybe<SponsoredPoolsHavingAverageInput>;
+  distinctCount?: InputMaybe<SponsoredPoolsHavingDistinctCountInput>;
+  max?: InputMaybe<SponsoredPoolsHavingMaxInput>;
+  min?: InputMaybe<SponsoredPoolsHavingMinInput>;
+  stddevPopulation?: InputMaybe<SponsoredPoolsHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<SponsoredPoolsHavingStddevSampleInput>;
+  sum?: InputMaybe<SponsoredPoolsHavingSumInput>;
+  variancePopulation?: InputMaybe<SponsoredPoolsHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<SponsoredPoolsHavingVarianceSampleInput>;
+};
+
+export type SponsoredPoolsHavingMaxInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingMinInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingStddevPopulationInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingStddevSampleInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingSumInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingVariancePopulationInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type SponsoredPoolsHavingVarianceSampleInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  discount?: InputMaybe<HavingIntFilter>;
+  totalUsers?: InputMaybe<HavingIntFilter>;
+  txLimit?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
 /** Methods to use when ordering `SponsoredPool`. */
@@ -557,8 +1459,100 @@ export enum SponsoredPoolsOrderBy {
   TotalUsersDesc = 'TOTAL_USERS_DESC',
   TxLimitAsc = 'TX_LIMIT_ASC',
   TxLimitDesc = 'TX_LIMIT_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdAverageAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdAverageAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdAverageCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdAverageCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdAverageIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ID_ASC',
+  UserJoinedPoolsByPoolIdAverageIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ID_DESC',
+  UserJoinedPoolsByPoolIdAveragePoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdAveragePoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdAverageUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdAverageUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdCountAsc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_ASC',
-  UserJoinedPoolsByPoolIdCountDesc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_DESC'
+  UserJoinedPoolsByPoolIdCountDesc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdMaxAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdMaxAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdMaxCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdMaxCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdMaxIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ID_ASC',
+  UserJoinedPoolsByPoolIdMaxIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ID_DESC',
+  UserJoinedPoolsByPoolIdMaxPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdMaxPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdMaxUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdMaxUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdMinAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdMinAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdMinCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdMinCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdMinIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ID_ASC',
+  UserJoinedPoolsByPoolIdMinIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ID_DESC',
+  UserJoinedPoolsByPoolIdMinPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdMinPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdMinUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdMinUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdStddevSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdStddevSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdStddevSampleIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevSampleIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdStddevSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdStddevSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdSumAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdSumAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdSumCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdSumCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdSumIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ID_ASC',
+  UserJoinedPoolsByPoolIdSumIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ID_DESC',
+  UserJoinedPoolsByPoolIdSumPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdSumPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdSumUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdSumUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ID_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ID_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationPoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationPoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
+  UserJoinedPoolsByPoolIdVarianceSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByPoolIdVarianceSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdVarianceSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  UserJoinedPoolsByPoolIdVarianceSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  UserJoinedPoolsByPoolIdVarianceSampleIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ID_ASC',
+  UserJoinedPoolsByPoolIdVarianceSampleIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ID_DESC',
+  UserJoinedPoolsByPoolIdVarianceSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_POOL_ID_ASC',
+  UserJoinedPoolsByPoolIdVarianceSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_POOL_ID_DESC',
+  UserJoinedPoolsByPoolIdVarianceSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
+  UserJoinedPoolsByPoolIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC'
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -658,7 +1652,47 @@ export type Transfer = Node & {
 
 export type TransferAggregates = {
   __typename?: 'TransferAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<TransferAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<TransferDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<TransferMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<TransferMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<TransferStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<TransferStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<TransferSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<TransferVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<TransferVarianceSampleAggregates>;
+};
+
+export type TransferAverageAggregates = {
+  __typename?: 'TransferAverageAggregates';
+  /** Mean average of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Mean average of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferDistinctCountAggregates = {
+  __typename?: 'TransferDistinctCountAggregates';
+  /** Distinct count of amount across the matching connection */
+  amount?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of from across the matching connection */
+  from?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of to across the matching connection */
+  to?: Maybe<Scalars['BigInt']>;
 };
 
 /** A filter to be used against `Transfer` object types. All fields are combined with a logical ‘and.’ */
@@ -679,6 +1713,62 @@ export type TransferFilter = {
   or?: InputMaybe<Array<TransferFilter>>;
   /** Filter by the object’s `to` field. */
   to?: InputMaybe<StringFilter>;
+};
+
+export type TransferMaxAggregates = {
+  __typename?: 'TransferMaxAggregates';
+  /** Maximum of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Maximum of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferMinAggregates = {
+  __typename?: 'TransferMinAggregates';
+  /** Minimum of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Minimum of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferStddevPopulationAggregates = {
+  __typename?: 'TransferStddevPopulationAggregates';
+  /** Population standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Population standard deviation of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferStddevSampleAggregates = {
+  __typename?: 'TransferStddevSampleAggregates';
+  /** Sample standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Sample standard deviation of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferSumAggregates = {
+  __typename?: 'TransferSumAggregates';
+  /** Sum of amount across the matching connection */
+  amount: Scalars['BigFloat'];
+  /** Sum of blockNumber across the matching connection */
+  blockNumber: Scalars['BigFloat'];
+};
+
+export type TransferVariancePopulationAggregates = {
+  __typename?: 'TransferVariancePopulationAggregates';
+  /** Population variance of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Population variance of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
+};
+
+export type TransferVarianceSampleAggregates = {
+  __typename?: 'TransferVarianceSampleAggregates';
+  /** Sample variance of amount across the matching connection */
+  amount?: Maybe<Scalars['BigFloat']>;
+  /** Sample variance of blockNumber across the matching connection */
+  blockNumber?: Maybe<Scalars['BigFloat']>;
 };
 
 /** A connection to a list of `Transfer` values. */
@@ -722,10 +1812,64 @@ export enum TransfersGroupBy {
   To = 'TO'
 }
 
+export type TransfersHavingAverageInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingDistinctCountInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
 /** Conditions for `Transfer` aggregates. */
 export type TransfersHavingInput = {
   AND?: InputMaybe<Array<TransfersHavingInput>>;
   OR?: InputMaybe<Array<TransfersHavingInput>>;
+  average?: InputMaybe<TransfersHavingAverageInput>;
+  distinctCount?: InputMaybe<TransfersHavingDistinctCountInput>;
+  max?: InputMaybe<TransfersHavingMaxInput>;
+  min?: InputMaybe<TransfersHavingMinInput>;
+  stddevPopulation?: InputMaybe<TransfersHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TransfersHavingStddevSampleInput>;
+  sum?: InputMaybe<TransfersHavingSumInput>;
+  variancePopulation?: InputMaybe<TransfersHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TransfersHavingVarianceSampleInput>;
+};
+
+export type TransfersHavingMaxInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingMinInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingStddevPopulationInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingStddevSampleInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingSumInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingVariancePopulationInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
+};
+
+export type TransfersHavingVarianceSampleInput = {
+  amount?: InputMaybe<HavingBigfloatFilter>;
+  blockNumber?: InputMaybe<HavingBigfloatFilter>;
 };
 
 /** Methods to use when ordering `Transfer`. */
@@ -745,9 +1889,110 @@ export enum TransfersOrderBy {
   ToDesc = 'TO_DESC'
 }
 
+export type User = Node & {
+  __typename?: 'User';
+  /** Reads and enables pagination through a set of `ClaimedContract`. */
+  claimedContractsByAccountId: ClaimedContractsConnection;
+  createdAt?: Maybe<Scalars['Datetime']>;
+  /** Reads and enables pagination through a set of `CreatedContract`. */
+  createdContractsByAccountId: CreatedContractsConnection;
+  h160Address?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `SponsoredPool`. */
+  sponsoredPoolsByUserJoinedPoolAccountIdAndPoolId: UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection;
+  updatedAt?: Maybe<Scalars['Datetime']>;
+  /** Reads and enables pagination through a set of `UserJoinedPool`. */
+  userJoinedPoolsByAccountId: UserJoinedPoolsConnection;
+};
+
+
+export type UserClaimedContractsByAccountIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<ClaimedContractFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ClaimedContractsOrderBy>>;
+};
+
+
+export type UserCreatedContractsByAccountIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<CreatedContractFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CreatedContractsOrderBy>>;
+};
+
+
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<SponsoredPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SponsoredPoolsOrderBy>>;
+};
+
+
+export type UserUserJoinedPoolsByAccountIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+};
+
+export type UserAggregates = {
+  __typename?: 'UserAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<UserDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']>>;
+};
+
+export type UserDistinctCountAggregates = {
+  __typename?: 'UserDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of h160Address across the matching connection */
+  h160Address?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
+export type UserFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `h160Address` field. */
+  h160Address?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
 export type UserJoinedPool = Node & {
   __typename?: 'UserJoinedPool';
-  account: Scalars['String'];
+  /** Reads a single `User` that is related to this `UserJoinedPool`. */
+  account?: Maybe<User>;
+  accountId: Scalars['String'];
   createdAt?: Maybe<Scalars['Datetime']>;
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -755,17 +2000,34 @@ export type UserJoinedPool = Node & {
   /** Reads a single `SponsoredPool` that is related to this `UserJoinedPool`. */
   pool?: Maybe<SponsoredPool>;
   poolId: Scalars['String'];
+  updatedAt?: Maybe<Scalars['Datetime']>;
 };
 
 export type UserJoinedPoolAggregates = {
   __typename?: 'UserJoinedPoolAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<UserJoinedPoolDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']>>;
+};
+
+export type UserJoinedPoolDistinctCountAggregates = {
+  __typename?: 'UserJoinedPoolDistinctCountAggregates';
+  /** Distinct count of accountId across the matching connection */
+  accountId?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of poolId across the matching connection */
+  poolId?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']>;
 };
 
 /** A filter to be used against `UserJoinedPool` object types. All fields are combined with a logical ‘and.’ */
 export type UserJoinedPoolFilter = {
-  /** Filter by the object’s `account` field. */
-  account?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `accountId` field. */
+  accountId?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserJoinedPoolFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -778,6 +2040,8 @@ export type UserJoinedPoolFilter = {
   or?: InputMaybe<Array<UserJoinedPoolFilter>>;
   /** Filter by the object’s `poolId` field. */
   poolId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
 /** A connection to a list of `UserJoinedPool` values. */
@@ -815,21 +2079,80 @@ export type UserJoinedPoolsEdge = {
 
 /** Grouping methods for `UserJoinedPool` for usage during aggregation. */
 export enum UserJoinedPoolsGroupBy {
-  Account = 'ACCOUNT',
+  AccountId = 'ACCOUNT_ID',
   CreatedAt = 'CREATED_AT',
-  PoolId = 'POOL_ID'
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  PoolId = 'POOL_ID',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
 }
+
+export type UserJoinedPoolsHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
 
 /** Conditions for `UserJoinedPool` aggregates. */
 export type UserJoinedPoolsHavingInput = {
   AND?: InputMaybe<Array<UserJoinedPoolsHavingInput>>;
   OR?: InputMaybe<Array<UserJoinedPoolsHavingInput>>;
+  average?: InputMaybe<UserJoinedPoolsHavingAverageInput>;
+  distinctCount?: InputMaybe<UserJoinedPoolsHavingDistinctCountInput>;
+  max?: InputMaybe<UserJoinedPoolsHavingMaxInput>;
+  min?: InputMaybe<UserJoinedPoolsHavingMinInput>;
+  stddevPopulation?: InputMaybe<UserJoinedPoolsHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<UserJoinedPoolsHavingStddevSampleInput>;
+  sum?: InputMaybe<UserJoinedPoolsHavingSumInput>;
+  variancePopulation?: InputMaybe<UserJoinedPoolsHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<UserJoinedPoolsHavingVarianceSampleInput>;
+};
+
+export type UserJoinedPoolsHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UserJoinedPoolsHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
 /** Methods to use when ordering `UserJoinedPool`. */
 export enum UserJoinedPoolsOrderBy {
-  AccountAsc = 'ACCOUNT_ASC',
-  AccountDesc = 'ACCOUNT_DESC',
+  AccountIdAsc = 'ACCOUNT_ID_ASC',
+  AccountIdDesc = 'ACCOUNT_ID_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   IdAsc = 'ID_ASC',
@@ -838,7 +2161,451 @@ export enum UserJoinedPoolsOrderBy {
   PoolIdAsc = 'POOL_ID_ASC',
   PoolIdDesc = 'POOL_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** A connection to a list of `SponsoredPool` values, with data from `UserJoinedPool`. */
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection = {
+  __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<SponsoredPoolAggregates>;
+  /** A list of edges which contains the `SponsoredPool`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
+  edges: Array<UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<SponsoredPoolAggregates>>;
+  /** A list of `SponsoredPool` objects. */
+  nodes: Array<Maybe<SponsoredPool>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SponsoredPool` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `SponsoredPool` values, with data from `UserJoinedPool`. */
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnectionGroupedAggregatesArgs = {
+  groupBy: Array<SponsoredPoolsGroupBy>;
+  having?: InputMaybe<SponsoredPoolsHavingInput>;
+};
+
+/** A `SponsoredPool` edge in the connection, with data from `UserJoinedPool`. */
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge = {
+  __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SponsoredPool` at the end of the edge. */
+  node?: Maybe<SponsoredPool>;
+  /** Reads and enables pagination through a set of `UserJoinedPool`. */
+  userJoinedPoolsByPoolId: UserJoinedPoolsConnection;
+};
+
+
+/** A `SponsoredPool` edge in the connection, with data from `UserJoinedPool`. */
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdgeUserJoinedPoolsByPoolIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+};
+
+/** A connection to a list of `User` values. */
+export type UsersConnection = {
+  __typename?: 'UsersConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<UserAggregates>;
+  /** A list of edges which contains the `User` and cursor to aid in pagination. */
+  edges: Array<UsersEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<UserAggregates>>;
+  /** A list of `User` objects. */
+  nodes: Array<Maybe<User>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `User` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+
+/** A connection to a list of `User` values. */
+export type UsersConnectionGroupedAggregatesArgs = {
+  groupBy: Array<UsersGroupBy>;
+  having?: InputMaybe<UsersHavingInput>;
+};
+
+/** A `User` edge in the connection. */
+export type UsersEdge = {
+  __typename?: 'UsersEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `User` at the end of the edge. */
+  node?: Maybe<User>;
+};
+
+/** Grouping methods for `User` for usage during aggregation. */
+export enum UsersGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  H160Address = 'H160_ADDRESS',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type UsersHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `User` aggregates. */
+export type UsersHavingInput = {
+  AND?: InputMaybe<Array<UsersHavingInput>>;
+  OR?: InputMaybe<Array<UsersHavingInput>>;
+  average?: InputMaybe<UsersHavingAverageInput>;
+  distinctCount?: InputMaybe<UsersHavingDistinctCountInput>;
+  max?: InputMaybe<UsersHavingMaxInput>;
+  min?: InputMaybe<UsersHavingMinInput>;
+  stddevPopulation?: InputMaybe<UsersHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<UsersHavingStddevSampleInput>;
+  sum?: InputMaybe<UsersHavingSumInput>;
+  variancePopulation?: InputMaybe<UsersHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<UsersHavingVarianceSampleInput>;
+};
+
+export type UsersHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type UsersHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `User`. */
+export enum UsersOrderBy {
+  ClaimedContractsByAccountIdAverageAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdAverageAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdAverageContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdAverageContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdAverageCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdAverageCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdAverageIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ID_ASC',
+  ClaimedContractsByAccountIdAverageIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ID_DESC',
+  ClaimedContractsByAccountIdAverageUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdAverageUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdCountAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_COUNT_ASC',
+  ClaimedContractsByAccountIdCountDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_COUNT_DESC',
+  ClaimedContractsByAccountIdDistinctCountAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdDistinctCountAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdDistinctCountContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdDistinctCountContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdDistinctCountCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdDistinctCountCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdDistinctCountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_ASC',
+  ClaimedContractsByAccountIdDistinctCountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_DESC',
+  ClaimedContractsByAccountIdDistinctCountUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdDistinctCountUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdMaxAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdMaxAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdMaxContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdMaxContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdMaxCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdMaxCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdMaxIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ID_ASC',
+  ClaimedContractsByAccountIdMaxIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ID_DESC',
+  ClaimedContractsByAccountIdMaxUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdMaxUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdMinAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdMinAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdMinContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdMinContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdMinCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdMinCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdMinIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ID_ASC',
+  ClaimedContractsByAccountIdMinIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ID_DESC',
+  ClaimedContractsByAccountIdMinUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdMinUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdStddevPopulationAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdStddevPopulationAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdStddevPopulationContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdStddevPopulationContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdStddevPopulationCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdStddevPopulationCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdStddevPopulationIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_ASC',
+  ClaimedContractsByAccountIdStddevPopulationIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_DESC',
+  ClaimedContractsByAccountIdStddevPopulationUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdStddevPopulationUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdStddevSampleAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdStddevSampleAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdStddevSampleContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdStddevSampleContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdStddevSampleCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdStddevSampleCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdStddevSampleIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_ASC',
+  ClaimedContractsByAccountIdStddevSampleIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_DESC',
+  ClaimedContractsByAccountIdStddevSampleUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdStddevSampleUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdSumAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdSumAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdSumContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdSumContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdSumCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdSumCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdSumIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ID_ASC',
+  ClaimedContractsByAccountIdSumIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ID_DESC',
+  ClaimedContractsByAccountIdSumUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdSumUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdVariancePopulationAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdVariancePopulationAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdVariancePopulationContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdVariancePopulationContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdVariancePopulationCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdVariancePopulationCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdVariancePopulationIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_ASC',
+  ClaimedContractsByAccountIdVariancePopulationIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_DESC',
+  ClaimedContractsByAccountIdVariancePopulationUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdVariancePopulationUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
+  ClaimedContractsByAccountIdVarianceSampleAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
+  ClaimedContractsByAccountIdVarianceSampleAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdVarianceSampleContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_ASC',
+  ClaimedContractsByAccountIdVarianceSampleContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_DESC',
+  ClaimedContractsByAccountIdVarianceSampleCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  ClaimedContractsByAccountIdVarianceSampleCreatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  ClaimedContractsByAccountIdVarianceSampleIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_ASC',
+  ClaimedContractsByAccountIdVarianceSampleIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_DESC',
+  ClaimedContractsByAccountIdVarianceSampleUpdatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
+  ClaimedContractsByAccountIdVarianceSampleUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  CreatedContractsByAccountIdAverageAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdAverageAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdAverageContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdAverageContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdAverageCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
+  CreatedContractsByAccountIdAverageCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_DESC',
+  CreatedContractsByAccountIdAverageIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ID_ASC',
+  CreatedContractsByAccountIdAverageIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ID_DESC',
+  CreatedContractsByAccountIdAverageUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdAverageUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdCountAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_COUNT_ASC',
+  CreatedContractsByAccountIdCountDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_COUNT_DESC',
+  CreatedContractsByAccountIdDistinctCountAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdDistinctCountAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdDistinctCountContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdDistinctCountContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdDistinctCountCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  CreatedContractsByAccountIdDistinctCountCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  CreatedContractsByAccountIdDistinctCountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_ASC',
+  CreatedContractsByAccountIdDistinctCountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_DESC',
+  CreatedContractsByAccountIdDistinctCountUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdDistinctCountUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdMaxAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdMaxAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdMaxContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdMaxContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdMaxCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
+  CreatedContractsByAccountIdMaxCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_DESC',
+  CreatedContractsByAccountIdMaxIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ID_ASC',
+  CreatedContractsByAccountIdMaxIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ID_DESC',
+  CreatedContractsByAccountIdMaxUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdMaxUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdMinAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdMinAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdMinContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdMinContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdMinCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
+  CreatedContractsByAccountIdMinCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_DESC',
+  CreatedContractsByAccountIdMinIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ID_ASC',
+  CreatedContractsByAccountIdMinIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ID_DESC',
+  CreatedContractsByAccountIdMinUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdMinUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdStddevPopulationAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdStddevPopulationAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdStddevPopulationContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdStddevPopulationContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdStddevPopulationCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  CreatedContractsByAccountIdStddevPopulationCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  CreatedContractsByAccountIdStddevPopulationIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_ASC',
+  CreatedContractsByAccountIdStddevPopulationIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_DESC',
+  CreatedContractsByAccountIdStddevPopulationUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdStddevPopulationUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdStddevSampleAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdStddevSampleAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdStddevSampleContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdStddevSampleContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdStddevSampleCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  CreatedContractsByAccountIdStddevSampleCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  CreatedContractsByAccountIdStddevSampleIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_ASC',
+  CreatedContractsByAccountIdStddevSampleIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_DESC',
+  CreatedContractsByAccountIdStddevSampleUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdStddevSampleUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdSumAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdSumAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdSumContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdSumContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdSumCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
+  CreatedContractsByAccountIdSumCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_DESC',
+  CreatedContractsByAccountIdSumIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ID_ASC',
+  CreatedContractsByAccountIdSumIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ID_DESC',
+  CreatedContractsByAccountIdSumUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdSumUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdVariancePopulationAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdVariancePopulationAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdVariancePopulationContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdVariancePopulationContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdVariancePopulationCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  CreatedContractsByAccountIdVariancePopulationCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  CreatedContractsByAccountIdVariancePopulationIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_ASC',
+  CreatedContractsByAccountIdVariancePopulationIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_DESC',
+  CreatedContractsByAccountIdVariancePopulationUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdVariancePopulationUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
+  CreatedContractsByAccountIdVarianceSampleAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
+  CreatedContractsByAccountIdVarianceSampleAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdVarianceSampleContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_ASC',
+  CreatedContractsByAccountIdVarianceSampleContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_DESC',
+  CreatedContractsByAccountIdVarianceSampleCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  CreatedContractsByAccountIdVarianceSampleCreatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  CreatedContractsByAccountIdVarianceSampleIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_ASC',
+  CreatedContractsByAccountIdVarianceSampleIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_DESC',
+  CreatedContractsByAccountIdVarianceSampleUpdatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
+  CreatedContractsByAccountIdVarianceSampleUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC',
+  H160AddressAsc = 'H160_ADDRESS_ASC',
+  H160AddressDesc = 'H160_ADDRESS_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdAverageAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdAverageAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdAverageCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdAverageCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdAverageIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ID_ASC',
+  UserJoinedPoolsByAccountIdAverageIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ID_DESC',
+  UserJoinedPoolsByAccountIdAveragePoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdAveragePoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdAverageUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdAverageUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdCountAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_COUNT_ASC',
+  UserJoinedPoolsByAccountIdCountDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_COUNT_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdMaxAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdMaxAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdMaxCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdMaxCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdMaxIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ID_ASC',
+  UserJoinedPoolsByAccountIdMaxIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ID_DESC',
+  UserJoinedPoolsByAccountIdMaxPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdMaxPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdMaxUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdMaxUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdMinAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdMinAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdMinCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdMinCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdMinIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ID_ASC',
+  UserJoinedPoolsByAccountIdMinIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ID_DESC',
+  UserJoinedPoolsByAccountIdMinPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdMinPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdMinUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdMinUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdStddevSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdStddevSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdStddevSampleIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevSampleIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdStddevSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdStddevSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdSumAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdSumAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdSumCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdSumCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdSumIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ID_ASC',
+  UserJoinedPoolsByAccountIdSumIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ID_DESC',
+  UserJoinedPoolsByAccountIdSumPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdSumPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdSumUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdSumUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationPoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationPoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
+  UserJoinedPoolsByAccountIdVarianceSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
+  UserJoinedPoolsByAccountIdVarianceSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdVarianceSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  UserJoinedPoolsByAccountIdVarianceSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  UserJoinedPoolsByAccountIdVarianceSampleIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_ASC',
+  UserJoinedPoolsByAccountIdVarianceSampleIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_DESC',
+  UserJoinedPoolsByAccountIdVarianceSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_POOL_ID_ASC',
+  UserJoinedPoolsByAccountIdVarianceSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_POOL_ID_DESC',
+  UserJoinedPoolsByAccountIdVarianceSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
+  UserJoinedPoolsByAccountIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC'
 }
 
 export type _Metadata = {
@@ -869,6 +2636,11 @@ export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 'TransfersConnection', totalCount: number, nodes: Array<{ __typename?: 'Transfer', id: string, amount: any, from: string } | null> } | null };
+
+export type ClaimedContractsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClaimedContractsQuery = { __typename?: 'Query', claimedContracts?: { __typename?: 'ClaimedContractsConnection', totalCount: number, nodes: Array<{ __typename?: 'ClaimedContract', id: string, contractAddress: string, accountId: string } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
 
 export const SponsoredPoolsDocument = `
@@ -929,5 +2701,35 @@ export const useTransfersQuery = <
     useQuery<TransfersQuery, TError, TData>(
       variables === undefined ? ['Transfers'] : ['Transfers', variables],
       fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
+      options
+    );
+export const ClaimedContractsDocument = `
+    query ClaimedContracts {
+  claimedContracts {
+    nodes {
+      id
+      contractAddress
+      accountId
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+    `;
+export const useClaimedContractsQuery = <
+      TData = ClaimedContractsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: ClaimedContractsQueryVariables,
+      options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<ClaimedContractsQuery, TError, TData>(
+      variables === undefined ? ['ClaimedContracts'] : ['ClaimedContracts', variables],
+      fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
       options
     );
