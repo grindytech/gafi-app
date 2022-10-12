@@ -226,9 +226,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         onCloseDetail={onCloseDetail}
         pool={selectedEditPool}
         isOpen={!!selectedEditPool}
-        onClose={() => {
-          setSelectedEditPool(undefined);
-        }}
+        onClose={() => setSelectedEditPool(undefined)}
       />
       <Modal
         isOpen={!!selectedPool}
@@ -374,37 +372,41 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                 </Flex>
               ) : (
                 <Flex justifyContent="center" px={5} py={4}>
-                  {joinedPoolInfo?.isSponsored &&
-                  joinedPoolInfo?.asSponsored.toHuman() ===
-                    selectedPoolDetail.id ? (
-                    <Button
-                      size="sm"
-                      w={{ base: 'full', md: 80 }}
-                      variant="solid"
-                      borderRadius="4xl"
-                      onClick={e => {
-                        e.stopPropagation();
-                        leavePool(leaveLoadingPool);
-                      }}
-                      isLoading={isSponsoredPoolLoading}
-                    >
-                      {t('LEAVE')}
-                    </Button>
-                  ) : (
-                    <Button
-                      size="sm"
-                      w={{ base: 'full', md: 80 }}
-                      variant="solid"
-                      borderRadius="4xl"
-                      onClick={e => {
-                        e.stopPropagation();
-                        joinSponsoredPool(selectedPoolDetail.id);
-                      }}
-                      disabled={isJoinedPool}
-                      isLoading={isSponsoredPoolLoading}
-                    >
-                      {t('JOIN')}
-                    </Button>
+                  {React.Children.toArray(
+                    joinedPoolInfo?.map(pool =>
+                      pool.ticketType.isSponsored &&
+                      pool.ticketType.asSponsored.toHuman() ===
+                        selectedPoolDetail?.id ? (
+                        <Button
+                          size="sm"
+                          w={{ base: 'full', md: 80 }}
+                          variant="solid"
+                          borderRadius="4xl"
+                          onClick={e => {
+                            e.stopPropagation();
+                            leavePool(leaveLoadingPool);
+                          }}
+                          isLoading={isSponsoredPoolLoading}
+                        >
+                          {t('LEAVE')}
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          w={{ base: 'full', md: 80 }}
+                          variant="solid"
+                          borderRadius="4xl"
+                          onClick={e => {
+                            e.stopPropagation();
+                            joinSponsoredPool(selectedPoolDetail.id);
+                          }}
+                          disabled={isJoinedPool}
+                          isLoading={isSponsoredPoolLoading}
+                        >
+                          {t('JOIN')}
+                        </Button>
+                      )
+                    )
                   )}
                 </Flex>
               )}

@@ -16,40 +16,9 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
   const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { joinSponsoredPool, isLoading } = useSponsoredPool(refetch);
 
-  return (
-    <>
-      <Text
-        display={{
-          sm: 'block',
-          '2xl': 'none',
-        }}
-        color="primary"
-      >
-        {t('DETAIL')}
-      </Text>
-
-      {(joinedPoolInfo?.isSponsored &&
-        joinedPoolInfo?.asSponsored.toHuman()) === poolId ? (
-        <Button
-          size="sm"
-          sx={{
-            px: 8,
-          }}
-          display={{
-            sm: 'none',
-            '2xl': 'block',
-          }}
-          borderRadius="4xl"
-          variant="primary"
-          onClick={e => {
-            e.stopPropagation();
-            leavePool(leaveLoadingPool);
-          }}
-          isLoading={isLoading}
-        >
-          {t('LEAVE')}
-        </Button>
-      ) : (
+  const button = (type: string) => {
+    if (type === 'joined') {
+      return (
         <Button
           size="sm"
           display={{
@@ -64,12 +33,58 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
             e.stopPropagation();
             joinSponsoredPool(poolId);
           }}
-          disabled={isJoinedPool}
+          disabled={isJoinedPool || isLoading}
           isLoading={isLoading}
         >
           {t('JOIN')}
         </Button>
-      )}
+      );
+    }
+    if (type === 'leave') {
+      return (
+        <Button
+          size="sm"
+          sx={{
+            px: 8,
+          }}
+          display={{
+            sm: 'none',
+            '2xl': 'block',
+          }}
+          borderRadius="4xl"
+          variant="primary"
+          onClick={e => {
+            e.stopPropagation();
+            leavePool(poolId);
+          }}
+          isLoading={!!leaveLoadingPool}
+          disabled={!!leaveLoadingPool}
+        >
+          {t('LEAVE')}
+        </Button>
+      );
+    }
+  };
+
+  return (
+    <>
+      <Text
+        display={{
+          sm: 'block',
+          '2xl': 'none',
+        }}
+        color="primary"
+      >
+        {t('DETAIL')}
+      </Text>
+      {isJoinedPool
+        ? joinedPoolInfo?.map(pool =>
+            pool.ticketType.isSponsored &&
+            pool.ticketType.asSponsored.toHuman() === poolId
+              ? React.Children.toArray(button('leave'))
+              : React.Children.toArray(button('joined'))
+          )
+        : button('joined')}
     </>
   );
 };

@@ -25,6 +25,7 @@ interface IModalEditTargesProps {
   targets: string[];
   onClose: () => void;
   onCloseDetail: () => void;
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type ITargets = {
@@ -36,8 +37,10 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   poolId,
   targets,
   onCloseDetail,
+  setIsPending,
 }) => {
   const { t } = useTranslation();
+
   const history = useHistory();
 
   const currentTargets = useMemo(
@@ -47,6 +50,7 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
       })),
     [targets]
   );
+
   const {
     register,
     handleSubmit,
@@ -66,13 +70,14 @@ const EditTargetsForm: React.FC<IModalEditTargesProps> = ({
   const { editPoolTargets, isLoading } = useEditPoolTargets(() => {
     onCloseDetail();
     onClose();
-    history.push('/admin/sponsored-pool?type=owned');
-  });
+    history.push('/admin/sponsored-pool');
+  }, setIsPending);
 
   return (
     <form
       onSubmit={handleSubmit((data: IEditTargetsForm) => {
         editPoolTargets(data.targets, poolId);
+        setIsPending(true);
       })}
     >
       <FormControl isInvalid={!!errors.targets} isRequired mb={4}>

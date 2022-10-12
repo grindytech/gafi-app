@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 
@@ -51,21 +51,23 @@ const DeployContract = () => {
                 border="1px dashed #B4CAFF"
                 alignItems="center"
               >
-                {contractAddresses.map(contractAddress => (
-                  <HStack mb={3}>
-                    <Text>{shorten(contractAddress)}</Text>
-                    <CopyToClipboard text={contractAddress}>
-                      <Icon
-                        onClick={copySuccessToast}
-                        cursor="pointer"
-                        ml={4}
-                        color="primary"
-                      >
-                        <path fill="currentColor" d={mdiContentCopy} />
-                      </Icon>
-                    </CopyToClipboard>
-                  </HStack>
-                ))}
+                {React.Children.toArray(
+                  contractAddresses.map(contractAddress => (
+                    <HStack mb={3}>
+                      <Text>{shorten(contractAddress)}</Text>
+                      <CopyToClipboard text={contractAddress}>
+                        <Icon
+                          onClick={copySuccessToast}
+                          cursor="pointer"
+                          ml={4}
+                          color="primary"
+                        >
+                          <path fill="currentColor" d={mdiContentCopy} />
+                        </Icon>
+                      </CopyToClipboard>
+                    </HStack>
+                  ))
+                )}
                 {txnFee && (
                   <Text
                     sx={{

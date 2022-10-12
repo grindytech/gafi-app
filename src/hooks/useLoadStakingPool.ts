@@ -88,10 +88,12 @@ const useLoadStakingPool = () => {
   ];
 
   const stakingPools = poolInfo?.map((pool, index) => {
-    const isJoinedPoolTicket =
-      (!!joinedPoolInfo && joinedPoolInfo[index]?.ticketType.isStaking) ??
-      false;
     const isJoinedPool = !!joinedPoolInfo?.length;
+    const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
+      if (item.ticketType.isStaking) {
+        return item.ticketType.asStaking.toHuman() === pool.id;
+      }
+    });
 
     return {
       ...poolType[index],

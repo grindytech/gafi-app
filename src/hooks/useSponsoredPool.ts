@@ -1,7 +1,4 @@
 import { useToast } from '@chakra-ui/react';
-import { u32 } from '@polkadot/types';
-import { Permill } from '@polkadot/types/interfaces';
-import { AnyJson } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -37,7 +34,10 @@ const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const txCallback = useTxCallback(refetch);
+  const txCallback = useTxCallback(() => {
+    refetch();
+    setIsLoading(false);
+  });
 
   const mutation = useMutation(
     async (poolId: string) => {
@@ -65,7 +65,8 @@ const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
 
   const joinSponsoredPool = async (poolId: string) => {
     setIsLoading(true);
-    mutation.mutate(poolId);
+
+    return mutation.mutate(poolId);
   };
 
   return {

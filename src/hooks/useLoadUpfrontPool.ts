@@ -76,10 +76,12 @@ const useLoadUpfrontPool = () => {
   ];
 
   const upfrontPools = poolInfo?.map((pool, index) => {
-    const isJoinedPoolTicket =
-      (!!joinedPoolInfo && joinedPoolInfo[index]?.ticketType.isUpfront) ??
-      false;
     const isJoinedPool = !!joinedPoolInfo?.length;
+    const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
+      if (item.ticketType.isUpfront) {
+        return item.ticketType.asUpfront.toHuman() === pool.id;
+      }
+    });
 
     return {
       ...poolType[index],

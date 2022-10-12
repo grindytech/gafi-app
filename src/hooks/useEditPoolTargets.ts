@@ -9,15 +9,19 @@ import { useSubstrateState } from 'contexts/substrateContext';
 import { ITargets } from 'pages/SponsoredPool/components/EditTargetsForm';
 import { getFromAcct } from 'utils';
 
-const useEditPoolTargets = (onSuccess: () => void) => {
+const useEditPoolTargets = (
+  onSuccess: () => void,
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [isLoading, setIsLoading] = useState(false);
   const { api, currentAccount } = useSubstrateState();
   const toast = useToast();
   const { t } = useTranslation();
 
   const refetch = () => {
-    setIsLoading(false);
     onSuccess();
+    setIsLoading(false);
+    setIsPending(false);
   };
 
   const txCallback = useTxCallback(refetch);
@@ -25,13 +29,16 @@ const useEditPoolTargets = (onSuccess: () => void) => {
   const poolTargetsMutation = useMutation(
     async (params: { targetsData: ITargets; poolId: string }) => {
       const [account, options] = await getFromAcct(currentAccount);
+
       const newTargets = params.targetsData.map(
         target => target.contractAddress
       );
+
       const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
         params.poolId,
         newTargets
       );
+
       return txSetNewTargets?.signAndSend(account, options || {}, txCallback);
     },
     {
@@ -45,6 +52,7 @@ const useEditPoolTargets = (onSuccess: () => void) => {
           isClosable: true,
           status: 'error',
         });
+        setIsPending(false);
         setIsLoading(false);
       },
     }
@@ -52,8 +60,10 @@ const useEditPoolTargets = (onSuccess: () => void) => {
 
   return {
     editPoolTargets: (targetsData: ITargets, poolId: string) => {
+      setIsPending(false);
       setIsLoading(true);
-      poolTargetsMutation.mutate({ targetsData, poolId });
+
+      return poolTargetsMutation.mutate({ targetsData, poolId });
     },
     isLoading,
   };

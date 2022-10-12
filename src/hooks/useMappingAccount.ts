@@ -66,7 +66,7 @@ const useMappingAccount = () => {
       }
 
       if (api && signature) {
-        const txExecute = api.tx.addressMapping.bond(
+        const txExecute = api.tx.proofAddressMapping.bond(
           signature,
           account,
           isWithdraw

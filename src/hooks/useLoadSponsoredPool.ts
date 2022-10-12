@@ -1,4 +1,4 @@
-import { GafiPrimitivesTicketTicketType } from '@polkadot/types/lookup';
+import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useQueryParam } from 'use-query-params';
@@ -6,31 +6,31 @@ import { useQueryParam } from 'use-query-params';
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
 import { SponsoredPool, useSponsoredPoolsQuery } from 'graphQL/generates';
-import { getGAKIAccountAddress } from 'utils';
 import * as constants from 'utils/constants';
 
 const useLoadSponsoredPool = () => {
   const { api, currentAccount } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketType | undefined> => {
+    async (): Promise<GafiPrimitivesTicketTicketInfo[] | undefined> => {
       if (api && currentAccount) {
-        const res = await api.query.pool.tickets(currentAccount.address, null);
+        const res = await api.query.pool.tickets.entries(
+          currentAccount.address
+        );
 
-        return res as GafiPrimitivesTicketTicketType;
+        return res.map(([{}, exposure]) => exposure.unwrap());
       }
     },
     {
       enabled: !!currentAccount,
     }
   );
-
-  const isJoinedPool = !!joinedPoolInfo?.toHuman();
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
@@ -42,29 +42,39 @@ const useLoadSponsoredPool = () => {
       filter: isOwned
         ? {
             poolOwner: {
-              equalTo: currentAccount?.addressRaw
-                ? getGAKIAccountAddress(currentAccount?.addressRaw)
-                : '',
+              equalTo: currentAccount?.address,
             },
           }
         : undefined,
     },
-    { enabled: !!currentAccount?.addressRaw }
+    {
+      enabled: !!currentAccount?.address,
+    }
   );
+
   const sponsoredPools = sponsoredPoolData
     ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
     : [];
 
   const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
 
+  const isJoinedPool = !!joinedPoolInfo?.map(
+    item => item.ticketType.isSponsored && item.ticketType.asSponsored.toHuman()
+  ).length;
+
   useEffect(() => {
-    if (joinedPoolInfo?.isSponsored) {
-      const joinedPoolId = joinedPoolInfo?.asSponsored.toHuman();
-      const foundPool = sponsoredPools.find(pool => pool.id === joinedPoolId);
-      setJoinedPool(foundPool);
-    } else {
-      setJoinedPool(undefined);
-    }
+    joinedPoolInfo?.map(pool => {
+      if (pool.ticketType.isSponsored) {
+        const joinedPoolID = pool.ticketType.asSponsored.toHuman();
+        const foundPool = sponsoredPools.find(
+          nodes => nodes.id === joinedPoolID
+        );
+
+        setJoinedPool(foundPool);
+      } else {
+        setJoinedPool(undefined);
+      }
+    });
   }, [joinedPoolInfo, sponsoredPools]);
 
   return {
