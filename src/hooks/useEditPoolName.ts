@@ -53,7 +53,7 @@ const useEditPool = (onSuccess: () => void) => {
   return {
     editPoolName: (poolName: string, poolId: string) => {
       setIsLoading(true);
-      poolNameMutation.mutate({ poolName, poolId });
+      return poolNameMutation.mutate({ poolName, poolId });
     },
     isLoading,
   };

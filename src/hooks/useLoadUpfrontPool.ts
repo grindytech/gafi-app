@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
 import useLeavePool from './useLeavePool';
-import { IStakingServiceProps, ITicketTypeProps } from './useLoadStakingPool';
+import { IStakingServiceProps } from './useLoadStakingPool';
 import useUpfrontPool from './useUpfrontPool';
 
 import { useSubstrateState } from 'contexts/substrateContext';
@@ -78,8 +78,9 @@ const useLoadUpfrontPool = () => {
   const upfrontPools = poolInfo?.map((pool, index) => {
     const isJoinedPool = !!joinedPoolInfo?.length;
     const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
-      const ticket = item.ticketType.toHuman() as ITicketTypeProps;
-      return ticket?.Upfront === pool.id;
+      if (item.ticketType.isUpfront) {
+        return item.ticketType.asUpfront.toHuman() === pool.id;
+      }
     });
 
     return {

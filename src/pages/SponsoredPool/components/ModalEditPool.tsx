@@ -10,7 +10,7 @@ import {
   TabPanels,
   Tabs,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import EditPoolNameForm from './EditPoolNameForm';
@@ -33,12 +33,14 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const [isPending, setIsPending] = useState(false);
+
   return (
     <>
       {pool && (
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={() => (isPending ? null : onClose())}
           scrollBehavior="inside"
           size="2xl"
         >
@@ -54,6 +56,7 @@ const ModalEditPool: React.FC<IModalEditPoolProps> = ({
                 <TabPanels>
                   <TabPanel>
                     <EditTargetsForm
+                      setIsPending={setIsPending}
                       onCloseDetail={onCloseDetail}
                       onClose={onClose}
                       poolId={pool.id}

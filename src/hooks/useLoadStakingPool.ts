@@ -17,10 +17,6 @@ export interface IStakingServiceProps {
   id: `0x${string}`;
   value: string;
 }
-export interface ITicketTypeProps {
-  Staking?: `0x${string}`;
-  Upfront?: `0x${string}`;
-}
 
 const useLoadStakingPool = () => {
   const { api, currentAccount } = useSubstrateState();
@@ -94,8 +90,9 @@ const useLoadStakingPool = () => {
   const stakingPools = poolInfo?.map((pool, index) => {
     const isJoinedPool = !!joinedPoolInfo?.length;
     const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
-      const ticket = item.ticketType.toHuman() as ITicketTypeProps;
-      return ticket?.Staking === pool.id;
+      if (item.ticketType.isStaking) {
+        return item.ticketType.asStaking.toHuman() === pool.id;
+      }
     });
 
     return {
