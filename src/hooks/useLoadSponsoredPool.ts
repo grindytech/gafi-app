@@ -48,7 +48,7 @@ const useLoadSponsoredPool = () => {
         : undefined,
     },
     {
-      enabled: !!currentAccount?.address,
+      enabled: !!currentAccount?.addressRaw,
     }
   );
 

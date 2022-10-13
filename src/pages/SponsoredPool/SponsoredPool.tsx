@@ -53,11 +53,6 @@ const SponsoredPoolPage: React.FC = () => {
       display: true,
     },
     {
-      label: '',
-      fieldName: 'actions',
-      display: breakpointsTablet,
-    },
-    {
       label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
         minuteAmount: 30,
       }),

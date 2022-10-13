@@ -1045,6 +1045,7 @@ export type SponsoredPool = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   poolOwner: Scalars['String'];
+  poolName: Scalars['String'];
   targets: Scalars['JSON'];
   totalUsers: Scalars['Int'];
   txLimit: Scalars['Int'];
@@ -2654,6 +2655,7 @@ export const SponsoredPoolsDocument = `
       discount
       txLimit
       createdAt
+      poolName
     }
     totalCount
     pageInfo {

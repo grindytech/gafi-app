@@ -27,7 +27,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { mdiContentCopy } from '@mdi/js';
-import { formatBalance } from '@polkadot/util';
+import { formatBalance, hexToString } from '@polkadot/util';
 import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
@@ -96,11 +96,10 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
   const SkeletonArray = new Array(limitRow).fill(0);
 
   const isDisplayJoinedPool = useBreakpointValue({
-    sm: true,
+    sm: 'block',
     md: false,
-    lg: true,
-    '2xl': false,
   });
+
   const tableSize = useBreakpointValue({
     sm: 'sm',
     md: 'md',
@@ -132,7 +131,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               <Text fontWeight="bold" fontSize="md" minWidth="100%">
                 {shorten(joinedPool?.poolOwner || '')}
               </Text>
-              <Text fontSize="xs">Games</Text>
+              <Text fontSize="xs">
+                {joinedPool.poolName
+                  ? hexToString(joinedPool.poolName)
+                  : 'Games'}
+              </Text>
             </VStack>
           </HStack>
 
@@ -312,7 +315,11 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
                   <Text fontWeight="bold" fontSize="md" minWidth="100%">
                     {shorten(selectedPoolDetail?.poolOwner || '')}
                   </Text>
-                  <Text fontSize="xs">Games</Text>
+                  <Text fontSize="xs">
+                    {selectedPoolDetail.poolName
+                      ? hexToString(selectedPoolDetail.poolName)
+                      : 'Games'}
+                  </Text>
                 </VStack>
               </HStack>
               <Flex
