@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
@@ -8,18 +8,32 @@ import useTxCallback from './useTxCallback';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
 
-const useChangeOwner = (onSuccess: () => void) => {
+const useChangeOwner = (
+  onSuccess: () => void,
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const toast = useToast();
   const { t } = useTranslation();
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const refetch = () => {
-    setIsLoading(false);
+  const refetchData = () => {
+    refetchLoad('false');
     onSuccess();
   };
 
-  const txCallback = useTxCallback(refetch);
+  const refetchLoad = (type: string) => {
+    if (type === 'false') {
+      setIsLoading(false);
+      setIsPending(false);
+    }
+    if (type === 'true') {
+      setIsLoading(true);
+      setIsPending(true);
+    }
+  };
+
+  const txCallback = useTxCallback(refetchData);
 
   const mutation = useMutation(
     async (params: { contractAddress: string; ownerAddress: string }) => {
@@ -45,13 +59,14 @@ const useChangeOwner = (onSuccess: () => void) => {
           isClosable: true,
           status: 'error',
         });
-        setIsLoading(false);
+        refetchLoad('false');
       },
     }
   );
 
   const changeOwner = (contractAddress: string, ownerAddress: string) => {
-    setIsLoading(true);
+    refetchLoad('true');
+
     mutation.mutate({ contractAddress, ownerAddress });
   };
 

@@ -20,13 +20,16 @@ import { ClaimedContract } from 'graphQL/generates';
 import useMessageToast from 'hooks/useMessageToast';
 import { shorten } from 'utils';
 
-interface IProps {
+interface IContractTableProps {
   contract: ClaimedContract;
 }
-const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
+
+const ContractsTableRow: React.FC<IContractTableProps> = ({ contract }) => {
   const { t } = useTranslation();
   const { copySuccessToast } = useMessageToast();
   const [contractChanging, setContractChanging] = useState('');
+  const [isPending, setIsPending] = useState(false);
+
   return (
     <>
       <Tr>
@@ -82,14 +85,15 @@ const ContractsTableRow: React.FC<IProps> = ({ contract }) => {
             {t('CHANGE_OWNER')}
           </Button>
         </Td>
-      </Tr>
 
-      <ModalChangeContractOwner
-        contractAddress={contractChanging}
-        onClose={() => {
-          setContractChanging('');
-        }}
-      />
+        <Td>
+          <ModalChangeContractOwner
+            contractAddress={contractChanging}
+            setIsPending={setIsPending}
+            onClose={() => (isPending ? null : setContractChanging(''))}
+          />
+        </Td>
+      </Tr>
     </>
   );
 };
