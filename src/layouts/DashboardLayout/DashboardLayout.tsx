@@ -19,8 +19,6 @@ import Panel from './components/Panel';
 import SideBar from './components/Sidebar';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import WalletConnect from 'layouts/WalletConnect/WalletConnect';
-import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { apiState, apiError } = useSubstrateState();
@@ -40,12 +38,8 @@ const DashboardLayout: React.FC = ({ children }) => {
   if (apiState === 'ERROR') return message(apiError);
   if (apiState !== 'READY') return loader(t('CONNECTING_TO_SUBSTRATE'));
 
-  const checkPolkadotAccounts = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
-
   return (
     <>
-      <WalletConnect isOpen={!checkPolkadotAccounts} />
-
       <Box sx={dashBoardStyled}>
         <SideBar display={{ base: 'none', lg: 'flex' }} />
         <Drawer

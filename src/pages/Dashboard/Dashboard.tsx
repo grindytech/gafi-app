@@ -14,13 +14,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useBreakpointValue,
   useDisclosure,
   useTheme,
   VStack,
+  Select,
 } from '@chakra-ui/react';
 import { mdiCogOutline } from '@mdi/js';
-import { Text as PolText } from '@polkadot/types';
+import { Metadata, Text as PolText } from '@polkadot/types';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactJson from 'react-json-view';
@@ -29,11 +29,12 @@ import BlockInfo from './components/BlockInfo';
 import EventInfo from './components/EventInfo';
 
 import Card from 'components/card/Card';
-import { useSubstrateState } from 'contexts/substrateContext';
+import config from 'config';
+import { useSubstrate } from 'contexts/substrateContext';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 
 interface IMetadata {
-  data: any;
+  data: Metadata | undefined;
   version: number;
 }
 
@@ -45,7 +46,10 @@ interface INodeInfo {
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const { api, socket } = useSubstrateState();
+  const {
+    state: { api, socket },
+    setConnectSocket,
+  } = useSubstrate();
   const [metadata, setMetadata] = useState<IMetadata>();
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
   const gaEventTracker = useAnalyticsEventTracker('Dashboard');
@@ -56,14 +60,16 @@ const Dashboard = () => {
     const getMetadata = async () => {
       try {
         const data = await api?.rpc.state.getMetadata();
-        // console.log(data);
-        setMetadata({ data, version: data?.version ? data?.version : 0 });
+        if (data) {
+          setMetadata({ data, version: data?.version ? data?.version : 0 });
+        }
       } catch (e) {
         console.error(e);
       }
     };
     getMetadata();
   }, [api?.rpc.state]);
+
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -80,6 +86,7 @@ const Dashboard = () => {
     };
     getInfo();
   }, [api?.rpc.system]);
+
   return (
     <Box p={{ sm: 4, md: 0 }}>
       <Grid
@@ -100,12 +107,19 @@ const Dashboard = () => {
               <Heading mb={4} size="sm">
                 {nodeInfo?.nodeName}
               </Heading>
-              <Text fontWeight="light">
+              <HStack>
                 <Badge colorScheme="yellow" mr={2}>
                   {nodeInfo?.chain}
                 </Badge>
-                {socket}
-              </Text>
+                <Select
+                  defaultValue={socket}
+                  onChange={event => setConnectSocket(event.target.value)}
+                >
+                  {config.PROVIDER_SOCKETS.map((socketAddress: string) => (
+                    <option value={socketAddress}>{socketAddress}</option>
+                  ))}
+                </Select>
+              </HStack>
               {/* <Text color="black"></Text> */}
               <HStack
                 w="full"
@@ -160,12 +174,11 @@ const Dashboard = () => {
             <ReactJson
               collapsed={4}
               src={
-                metadata ? JSON.parse(metadata?.data) : { data: 'loading...' }
+                metadata?.data
+                  ? JSON.parse(metadata.data.toString())
+                  : { data: 'loading...' }
               }
             />
-            {/* <pre>
-              <code>{JSON.stringify(metadata?.data, null, 2)}</code>
-            </pre> */}
           </ModalBody>
         </ModalContent>
       </Modal>

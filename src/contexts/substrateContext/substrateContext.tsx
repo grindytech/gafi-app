@@ -25,7 +25,7 @@ const parsedQuery = new URLSearchParams(window.location.search);
 // Using temporary 'as'. Remove when add type for config.
 
 const connectedSocket =
-  parsedQuery.get('rpc') || (config.PROVIDER_SOCKET as string);
+  parsedQuery.get('rpc') || (config.PROVIDER_SOCKETS as string[])[0];
 
 // Initial state for `useReducer`
 
@@ -109,6 +109,12 @@ const reducer = (
       return { ...state, polkadotAccounts: action.payload };
     case 'SET_CHAIN_DECIMAL':
       return { ...state, chainDecimal: action.payload };
+    case 'SET_CONNECT_SOCKET':
+      return {
+        ...state,
+        socket: action.payload,
+        apiState: null,
+      };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }
@@ -355,6 +361,10 @@ const useSubstrate = () => {
   const setAccounts = (extensionName: string) =>
     loadAccounts(extensionName, state, dispatch);
 
+  const setConnectSocket = (socket: string) => {
+    dispatch({ type: 'SET_CONNECT_SOCKET', payload: socket });
+  };
+
   return {
     state,
     setCurrentAccount,
@@ -378,6 +388,7 @@ const useSubstrate = () => {
       }
     },
     setAccounts,
+    setConnectSocket,
   };
 };
 

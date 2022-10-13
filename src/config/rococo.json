@@ -1,6 +1,6 @@
 {
   "APP_NAME": "gafi-dashboard",
-  "PROVIDER_SOCKET": "wss://ws-rococo.gafi.network",
+  "PROVIDER_SOCKETS": ["wss://ws-rococo.gafi.network"],
   "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query__bGh0c",
   "FEATURE_FLAG": {
     "PUBLIC_FEATURE_GAME_CREATOR": false,

@@ -3,6 +3,7 @@
   "TRANSACTIONS_RATE": "Rate: {{transactionAmount}} transactions per {{minute}} minutes",
   "DISCOUNT_FEE": "Discount fee: {{discountPercent}}%",
   "POOL_FEE": "Fee: {{poolFee}} GAKI per {{minute}} minutes",
+  "POOL_FEE_STAKING": "Fee: {{poolFee}} GAKI",
   "POOL": {
     "UPFRONT_POOL": "Upfront pool",
     "STAKING_POOL": "Staking pool",
