@@ -16,49 +16,19 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useConnectWallet } from 'contexts/connectWalletContext/connectWalletContext';
 import { useSubstrate } from 'contexts/substrateContext';
-import { CHROME_EXT_URL, FIREFOX_ADDON_URL } from 'utils/constants';
+import { CHROME_EXT_URL, FIREFOX_ADDON_URL, wallets } from 'utils/constants';
 
-export interface IButtonWalletProps {
-  key: number;
-  title: string;
-  icon: string;
-}
-
-interface IWalletConnectProps {
-  onCloseWallet?: () => void;
-  isOpen: boolean;
-}
-
-export default function WalletConnect({
-  onCloseWallet,
-  isOpen,
-}: IWalletConnectProps) {
+export default function WalletConnect() {
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState('');
+  const { isOpen, onClose } = useConnectWallet();
 
   const { setAccounts } = useSubstrate();
 
-  const connectWalletButtons = [
-    {
-      title: t('POLKADOT_WALLET'),
-      icon: '/assets/logo/polkadot-js.svg',
-      extensionName: 'polkadot-js',
-    },
-    {
-      title: t('SUBWALLET'),
-      icon: '/assets/logo/subwallet.png',
-      extensionName: 'subwallet-js',
-    },
-    {
-      title: t('CLOVER_WALLET'),
-      icon: '/assets/logo/clover.svg',
-      extensionName: 'clover',
-    },
-  ];
-
   return (
-    <Modal isOpen={isOpen} onClose={() => onCloseWallet}>
+    <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <ModalOverlay />
 
       <ModalContent p={4}>
@@ -73,7 +43,7 @@ export default function WalletConnect({
             size="md"
           >
             {React.Children.toArray(
-              connectWalletButtons.map(button => (
+              wallets.map(button => (
                 <Button
                   justifyContent="start"
                   w="full"
@@ -88,14 +58,18 @@ export default function WalletConnect({
                   iconSpacing={4}
                   onClick={async () => {
                     const message = await setAccounts(button.extensionName);
-                    setErrorMessage(message);
+                    if (!message) {
+                      onClose();
+                    } else {
+                      setErrorMessage(message);
+                    }
                   }}
                   disabled={
                     !window.injectedWeb3 ||
                     !window.injectedWeb3[button.extensionName]
                   }
                 >
-                  {button.title}
+                  {t(button.title)}
                 </Button>
               ))
             )}

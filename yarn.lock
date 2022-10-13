@@ -6924,6 +6924,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rehooks/local-storage@npm:^2.4.4":
+  version: 2.4.4
+  resolution: "@rehooks/local-storage@npm:2.4.4"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 1aba4f4cfa0f1767d82730240a11c814f5b70917a0031989d3ce3a97b3d040523271738802a4a5deee20e9295e7c09bca6882a048337f0b78525347b7370ec73
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.2.0":
   version: 5.3.1
   resolution: "@rollup/plugin-babel@npm:5.3.1"
@@ -16200,6 +16209,7 @@ __metadata:
     "@polkadot/ui-settings": 2.0.1
     "@polkadot/util": ^9.0.1
     "@polkadot/util-crypto": ^9.0.1
+    "@rehooks/local-storage": ^2.4.4
     "@testing-library/react": release-12.x
     "@tsconfig/recommended": ^1.0.1
     "@types/jest": 27.5.1
