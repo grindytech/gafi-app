@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { ConnectWalletProvider } from './contexts/connectWalletContext/connectWalletContext';
 import { SubstrateContextProvider } from './contexts/substrateContext';
 
 import DashboardLayout from 'layouts/DashboardLayout';
@@ -37,9 +38,11 @@ function PageContent() {
 export default function App() {
   return (
     <SubstrateContextProvider>
-      <DashboardLayout>
-        <PageContent />
-      </DashboardLayout>
+      <ConnectWalletProvider>
+        <DashboardLayout>
+          <PageContent />
+        </DashboardLayout>
+      </ConnectWalletProvider>
     </SubstrateContextProvider>
   );
 }

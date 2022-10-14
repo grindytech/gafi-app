@@ -20,11 +20,14 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { mdiChevronDown, mdiSwapVerticalBold } from '@mdi/js';
+import { useLocalStorage } from '@rehooks/local-storage';
+import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useWallet } from 'use-wallet';
 
 import Card from 'components/card/Card';
+import { useConnectWallet } from 'contexts/connectWalletContext/connectWalletContext';
 import { useSubstrate } from 'contexts/substrateContext';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useFaucet from 'hooks/useFaucet';
@@ -32,7 +35,12 @@ import useLoadCurrentAccount from 'hooks/useLoadCurrentAccount';
 import useMessageToast from 'hooks/useMessageToast';
 import { usePolkadotBalance } from 'hooks/useUserBalance';
 import { acctAddr, shorten } from 'utils';
-import { CHROME_EXT_URL, FIREFOX_ADDON_URL } from 'utils/constants';
+import {
+  CHROME_EXT_URL,
+  FIREFOX_ADDON_URL,
+  GAFI_WALLET_STORAGE_KEY,
+  wallets,
+} from 'utils/constants';
 
 interface IProps extends BoxProps {
   onClose?: () => void;
@@ -49,6 +57,21 @@ const AccountInfo = ({ display, onClose }: IProps) => {
   const { faucet, isLoading } = useFaucet();
   const theme = useTheme();
   const gaEventTracker = useAnalyticsEventTracker('Account info');
+  const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
+  const { onOpen } = useConnectWallet();
+
+  const [extensionName] = useLocalStorage(GAFI_WALLET_STORAGE_KEY);
+
+  useEffect(() => {
+    if (extensionName) {
+      const founded = wallets.find(
+        item => item.extensionName === extensionName
+      );
+      if (founded) {
+        setSelectedWallet(founded);
+      }
+    }
+  }, [extensionName]);
 
   return (
     <Card sx={AccountInfoStyled} display={display}>
@@ -79,8 +102,14 @@ const AccountInfo = ({ display, onClose }: IProps) => {
           }}
         >
           <Tab>
-            <Image w={5} h={5} src="/assets/layout/polkadot.png" mr={2} />
-            {t('POLKADOT')}
+            <Image
+              onClick={onOpen}
+              w={5}
+              h={5}
+              src={selectedWallet.icon}
+              mr={2}
+            />
+            {t(selectedWallet.title)}
           </Tab>
           <Tab>
             <Image w={5} h={5} src="/assets/layout/metamask.png" mr={2} />

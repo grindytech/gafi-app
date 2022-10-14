@@ -50,13 +50,20 @@ const Pool: React.FC<IProps> = ({ pool, sx }) => {
           </Text>
 
           <Text color="greyText">
-            {t('POOL_FEE', {
-              poolFee: formatUnits(
-                pool.fee.gaki.replaceAll(',', ''),
-                chainDecimal
-              ), // reason replaceAll: value from 15,00 to 1500 because error BigNumber string
-              minute: pool.fee.minute,
-            })}
+            {pool.fee.minute
+              ? t('POOL_FEE', {
+                  poolFee: formatUnits(
+                    pool.fee.gaki.replaceAll(',', ''),
+                    chainDecimal
+                  ), // reason replaceAll: value from 15,00 to 1500 because error BigNumber string
+                  minute: pool.fee.minute,
+                })
+              : t('POOL_FEE_STAKING', {
+                  poolFee: formatUnits(
+                    pool.fee.gaki.replaceAll(',', ''),
+                    chainDecimal
+                  ),
+                })}
           </Text>
         </Box>
 

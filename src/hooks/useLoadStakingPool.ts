@@ -106,7 +106,7 @@ const useLoadStakingPool = () => {
       banner: poolType[index].banner,
       fee: {
         gaki: pool.value,
-        minute: 30,
+        minute: 0,
       },
       onJoin: () => {
         gaEventTracker({
