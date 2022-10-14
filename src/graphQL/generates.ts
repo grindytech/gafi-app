@@ -1044,6 +1044,7 @@ export type SponsoredPool = Node & {
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  poolName?: Maybe<Scalars['String']>;
   poolOwner: Scalars['String'];
   targets: Scalars['JSON'];
   totalUsers: Scalars['Int'];
@@ -1122,6 +1123,8 @@ export type SponsoredPoolDistinctCountAggregates = {
   discount?: Maybe<Scalars['BigInt']>;
   /** Distinct count of id across the matching connection */
   id?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of poolName across the matching connection */
+  poolName?: Maybe<Scalars['BigInt']>;
   /** Distinct count of poolOwner across the matching connection */
   poolOwner?: Maybe<Scalars['BigInt']>;
   /** Distinct count of targets across the matching connection */
@@ -1150,6 +1153,8 @@ export type SponsoredPoolFilter = {
   not?: InputMaybe<SponsoredPoolFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<SponsoredPoolFilter>>;
+  /** Filter by the object’s `poolName` field. */
+  poolName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `poolOwner` field. */
   poolOwner?: InputMaybe<StringFilter>;
   /** Filter by the object’s `targets` field. */
@@ -1333,6 +1338,7 @@ export enum SponsoredPoolsGroupBy {
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Discount = 'DISCOUNT',
+  PoolName = 'POOL_NAME',
   PoolOwner = 'POOL_OWNER',
   Targets = 'TARGETS',
   TotalUsers = 'TOTAL_USERS',
@@ -1449,6 +1455,8 @@ export enum SponsoredPoolsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
+  PoolNameAsc = 'POOL_NAME_ASC',
+  PoolNameDesc = 'POOL_NAME_DESC',
   PoolOwnerAsc = 'POOL_OWNER_ASC',
   PoolOwnerDesc = 'POOL_OWNER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
@@ -2630,7 +2638,7 @@ export type SponsoredPoolsQueryVariables = Exact<{
 }>;
 
 
-export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null, poolName?: string | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
 export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2654,6 +2662,7 @@ export const SponsoredPoolsDocument = `
       discount
       txLimit
       createdAt
+      poolName
     }
     totalCount
     pageInfo {

@@ -4,7 +4,7 @@
     "wss://ws-testnet.gafi.network",
     "wss://ws.gafi.network"
   ],
-  "GRAPHQL_ENDPOINT": "http://115.79.142.60:8000",
+  "GRAPHQL_ENDPOINT": "https://playground.gafi.network",
   "FEATURE_FLAG": {
     "PUBLIC_FEATURE_GAME_CREATOR": false,
     "PUBLIC_NEW_DASHBOARD_UI": true

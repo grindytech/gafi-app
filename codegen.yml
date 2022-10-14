@@ -1,4 +1,4 @@
-schema: http://115.79.142.60:8000/
+schema: https://playground.gafi.network/
 documents: './src/**/*.ts'
 generates:
   ./src/graphQL/generates.ts:

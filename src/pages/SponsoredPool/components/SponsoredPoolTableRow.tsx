@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
-import { formatBalance } from '@polkadot/util';
+import { formatBalance, hexToString } from '@polkadot/util';
 import React from 'react';
 import { useQueryParam } from 'use-query-params';
 
@@ -39,6 +39,9 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
   const isOwned = type === 'owned';
   const display = useBreakpointValue({
     sm: 'none',
+    md: undefined,
+    lg: undefined,
+    xl: undefined,
     '2xl': undefined,
   });
 
@@ -67,7 +70,9 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
               >
                 {shorten(poolOwner || '', amountCharacter)}
               </Text>
-              <Text fontSize="xs">Games</Text>
+              <Text fontSize="xs">
+                {pool.poolName ? hexToString(pool.poolName) : 'Games'}
+              </Text>
             </VStack>
           </HStack>
         </Td>
@@ -98,10 +103,8 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
         </Td>
         <Td
           onClick={e => {
-            if (display === 'none') {
-              e.stopPropagation();
-              onOpenDetail();
-            }
+            e.stopPropagation();
+            onOpenDetail();
           }}
           textAlign="center"
           fontWeight="normal"

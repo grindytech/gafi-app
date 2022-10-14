@@ -1,4 +1,4 @@
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,17 +16,19 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
   const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { joinSponsoredPool, isLoading } = useSponsoredPool(refetch);
 
+  const breakpointsTablet = useBreakpointValue({
+    sm: false,
+    md: true,
+  });
+
   const button = (type: string) => {
-    if (type === 'joined') {
+    if (type === 'joined' && breakpointsTablet) {
       return (
         <Button
           size="sm"
-          display={{
-            sm: 'none',
-            '2xl': 'block',
-          }}
           sx={{
             px: 8,
+            display: 'inline-flex',
           }}
           variant="outline"
           onClick={e => {
@@ -40,16 +42,13 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
         </Button>
       );
     }
-    if (type === 'leave') {
+    if (type === 'leave' && breakpointsTablet) {
       return (
         <Button
           size="sm"
           sx={{
             px: 8,
-          }}
-          display={{
-            sm: 'none',
-            '2xl': 'block',
+            display: 'inline-flex',
           }}
           borderRadius="4xl"
           variant="primary"
@@ -70,13 +69,13 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
     <>
       <Text
         display={{
-          sm: 'block',
-          '2xl': 'none',
+          md: 'none',
         }}
         color="primary"
       >
         {t('DETAIL')}
       </Text>
+
       {isJoinedPool
         ? joinedPoolInfo?.map(pool =>
             pool.ticketType.isSponsored &&
