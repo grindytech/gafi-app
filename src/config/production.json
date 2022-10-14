@@ -1,7 +1,7 @@
 {
   "APP_NAME": "gafi-dashboard",
   "PROVIDER_SOCKET": "wss://ws-testnet.gafi.network",
-  "GRAPHQL_ENDPOINT": "http://115.79.142.60:8000",
+  "GRAPHQL_ENDPOINT": "https://playground.gafi.network",
   "FEATURE_FLAG": {
     "PUBLIC_FEATURE_GAME_CREATOR": false,
     "PUBLIC_NEW_DASHBOARD_UI": true

@@ -16,6 +16,7 @@ const sponsoredPoolQuery = gql`
         discount
         txLimit
         createdAt
+        poolName
       }
       totalCount
       pageInfo {
