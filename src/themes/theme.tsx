@@ -9,7 +9,6 @@ const Card: ComponentStyleConfig = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    position: 'relative',
     minWidth: '0px',
     wordWrap: 'break-word',
     backgroundClip: 'border-box',

@@ -6,5 +6,6 @@
     "PUBLIC_FEATURE_GAME_CREATOR": false,
     "PUBLIC_NEW_DASHBOARD_UI": true
   },
+  "WHITELIST_DEFAULT_URL": "http://localhost:3000/whitelist",
   "TRACKING_ID": "G-PB9GEPCD66"
 }

@@ -2,12 +2,14 @@
   "APP_NAME": "gafi-dashboard",
   "PROVIDER_SOCKETS": [
     "wss://ws-testnet.gafi.network",
-    "wss://ws.gafi.network"
+    "wss://ws-testnet-tokyo.gafi.network",
+    "wss://ws-testnet-sig.gafi.network"
   ],
   "GRAPHQL_ENDPOINT": "https://playground.gafi.network",
   "FEATURE_FLAG": {
     "PUBLIC_FEATURE_GAME_CREATOR": false,
     "PUBLIC_NEW_DASHBOARD_UI": true
   },
+  "WHITELIST_DEFAULT_URL": "https://whitelist.gafi.network",
   "TRACKING_ID": "G-PB9GEPCD66"
 }
