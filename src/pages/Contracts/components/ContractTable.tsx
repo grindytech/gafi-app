@@ -20,10 +20,8 @@ export interface ICaptions {
   label: string;
   fieldName: string;
 }
-interface IContractProps {
-  children: React.ReactNode;
-}
-const ContractsTable = ({ children }: IContractProps) => {
+
+const ContractsTable: React.FC = ({ children }) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
   const amountCharacter = useBreakpointValue({
     sm: 3,

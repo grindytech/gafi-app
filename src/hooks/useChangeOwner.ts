@@ -18,16 +18,16 @@ const useChangeOwner = (
   const [isLoading, setIsLoading] = useState(false);
 
   const refetchData = () => {
-    refetchLoad('false');
+    refetchLoad(false);
     onSuccess();
   };
 
-  const refetchLoad = (type: string) => {
-    if (type === 'false') {
+  const refetchLoad = (type: boolean) => {
+    if (type === false) {
       setIsLoading(false);
       setIsPending(false);
     }
-    if (type === 'true') {
+    if (type === true) {
       setIsLoading(true);
       setIsPending(true);
     }
@@ -59,13 +59,13 @@ const useChangeOwner = (
           isClosable: true,
           status: 'error',
         });
-        refetchLoad('false');
+        refetchLoad(false);
       },
     }
   );
 
   const changeOwner = (contractAddress: string, ownerAddress: string) => {
-    refetchLoad('true');
+    refetchLoad(true);
 
     mutation.mutate({ contractAddress, ownerAddress });
   };

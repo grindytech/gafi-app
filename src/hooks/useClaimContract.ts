@@ -20,17 +20,17 @@ const useClaimContract = (
   const { refetch } = useLoadContracts();
 
   const refetchData = () => {
-    refetchLoad('false');
+    refetchLoad(false);
     onSuccess();
     refetch();
   };
 
-  const refetchLoad = (type: string) => {
-    if (type === 'false') {
+  const refetchLoad = (type: boolean) => {
+    if (type === false) {
       setIsLoading(false);
       setIsPending(false);
     }
-    if (type === 'true') {
+    if (type === true) {
       setIsLoading(true);
       setIsPending(true);
     }
@@ -60,13 +60,13 @@ const useClaimContract = (
           isClosable: true,
           status: 'error',
         });
-        refetchLoad('false');
+        refetchLoad(false);
       },
     }
   );
 
   const claimContract = (contractAddress: string) => {
-    refetchLoad('true');
+    refetchLoad(true);
 
     return mutation.mutate(contractAddress);
   };
