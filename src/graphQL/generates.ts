@@ -2645,8 +2645,10 @@ export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 'TransfersConnection', totalCount: number, nodes: Array<{ __typename?: 'Transfer', id: string, amount: any, from: string } | null> } | null };
 
-export type ClaimedContractsQueryVariables = Exact<{ [key: string]: never; }>;
-
+export type ClaimedContractsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  offset: Scalars['Int'];
+}>;
 
 export type ClaimedContractsQuery = { __typename?: 'Query', claimedContracts?: { __typename?: 'ClaimedContractsConnection', totalCount: number, nodes: Array<{ __typename?: 'ClaimedContract', id: string, contractAddress: string, accountId: string } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
@@ -2673,19 +2675,19 @@ export const SponsoredPoolsDocument = `
 }
     `;
 export const useSponsoredPoolsQuery = <
-      TData = SponsoredPoolsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: SponsoredPoolsQueryVariables,
-      options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<SponsoredPoolsQuery, TError, TData>(
-      ['SponsoredPools', variables],
-      fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
-      options
-    );
+  TData = SponsoredPoolsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: SponsoredPoolsQueryVariables,
+  options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<SponsoredPoolsQuery, TError, TData>(
+    ['SponsoredPools', variables],
+    fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
+    options
+  );
 export const TransfersDocument = `
     query Transfers {
   transfers(first: 5) {
@@ -2699,22 +2701,22 @@ export const TransfersDocument = `
 }
     `;
 export const useTransfersQuery = <
-      TData = TransfersQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: TransfersQueryVariables,
-      options?: UseQueryOptions<TransfersQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<TransfersQuery, TError, TData>(
-      variables === undefined ? ['Transfers'] : ['Transfers', variables],
-      fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
-      options
-    );
+  TData = TransfersQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables?: TransfersQueryVariables,
+  options?: UseQueryOptions<TransfersQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<TransfersQuery, TError, TData>(
+    variables === undefined ? ['Transfers'] : ['Transfers', variables],
+    fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
+    options
+  );
 export const ClaimedContractsDocument = `
-    query ClaimedContracts {
-  claimedContracts {
+    query ClaimedContracts($first: Int!, $offset: Int!) {
+  claimedContracts(first: $first, offset: $offset) {
     nodes {
       id
       contractAddress
@@ -2729,16 +2731,16 @@ export const ClaimedContractsDocument = `
 }
     `;
 export const useClaimedContractsQuery = <
-      TData = ClaimedContractsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: ClaimedContractsQueryVariables,
-      options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<ClaimedContractsQuery, TError, TData>(
-      variables === undefined ? ['ClaimedContracts'] : ['ClaimedContracts', variables],
-      fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
-      options
-    );
+  TData = ClaimedContractsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables?: ClaimedContractsQueryVariables,
+  options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<ClaimedContractsQuery, TError, TData>(
+    ['ClaimedContracts', variables],
+    fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
+    options
+  );

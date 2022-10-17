@@ -5,6 +5,7 @@ import { ClaimedContract } from '../graphQL/generates';
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
 import { useClaimedContractsQuery } from 'graphQL/generates';
+import * as constants from 'utils/constants';
 
 const useLoadContracts = () => {
   const { currentAccount } = useSubstrateState();
@@ -16,7 +17,10 @@ const useLoadContracts = () => {
     refetch,
   } = useClaimedContractsQuery(
     client,
-    {},
+    {
+      first: constants.CONTRACT_AMOUNT_PER_PAGE,
+      offset: (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE,
+    },
     {
       enabled: !!currentAccount?.addressRaw,
     }

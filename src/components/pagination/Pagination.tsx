@@ -23,19 +23,24 @@ interface IProps {
 const Pagination = (props: IProps) => {
   const { currentPage, setCurrentPage, totalCount, resultsPerPage, isLoading } =
     props;
-  const pageButtons = [];
+
+  const { t } = useTranslation();
+
   const isZoomOutButton = useBreakpointValue({
     base: true,
     md: false,
   });
+
   const totalPage = Math.ceil(totalCount / resultsPerPage);
+
+  const pageButtons = [];
 
   let startPage = currentPage < 3 ? 1 : currentPage - 1;
   let endPage = 2 + startPage;
   endPage = totalPage < endPage ? totalPage : endPage;
   const diff = startPage - endPage + 2;
-  const { t } = useTranslation();
   startPage -= startPage - diff > 0 ? diff : 0;
+
   if (startPage > 1) {
     pageButtons.push({
       pageNumber: 1,
@@ -60,11 +65,9 @@ const Pagination = (props: IProps) => {
   }
 
   const hanldleSwitchPage = (pageNumber: number) => {
-    if (pageNumber <= totalPage && pageNumber >= 1) {
-      setCurrentPage(pageNumber);
-    }
-    // call graphQL API to reload data of page number
+    setCurrentPage(pageNumber);
   };
+
   const fromAmount = (currentPage - 1) * resultsPerPage + 1;
   const toAmount =
     currentPage * resultsPerPage > totalCount
@@ -125,20 +128,20 @@ const Pagination = (props: IProps) => {
       </Flex>
       <Flex flex="14" justifyContent="flex-end">
         <Skeleton isLoaded={!isLoading}>
-          {totalCount && (
-            <Button
-              ml={{ base: 1, xl: 2 }}
-              size="sm"
-              variant="primary"
-              onClick={() => {
-                hanldleSwitchPage(currentPage - 1);
-              }}
-              aria-label="previous page"
-              leftIcon={<Icon size={1} path={mdiChevronLeft} />}
-            >
-              {t('PREVIOUS')}
-            </Button>
-          )}
+          <Button
+            ml={{ base: 1, xl: 2 }}
+            size="sm"
+            variant="primary"
+            disabled={currentPage === 1}
+            onClick={() => {
+              hanldleSwitchPage(currentPage - 1);
+            }}
+            aria-label="previous page"
+            leftIcon={<Icon size={1} path={mdiChevronLeft} />}
+          >
+            {t('PREVIOUS')}
+          </Button>
+
           {React.Children.toArray(
             pageButtons.map(button => (
               <Button
@@ -171,6 +174,7 @@ const Pagination = (props: IProps) => {
               ml={{ base: 8, xl: 2 }}
               size="sm"
               variant="primary"
+              disabled={currentPage === totalPage}
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
@@ -181,6 +185,7 @@ const Pagination = (props: IProps) => {
               ml={{ base: 1, xl: 2 }}
               size="sm"
               variant="primary"
+              disabled={currentPage === totalPage}
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}

@@ -13,6 +13,7 @@ import TableContent from './TableContent';
 
 import Card from 'components/card/Card';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
+import { ClaimedContract } from 'graphQL/generates';
 import useLoadContracts from 'hooks/useLoadContracts';
 import * as constants from 'utils/constants';
 
@@ -21,7 +22,12 @@ export interface ICaptions {
   fieldName: string;
 }
 
-const ContractsTable: React.FC = ({ children }) => {
+interface IContractsTableProps {
+  children: React.ReactNode;
+  listContract: ClaimedContract[];
+}
+
+const ContractsTable = ({ children, listContract }: IContractsTableProps) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
   const amountCharacter = useBreakpointValue({
     sm: 3,
@@ -76,7 +82,10 @@ const ContractsTable: React.FC = ({ children }) => {
           </Thead>
           <Tbody justifyContent="flex-start">
             {!isLoading ? (
-              <TableContent captionAmounts={captions.length} />
+              <TableContent
+                listContract={listContract}
+                captionAmounts={captions.length}
+              />
             ) : (
               React.Children.toArray(
                 SkeletonArray.map(() => (

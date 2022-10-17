@@ -14,7 +14,7 @@ const Contracts = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { currentPage, setCurrentPage, isLoading, totalCount } =
+  const { currentPage, setCurrentPage, isLoading, totalCount, listContract } =
     useLoadContracts();
 
   return (
@@ -45,7 +45,7 @@ const Contracts = () => {
           </Button>
         </HStack>
 
-        <ContractTable>
+        <ContractTable listContract={listContract}>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
