@@ -42,8 +42,8 @@ const transferQuery = gql`
 `;
 
 const claimedContractQuery = gql`
-  query ClaimedContracts {
-    claimedContracts {
+  query ClaimedContracts($first: Int!, $offset: Int!) {
+    claimedContracts(first: $first, offset: $offset) {
       nodes {
         id
         contractAddress
