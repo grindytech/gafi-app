@@ -127,5 +127,10 @@
   "POLKADOT_WALLET": "Polkadot.{js}",
   "SUBWALLET": "SubWallet",
   "CLOVER_WALLET": "Clover Wallet",
-  "PLEASE_ALLOW_WALLET": "Please allow wallet access!"
+  "PLEASE_ALLOW_WALLET": "Please allow wallet access!",
+  "SPONSORED_WHITELIST": "Sponsored pool whitelist",
+  "WHITELIST": "Whitelist",
+  "ADD_ADDRESS": "Add address",
+  "ADD_ADDRESS_TO_WHITELIST_SUCCESSFULLY": "Adding address to whitelist successfully",
+  "SET_WHITELIST": "Set whitelist"
 }

@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -19,6 +20,7 @@ import useChangeOwner from 'hooks/useChangeOwner';
 interface IProps {
   contractAddress: string;
   onClose: () => void;
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IChangeOwnerForm {
@@ -26,7 +28,7 @@ interface IChangeOwnerForm {
 }
 
 const ModalChangeContractOwner = (props: IProps) => {
-  const { contractAddress, onClose } = props;
+  const { contractAddress, onClose, setIsPending } = props;
   const { t } = useTranslation();
   const { register, handleSubmit } = useForm<IChangeOwnerForm>({
     defaultValues: {
@@ -36,7 +38,7 @@ const ModalChangeContractOwner = (props: IProps) => {
 
   const { changeOwner, isLoading } = useChangeOwner(() => {
     onClose();
-  });
+  }, setIsPending);
 
   return (
     <Modal

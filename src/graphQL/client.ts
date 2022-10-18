@@ -4,5 +4,8 @@ import config from 'config';
 
 const endpoint = config.GRAPHQL_ENDPOINT || 'http://localhost:3000';
 
-const client = new GraphQLClient(endpoint, { headers: {} });
+const client = new GraphQLClient(endpoint, {
+  mode: 'cors',
+  credentials: 'include',
+});
 export default client;
