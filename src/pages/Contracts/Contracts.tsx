@@ -1,5 +1,6 @@
 import { Box, Button, HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { mdiCashMultiple } from '@mdi/js';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ContractTable from './components/ContractTable';
@@ -13,6 +14,8 @@ import * as constants from 'utils/constants';
 const Contracts = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const [isPending, setIsPending] = useState(false);
 
   const { currentPage, setCurrentPage, isLoading, totalCount } =
     useLoadContracts();
@@ -55,7 +58,13 @@ const Contracts = () => {
           />
         </ContractTable>
       </Box>
-      {isOpen && <ModalClaimContract isOpen={isOpen} onClose={onClose} />}
+      {isOpen && (
+        <ModalClaimContract
+          setIsPending={setIsPending}
+          isOpen={isOpen}
+          onClose={() => (isPending ? null : onClose())}
+        />
+      )}
     </>
   );
 };

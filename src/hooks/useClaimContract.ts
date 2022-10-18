@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
@@ -9,7 +9,10 @@ import useTxCallback from './useTxCallback';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
 
-const useClaimContract = (onSuccess: () => void) => {
+const useClaimContract = (
+  onSuccess: () => void,
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const { t } = useTranslation();
   const toast = useToast();
   const { api, currentAccount } = useSubstrateState();
@@ -17,9 +20,20 @@ const useClaimContract = (onSuccess: () => void) => {
   const { refetch } = useLoadContracts();
 
   const refetchData = () => {
-    setIsLoading(false);
+    refetchLoad(false);
     onSuccess();
     refetch();
+  };
+
+  const refetchLoad = (type: boolean) => {
+    if (type === false) {
+      setIsLoading(false);
+      setIsPending(false);
+    }
+    if (type === true) {
+      setIsLoading(true);
+      setIsPending(true);
+    }
   };
 
   const txCallback = useTxCallback(refetchData);
@@ -46,14 +60,15 @@ const useClaimContract = (onSuccess: () => void) => {
           isClosable: true,
           status: 'error',
         });
-        setIsLoading(false);
+        refetchLoad(false);
       },
     }
   );
 
   const claimContract = (contractAddress: string) => {
-    setIsLoading(true);
-    mutation.mutate(contractAddress);
+    refetchLoad(true);
+
+    return mutation.mutate(contractAddress);
   };
 
   return {

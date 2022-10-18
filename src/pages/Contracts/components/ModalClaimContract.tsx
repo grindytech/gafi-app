@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -18,13 +19,14 @@ import useClaimContract from 'hooks/useClaimContract';
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IClaimContractForm {
   contractAddress: string;
 }
 
-const ModalClaimContract = ({ isOpen, onClose }: IProps) => {
+const ModalClaimContract = ({ isOpen, onClose, setIsPending }: IProps) => {
   const { t } = useTranslation();
   const { register, handleSubmit } = useForm<IClaimContractForm>({
     defaultValues: {
@@ -34,7 +36,7 @@ const ModalClaimContract = ({ isOpen, onClose }: IProps) => {
 
   const { claimContract, isLoading } = useClaimContract(() => {
     onClose();
-  });
+  }, setIsPending);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="lg">
