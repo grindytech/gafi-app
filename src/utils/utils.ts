@@ -127,9 +127,13 @@ export const shorten = (hash: string, length = 6) => {
   return `${hash.substr(0, length)}...${hash.substr(n - length)}`;
 };
 
-export const handleTxError = (events: any, api: any, toast: any) => {
-  events.forEach(({ event }: any) => {
-    if (api.events.system.ExtrinsicFailed.is(event)) {
+export const handleTxError = (
+  events: EventRecord[],
+  api: ApiPromise | null,
+  toast: any
+) => {
+  events.forEach(({ event }: EventRecord) => {
+    if (api?.events.system.ExtrinsicFailed.is(event)) {
       // extract the data for this event
       const [dispatchError] = event.data;
       let errorInfo;

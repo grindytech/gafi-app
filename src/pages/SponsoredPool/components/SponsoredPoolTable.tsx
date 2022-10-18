@@ -186,7 +186,7 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
           </Flex>
         </Card>
       )}
-      <Card p={0} mb={8} mt={4} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
+      <Card p={0} mb={8} mt={4} overflowX="hidden">
         <Table size={tableSize} variant="simple" textAlign="center">
           <Thead>
             <Tr>
