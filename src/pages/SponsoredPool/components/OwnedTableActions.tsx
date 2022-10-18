@@ -21,52 +21,36 @@ import {
   PopoverTrigger,
   Text,
   useDisclosure,
-  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { mdiClose, mdiDotsVertical, mdiPlus } from '@mdi/js';
-import * as axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from 'react-query';
 
-import config from 'config';
-import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallback from 'hooks/useTxCallback';
+import { useLoadWhitelist } from 'hooks/useLoadWhitelist';
 import { useWhitelistSource } from 'hooks/useWhitelistSource';
 import useWithdraw from 'hooks/useWithdraw';
-import { getFromAcct } from 'utils';
 
 export interface WhitelistForm {
   whitelist: { address: string }[];
 }
 
-interface WhitelistSetRequest {
-  pool_id: string;
-  address: string[];
-}
-
 interface IProps {
   poolId: string;
   onClick: () => void;
+  onClickDetails: () => void;
 }
 
-const httpHandler = axios.default.create({
-  baseURL: config.WHITELIST_DEFAULT_URL,
-});
-
-const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
-  const toast = useToast();
+const OwnedTableActions: React.FC<IProps> = ({
+  poolId,
+  onClick,
+  onClickDetails,
+}) => {
   const { t } = useTranslation();
   const { withdrawPoolBalance, isLoading } = useWithdraw();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { api, currentAccount } = useSubstrateState();
-  const [isLoadingEnableWhitelist, setIsLoadingEnableWhitelist] =
-    useState(false);
-
-  const txCallback = useTxCallback(() => setIsLoadingEnableWhitelist(false));
 
   const { response } = useWhitelistSource(poolId);
 
@@ -88,78 +72,12 @@ const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
     name: 'whitelist',
   });
 
-  const { data, isLoading: isLoadingWhitelist } = useQuery(
-    ['queryPoolWhitelist', poolId],
-    async (): Promise<string[]> => {
-      const res = await httpHandler.get(
-        `/get?pool_id=${poolId.replace('0x', '')}`
-      );
-      return res.data;
-    },
-    { enabled: !!poolId, staleTime: 60000 }
-  );
-
-  const setWhitelistAddressURL = !data ? '/create' : '/add';
-
-  useEffect(() => {
-    if (data) {
-      const whitelist = data.map((item: string) => ({
-        address: item,
-      }));
-      reset({ whitelist });
-    }
-  }, [data, reset]);
-
-  const mutationEnableWhitelist = useMutation(
-    async () => {
-      setIsLoadingEnableWhitelist(true);
-      const [account, options] = await getFromAcct(currentAccount);
-      const txChangeContractOwnerExecute =
-        api?.tx.palletWhitelist.enableWhitelist(
-          poolId,
-          'https://whitelist.gafi.network'
-        );
-      return txChangeContractOwnerExecute?.signAndSend(
-        account,
-        options || {},
-        txCallback
-      );
-    },
-    {
-      mutationKey: 'change-contract-onwer',
-      onError: (error: any) => {
-        toast({
-          position: 'top-right',
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: error.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setIsLoadingEnableWhitelist(false);
-      },
-    }
-  );
-
-  const mutation = useMutation(
-    async (whitelistData: WhitelistSetRequest): Promise<void> => {
-      await httpHandler.post(setWhitelistAddressURL, whitelistData);
-    },
-    {
-      onSuccess: () => {
-        toast({
-          position: 'top-right',
-          description: t('ADD_ADDRESS_TO_WHITELIST_SUCCESSFULLY'),
-          isClosable: true,
-          status: 'success',
-        });
-        onClose();
-      },
-      onError: error => {
-        console.log('error', (error as axios.AxiosError).message);
-      },
-    }
-  );
+  const {
+    isLoadingEnableWhitelist,
+    mutationEnableWhitelist,
+    mutationWhitelist,
+    data,
+  } = useLoadWhitelist(poolId, reset);
 
   const onSubmit = (submitData: WhitelistForm) => {
     const address = submitData.whitelist
@@ -175,24 +93,34 @@ const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
       if (!response) {
         mutationEnableWhitelist.mutate();
       }
-      mutation.mutate({ pool_id: poolId.replace('0x', ''), address });
+
+      mutationWhitelist.mutate({
+        pool_id: poolId.replace('0x', ''),
+        address,
+      });
     }
   };
 
   return (
     <>
       <Text
+        onClick={() => onClickDetails()}
         display={{
           sm: 'block',
-          '2xl': 'none',
+          md: 'none',
         }}
         color="primary"
       >
         {t('DETAIL')}
       </Text>
+
       <Popover placement="bottom-start">
         <PopoverTrigger>
           <IconButton
+            display={{
+              sm: 'none',
+              md: 'block',
+            }}
             aria-label="sponsored pool actions"
             variant="ghost"
             icon={
@@ -205,13 +133,7 @@ const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
         <PopoverContent w="full">
           <Menu isOpen>
             <MenuList zIndex={5}>
-              <MenuItem
-                onClick={e => {
-                  onClick();
-                }}
-              >
-                {t('EDIT')}
-              </MenuItem>
+              <MenuItem onClick={() => onClick()}>{t('EDIT')}</MenuItem>
               <MenuItem onClick={onOpen}>{t('SET_WHITELIST')}</MenuItem>
               <MenuItem
                 isDisabled={isLoading}
@@ -329,7 +251,7 @@ const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
                   size="sm"
                   px={8}
                   variant="solid"
-                  isLoading={isLoadingWhitelist}
+                  isLoading={isLoadingEnableWhitelist}
                 >
                   {t('SAVE')}
                 </Button>

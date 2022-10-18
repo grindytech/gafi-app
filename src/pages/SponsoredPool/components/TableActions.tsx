@@ -5,16 +5,19 @@ import { useTranslation } from 'react-i18next';
 import useLeavePool from 'hooks/useLeavePool';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import useSponsoredPool from 'hooks/useSponsoredPool';
+import { useWhitelistSource } from 'hooks/useWhitelistSource';
 
 interface IProps {
   poolId: string;
+  onClickDetails: () => void;
 }
 
-const TableActions: React.FC<IProps> = ({ poolId }) => {
+const TableActions: React.FC<IProps> = ({ poolId, onClickDetails }) => {
   const { t } = useTranslation();
   const { joinedPoolInfo, isJoinedPool, refetch } = useLoadSponsoredPool();
   const { leavePool, leaveLoadingPool } = useLeavePool(refetch);
   const { joinSponsoredPool, isLoading } = useSponsoredPool(refetch);
+  const { response } = useWhitelistSource(poolId);
 
   const breakpointsTablet = useBreakpointValue({
     sm: false,
@@ -38,7 +41,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
           disabled={isJoinedPool || isLoading}
           isLoading={isLoading}
         >
-          {t('JOIN')}
+          {!response ? t('JOIN') : t('JOIN_WHITELIST')}
         </Button>
       );
     }
@@ -68,6 +71,7 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
   return (
     <>
       <Text
+        onClick={() => onClickDetails()}
         display={{
           md: 'none',
         }}

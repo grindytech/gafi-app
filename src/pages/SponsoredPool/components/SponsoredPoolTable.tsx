@@ -380,39 +380,42 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
               ) : (
                 <Flex justifyContent="center" px={5} py={4}>
                   {React.Children.toArray(
-                    joinedPoolInfo?.map(pool =>
-                      pool.ticketType.isSponsored &&
-                      pool.ticketType.asSponsored.toHuman() ===
-                        selectedPoolDetail?.id ? (
-                        <Button
-                          size="sm"
-                          w={{ base: 'full', md: 80 }}
-                          variant="solid"
-                          borderRadius="4xl"
-                          onClick={e => {
-                            e.stopPropagation();
-                            leavePool(leaveLoadingPool);
-                          }}
-                          isLoading={isSponsoredPoolLoading}
-                        >
-                          {t('LEAVE')}
-                        </Button>
-                      ) : (
-                        <Button
-                          size="sm"
-                          w={{ base: 'full', md: 80 }}
-                          variant="solid"
-                          borderRadius="4xl"
-                          onClick={e => {
-                            e.stopPropagation();
-                            joinSponsoredPool(selectedPoolDetail.id);
-                          }}
-                          disabled={isJoinedPool}
-                          isLoading={isSponsoredPoolLoading}
-                        >
-                          {t('JOIN')}
-                        </Button>
+                    joinedPoolInfo?.length ? (
+                      joinedPoolInfo?.map(
+                        pool =>
+                          pool.ticketType.isSponsored &&
+                          pool.ticketType.asSponsored.toHuman() ===
+                            selectedPoolDetail?.id && (
+                            <Button
+                              size="sm"
+                              w={{ base: 'full', md: 80 }}
+                              variant="solid"
+                              borderRadius="4xl"
+                              onClick={e => {
+                                e.stopPropagation();
+                                leavePool(leaveLoadingPool);
+                              }}
+                              isLoading={isSponsoredPoolLoading}
+                            >
+                              {t('LEAVE')}
+                            </Button>
+                          )
                       )
+                    ) : (
+                      <Button
+                        size="sm"
+                        w={{ base: 'full', md: 80 }}
+                        variant="solid"
+                        borderRadius="4xl"
+                        onClick={e => {
+                          e.stopPropagation();
+                          joinSponsoredPool(selectedPoolDetail.id);
+                        }}
+                        disabled={isJoinedPool}
+                        isLoading={isSponsoredPoolLoading}
+                      >
+                        {t('JOIN')}
+                      </Button>
                     )
                   )}
                 </Flex>
