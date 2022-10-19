@@ -1,3 +1,4 @@
+import { ToastId, UseToastOptions } from '@chakra-ui/react';
 import { ApiPromise } from '@polkadot/api';
 import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -130,10 +131,12 @@ export const shorten = (hash: string, length = 6) => {
 export const handleTxError = (
   events: EventRecord[],
   api: ApiPromise | null,
-  toast: any
+  toast: (options?: UseToastOptions | undefined) => ToastId | undefined
 ) => {
+  let isError = false;
   events.forEach(({ event }: EventRecord) => {
     if (api?.events.system.ExtrinsicFailed.is(event)) {
+      isError = true;
       // extract the data for this event
       const [dispatchError] = event.data;
       let errorInfo;
@@ -158,6 +161,8 @@ export const handleTxError = (
       });
     }
   });
+
+  return isError;
 };
 
 export const getGAKIAccountAddress = (addressRaw: Uint8Array) =>

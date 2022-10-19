@@ -37,7 +37,7 @@
   "POOL_NAME": "Pool name",
   "CLOSE": "Close",
   "SAVE": "Save",
-  "WITHDRAW": "withdraw",
+  "WITHDRAW": "Withdraw",
   "EDIT_TARGETS": "Edit targes",
   "EDIT_POOL_NAME": "Edit pool name",
   "EDIT_POOL": "Edit pool",
@@ -129,9 +129,10 @@
   "CLOVER_WALLET": "Clover Wallet",
   "PLEASE_ALLOW_WALLET": "Please allow wallet access!",
   "SPONSORED_WHITELIST": "Sponsored pool whitelist",
-  "WHITELIST": "Whitelist",
+  "WHITELIST": "Whitelist addresses",
   "ADD_ADDRESS": "Add address",
   "ADD_ADDRESS_TO_WHITELIST_SUCCESSFULLY": "Adding address to whitelist successfully",
   "SET_WHITELIST": "Set whitelist",
-  "JOIN_WHITELIST": "Apply Whitelist"
+  "APPLY_WHITELIST": "Apply Whitelist",
+  "ENABLE_WHITELIST": "Enable whitelist"
 }

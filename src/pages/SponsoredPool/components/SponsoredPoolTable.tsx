@@ -7,6 +7,7 @@ import {
   Flex,
   HStack,
   Icon,
+  IconButton,
   Input,
   InputGroup,
   InputRightAddon,
@@ -240,8 +241,24 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {selectedPool?.id &&
-              t('POOL_POOL_NAME', { poolName: shorten(selectedPool?.id) })}
+            {selectedPool?.id && (
+              <>
+                {t('POOL_POOL_NAME', { poolName: shorten(selectedPool.id) })}
+                <CopyToClipboard text={selectedPool.id}>
+                  <IconButton
+                    aria-label="copy to clipboard"
+                    onClick={copySuccessToast}
+                    ml={4}
+                    variant="link"
+                    icon={
+                      <Icon>
+                        <path fill="currentColor" d={mdiContentCopy} />
+                      </Icon>
+                    }
+                  />
+                </CopyToClipboard>
+              </>
+            )}
           </ModalHeader>
           <ModalBody>
             <Text fontSize="md" fontWeight="normal" mb={4}>

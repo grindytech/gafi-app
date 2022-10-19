@@ -19,6 +19,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   Text,
   useDisclosure,
   VStack,
@@ -29,6 +30,7 @@ import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import useEnableWhitelist from 'hooks/useEnableWhitelist';
 import { useLoadWhitelist } from 'hooks/useLoadWhitelist';
 import { useWhitelistSource } from 'hooks/useWhitelistSource';
 import useWithdraw from 'hooks/useWithdraw';
@@ -51,15 +53,20 @@ const OwnedTableActions: React.FC<IProps> = ({
   const { t } = useTranslation();
   const { withdrawPoolBalance, isLoading } = useWithdraw();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenPopover,
+    onOpen: onOpenPopover,
+    onClose: onClosePopover,
+  } = useDisclosure();
 
   const { response } = useWhitelistSource(poolId);
-
   const {
-    isLoadingEnableWhitelist,
     mutationEnableWhitelist,
-    mutationWhitelist,
-    data,
-  } = useLoadWhitelist(poolId);
+    isLoading: isLoadingMutationEnableWhitelist,
+  } = useEnableWhitelist(poolId);
+
+  const { isLoadingMutationWhitelist, mutationWhitelist, data } =
+    useLoadWhitelist(poolId);
 
   const {
     register,
@@ -105,7 +112,6 @@ const OwnedTableActions: React.FC<IProps> = ({
       if (!response) {
         mutationEnableWhitelist.mutate();
       }
-
       mutationWhitelist.mutate({
         pool_id: poolId.replace('0x', ''),
         address,
@@ -126,7 +132,13 @@ const OwnedTableActions: React.FC<IProps> = ({
         {t('DETAIL')}
       </Text>
 
-      <Popover placement="bottom-start">
+      <Popover
+        isOpen={isOpenPopover}
+        onOpen={onOpenPopover}
+        onClose={onClosePopover}
+        placement="bottom-start"
+        closeOnBlur
+      >
         <PopoverTrigger>
           <IconButton
             display={{
@@ -142,20 +154,22 @@ const OwnedTableActions: React.FC<IProps> = ({
             }
           />
         </PopoverTrigger>
-        <PopoverContent w="full">
-          <Menu isOpen>
-            <MenuList zIndex={5}>
-              <MenuItem onClick={() => onClick()}>{t('EDIT')}</MenuItem>
-              <MenuItem onClick={onOpen}>{t('SET_WHITELIST')}</MenuItem>
-              <MenuItem
-                isDisabled={isLoading}
-                onClick={() => withdrawPoolBalance(poolId)}
-              >
-                {t('WITHDRAW')}
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </PopoverContent>
+        <Portal>
+          <PopoverContent w="full">
+            <Menu isOpen={isOpenPopover}>
+              <MenuList>
+                <MenuItem onClick={() => onClick()}>{t('EDIT')}</MenuItem>
+                <MenuItem onClick={onOpen}>{t('SET_WHITELIST')}</MenuItem>
+                <MenuItem
+                  isDisabled={isLoading}
+                  onClick={() => withdrawPoolBalance(poolId)}
+                >
+                  {t('WITHDRAW')}
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </PopoverContent>
+        </Portal>
       </Popover>
       <Modal
         isOpen={isOpen}
@@ -263,7 +277,10 @@ const OwnedTableActions: React.FC<IProps> = ({
                   size="sm"
                   px={8}
                   variant="solid"
-                  isLoading={isLoadingEnableWhitelist}
+                  isLoading={
+                    isLoadingMutationWhitelist ||
+                    isLoadingMutationEnableWhitelist
+                  }
                 >
                   {t('SAVE')}
                 </Button>

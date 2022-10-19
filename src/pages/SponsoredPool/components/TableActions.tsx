@@ -41,7 +41,7 @@ const TableActions: React.FC<IProps> = ({ poolId, onClickDetails }) => {
           disabled={isJoinedPool || isLoading}
           isLoading={isLoading}
         >
-          {!response ? t('JOIN') : t('JOIN_WHITELIST')}
+          {!response ? t('JOIN') : t('APPLY_WHITELIST')}
         </Button>
       );
     }

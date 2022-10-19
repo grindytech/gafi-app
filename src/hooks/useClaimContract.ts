@@ -20,7 +20,6 @@ const useClaimContract = (
   const { refetch } = useLoadContracts();
 
   const refetchData = () => {
-    refetchLoad(false);
     onSuccess();
     refetch();
   };
@@ -36,7 +35,11 @@ const useClaimContract = (
     }
   };
 
-  const txCallback = useTxCallback(refetchData);
+  const onFinalize = () => {
+    refetchLoad(false);
+  };
+
+  const txCallback = useTxCallback(refetchData, onFinalize);
 
   const mutation = useMutation(
     async (contractAddress: string) => {
