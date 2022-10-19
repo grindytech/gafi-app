@@ -1,7 +1,6 @@
-import { useToast, useDisclosure } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import * as axios from 'axios';
-import { useEffect, useState } from 'react';
-import { UseFormReset } from 'react-hook-form';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 
@@ -9,7 +8,6 @@ import useTxCallback from './useTxCallback';
 
 import config from 'config';
 import { useSubstrateState } from 'contexts/substrateContext';
-import { WhitelistForm } from 'pages/SponsoredPool/components/OwnedTableActions';
 import { getFromAcct } from 'utils';
 
 interface IWhitelistSetRequest {
@@ -17,10 +15,7 @@ interface IWhitelistSetRequest {
   address: string[];
 }
 
-export const useLoadWhitelist = (
-  poolId: string,
-  reset?: UseFormReset<WhitelistForm>
-) => {
+export const useLoadWhitelist = (poolId: string) => {
   const toast = useToast();
   const { t } = useTranslation();
   const [isLoadingEnableWhitelist, setIsLoadingEnableWhitelist] =
@@ -28,7 +23,6 @@ export const useLoadWhitelist = (
 
   const txCallback = useTxCallback(() => setIsLoadingEnableWhitelist(false));
 
-  const { onClose } = useDisclosure();
   const { api, currentAccount } = useSubstrateState();
 
   const httpHandler = axios.default.create({
@@ -47,20 +41,6 @@ export const useLoadWhitelist = (
   );
 
   const setWhitelistAddressURL = !data ? '/whitelist/create' : '/whitelist/add';
-
-  useEffect(() => {
-    if (data) {
-      const whitelist = data?.map((item: string) => ({
-        address: item,
-      }));
-
-      if (reset) {
-        reset({
-          whitelist,
-        });
-      }
-    }
-  }, [data, reset]);
 
   const mutationEnableWhitelist = useMutation(
     async () => {
@@ -106,7 +86,6 @@ export const useLoadWhitelist = (
           isClosable: true,
           status: 'success',
         });
-        onClose();
       },
       onError: error => {
         console.log('error', (error as axios.AxiosError).message);
@@ -115,10 +94,10 @@ export const useLoadWhitelist = (
   );
 
   return {
-    mutationEnableWhitelist,
-    mutationWhitelist,
-    closeWhitelist: onClose,
-    isLoadingEnableWhitelist,
     data,
+    mutationWhitelist,
+    mutationEnableWhitelist,
+    isLoadingWhitelist,
+    isLoadingEnableWhitelist,
   };
 };

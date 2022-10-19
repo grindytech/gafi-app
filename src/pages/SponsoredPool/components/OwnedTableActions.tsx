@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { mdiClose, mdiDotsVertical, mdiPlus } from '@mdi/js';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -55,6 +55,13 @@ const OwnedTableActions: React.FC<IProps> = ({
   const { response } = useWhitelistSource(poolId);
 
   const {
+    isLoadingEnableWhitelist,
+    mutationEnableWhitelist,
+    mutationWhitelist,
+    data,
+  } = useLoadWhitelist(poolId);
+
+  const {
     register,
     handleSubmit,
     control,
@@ -72,12 +79,17 @@ const OwnedTableActions: React.FC<IProps> = ({
     name: 'whitelist',
   });
 
-  const {
-    isLoadingEnableWhitelist,
-    mutationEnableWhitelist,
-    mutationWhitelist,
-    data,
-  } = useLoadWhitelist(poolId, reset);
+  useEffect(() => {
+    if (data) {
+      const whitelist = data?.map((item: string) => ({
+        address: item,
+      }));
+
+      reset({
+        whitelist,
+      });
+    }
+  }, [data, reset]);
 
   const onSubmit = (submitData: WhitelistForm) => {
     const address = submitData.whitelist
