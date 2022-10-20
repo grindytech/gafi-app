@@ -110,7 +110,7 @@ export const getFromAcct = async (
 ): Promise<[AddressOrPair, Partial<SignerOptions>?]> => {
   const {
     address,
-    meta: { source, isInjected },
+    meta: { isInjected },
   } = currentAccount;
 
   if (!isInjected) {

@@ -114,79 +114,79 @@ const SponsoredPoolTable = (props: ISponsoredPoolTableProps) => {
 
   return (
     <>
-      {joinedPool && isDisplayJoinedPool && (
-        <Card p={0} mt={4}>
-          <HStack
-            justifyContent="center"
-            py={4}
-            borderBottom={`1px solid ${theme.colors.borderBottom}`}
-          >
-            <Avatar
-              mr={{ base: 0, md: 4 }}
-              w={{ base: 10, md: 14 }}
-              h={{ base: 10, md: 14 }}
-              name="Segun Adebayo"
-              src="/assets/layout/contract-img-1.png"
-            />
-            <VStack ml={0} alignItems="flex-start">
-              <Text fontWeight="bold" fontSize="md" minWidth="100%">
-                {shorten(joinedPool?.poolOwner || '')}
-              </Text>
-              <Text fontSize="xs">
-                {joinedPool.poolName
-                  ? hexToString(joinedPool.poolName)
-                  : 'Games'}
-              </Text>
-            </VStack>
-          </HStack>
-
-          <Flex
-            borderBottom={`1px solid ${theme.colors.borderBottom}`}
-            px={5}
-            py={4}
-            direction="column"
-          >
-            <Flex py={4} justifyContent="space-between">
-              <Text>{t('DISCOUNT')}</Text>
-              <Text fontWeight="bold">{joinedPool.discount / 10000}%</Text>
-            </Flex>
-            <Flex justifyContent="space-between" py={4}>
-              <Text>
-                {t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
-                  minuteAmount: 30,
-                })}
-              </Text>
-              <Text fontWeight="bold">{joinedPool.txLimit}</Text>
-            </Flex>
-            <Flex justifyContent="space-between" py={4}>
-              <Text>{t('BALANCE')}</Text>
-              <Text fontWeight="bold">
-                {formatBalance(
-                  joinedPool.amount,
-                  { withSi: true, forceUnit: '-', withUnit: '' },
-                  chainDecimal || 18
-                )}
-              </Text>
-            </Flex>
-          </Flex>
-
-          <Flex justifyContent="center" px={5} py={4}>
-            <Button
-              size="sm"
-              w={{ base: 'full', md: 80 }}
-              variant="secondary"
-              borderRadius="4xl"
-              onClick={e => {
-                e.stopPropagation();
-                leavePool(leaveLoadingPool);
-              }}
-              isLoading={isSponsoredPoolLoading}
+      {joinedPool &&
+        isDisplayJoinedPool &&
+        joinedPool.map(pool => (
+          <Card p={0} mt={4}>
+            <HStack
+              justifyContent="center"
+              py={4}
+              borderBottom={`1px solid ${theme.colors.borderBottom}`}
             >
-              {t('LEAVE')}
-            </Button>
-          </Flex>
-        </Card>
-      )}
+              <Avatar
+                mr={{ base: 0, md: 4 }}
+                w={{ base: 10, md: 14 }}
+                h={{ base: 10, md: 14 }}
+                name="Segun Adebayo"
+                src="/assets/layout/contract-img-1.png"
+              />
+              <VStack ml={0} alignItems="flex-start">
+                <Text fontWeight="bold" fontSize="md" minWidth="100%">
+                  {shorten(pool?.poolOwner || '')}
+                </Text>
+                <Text fontSize="xs">
+                  {pool.poolName ? hexToString(pool.poolName) : 'Games'}
+                </Text>
+              </VStack>
+            </HStack>
+
+            <Flex
+              borderBottom={`1px solid ${theme.colors.borderBottom}`}
+              px={5}
+              py={4}
+              direction="column"
+            >
+              <Flex py={4} justifyContent="space-between">
+                <Text>{t('DISCOUNT')}</Text>
+                <Text fontWeight="bold">{pool.discount / 10000}%</Text>
+              </Flex>
+              <Flex justifyContent="space-between" py={4}>
+                <Text>
+                  {t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+                    minuteAmount: 30,
+                  })}
+                </Text>
+                <Text fontWeight="bold">{pool.txLimit}</Text>
+              </Flex>
+              <Flex justifyContent="space-between" py={4}>
+                <Text>{t('BALANCE')}</Text>
+                <Text fontWeight="bold">
+                  {formatBalance(
+                    pool.amount,
+                    { withSi: true, forceUnit: '-', withUnit: '' },
+                    chainDecimal || 18
+                  )}
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex justifyContent="center" px={5} py={4}>
+              <Button
+                size="sm"
+                w={{ base: 'full', md: 80 }}
+                variant="secondary"
+                borderRadius="4xl"
+                onClick={e => {
+                  e.stopPropagation();
+                  leavePool(leaveLoadingPool);
+                }}
+                isLoading={isSponsoredPoolLoading}
+              >
+                {t('LEAVE')}
+              </Button>
+            </Flex>
+          </Card>
+        ))}
       <Card p={0} mb={8} mt={4} overflowX="hidden">
         <Table size={tableSize} variant="simple" textAlign="center">
           <Thead>
