@@ -11,6 +11,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ModalAddSponsoredPool from './components/ModalAddSponsoredPool';
+import SearchPoolName from './components/SearchPoolName';
 import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
@@ -72,7 +73,7 @@ const SponsoredPoolPage: React.FC = () => {
   ];
 
   return (
-    <>
+    <Box pl={{ md: '10px' }}>
       <Banner
         title={isOwned ? t('MY_SPONSORED_POOLS') : t('POOL.SPONSORED_POOL')}
         subTitle={
@@ -85,7 +86,9 @@ const SponsoredPoolPage: React.FC = () => {
       />
 
       <Box p={{ sm: 4, md: 0 }}>
-        <HStack justifyContent="flex-end">
+        <HStack justifyContent={isOwned ? 'flex-end' : 'space-between'}>
+          {!isOwned && <SearchPoolName />}
+
           <Button
             size="xl"
             variant="primary"
@@ -132,7 +135,7 @@ const SponsoredPoolPage: React.FC = () => {
       </Box>
 
       {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
-    </>
+    </Box>
   );
 };
 

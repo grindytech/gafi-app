@@ -77,11 +77,13 @@ const TableActions: React.FC<IProps> = ({ poolId }) => {
       </Text>
 
       {isJoinedPool
-        ? joinedPoolInfo?.map(pool =>
-            pool.ticketType.isSponsored &&
-            pool.ticketType.asSponsored.toHuman() === poolId
-              ? React.Children.toArray(button('leave'))
-              : React.Children.toArray(button('joined'))
+        ? React.Children.toArray(
+            joinedPoolInfo?.map(pool =>
+              pool.ticketType.isSponsored &&
+              pool.ticketType.asSponsored.toHuman() === poolId
+                ? button('leave')
+                : button('joined')
+            )
           )
         : button('joined')}
     </>

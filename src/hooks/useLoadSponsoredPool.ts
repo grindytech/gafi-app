@@ -1,8 +1,10 @@
 import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
+import { stringToHex } from '@polkadot/util';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useQueryParam } from 'use-query-params';
 
+import { useSearchPoolContext } from 'contexts/searchPoolContext/searchPoolContext';
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
 import { SponsoredPool, useSponsoredPoolsQuery } from 'graphQL/generates';
@@ -12,6 +14,8 @@ const useLoadSponsoredPool = () => {
   const { api, currentAccount } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
+
+  const { searchPoolValue } = useSearchPoolContext();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
@@ -43,6 +47,12 @@ const useLoadSponsoredPool = () => {
         ? {
             poolOwner: {
               equalTo: currentAccount?.address,
+            },
+          }
+        : searchPoolValue.submit?.length
+        ? {
+            poolName: {
+              includes: stringToHex(searchPoolValue.submit),
             },
           }
         : undefined,
