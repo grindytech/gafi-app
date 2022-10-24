@@ -16,6 +16,7 @@ import SponsoredPoolTable from './components/SponsoredPoolTable';
 
 import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
+import { useSearchPoolContext } from 'contexts/searchPoolContext/searchPoolContext';
 import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
 import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import * as constants from 'utils/constants';
@@ -71,7 +72,6 @@ const SponsoredPoolPage: React.FC = () => {
       display: breakpointsTablet,
     },
   ];
-
   return (
     <Box pl={{ md: '10px' }}>
       <Banner
@@ -86,8 +86,8 @@ const SponsoredPoolPage: React.FC = () => {
       />
 
       <Box p={{ sm: 4, md: 0 }}>
-        <HStack justifyContent={isOwned ? 'flex-end' : 'space-between'}>
-          {!isOwned && <SearchPoolName />}
+        <HStack justifyContent="space-between">
+          <SearchPoolName />
 
           <Button
             size="xl"

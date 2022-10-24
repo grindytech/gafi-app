@@ -14,9 +14,7 @@ const SearchPoolContext = createContext<{
 });
 
 const SearchPoolProvider: React.FC = ({ children }) => {
-  const [searchPoolValue, setSearchPool] = useState<ISearchPoolProps>({
-    text: '',
-  });
+  const [searchPoolValue, setSearchPool] = useState<ISearchPoolProps>({});
 
   return (
     <SearchPoolContext.Provider value={{ searchPoolValue, setSearchPool }}>

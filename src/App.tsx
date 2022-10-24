@@ -39,13 +39,13 @@ function PageContent() {
 export default function App() {
   return (
     <SubstrateContextProvider>
-      <SearchPoolProvider>
-        <ConnectWalletProvider>
+      <ConnectWalletProvider>
+        <SearchPoolProvider>
           <DashboardLayout>
             <PageContent />
           </DashboardLayout>
-        </ConnectWalletProvider>
-      </SearchPoolProvider>
+        </SearchPoolProvider>
+      </ConnectWalletProvider>
     </SubstrateContextProvider>
   );
 }

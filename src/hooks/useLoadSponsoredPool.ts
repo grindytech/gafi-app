@@ -15,10 +15,23 @@ const useLoadSponsoredPool = () => {
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
 
-  const { searchPoolValue } = useSearchPoolContext();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
+  const { searchPoolValue } = useSearchPoolContext();
+
+  const handlePoolFilter = () => {
+    if (isOwned)
+      return {
+        poolOwner: { equalTo: currentAccount?.address },
+      };
+
+    if (searchPoolValue.submit)
+      return {
+        poolName: { includes: stringToHex(searchPoolValue?.submit) },
+      };
+
+    return undefined;
+  };
 
   const { data: joinedPoolInfo, refetch } = useQuery(
     ['getJoinedPool', currentAccount],
@@ -40,25 +53,11 @@ const useLoadSponsoredPool = () => {
     client,
     {
       first: constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      offset: isOwned
-        ? 0
-        : (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      filter: isOwned
-        ? {
-            poolOwner: {
-              equalTo: currentAccount?.address,
-            },
-          }
-        : searchPoolValue.submit?.length
-        ? {
-            poolName: {
-              includes: stringToHex(searchPoolValue.submit),
-            },
-          }
-        : undefined,
+      offset: (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
+      filter: handlePoolFilter(),
     },
     {
-      enabled: !!currentAccount?.addressRaw,
+      enabled: !!currentAccount,
     }
   );
 
@@ -71,6 +70,10 @@ const useLoadSponsoredPool = () => {
   const isJoinedPool = !!joinedPoolInfo?.map(
     item => item.ticketType.isSponsored && item.ticketType.asSponsored.toHuman()
   ).length;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchPoolValue.submit]);
 
   useEffect(() => {
     joinedPoolInfo?.map(pool => {

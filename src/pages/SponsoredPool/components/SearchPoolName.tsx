@@ -4,28 +4,52 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   ListItem,
   Stack,
   UnorderedList,
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
-import { mdiMagnify } from '@mdi/js';
+import { mdiClose, mdiMagnify } from '@mdi/js';
 import { hexToString, stringToHex } from '@polkadot/util';
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  LegacyRef,
+  MutableRefObject,
+  useRef,
+  useState,
+} from 'react';
 
 import { useSearchPoolContext } from 'contexts/searchPoolContext/searchPoolContext';
 import client from 'graphQL/client';
-import { SponsoredPool, useSponsoredPoolsQuery } from 'graphQL/generates';
+import { useSponsoredPoolSearch } from 'graphQL/generates';
 
 export default function SearchPoolName() {
-  const debounceRef = useRef<any>();
-  const searchRef = useRef<any>();
-  const [inputValue, setInputValue] = useState<string>('');
-  const { onOpen, isOpen, onClose } = useDisclosure();
-  const { searchPoolValue, setSearchPool } = useSearchPoolContext();
+  const searchRef:
+    | LegacyRef<HTMLDivElement>
+    | undefined
+    | MutableRefObject<HTMLElement> = useRef(null);
 
-  const { data } = useSponsoredPoolsQuery(client, {
+  const debounceRef: MutableRefObject<NodeJS.Timeout | null> = useRef(null);
+
+  const [inputValue, setInputValue] = useState<string>('');
+
+  useOutsideClick({
+    ref: searchRef,
+    handler: () => {
+      if (isOpen) {
+        return onClose();
+      }
+    },
+  });
+
+  const { setSearchPool, searchPoolValue } = useSearchPoolContext();
+
+  const { onOpen, isOpen, onClose } = useDisclosure();
+
+  const { data } = useSponsoredPoolSearch(client, {
     first: 0,
     offset: 0,
     filter: {
@@ -34,9 +58,9 @@ export default function SearchPoolName() {
       },
     },
   });
-  const sponsoredSearch = data
-    ? (data.sponsoredPools?.nodes as SponsoredPool[])
-    : [];
+
+  const sponsoredSearch =
+    data && searchPoolValue.text ? data.sponsoredPools?.nodes : [];
 
   const handlePressKey = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -49,12 +73,12 @@ export default function SearchPoolName() {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.toLowerCase();
+    setInputValue(value);
 
     // unsubscribe for ref
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    setInputValue(value);
-
+    // subscribe
     debounceRef.current = setTimeout(
       () =>
         setSearchPool(prev => ({
@@ -65,73 +89,91 @@ export default function SearchPoolName() {
     );
   };
 
-  useOutsideClick({
-    ref: searchRef,
-    handler: () => {
-      if (isOpen) {
-        return onClose();
-      }
-    },
-  });
-
   return (
-    <Stack ref={searchRef} position="relative" w={{ base: 'full', md: 'auto' }}>
-      <InputGroup>
-        <InputLeftElement
-          height="44px"
-          width="44px"
-          pointerEvents="none"
-          children={
-            <Icon color="primary" fontSize="2xl">
-              {' '}
-              <path fill="currentColor" d={mdiMagnify} />
-            </Icon>
-          }
-        />
-        <Input
-          type="text"
-          value={inputValue}
-          onChange={event => handleInputChange(event)}
-          onFocus={() => onOpen()}
-          onKeyUp={handlePressKey}
-          height="44px"
-          borderRadius="12px"
-          placeholder="Search"
-          _placeholder={{ color: 'gray.400' }}
-        />
-      </InputGroup>
+    <Stack position="relative" ref={searchRef} w={{ base: 'full', md: 'auto' }}>
+      <UnorderedList ms={0}>
+        <InputGroup>
+          <InputLeftElement
+            height="44px"
+            width="44px"
+            pointerEvents="none"
+            children={
+              <Icon color="primary" fontSize="2xl">
+                <path fill="currentColor" d={mdiMagnify} />
+              </Icon>
+            }
+          />
+          <Input
+            type="text"
+            value={inputValue}
+            onChange={event => handleInputChange(event)}
+            onFocus={() => onOpen()}
+            onKeyUp={handlePressKey}
+            height="44px"
+            variant="white"
+            placeholder="Search"
+            border="1px solid #E6E6E6"
+            borderRadius={
+              isOpen && sponsoredSearch.length ? '12px 12px 0 0' : '12px'
+            }
+            _placeholder={{ color: 'gray.400' }}
+          />
 
-      {isOpen && (
-        <Box
-          position="absolute"
-          inset="auto 0 0 0"
-          zIndex="1000"
-          background="gray.100"
-          transform="translateY(100%)"
-        >
-          <UnorderedList ms={0}>
-            {sponsoredSearch.length && searchPoolValue.text?.length
-              ? sponsoredSearch.map((item: SponsoredPool) => (
-                  <ListItem
-                    onClick={() => {
-                      setInputValue(hexToString(item.poolName));
-                      setSearchPool(prev => ({
-                        ...prev,
-                        text: hexToString(item.poolName),
-                      }));
-                      onClose();
-                    }}
-                    pl={12}
-                    key={item.id}
-                    listStyleType="none"
-                  >
-                    {hexToString(item.poolName)}
-                  </ListItem>
-                ))
-              : null}
-          </UnorderedList>
-        </Box>
-      )}
+          <InputRightElement
+            height="44px"
+            width="44px"
+            onClick={() => {
+              setSearchPool(prev => ({ ...prev, text: '' }));
+              setInputValue('');
+              onClose();
+            }}
+            hidden={!(isOpen && sponsoredSearch.length)}
+            children={
+              <Icon fontSize="2xl">
+                <path fill="currentColor" d={mdiClose} />
+              </Icon>
+            }
+          />
+        </InputGroup>
+
+        {isOpen && sponsoredSearch.length ? (
+          <Box
+            background="white"
+            borderRadius="0 0 12px 12px"
+            border="solid #E6E6E6"
+            borderWidth="0 1px 1px 1px"
+            position="absolute"
+            inset="auto 0 0 0"
+            zIndex="1000"
+            transform="translateY(100%)"
+          >
+            {sponsoredSearch.map(item => (
+              <ListItem
+                onClick={() => {
+                  setSearchPool(prev => ({
+                    ...prev,
+                    text: hexToString(item.poolName),
+                  }));
+                  setInputValue(hexToString(item.poolName));
+                  onClose();
+                }}
+                pl={3}
+                pt={2.5}
+                pb={2.5}
+                key={item.id}
+                listStyleType="none"
+                _hover={{
+                  background: '#EFF7FE',
+                  transition: '1s ease',
+                  cursor: 'pointer',
+                }}
+              >
+                {hexToString(item.poolName)}
+              </ListItem>
+            ))}
+          </Box>
+        ) : null}
+      </UnorderedList>
     </Stack>
   );
 }
