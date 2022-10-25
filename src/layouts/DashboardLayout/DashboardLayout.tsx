@@ -91,6 +91,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 flex: 1,
                 px: { base: 'none', lg: 4 },
                 p: 0,
+                pb: { base: 2, lg: 4 },
               }}
             >
               {children}

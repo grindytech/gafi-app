@@ -34,10 +34,13 @@ const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
   const { api, currentAccount } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const onFinalize = () => {
+    setIsLoading(false);
+  };
+
   const txCallback = useTxCallback(() => {
     refetch();
-    setIsLoading(false);
-  });
+  }, onFinalize);
 
   const mutation = useMutation(
     async (poolId: string) => {

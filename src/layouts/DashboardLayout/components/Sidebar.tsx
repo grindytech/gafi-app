@@ -1,7 +1,7 @@
 import {
   Box,
   BoxProps,
-  Heading,
+  CSSObject,
   HStack,
   Icon,
   Image,
@@ -92,15 +92,18 @@ const SideBar = ({ onClose, display }: IProps) => {
 
 export default SideBar;
 
-const sidebarStyled = {
-  w: { base: 'full', lg: 64, '2xl': '20vw' },
-  h: { sm: 'full', lg: '100vh' },
+const sidebarStyled: CSSObject = {
+  w: { base: 'full', lg: '300px' },
+  minWidth: '300px',
+  h: { sm: 'full', lg: 'full' },
+  minHeight: '100vh',
   // borderRadius: { base: '0px 24px 0px 0px', lg: '2xl' },
   alignItems: 'center',
   justifyContent: 'space-between',
   py: { base: 0 },
   px: { base: 0, lg: 6 },
   borderRadius: 0,
+  position: 'sticky',
 };
 
 const sidebarHead = {

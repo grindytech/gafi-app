@@ -1,5 +1,4 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import { AnyJson } from '@polkadot/types/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

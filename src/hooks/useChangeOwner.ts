@@ -18,7 +18,6 @@ const useChangeOwner = (
   const [isLoading, setIsLoading] = useState(false);
 
   const refetchData = () => {
-    refetchLoad(false);
     onSuccess();
   };
 
@@ -33,7 +32,11 @@ const useChangeOwner = (
     }
   };
 
-  const txCallback = useTxCallback(refetchData);
+  const onFinalize = () => {
+    refetchLoad(false);
+  };
+
+  const txCallback = useTxCallback(refetchData, onFinalize);
 
   const mutation = useMutation(
     async (params: { contractAddress: string; ownerAddress: string }) => {

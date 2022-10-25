@@ -16,10 +16,13 @@ const useLeavePool = (refetch: () => void) => {
 
   const onSucess = () => {
     refetch();
+  };
+
+  const onFinalize = () => {
     setLeaveLoadingPool('');
   };
 
-  const txCallback = useTxCallback(onSucess);
+  const txCallback = useTxCallback(onSucess, onFinalize);
 
   const leavePool = async (poolPackage: string) => {
     setLeaveLoadingPool(poolPackage);

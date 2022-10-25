@@ -240,6 +240,7 @@ export const theme = extendTheme({
           border: `2px solid ${colors.primary}`,
           '&:hover': {
             bg: colors.primary,
+            borderColor: 'primary',
             color: 'white',
             _disabled: {
               opacity: 0.4,
