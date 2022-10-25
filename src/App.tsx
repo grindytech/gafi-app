@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { ConnectWalletProvider } from './contexts/connectWalletContext/connectWalletContext';
-import { SearchPoolProvider } from './contexts/searchPoolContext/searchPoolContext';
 import { SubstrateContextProvider } from './contexts/substrateContext';
 
 import DashboardLayout from 'layouts/DashboardLayout';
@@ -40,11 +39,9 @@ export default function App() {
   return (
     <SubstrateContextProvider>
       <ConnectWalletProvider>
-        <SearchPoolProvider>
-          <DashboardLayout>
-            <PageContent />
-          </DashboardLayout>
-        </SearchPoolProvider>
+        <DashboardLayout>
+          <PageContent />
+        </DashboardLayout>
       </ConnectWalletProvider>
     </SubstrateContextProvider>
   );

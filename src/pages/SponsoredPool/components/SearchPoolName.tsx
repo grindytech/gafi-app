@@ -13,28 +13,23 @@ import {
 } from '@chakra-ui/react';
 import { mdiClose, mdiMagnify } from '@mdi/js';
 import { hexToString, stringToHex } from '@polkadot/util';
-import {
-  ChangeEvent,
-  KeyboardEvent,
-  LegacyRef,
-  MutableRefObject,
-  useRef,
-  useState,
-} from 'react';
+import React, { LegacyRef, MutableRefObject, useRef } from 'react';
 
-import { useSearchPoolContext } from 'contexts/searchPoolContext/searchPoolContext';
 import client from 'graphQL/client';
 import { useSponsoredPoolSearch } from 'graphQL/generates';
+import useSearchPoolName from 'hooks/useSearchPoolName';
 
-export default function SearchPoolName() {
+interface ISearchPoolProps {
+  setQueryValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
   const searchRef:
     | LegacyRef<HTMLDivElement>
     | undefined
     | MutableRefObject<HTMLElement> = useRef(null);
 
-  const debounceRef: MutableRefObject<NodeJS.Timeout | null> = useRef(null);
-
-  const [inputValue, setInputValue] = useState<string>('');
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
   useOutsideClick({
     ref: searchRef,
@@ -45,48 +40,32 @@ export default function SearchPoolName() {
     },
   });
 
-  const { setSearchPool, searchPoolValue } = useSearchPoolContext();
-
-  const { onOpen, isOpen, onClose } = useDisclosure();
+  const { handlePressKey, handleInputChange, searchQuery, setSearchQuery } =
+    useSearchPoolName({
+      setQueryValue,
+      delay: 500,
+    });
 
   const { data } = useSponsoredPoolSearch(client, {
     first: 0,
     offset: 0,
     filter: {
       poolName: {
-        includes: stringToHex(searchPoolValue.text),
+        includes: stringToHex(searchQuery.submit),
       },
     },
   });
 
   const sponsoredSearch =
-    data && searchPoolValue.text ? data.sponsoredPools?.nodes : [];
+    searchQuery.submit?.length && data ? data.sponsoredPools?.nodes : [];
 
-  const handlePressKey = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      return setSearchPool(prev => ({
-        ...prev,
-        submit: inputValue,
-      }));
-    }
-  };
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.toLowerCase();
-    setInputValue(value);
-
-    // unsubscribe for ref
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    // subscribe
-    debounceRef.current = setTimeout(
-      () =>
-        setSearchPool(prev => ({
-          ...prev,
-          text: value,
-        })),
-      400
-    );
+  const refetchData = (value: string) => {
+    setSearchQuery(prev => ({
+      ...prev,
+      text: value as string,
+      submit: value as string,
+    }));
+    onClose();
   };
 
   return (
@@ -105,10 +84,10 @@ export default function SearchPoolName() {
           />
           <Input
             type="text"
-            value={inputValue}
+            value={searchQuery.text}
             onChange={event => handleInputChange(event)}
             onFocus={() => onOpen()}
-            onKeyUp={handlePressKey}
+            onKeyUp={event => handlePressKey(event)}
             height="44px"
             variant="white"
             placeholder="Search"
@@ -122,12 +101,8 @@ export default function SearchPoolName() {
           <InputRightElement
             height="44px"
             width="44px"
-            onClick={() => {
-              setSearchPool(prev => ({ ...prev, text: '' }));
-              setInputValue('');
-              onClose();
-            }}
-            hidden={!(isOpen && sponsoredSearch.length)}
+            onClick={() => refetchData('')}
+            hidden={!sponsoredSearch.length}
             children={
               <Icon fontSize="2xl">
                 <path fill="currentColor" d={mdiClose} />
@@ -147,30 +122,25 @@ export default function SearchPoolName() {
             zIndex="1000"
             transform="translateY(100%)"
           >
-            {sponsoredSearch.map(item => (
-              <ListItem
-                onClick={() => {
-                  setSearchPool(prev => ({
-                    ...prev,
-                    text: hexToString(item.poolName),
-                  }));
-                  setInputValue(hexToString(item.poolName));
-                  onClose();
-                }}
-                pl={3}
-                pt={2.5}
-                pb={2.5}
-                key={item.id}
-                listStyleType="none"
-                _hover={{
-                  background: '#EFF7FE',
-                  transition: '1s ease',
-                  cursor: 'pointer',
-                }}
-              >
-                {hexToString(item.poolName)}
-              </ListItem>
-            ))}
+            {sponsoredSearch.map(item =>
+              hexToString(item.poolName) !== searchQuery.text ? (
+                <ListItem
+                  onClick={() => refetchData(hexToString(item.poolName))}
+                  pl={3}
+                  pt={2.5}
+                  pb={2.5}
+                  key={item.id}
+                  listStyleType="none"
+                  _hover={{
+                    background: '#EFF7FE',
+                    transition: '1s ease',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {hexToString(item.poolName)}
+                </ListItem>
+              ) : null
+            )}
           </Box>
         ) : null}
       </UnorderedList>

@@ -1,11 +1,8 @@
-
 import { stringToHex } from '@polkadot/util';
-import { useSearchPoolContext } from 'contexts/searchPoolContext/searchPoolContext';
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryParam } from 'use-query-params';
 
 import useJoinedPoolInfo from './useJoinedPoolInfo';
-
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
@@ -18,10 +15,26 @@ const useLoadSponsoredPool = () => {
   const isOwned = type === 'owned';
 
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [queryValue, setQueryValue] = useState<string>('');
   const [joinedPool, setJoinedPool] = useState<SponsoredPool[] | undefined>();
 
   const { isJoinedPool, joinedPoolInfo, refetch } = useJoinedPoolInfo();
+
+  const handlePoolFilter = () => {
+    if (isOwned) {
+      return {
+        poolOwner: { equalTo: currentAccount?.address },
+      };
+    }
+
+    if (queryValue?.length) {
+      return {
+        poolName: { includes: stringToHex(queryValue) },
+      };
+    }
+
+    return undefined;
+  };
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
@@ -47,7 +60,7 @@ const useLoadSponsoredPool = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchPoolValue.submit]);
+  }, [queryValue?.length]);
 
   useEffect(() => {
     joinedPoolInfo?.forEach(pool => {
@@ -70,6 +83,7 @@ const useLoadSponsoredPool = () => {
   }, [joinedPoolInfo, sponsoredPools]);
 
   return {
+    setQueryValue,
     joinedPoolInfo,
     isJoinedPool,
     isOwned,
