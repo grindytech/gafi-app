@@ -23,11 +23,14 @@ const useTransferGaki = (refetch: () => void) => {
   const { parseUnits } = ethers.utils;
 
   const onSucess = () => {
-    setIsLoading(false);
     refetch();
   };
 
-  const txCallback = useTxCallback(onSucess, 'TRANSFER_SUCCESS');
+  const onFinalize = () => {
+    setIsLoading(false);
+  };
+
+  const txCallback = useTxCallback(onSucess, onFinalize, 'TRANSFER_SUCCESS');
 
   const mutation = useMutation(
     async ({ transferTo, amount }: IMutationParams) => {

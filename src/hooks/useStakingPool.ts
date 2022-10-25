@@ -19,12 +19,15 @@ const useStakingPool = (refetch: () => void) => {
   const [loadingPool, setLoadingPool] = useState('');
   const { api, currentAccount } = useSubstrateState();
 
-  const onSucess = () => {
-    setLoadingPool('');
+  const onSuccess = () => {
     refetch();
   };
 
-  const txCallback = useTxCallback(onSucess);
+  const onFinalize = () => {
+    setLoadingPool('');
+  };
+
+  const txCallback = useTxCallback(onSuccess, onFinalize);
 
   const joinStakingPool = async (poolPackage: string) => {
     if (!currentAccount) {

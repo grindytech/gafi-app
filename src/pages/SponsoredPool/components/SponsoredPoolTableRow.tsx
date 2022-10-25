@@ -104,16 +104,19 @@ const SponsoredPoolTableRow: React.FC<IProps> = ({
         <Td
           onClick={e => {
             e.stopPropagation();
-            onOpenDetail();
           }}
           textAlign="center"
           fontWeight="normal"
           fontSize="md"
         >
           {isOwned ? (
-            <OwnedTableActions poolId={pool.id} onClick={onEditClick} />
+            <OwnedTableActions
+              poolId={pool.id}
+              onClickDetails={onOpenDetail}
+              onClick={onEditClick}
+            />
           ) : (
-            <TableActions poolId={pool.id} />
+            <TableActions poolId={pool.id} onClickDetails={onOpenDetail} />
           )}
         </Td>
       </Tr>

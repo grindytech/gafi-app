@@ -33,6 +33,7 @@ export interface ISponsoredPoolForm {
   poolAmount: number;
   discount: string;
   txLimit: string;
+  // enableWhitelist: boolean;
 }
 
 const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
@@ -40,6 +41,7 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   const history = useHistory();
   const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
     defaultValues: {
+      // enableWhitelist: false,
       targets: [
         {
           contractAddress: '',
@@ -123,6 +125,23 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
                 {...register('txLimit', { required: true })}
               />
             </FormControl>
+            {/* <FormControl mb={4}>
+              <Controller
+                control={control}
+                name="enableWhitelist"
+                render={({ field }) => (
+                  <Checkbox
+                    id="enableWhitelist"
+                    checked={field.value}
+                    onChange={e => {
+                      field.onChange(e.target.checked);
+                    }}
+                  >
+                    {t('ENABLE_WHITELIST')}
+                  </Checkbox>
+                )}
+              />
+            </FormControl> */}
             <FormControl mb={4}>
               <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
                 {t('TARGETS')}

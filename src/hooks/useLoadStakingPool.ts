@@ -1,12 +1,12 @@
 import {
   GafiPrimitivesPoolService,
   GafiPrimitivesSystemServicesSystemService,
-  GafiPrimitivesTicketTicketInfo,
 } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
+import useJoinedPoolInfo from './useJoinedPoolInfo';
 import useStakingPool from './useStakingPool';
 
 import { useSubstrateState } from 'contexts/substrateContext';
@@ -19,35 +19,11 @@ export interface IStakingServiceProps {
 }
 
 const useLoadStakingPool = () => {
-  const { api, currentAccount } = useSubstrateState();
-
+  const { api } = useSubstrateState();
   const gaEventTracker = useAnalyticsEventTracker('Staking pool');
-
   const { t } = useTranslation();
 
-  const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketInfo[] | undefined> => {
-      if (api && currentAccount) {
-        const res = await api.query.pool.tickets.entries(
-          currentAccount.address
-        );
-
-        const tickets = res
-          .map(([{}, exposure]) => {
-            if (exposure.isSome) {
-              return exposure.unwrap();
-            }
-          })
-          .filter((item): item is GafiPrimitivesTicketTicketInfo => !!item);
-
-        return tickets;
-      }
-    },
-    {
-      enabled: !!currentAccount,
-    }
-  );
+  const { joinedPoolInfo, refetch, isJoinedPool } = useJoinedPoolInfo();
 
   const { data: poolInfo } = useQuery(
     'getStakingPoolInfo',
@@ -88,11 +64,12 @@ const useLoadStakingPool = () => {
   ];
 
   const stakingPools = poolInfo?.map((pool, index) => {
-    const isJoinedPool = !!joinedPoolInfo?.length;
     const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
       if (item.ticketType.isStaking) {
         return item.ticketType.asStaking.toHuman() === pool.id;
       }
+
+      return false;
     });
 
     return {

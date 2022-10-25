@@ -1,7 +1,7 @@
-import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useQueryParam } from 'use-query-params';
+
+import useJoinedPoolInfo from './useJoinedPoolInfo';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import client from 'graphQL/client';
@@ -9,28 +9,14 @@ import { SponsoredPool, useSponsoredPoolsQuery } from 'graphQL/generates';
 import * as constants from 'utils/constants';
 
 const useLoadSponsoredPool = () => {
-  const { api, currentAccount } = useSubstrateState();
+  const { currentAccount } = useSubstrateState();
   const [type, _] = useQueryParam('type');
   const isOwned = type === 'owned';
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [joinedPool, setJoinedPool] = useState<SponsoredPool | undefined>();
+  const [joinedPool, setJoinedPool] = useState<SponsoredPool[] | undefined>();
 
-  const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketInfo[] | undefined> => {
-      if (api && currentAccount) {
-        const res = await api.query.pool.tickets.entries(
-          currentAccount.address
-        );
-
-        return res.map(([{}, exposure]) => exposure.unwrap());
-      }
-    },
-    {
-      enabled: !!currentAccount,
-    }
-  );
+  const { isJoinedPool, joinedPoolInfo, refetch } = useJoinedPoolInfo();
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
@@ -52,27 +38,32 @@ const useLoadSponsoredPool = () => {
     }
   );
 
-  const sponsoredPools = sponsoredPoolData
-    ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
-    : [];
+  const sponsoredPools = useMemo(
+    () =>
+      sponsoredPoolData
+        ? (sponsoredPoolData.sponsoredPools?.nodes as SponsoredPool[])
+        : [],
+    [sponsoredPoolData]
+  );
 
   const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
 
-  const isJoinedPool = !!joinedPoolInfo?.map(
-    item => item.ticketType.isSponsored && item.ticketType.asSponsored.toHuman()
-  ).length;
-
   useEffect(() => {
-    joinedPoolInfo?.map(pool => {
+    joinedPoolInfo?.forEach(pool => {
       if (pool.ticketType.isSponsored) {
         const joinedPoolID = pool.ticketType.asSponsored.toHuman();
         const foundPool = sponsoredPools.find(
           nodes => nodes.id === joinedPoolID
         );
 
-        setJoinedPool(foundPool);
-      } else {
-        setJoinedPool(undefined);
+        if (foundPool) {
+          setJoinedPool(prevState => {
+            if (prevState) {
+              return [...prevState, foundPool];
+            }
+            return [foundPool];
+          });
+        }
       }
     });
   }, [joinedPoolInfo, sponsoredPools]);

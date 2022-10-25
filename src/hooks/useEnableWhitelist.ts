@@ -5,40 +5,40 @@ import { useMutation } from 'react-query';
 
 import useTxCallback from './useTxCallback';
 
+import config from 'config';
 import { useSubstrateState } from 'contexts/substrateContext';
 import { getFromAcct } from 'utils';
 
-const useEditPool = (onSuccess: () => void) => {
+const useEnableWhitelist = (poolId: string) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { api, currentAccount } = useSubstrateState();
+  const { currentAccount, api } = useSubstrateState();
+  const txCallback = useTxCallback(
+    () => {},
+    () => {
+      setIsLoading(false);
+    }
+  );
   const toast = useToast();
   const { t } = useTranslation();
 
-  const refetch = () => {
-    onSuccess();
-  };
-
-  const onFinalize = () => {
-    setIsLoading(false);
-  };
-
-  const txCallback = useTxCallback(refetch, onFinalize);
-
-  const poolNameMutation = useMutation(
-    async (params: { poolName: string; poolId: string }) => {
+  const mutationEnableWhitelist = useMutation(
+    async () => {
+      setIsLoading(true);
       const [account, options] = await getFromAcct(currentAccount);
-      const txSetPoolNameExecute = api?.tx.sponsoredPool.setPoolName(
-        params.poolId,
-        params.poolName
-      );
-      return txSetPoolNameExecute?.signAndSend(
+      const txChangeContractOwnerExecute =
+        api?.tx.palletWhitelist.enableWhitelist(
+          poolId,
+          `${config.WHITELIST_DEFAULT_URL}/whitelist/verify`
+        );
+
+      return txChangeContractOwnerExecute?.signAndSend(
         account,
         options || {},
         txCallback
       );
     },
     {
-      mutationKey: 'update-pool-name',
+      mutationKey: 'change-contract-onwer',
       onError: (error: any) => {
         toast({
           position: 'top-right',
@@ -53,13 +53,7 @@ const useEditPool = (onSuccess: () => void) => {
     }
   );
 
-  return {
-    editPoolName: (poolName: string, poolId: string) => {
-      setIsLoading(true);
-      return poolNameMutation.mutate({ poolName, poolId });
-    },
-    isLoading,
-  };
+  return { mutationEnableWhitelist, isLoading };
 };
 
-export default useEditPool;
+export default useEnableWhitelist;

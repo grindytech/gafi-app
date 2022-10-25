@@ -14,13 +14,15 @@ const useWithdraw = (onClose?: () => void) => {
   const toast = useToast();
   const { t } = useTranslation();
 
-  const onSucess = () => {
+  const onSuccess = () => {
     if (onClose) onClose();
+  };
 
+  const onFinalize = () => {
     setIsLoading(false);
   };
 
-  const txCallback = useTxCallback(onSucess);
+  const txCallback = useTxCallback(onSuccess, onFinalize);
 
   const mutation = useMutation(
     async (poolId: string) => {

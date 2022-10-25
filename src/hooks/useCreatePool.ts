@@ -18,11 +18,14 @@ const useCreatePool = (onSuccess: () => void) => {
   const { parseUnits } = ethers.utils;
 
   const refetch = () => {
-    setIsLoading(false);
     onSuccess();
   };
 
-  const txCallback = useTxCallback(refetch);
+  const onFinalize = () => {
+    setIsLoading(false);
+  };
+
+  const txCallback = useTxCallback(refetch, onFinalize);
 
   const createPoolMutation = useMutation(
     async (data: ISponsoredPoolForm) => {

@@ -20,11 +20,14 @@ const useEditPoolTargets = (
 
   const refetch = () => {
     onSuccess();
+  };
+
+  const onFinalize = () => {
     setIsLoading(false);
     setIsPending(false);
   };
 
-  const txCallback = useTxCallback(refetch);
+  const txCallback = useTxCallback(refetch, onFinalize);
 
   const poolTargetsMutation = useMutation(
     async (params: { targetsData: ITargets; poolId: string }) => {

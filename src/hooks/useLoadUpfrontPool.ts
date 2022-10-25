@@ -1,8 +1,8 @@
-import { GafiPrimitivesTicketTicketInfo } from '@polkadot/types/lookup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
 import useAnalyticsEventTracker from './useAnalyticsEventTracker';
+import useJoinedPoolInfo from './useJoinedPoolInfo';
 import useLeavePool from './useLeavePool';
 import { IStakingServiceProps } from './useLoadStakingPool';
 import useUpfrontPool from './useUpfrontPool';
@@ -10,33 +10,11 @@ import useUpfrontPool from './useUpfrontPool';
 import { useSubstrateState } from 'contexts/substrateContext';
 
 const useLoadUpfrontPool = () => {
-  const { api, currentAccount } = useSubstrateState();
+  const { api } = useSubstrateState();
   const gaEventTracker = useAnalyticsEventTracker('Upfront pool');
   const { t } = useTranslation();
 
-  const { data: joinedPoolInfo, refetch } = useQuery(
-    ['getJoinedPool', currentAccount],
-    async (): Promise<GafiPrimitivesTicketTicketInfo[] | undefined> => {
-      if (api && currentAccount) {
-        const res = await api.query.pool.tickets.entries(
-          currentAccount.address
-        );
-
-        const tickets = res
-          .map(([{}, exposure]) => {
-            if (exposure.isSome) {
-              return exposure.unwrap();
-            }
-          })
-          .filter((item): item is GafiPrimitivesTicketTicketInfo => !!item);
-
-        return tickets;
-      }
-    },
-    {
-      enabled: !!currentAccount,
-    }
-  );
+  const { isJoinedPool, joinedPoolInfo, refetch } = useJoinedPoolInfo();
 
   const { data: poolInfo } = useQuery(
     'getPoolInfo',
@@ -45,7 +23,7 @@ const useLoadUpfrontPool = () => {
         const res = await api.query.upfrontPool.services.entries();
 
         const services = res
-          .map(([{}, exposure]) => {
+          .map(([, exposure]) => {
             if (exposure.isSome) {
               const service = exposure.unwrap();
 
@@ -55,6 +33,8 @@ const useLoadUpfrontPool = () => {
                 value: service.value.toHuman(),
               };
             }
+
+            return undefined;
           })
           .filter((item): item is IStakingServiceProps => !!item)
           .sort((item1, item2) =>
@@ -76,11 +56,12 @@ const useLoadUpfrontPool = () => {
   ];
 
   const upfrontPools = poolInfo?.map((pool, index) => {
-    const isJoinedPool = !!joinedPoolInfo?.length;
     const isJoinedPoolTicket = !!joinedPoolInfo?.find(item => {
       if (item.ticketType.isUpfront) {
         return item.ticketType.asUpfront.toHuman() === pool.id;
       }
+
+      return false;
     });
 
     return {
