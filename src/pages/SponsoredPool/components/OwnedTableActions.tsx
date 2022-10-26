@@ -26,6 +26,8 @@ import {
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { mdiClose, mdiDotsVertical, mdiPlus } from '@mdi/js';
+import { u8aToHex } from '@polkadot/util';
+import { decodeAddress } from '@polkadot/util-crypto';
 import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +36,11 @@ import useEnableWhitelist from 'hooks/useEnableWhitelist';
 import { useLoadWhitelist } from 'hooks/useLoadWhitelist';
 import { useWhitelistSource } from 'hooks/useWhitelistSource';
 import useWithdraw from 'hooks/useWithdraw';
+
+function ss58ToHex(address: string) {
+  const enAdd = u8aToHex(decodeAddress(address));
+  return enAdd;
+}
 
 export interface WhitelistForm {
   whitelist: { address: string }[];
@@ -102,7 +109,7 @@ const OwnedTableActions: React.FC<IProps> = ({
     const address = submitData.whitelist
       .map(item => {
         if (!data?.includes(item.address)) {
-          return item.address;
+          return ss58ToHex(item.address).replace('0x', '');
         }
         return undefined;
       })

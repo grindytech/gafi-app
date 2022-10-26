@@ -16,6 +16,7 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useWallet } from 'use-wallet';
 
 import NumberInput from '../../../components/numberInput/NumberInput';
 
@@ -33,6 +34,7 @@ const ModalTransferToken: React.FC<IProps> = ({ isOpen, onClose }) => {
   const { formatUnits } = ethers.utils;
   const { chainDecimal } = useSubstrateState();
   const web3 = useWeb3();
+  const { account } = useWallet();
   const {
     register,
     handleSubmit,
@@ -54,7 +56,7 @@ const ModalTransferToken: React.FC<IProps> = ({ isOpen, onClose }) => {
     useTransferERC20();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{t('TRANSFER_ERC20_TOKEN')}</ModalHeader>
@@ -64,6 +66,21 @@ const ModalTransferToken: React.FC<IProps> = ({ isOpen, onClose }) => {
           })}
         >
           <ModalBody>
+            <FormControl isRequired mb={4}>
+              <FormLabel htmlFor="">{t('TRANSFER_FROM')}</FormLabel>
+              <Input disabled type="text" value={account || ''} />
+              {tokenInfo && (
+                <Text>
+                  {t('YOUR_BALANCE_AMOUNT_GAKI', {
+                    amount: formatUnits(
+                      tokenInfo?.balance || '0',
+                      chainDecimal
+                    ),
+                    symbol: tokenInfo.symbol,
+                  })}
+                </Text>
+              )}
+            </FormControl>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TOKEN_CONTRACT')}</FormLabel>
               <Input
@@ -79,17 +96,6 @@ const ModalTransferToken: React.FC<IProps> = ({ isOpen, onClose }) => {
                 name="tokenAddress"
                 render={({ message }) => <Text color="red.400">{message}</Text>}
               />
-              {tokenInfo && (
-                <Text>
-                  {t('YOUR_BALANCE_AMOUNT_GAKI', {
-                    amount: formatUnits(
-                      tokenInfo?.balance || '0',
-                      chainDecimal
-                    ),
-                    symbol: tokenInfo.symbol,
-                  })}
-                </Text>
-              )}
             </FormControl>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="">{t('TRANSFER_TO')}</FormLabel>

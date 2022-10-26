@@ -3,7 +3,8 @@
   "PROVIDER_SOCKETS": [
     "wss://ws-testnet.gafi.network",
     "wss://ws-testnet-tokyo.gafi.network",
-    "wss://ws-testnet-sig.gafi.network"
+    "wss://ws-testnet-sig.gafi.network",
+    "wss://ws-testnet-miami.gafi.network"
   ],
   "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query",
   "FEATURE_FLAG": {

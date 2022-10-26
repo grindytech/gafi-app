@@ -71,6 +71,7 @@
   "TRANSFER_GAKI": "Transfer GAKI",
   "TRANSFER_ERC20_TOKEN": "Transfer ERC20 token",
   "TRANSFER": "Transfer",
+  "TRANSFER_FROM": "Transfer from",
   "TRANSFER_TO": "Transfer to",
   "TOKEN_AMOUNT": "Token amount",
   "TOKEN_CONTRACT": "Token contract",
