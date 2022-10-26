@@ -2631,6 +2631,15 @@ export type _Metadata = {
   targetHeight?: Maybe<Scalars['Int']>;
 };
 
+export type SponsoredSearchPoolsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  offset: Scalars['Int'];
+  filter?: InputMaybe<SponsoredPoolFilter>;
+}>;
+
+
+export type SponsoredSearchPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolName?: string | null } | null> } | null };
+
 export type SponsoredPoolsQueryVariables = Exact<{
   first: Scalars['Int'];
   offset: Scalars['Int'];
@@ -2650,9 +2659,34 @@ export type ClaimedContractsQueryVariables = Exact<{
   offset: Scalars['Int'];
 }>;
 
+
 export type ClaimedContractsQuery = { __typename?: 'Query', claimedContracts?: { __typename?: 'ClaimedContractsConnection', totalCount: number, nodes: Array<{ __typename?: 'ClaimedContract', id: string, contractAddress: string, accountId: string } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
 
 
+export const SponsoredSearchPoolsDocument = `
+    query SponsoredSearchPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
+  sponsoredPools(first: $first, offset: $offset, filter: $filter) {
+    nodes {
+      id
+      poolName
+    }
+  }
+}
+    `;
+export const useSponsoredSearchPoolsQuery = <
+      TData = SponsoredSearchPoolsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: SponsoredSearchPoolsQueryVariables,
+      options?: UseQueryOptions<SponsoredSearchPoolsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<SponsoredSearchPoolsQuery, TError, TData>(
+      ['SponsoredSearchPools', variables],
+      fetcher<SponsoredSearchPoolsQuery, SponsoredSearchPoolsQueryVariables>(client, SponsoredSearchPoolsDocument, variables, headers),
+      options
+    );
 export const SponsoredPoolsDocument = `
     query SponsoredPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
   sponsoredPools(first: $first, offset: $offset, filter: $filter) {
@@ -2675,19 +2709,19 @@ export const SponsoredPoolsDocument = `
 }
     `;
 export const useSponsoredPoolsQuery = <
-  TData = SponsoredPoolsQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables: SponsoredPoolsQueryVariables,
-  options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<SponsoredPoolsQuery, TError, TData>(
-    ['SponsoredPools', variables],
-    fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
-    options
-  );
+      TData = SponsoredPoolsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: SponsoredPoolsQueryVariables,
+      options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<SponsoredPoolsQuery, TError, TData>(
+      ['SponsoredPools', variables],
+      fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
+      options
+    );
 export const TransfersDocument = `
     query Transfers {
   transfers(first: 5) {
@@ -2701,19 +2735,19 @@ export const TransfersDocument = `
 }
     `;
 export const useTransfersQuery = <
-  TData = TransfersQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables?: TransfersQueryVariables,
-  options?: UseQueryOptions<TransfersQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<TransfersQuery, TError, TData>(
-    variables === undefined ? ['Transfers'] : ['Transfers', variables],
-    fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
-    options
-  );
+      TData = TransfersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: TransfersQueryVariables,
+      options?: UseQueryOptions<TransfersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<TransfersQuery, TError, TData>(
+      variables === undefined ? ['Transfers'] : ['Transfers', variables],
+      fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
+      options
+    );
 export const ClaimedContractsDocument = `
     query ClaimedContracts($first: Int!, $offset: Int!) {
   claimedContracts(first: $first, offset: $offset) {
@@ -2731,16 +2765,16 @@ export const ClaimedContractsDocument = `
 }
     `;
 export const useClaimedContractsQuery = <
-  TData = ClaimedContractsQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables?: ClaimedContractsQueryVariables,
-  options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<ClaimedContractsQuery, TError, TData>(
-    ['ClaimedContracts', variables],
-    fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
-    options
-  );
+      TData = ClaimedContractsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: ClaimedContractsQueryVariables,
+      options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<ClaimedContractsQuery, TError, TData>(
+      ['ClaimedContracts', variables],
+      fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
+      options
+    );

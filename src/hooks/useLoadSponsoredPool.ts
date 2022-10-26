@@ -1,3 +1,4 @@
+import { stringToHex } from '@polkadot/util';
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryParam } from 'use-query-params';
 
@@ -14,27 +15,36 @@ const useLoadSponsoredPool = () => {
   const isOwned = type === 'owned';
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [queryValue, setQueryValue] = useState<string>('');
   const [joinedPool, setJoinedPool] = useState<SponsoredPool[] | undefined>();
 
   const { isJoinedPool, joinedPoolInfo, refetch } = useJoinedPoolInfo();
+
+  const handlePoolFilter = () => {
+    if (isOwned) {
+      return {
+        poolOwner: { equalTo: currentAccount?.address },
+      };
+    }
+
+    if (queryValue?.length) {
+      return {
+        poolName: { includes: stringToHex(queryValue) },
+      };
+    }
+
+    return undefined;
+  };
 
   const { data: sponsoredPoolData, isLoading } = useSponsoredPoolsQuery(
     client,
     {
       first: constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      offset: isOwned
-        ? 0
-        : (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      filter: isOwned
-        ? {
-            poolOwner: {
-              equalTo: currentAccount?.address,
-            },
-          }
-        : undefined,
+      offset: (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
+      filter: handlePoolFilter(),
     },
     {
-      enabled: !!currentAccount?.addressRaw,
+      enabled: !!currentAccount,
     }
   );
 
@@ -47,6 +57,10 @@ const useLoadSponsoredPool = () => {
   );
 
   const totalCount = sponsoredPoolData?.sponsoredPools?.totalCount as number;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [queryValue?.length]);
 
   useEffect(() => {
     joinedPoolInfo?.forEach(pool => {
@@ -69,6 +83,7 @@ const useLoadSponsoredPool = () => {
   }, [joinedPoolInfo, sponsoredPools]);
 
   return {
+    setQueryValue,
     joinedPoolInfo,
     isJoinedPool,
     isOwned,

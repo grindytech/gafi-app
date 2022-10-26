@@ -132,7 +132,7 @@ const Pagination = (props: IProps) => {
             ml={{ base: 1, xl: 2 }}
             size="sm"
             variant="primary"
-            disabled={currentPage === 1}
+            disabled={currentPage === 1 || totalCount === 0}
             onClick={() => {
               hanldleSwitchPage(currentPage - 1);
             }}
@@ -174,7 +174,7 @@ const Pagination = (props: IProps) => {
               ml={{ base: 8, xl: 2 }}
               size="sm"
               variant="primary"
-              disabled={currentPage === totalPage}
+              disabled={currentPage === totalPage || totalCount === 0}
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
@@ -185,7 +185,7 @@ const Pagination = (props: IProps) => {
               ml={{ base: 1, xl: 2 }}
               size="sm"
               variant="primary"
-              disabled={currentPage === totalPage}
+              disabled={currentPage === totalPage || totalCount === 0}
               onClick={() => {
                 hanldleSwitchPage(currentPage + 1);
               }}
