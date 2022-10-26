@@ -2631,6 +2631,62 @@ export type _Metadata = {
   targetHeight?: Maybe<Scalars['Int']>;
 };
 
+export type SponsoredSearchPoolsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  offset: Scalars['Int'];
+  filter?: InputMaybe<SponsoredPoolFilter>;
+}>;
+
+
+export type SponsoredSearchPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolName?: string | null } | null> } | null };
+
+export type SponsoredPoolsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  offset: Scalars['Int'];
+  filter?: InputMaybe<SponsoredPoolFilter>;
+}>;
+
+
+export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null, poolName?: string | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+
+export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 'TransfersConnection', totalCount: number, nodes: Array<{ __typename?: 'Transfer', id: string, amount: any, from: string } | null> } | null };
+
+export type ClaimedContractsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  offset: Scalars['Int'];
+}>;
+
+
+export type ClaimedContractsQuery = { __typename?: 'Query', claimedContracts?: { __typename?: 'ClaimedContractsConnection', totalCount: number, nodes: Array<{ __typename?: 'ClaimedContract', id: string, contractAddress: string, accountId: string } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+
+
+export const SponsoredSearchPoolsDocument = `
+    query SponsoredSearchPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
+  sponsoredPools(first: $first, offset: $offset, filter: $filter) {
+    nodes {
+      id
+      poolName
+    }
+  }
+}
+    `;
+export const useSponsoredSearchPoolsQuery = <
+      TData = SponsoredSearchPoolsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: SponsoredSearchPoolsQueryVariables,
+      options?: UseQueryOptions<SponsoredSearchPoolsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<SponsoredSearchPoolsQuery, TError, TData>(
+      ['SponsoredSearchPools', variables],
+      fetcher<SponsoredSearchPoolsQuery, SponsoredSearchPoolsQueryVariables>(client, SponsoredSearchPoolsDocument, variables, headers),
+      options
+    );
 export const SponsoredPoolsDocument = `
     query SponsoredPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
   sponsoredPools(first: $first, offset: $offset, filter: $filter) {
@@ -2650,89 +2706,22 @@ export const SponsoredPoolsDocument = `
       hasPreviousPage
     }
   }
-}`;
-
-export type SponsoredPoolsQueryVariables = Exact<{
-  first: Scalars['Int'];
-  offset: Scalars['Int'];
-  filter?: InputMaybe<SponsoredPoolFilter>;
-}>;
-
-export type SponsoredPoolsQuery = {
-  __typename?: 'Query',
-  sponsoredPools?: {
-    __typename?: 'SponsoredPoolsConnection',
-    totalCount: number,
-    nodes: Array<{
-      __typename?: 'SponsoredPool',
-      id: string,
-      amount: any,
-      poolOwner: string,
-      targets: any,
-      discount: number,
-      txLimit: number,
-      createdAt?: any | null,
-      poolName?: string | null
-    } | null>,
-    pageInfo: {
-      __typename?: 'PageInfo',
-      hasNextPage: boolean,
-      hasPreviousPage: boolean,
-    }
-  } | null
-};
-
-export const useSponsoredPoolsQuery = <TData = SponsoredPoolsQuery, TError = unknown>(
-  client: GraphQLClient,
-  variables: SponsoredPoolsQueryVariables,
-  options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<SponsoredPoolsQuery, TError, TData>(
-    ['SponsoredPools', variables],
-    fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
-    options
-  );
-
-export const SponsoredPoolSearchDocument = `
-    query SponsoredPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
-  sponsoredPools(first: $first, offset: $offset, filter: $filter) {
-    nodes {
-      poolName
-      id
-    }
-  }
-}`;
-
-export type SponsoredPoolSearchQueryVariables = Exact<{
-  first: Scalars['Int'];
-  offset: Scalars['Int'];
-  filter: {
-    poolName?: InputMaybe<StringFilter>;
-  }
-}>;
-
-export type SponsoredPoolSearchQuery = {
-  sponsoredPools: {
-    nodes: Array<{
-      poolName: string | null;
-      id: string;
-    }>
-  }
-};
-
-export const useSponsoredPoolSearch = <TData = SponsoredPoolSearchQuery, TError = unknown>(
-  client: GraphQLClient,
-  variables: SponsoredPoolSearchQueryVariables,
-  options?: UseQueryOptions<SponsoredPoolSearchQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<SponsoredPoolSearchQuery, TError, TData>(
-    ['SponsoredPools', variables],
-    fetcher<SponsoredPoolSearchQuery, SponsoredPoolSearchQueryVariables>(client, SponsoredPoolSearchDocument, variables, headers),
-    options
-  );
-
+}
+    `;
+export const useSponsoredPoolsQuery = <
+      TData = SponsoredPoolsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: SponsoredPoolsQueryVariables,
+      options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<SponsoredPoolsQuery, TError, TData>(
+      ['SponsoredPools', variables],
+      fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
+      options
+    );
 export const TransfersDocument = `
     query Transfers {
   transfers(first: 5) {
@@ -2743,39 +2732,22 @@ export const TransfersDocument = `
     }
     totalCount
   }
-}`;
-
-export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type TransfersQuery = {
-  __typename?: 'Query',
-  transfers?: {
-    __typename?: 'TransfersConnection',
-    totalCount: number,
-    nodes: Array<{
-      __typename?: 'Transfer',
-      id: string,
-      amount: any,
-      from: string
-    } | null>
-  } | null
-};
-
+}
+    `;
 export const useTransfersQuery = <
-  TData = TransfersQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables?: TransfersQueryVariables,
-  options?: UseQueryOptions<TransfersQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<TransfersQuery, TError, TData>(
-    variables === undefined ? ['Transfers'] : ['Transfers', variables],
-    fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
-    options
-  );
-
+      TData = TransfersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: TransfersQueryVariables,
+      options?: UseQueryOptions<TransfersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<TransfersQuery, TError, TData>(
+      variables === undefined ? ['Transfers'] : ['Transfers', variables],
+      fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
+      options
+    );
 export const ClaimedContractsDocument = `
     query ClaimedContracts($first: Int!, $offset: Int!) {
   claimedContracts(first: $first, offset: $offset) {
@@ -2790,42 +2762,19 @@ export const ClaimedContractsDocument = `
       hasPreviousPage
     }
   }
-}`;
-
-export type ClaimedContractsQueryVariables = Exact<{
-  first: Scalars['Int'];
-  offset: Scalars['Int'];
-}>;
-
-export type ClaimedContractsQuery = {
-  __typename?: 'Query',
-  claimedContracts?: {
-    __typename?: 'ClaimedContractsConnection',
-    totalCount: number,
-    nodes: Array<{
-      __typename?: 'ClaimedContract',
-      id: string, contractAddress: string,
-      accountId: string
-    } | null>,
-    pageInfo: {
-      __typename?: 'PageInfo',
-      hasNextPage: boolean,
-      hasPreviousPage: boolean
-    }
-  } | null
-};
-
+}
+    `;
 export const useClaimedContractsQuery = <
-  TData = ClaimedContractsQuery,
-  TError = unknown
->(
-  client: GraphQLClient,
-  variables?: ClaimedContractsQueryVariables,
-  options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
-  headers?: RequestInit['headers']
-) =>
-  useQuery<ClaimedContractsQuery, TError, TData>(
-    ['ClaimedContracts', variables],
-    fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
-    options
-  );
+      TData = ClaimedContractsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: ClaimedContractsQueryVariables,
+      options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<ClaimedContractsQuery, TError, TData>(
+      ['ClaimedContracts', variables],
+      fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
+      options
+    );

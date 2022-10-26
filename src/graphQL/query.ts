@@ -1,5 +1,21 @@
 import { gql } from 'graphql-request';
 
+// Query list sponsored poolName for feature search
+const sponsoredSearchPoolQuery = gql`
+  query SponsoredSearchPools(
+    $first: Int!
+    $offset: Int!
+    $filter: SponsoredPoolFilter
+  ) {
+    sponsoredPools(first: $first, offset: $offset, filter: $filter) {
+      nodes {
+        id
+        poolName
+      }
+    }
+  }
+`;
+
 // Query list sponsored pools for codegen
 const sponsoredPoolQuery = gql`
   query SponsoredPools(

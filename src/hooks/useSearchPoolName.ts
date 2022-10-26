@@ -13,7 +13,7 @@ interface IStatePoolProps {
 interface IUseSearchPoolNameProps {
   setQueryValue: React.Dispatch<React.SetStateAction<string>>;
   delay: number;
-}
+};
 
 export default function useSearchPoolName({
   setQueryValue,
@@ -30,7 +30,7 @@ export default function useSearchPoolName({
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.toLowerCase();
+    const value = event.target.value;
 
     setSearchQuery(prev => ({
       ...prev,
