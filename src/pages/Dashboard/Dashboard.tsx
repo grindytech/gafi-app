@@ -42,6 +42,7 @@ interface INodeInfo {
   chain: PolText;
   nodeName: PolText;
   nodeVersion: PolText;
+  peers: number;
 }
 
 const Dashboard = () => {
@@ -73,13 +74,20 @@ const Dashboard = () => {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const [chain, nodeName, nodeVersion] = await Promise.all([
+        const [chain, nodeName, nodeVersion, health] = await Promise.all([
           api?.rpc.system.chain(),
           api?.rpc.system.name(),
           api?.rpc.system.version(),
+          api?.rpc.system.health(),
         ]);
+
         if (chain && nodeName && nodeVersion)
-          setNodeInfo({ chain, nodeName, nodeVersion });
+          setNodeInfo({
+            chain,
+            nodeName,
+            nodeVersion,
+            peers: (health?.peers.toNumber() || 0) + 1,
+          });
       } catch (e) {
         console.error(e);
       }
@@ -105,7 +113,7 @@ const Dashboard = () => {
           <Card h="full">
             <VStack alignItems="flex-start">
               <Heading mb={4} size="sm">
-                {nodeInfo?.nodeName}
+                {`${nodeInfo?.nodeName} (Total nodes: ${nodeInfo?.peers})`}
               </Heading>
               <HStack>
                 <Badge colorScheme="yellow" mr={2}>

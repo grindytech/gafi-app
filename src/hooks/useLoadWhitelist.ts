@@ -1,9 +1,15 @@
 import { useToast } from '@chakra-ui/react';
+import { encodeAddress } from '@polkadot/util-crypto';
 import * as axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 
 import config from 'config';
+
+function hexToSs58(address: string, ss58Format: number) {
+  const enAdd = encodeAddress(`0x${address}`, ss58Format);
+  return enAdd;
+}
 
 interface IWhitelistSetRequest {
   pool_id: string;
@@ -24,7 +30,7 @@ export const useLoadWhitelist = (poolId: string) => {
       const res = await httpHandler.get(
         `/whitelist/get?pool_id=${poolId.replace('0x', '')}`
       );
-      return res.data;
+      return res.data.map((item: string) => hexToSs58(item, 42));
     },
     { enabled: !!poolId, staleTime: 60000 }
   );
