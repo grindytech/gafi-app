@@ -43,6 +43,9 @@ const useClaimContract = (
 
   const mutation = useMutation(
     async (contractAddress: string) => {
+      if (!currentAccount) {
+        return;
+      }
       const [account, options] = await getFromAcct(currentAccount);
       const txClaimContractExecute =
         api?.tx.gameCreator.claimContract(contractAddress);
@@ -54,7 +57,7 @@ const useClaimContract = (
     },
     {
       mutationKey: 'claim-contract',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

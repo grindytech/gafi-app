@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useWallet } from 'use-wallet';
+import { AbiItem } from 'web3-utils';
 
 import useWeb3 from './useWeb3';
 
@@ -36,7 +37,7 @@ const useTransferERC20 = () => {
   const getERC20TokenInfo = async (tokenContract: string) => {
     try {
       const userContract = new web3.eth.Contract(
-        ERC20JSON.abi as any,
+        ERC20JSON.abi as AbiItem | AbiItem[],
         tokenContract
       );
       const tokenBalance = await userContract.methods.balanceOf(account).call({
@@ -59,7 +60,7 @@ const useTransferERC20 = () => {
     async (data: ITransferForm) => {
       const { tokenAddress, transferTo, amount } = data;
       const contract = new web3.eth.Contract(
-        ERC20JSON.abi as any,
+        ERC20JSON.abi as AbiItem | AbiItem[],
         tokenAddress
       );
       return contract.methods
@@ -74,7 +75,7 @@ const useTransferERC20 = () => {
     },
     {
       mutationKey: 'transfer-erc20-token',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

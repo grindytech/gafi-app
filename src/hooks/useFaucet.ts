@@ -1,10 +1,11 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import useTxCallback from './useTxCallback';
+
 import { useSubstrate } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct } from 'utils';
 
 const useFaucet = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,29 +15,9 @@ const useFaucet = () => {
   const toast = useToast();
   const { t } = useTranslation();
 
-  const txResHandler = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        position: 'top-right',
-        title: t('FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        position: 'top-right',
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
+  const txCallback = useTxCallback(() => setIsLoading(false));
 
-  const txErrHandler = (err: any) => {
+  const txErrHandler = (err: Error) => {
     toast({
       position: 'top-right',
       description: t('TRANSACTION_FAILED', {
@@ -56,7 +37,7 @@ const useFaucet = () => {
       if (api) {
         const txExecute = api.tx.faucet.faucet();
         await txExecute
-          .signAndSend(acc, options || {}, txResHandler)
+          .signAndSend(acc, options || {}, txCallback)
           .catch(txErrHandler);
       }
     }

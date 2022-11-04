@@ -44,15 +44,17 @@ const useSponsoredPool = (refetch: () => void, onClose?: () => void) => {
 
   const mutation = useMutation(
     async (poolId: string) => {
-      const [account, options] = await getFromAcct(currentAccount);
+      if (currentAccount) {
+        const [account, options] = await getFromAcct(currentAccount);
 
-      const txExecute = api?.tx.pool.join(poolId);
+        const txExecute = api?.tx.pool.join(poolId);
 
-      return txExecute?.signAndSend(account, options || {}, txCallback);
+        return txExecute?.signAndSend(account, options || {}, txCallback);
+      }
     },
     {
       mutationKey: 'join-sponsored-pool',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

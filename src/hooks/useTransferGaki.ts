@@ -1,5 +1,4 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +7,7 @@ import { useMutation } from 'react-query';
 import useTxCallback from './useTxCallback';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import { getFromAcct, handleTxError } from 'utils';
+import { getFromAcct } from 'utils';
 
 interface IMutationParams {
   transferTo: string;
@@ -34,16 +33,18 @@ const useTransferGaki = (refetch: () => void) => {
 
   const mutation = useMutation(
     async ({ transferTo, amount }: IMutationParams) => {
-      const [account, options] = await getFromAcct(currentAccount);
-      const txTransferToken = api?.tx.balances.transfer(
-        transferTo,
-        parseUnits(amount.toString(), chainDecimal).toString()
-      );
-      return txTransferToken?.signAndSend(account, options || {}, txCallback);
+      if (currentAccount) {
+        const [account, options] = await getFromAcct(currentAccount);
+        const txTransferToken = api?.tx.balances.transfer(
+          transferTo,
+          parseUnits(amount.toString(), chainDecimal).toString()
+        );
+        return txTransferToken?.signAndSend(account, options || {}, txCallback);
+      }
     },
     {
       mutationKey: 'transfer-gaki',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

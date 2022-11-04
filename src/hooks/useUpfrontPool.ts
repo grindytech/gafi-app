@@ -45,12 +45,14 @@ const useUpfrontPool = (refetch: () => void) => {
 
       try {
         await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (err: any) {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
-          }),
-        });
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: err.toString(),
+            }),
+          });
+        }
         setLoadingPool('');
       }
     }

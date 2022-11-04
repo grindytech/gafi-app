@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ClaimedContract } from '../graphQL/generates';
 
@@ -20,15 +20,21 @@ const useLoadContracts = () => {
     {
       first: constants.CONTRACT_AMOUNT_PER_PAGE,
       offset: (currentPage - 1) * constants.CONTRACT_AMOUNT_PER_PAGE,
+      filter: { accountId: { equalTo: currentAccount?.address } },
     },
     {
       enabled: !!currentAccount?.addressRaw,
+      staleTime: 60000,
     }
   );
 
-  const claimedContracts = claimedContractsData
-    ? (claimedContractsData.claimedContracts?.nodes as ClaimedContract[])
-    : [];
+  const claimedContracts = useMemo(
+    () =>
+      claimedContractsData
+        ? (claimedContractsData.claimedContracts?.nodes as ClaimedContract[])
+        : [],
+    [claimedContractsData]
+  );
 
   const totalCount = claimedContractsData?.claimedContracts
     ?.totalCount as number;

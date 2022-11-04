@@ -23,23 +23,25 @@ const useEnableWhitelist = (poolId: string) => {
 
   const mutationEnableWhitelist = useMutation(
     async () => {
-      setIsLoading(true);
-      const [account, options] = await getFromAcct(currentAccount);
-      const txChangeContractOwnerExecute =
-        api?.tx.palletWhitelist.enableWhitelist(
-          poolId,
-          `${config.WHITELIST_DEFAULT_URL}/whitelist/verify`
-        );
+      if (currentAccount) {
+        setIsLoading(true);
+        const [account, options] = await getFromAcct(currentAccount);
+        const txChangeContractOwnerExecute =
+          api?.tx.palletWhitelist.enableWhitelist(
+            poolId,
+            `${config.WHITELIST_DEFAULT_URL}/whitelist/verify`
+          );
 
-      return txChangeContractOwnerExecute?.signAndSend(
-        account,
-        options || {},
-        txCallback
-      );
+        return txChangeContractOwnerExecute?.signAndSend(
+          account,
+          options || {},
+          txCallback
+        );
+      }
     },
     {
       mutationKey: 'change-contract-onwer',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

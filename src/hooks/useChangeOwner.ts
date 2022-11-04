@@ -40,6 +40,9 @@ const useChangeOwner = (
 
   const mutation = useMutation(
     async (params: { contractAddress: string; ownerAddress: string }) => {
+      if (!currentAccount) {
+        return;
+      }
       const [account, options] = await getFromAcct(currentAccount);
       const txChangeContractOwnerExecute = api?.tx.gameCreator.changeOwnership(
         params.contractAddress,
@@ -53,11 +56,11 @@ const useChangeOwner = (
     },
     {
       mutationKey: 'change-contract-onwer',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {
-            errorMessage: error.toString(),
+            errorMessage: error?.message,
           }),
           isClosable: true,
           status: 'error',

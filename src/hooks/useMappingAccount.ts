@@ -49,7 +49,7 @@ const useMappingAccount = () => {
   const mappingAccount = async (isWithdraw: boolean) => {
     setIsLoading(true);
 
-    if (account && ethereum) {
+    if (account && ethereum && currentAccount) {
       const [accountAddress, options] = await getFromAcct(currentAccount);
       const web3 = new Web3(ethereum);
       const data = u8aToHex(currentAccount?.publicKey, undefined, false);

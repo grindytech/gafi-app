@@ -16301,6 +16301,7 @@ __metadata:
     use-query-params: ^1.2.3
     use-wallet: ^0.13.4
     web3: ^1.7.1
+    web3-utils: 1.7.1
   languageName: unknown
   linkType: soft
 

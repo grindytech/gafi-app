@@ -106,7 +106,7 @@ export function cast(
 }
 
 export const getFromAcct = async (
-  currentAccount: any
+  currentAccount: KeyringPair
 ): Promise<[AddressOrPair, Partial<SignerOptions>?]> => {
   const {
     address,

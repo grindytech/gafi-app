@@ -31,22 +31,24 @@ const useEditPoolTargets = (
 
   const poolTargetsMutation = useMutation(
     async (params: { targetsData: ITargets; poolId: string }) => {
-      const [account, options] = await getFromAcct(currentAccount);
+      if (currentAccount) {
+        const [account, options] = await getFromAcct(currentAccount);
 
-      const newTargets = params.targetsData.map(
-        target => target.contractAddress
-      );
+        const newTargets = params.targetsData.map(
+          target => target.contractAddress
+        );
 
-      const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
-        params.poolId,
-        newTargets
-      );
+        const txSetNewTargets = api?.tx.sponsoredPool.newTargets(
+          params.poolId,
+          newTargets
+        );
 
-      return txSetNewTargets?.signAndSend(account, options || {}, txCallback);
+        return txSetNewTargets?.signAndSend(account, options || {}, txCallback);
+      }
     },
     {
       mutationKey: 'update-target-contract',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

@@ -1,3 +1,4 @@
+import { VoidFn } from '@polkadot/api/types';
 import { u128 } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { ethers } from 'ethers';
@@ -14,7 +15,7 @@ export const usePolkadotBalance = () => {
 
   const fetchPolkadotBalance = useCallback(async () => {
     setIsLoading(true);
-    let unsubscribe: any;
+    let unsubscribe: VoidFn | undefined;
     if (currentAccount)
       unsubscribe = await api?.query.system.account(
         acctAddr(currentAccount),
