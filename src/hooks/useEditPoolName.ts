@@ -26,6 +26,10 @@ const useEditPool = (onSuccess: () => void) => {
 
   const poolNameMutation = useMutation(
     async (params: { poolName: string; poolId: string }) => {
+      if (!currentAccount) {
+        return;
+      }
+
       const [account, options] = await getFromAcct(currentAccount);
       const txSetPoolNameExecute = api?.tx.sponsoredPool.setPoolName(
         params.poolId,
@@ -39,7 +43,7 @@ const useEditPool = (onSuccess: () => void) => {
     },
     {
       mutationKey: 'update-pool-name',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

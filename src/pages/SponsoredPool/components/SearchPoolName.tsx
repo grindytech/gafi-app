@@ -1,10 +1,19 @@
 import {
-  Box, Icon, Input, InputGroup, InputLeftElement, InputRightElement, ListItem, Stack, UnorderedList, useDisclosure, useOutsideClick,
+  Box,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  ListItem,
+  Stack,
+  UnorderedList,
+  useDisclosure,
+  useOutsideClick,
 } from '@chakra-ui/react';
 import { mdiClose, mdiMagnify } from '@mdi/js';
 import { hexToString, stringToHex } from '@polkadot/util';
 import React, { LegacyRef, MutableRefObject, useMemo, useRef } from 'react';
-
 
 import client from 'graphQL/client';
 import { SponsoredPool, useSponsoredSearchPoolsQuery } from 'graphQL/generates';
@@ -15,7 +24,10 @@ interface ISearchPoolProps {
 }
 
 export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
-  const searchRef: LegacyRef<HTMLDivElement> | undefined | MutableRefObject<HTMLElement> = useRef(null);
+  const searchRef:
+    | LegacyRef<HTMLDivElement>
+    | undefined
+    | MutableRefObject<HTMLElement> = useRef(null);
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -28,10 +40,11 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
     },
   });
 
-  const { handlePressKey, handleInputChange, searchQuery, setSearchQuery } = useSearchPoolName({
-    setQueryValue: setQueryValue,
-    delay: 500,
-  });
+  const { handlePressKey, handleInputChange, searchQuery, setSearchQuery } =
+    useSearchPoolName({
+      setQueryValue,
+      delay: 500,
+    });
 
   const { data, isFetched } = useSponsoredSearchPoolsQuery(
     client,
@@ -45,23 +58,32 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
       },
     },
     {
-      enabled: !!searchQuery.submit
+      enabled: !!searchQuery.submit,
     }
   );
 
-  const sponsoredSearch = useMemo(() =>
-    (searchQuery.submit && searchQuery.submit.length && data)
-      ? data.sponsoredPools?.nodes as SponsoredPool[]
-      : []
-    , [data]);
+  const sponsoredSearch = useMemo(
+    () =>
+      searchQuery.submit && searchQuery.submit.length && data
+        ? (data.sponsoredPools?.nodes as SponsoredPool[])
+        : [],
+    [data, searchQuery.submit]
+  );
 
-
-  const refetchData = ({ value, isClosed }: { value: string, isClosed: boolean }) => {
-    if (isClosed) { onClose(); };
+  const refetchData = ({
+    value,
+    isClosed,
+  }: {
+    value: string;
+    isClosed: boolean;
+  }) => {
+    if (isClosed) {
+      onClose();
+    }
 
     setSearchQuery({
       text: value,
-      submit: value
+      submit: value,
     });
     setQueryValue(value);
   };
@@ -70,16 +92,11 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
     <Stack position="relative" ref={searchRef} w={{ base: 'full', md: 'auto' }}>
       <UnorderedList ms={0}>
         <InputGroup>
-          <InputLeftElement
-            height="44px"
-            width="44px"
-            pointerEvents="none"
-            children={
-              <Icon color="primary" fontSize="2xl">
-                <path fill="currentColor" d={mdiMagnify} />
-              </Icon>
-            }
-          />
+          <InputLeftElement height="44px" width="44px" pointerEvents="none">
+            <Icon color="primary" fontSize="2xl">
+              <path fill="currentColor" d={mdiMagnify} />
+            </Icon>
+          </InputLeftElement>
           <Input
             type="text"
             value={searchQuery.text}
@@ -88,9 +105,9 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
               if (event.target.value.length === 0) {
                 refetchData({
                   value: '',
-                  isClosed: false
+                  isClosed: false,
                 });
-              };
+              }
             }}
             onFocus={() => onOpen()}
             onKeyUp={event => handlePressKey(event)}
@@ -98,43 +115,48 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
             variant="white"
             placeholder="Search"
             border="1px solid #E6E6E6"
-            borderRadius={isOpen && sponsoredSearch.length ? '12px 12px 0 0' : '12px'}
+            borderRadius={
+              isOpen && sponsoredSearch.length ? '12px 12px 0 0' : '12px'
+            }
             _placeholder={{ color: 'gray.400' }}
           />
 
           <InputRightElement
             height="44px"
             width="44px"
-            onClick={() => refetchData({
-              value: '',
-              isClosed: true
-            })}
-            hidden={!sponsoredSearch.length}
-            children={
-              <Icon fontSize="2xl">
-                <path fill="currentColor" d={mdiClose} />
-              </Icon>
+            onClick={() =>
+              refetchData({
+                value: '',
+                isClosed: true,
+              })
             }
-          />
+            hidden={!sponsoredSearch.length}
+          >
+            <Icon fontSize="2xl">
+              <path fill="currentColor" d={mdiClose} />
+            </Icon>
+          </InputRightElement>
         </InputGroup>
 
-        {(isOpen && isFetched) ? (
+        {isOpen && isFetched ? (
           <Box
             background="white"
             borderRadius="0 0 12px 12px"
-            border={(isOpen && sponsoredSearch.length) ? 'solid #E6E6E6' : 'none'}
+            border={isOpen && sponsoredSearch.length ? 'solid #E6E6E6' : 'none'}
             borderWidth="0 1px 1px 1px"
             position="absolute"
             inset="auto 0 0 0"
             zIndex="1000"
             transform="translateY(100%)"
           >
-            {sponsoredSearch.map(item =>
+            {sponsoredSearch.map(item => (
               <ListItem
-                onClick={() => refetchData({
-                  value: hexToString(item.poolName),
-                  isClosed: true
-                })}
+                onClick={() =>
+                  refetchData({
+                    value: hexToString(item.poolName),
+                    isClosed: true,
+                  })
+                }
                 pl={3}
                 pt={2.5}
                 pb={2.5}
@@ -148,8 +170,7 @@ export default function SearchPoolName({ setQueryValue }: ISearchPoolProps) {
               >
                 {hexToString(item.poolName)}
               </ListItem>
-
-            )}
+            ))}
           </Box>
         ) : null}
       </UnorderedList>

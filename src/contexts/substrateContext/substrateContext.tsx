@@ -216,10 +216,12 @@ const loadAccounts = (
     );
 
     try {
-      const allAccounts = mappedAccounts.map(({ address, meta }: any) => ({
-        address,
-        meta: { ...meta, name: `${meta.name} (${meta.source})` },
-      }));
+      const allAccounts = mappedAccounts.map(
+        ({ address, meta }: InjectedAccountWithMeta) => ({
+          address,
+          meta: { ...meta, name: `${meta.name} (${meta.source})` },
+        })
+      );
 
       // Logics to check if the connecting chain is a dev chain, coming from polkadot-js Apps
       // ref: https://github.com/polkadot-js/apps/blob/15b8004b2791eced0dde425d5dc7231a5f86c682/packages/react-api/src/Api.tsx?_pjax=div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20%3E%20main#L101-L110
@@ -312,6 +314,7 @@ const SubstrateContextProvider: React.FC<Record<string, unknown>> = props => {
     set(
       initialState,
       key,
+      // eslint-disable-next-line react/destructuring-assignment
       typeof props[key] === 'undefined' ? get(initialState, key) : props[key]
     );
   });

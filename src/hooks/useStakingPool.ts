@@ -42,15 +42,17 @@ const useStakingPool = (refetch: () => void) => {
 
     if (api && account) {
       try {
-        const txExecute = await api.tx.pool.join(poolPackage);
+        const txExecute = api.tx.pool.join(poolPackage);
 
         await txExecute.signAndSend(account, options || {}, txCallback);
-      } catch (error: any) {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: error.toString(),
-          }),
-        });
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: error.toString(),
+            }),
+          });
+        }
         setLoadingPool('');
       }
     }

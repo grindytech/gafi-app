@@ -26,14 +26,16 @@ const useWithdraw = (onClose?: () => void) => {
 
   const mutation = useMutation(
     async (poolId: string) => {
-      const [account, options] = await getFromAcct(currentAccount);
+      if (currentAccount) {
+        const [account, options] = await getFromAcct(currentAccount);
 
-      const txExecute = api?.tx.sponsoredPool.withdrawPool(poolId);
-      return txExecute?.signAndSend(account, options || {}, txCallback);
+        const txExecute = api?.tx.sponsoredPool.withdrawPool(poolId);
+        return txExecute?.signAndSend(account, options || {}, txCallback);
+      }
     },
     {
       mutationKey: 'withdraw-pool',
-      onError: (err: any) => {
+      onError: (err: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {

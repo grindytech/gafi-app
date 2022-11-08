@@ -15,8 +15,9 @@ const Contracts = () => {
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { currentPage, setCurrentPage, isLoading, totalCount, listContract } = useLoadContracts();
-  
+  const { currentPage, setCurrentPage, isLoading, totalCount, listContract } =
+    useLoadContracts();
+
   const [isPending, setIsPending] = useState(false);
 
   return (

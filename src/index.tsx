@@ -1,22 +1,22 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import 'fonts/Helvetica-Font/Helvetica-Bold.ttf';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
+import { UseWalletProvider } from 'use-wallet';
 
 import './interfaces/augment-api';
 import './interfaces/augment-types';
 import './interfaces/types-lookup';
 
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import 'translations/i18n';
-import { QueryParamProvider } from 'use-query-params';
-import { UseWalletProvider } from 'use-wallet';
 
 import App from './App';
 
 import { Fonts, theme } from 'themes/theme';
+
+import 'fonts/Helvetica-Font/Helvetica-Bold.ttf';
 
 const queryClient = new QueryClient({
   defaultOptions: {

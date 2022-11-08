@@ -27,24 +27,25 @@ const useLeavePool = (refetch: () => void) => {
   const leavePool = async (poolPackage: string) => {
     setLeaveLoadingPool(poolPackage);
 
-    const [account, options] = await getFromAcct(currentAccount);
-
-    if (api) {
+    if (api && currentAccount) {
+      const [account, options] = await getFromAcct(currentAccount);
       const txExecute = api.tx.pool.leave(poolPackage);
 
       try {
         return options
           ? await txExecute.signAndSend(account, options, txCallback)
           : await txExecute.signAndSend(account, txCallback);
-      } catch (error: any) {
-        toast({
-          position: 'top-right',
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: error.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            position: 'top-right',
+            description: t('TRANSACTION_FAILED', {
+              errorMessage: error.toString(),
+            }),
+            isClosable: true,
+            status: 'error',
+          });
+        }
         setLeaveLoadingPool('');
       }
     }

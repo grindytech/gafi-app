@@ -29,6 +29,10 @@ const useCreatePool = (onSuccess: () => void) => {
 
   const createPoolMutation = useMutation(
     async (data: ISponsoredPoolForm) => {
+      if (!currentAccount) {
+        return;
+      }
+
       const [account, options] = await getFromAcct(currentAccount);
 
       const targets = data.targets.map(target => target.contractAddress);
@@ -44,7 +48,7 @@ const useCreatePool = (onSuccess: () => void) => {
     },
     {
       mutationKey: 'create-pool',
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           position: 'top-right',
           description: t('TRANSACTION_FAILED', {
