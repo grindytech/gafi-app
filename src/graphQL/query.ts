@@ -1,5 +1,7 @@
 import { gql } from 'graphql-request';
 
+import { ClaimedContractFilter } from './generates';
+
 // Query list sponsored poolName for feature search
 const sponsoredSearchPoolQuery = gql`
   query SponsoredSearchPools(
@@ -58,8 +60,12 @@ const transferQuery = gql`
 `;
 
 const claimedContractQuery = gql`
-  query ClaimedContracts($first: Int!, $offset: Int!) {
-    claimedContracts(first: $first, offset: $offset) {
+  query ClaimedContracts(
+    $first: Int!
+    $offset: Int!
+    $filter: ClaimedContractFilter
+  ) {
+    claimedContracts(first: $first, offset: $offset, filter: $filter) {
       nodes {
         id
         contractAddress

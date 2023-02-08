@@ -64,6 +64,32 @@ export type BigFloatFilter = {
   notIn?: InputMaybe<Array<Scalars['BigFloat']>>;
 };
 
+/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
+export type BigIntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['BigInt']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['BigInt']>>;
+};
+
 /** A connection to a list of `BlockEntity` values. */
 export type BlockEntitiesConnection = {
   __typename?: 'BlockEntitiesConnection';
@@ -104,7 +130,8 @@ export enum BlockEntitiesGroupBy {
   Field4TruncatedToDay = 'FIELD4_TRUNCATED_TO_DAY',
   Field4TruncatedToHour = 'FIELD4_TRUNCATED_TO_HOUR',
   Field5 = 'FIELD5',
-  Field6 = 'FIELD6'
+  Field6 = 'FIELD6',
+  Id = 'ID'
 }
 
 export type BlockEntitiesHavingAverageInput = {
@@ -226,6 +253,10 @@ export type BlockEntityAverageAggregates = {
 
 export type BlockEntityDistinctCountAggregates = {
   __typename?: 'BlockEntityDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of field1 across the matching connection */
   field1?: Maybe<Scalars['BigInt']>;
   /** Distinct count of field4 across the matching connection */
@@ -346,8 +377,30 @@ export type ClaimedContractAggregates = {
   keys?: Maybe<Array<Scalars['String']>>;
 };
 
+/** A filter to be used against aggregates of `ClaimedContract` object types. */
+export type ClaimedContractAggregatesFilter = {
+  /** Distinct count aggregate over matching `ClaimedContract` objects. */
+  distinctCount?: InputMaybe<ClaimedContractDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `ClaimedContract` object to be included within the aggregate. */
+  filter?: InputMaybe<ClaimedContractFilter>;
+};
+
+export type ClaimedContractDistinctCountAggregateFilter = {
+  _blockRange?: InputMaybe<BigIntFilter>;
+  _id?: InputMaybe<BigIntFilter>;
+  accountId?: InputMaybe<BigIntFilter>;
+  contractAddress?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
 export type ClaimedContractDistinctCountAggregates = {
   __typename?: 'ClaimedContractDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of accountId across the matching connection */
   accountId?: Maybe<Scalars['BigInt']>;
   /** Distinct count of contractAddress across the matching connection */
@@ -362,6 +415,8 @@ export type ClaimedContractDistinctCountAggregates = {
 
 /** A filter to be used against `ClaimedContract` object types. All fields are combined with a logical ‘and.’ */
 export type ClaimedContractFilter = {
+  /** Filter by the object’s `account` relation. */
+  account?: InputMaybe<UserFilter>;
   /** Filter by the object’s `accountId` field. */
   accountId?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
@@ -420,6 +475,7 @@ export enum ClaimedContractsGroupBy {
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
   UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
@@ -522,8 +578,30 @@ export type CreatedContractAggregates = {
   keys?: Maybe<Array<Scalars['String']>>;
 };
 
+/** A filter to be used against aggregates of `CreatedContract` object types. */
+export type CreatedContractAggregatesFilter = {
+  /** Distinct count aggregate over matching `CreatedContract` objects. */
+  distinctCount?: InputMaybe<CreatedContractDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `CreatedContract` object to be included within the aggregate. */
+  filter?: InputMaybe<CreatedContractFilter>;
+};
+
+export type CreatedContractDistinctCountAggregateFilter = {
+  _blockRange?: InputMaybe<BigIntFilter>;
+  _id?: InputMaybe<BigIntFilter>;
+  accountId?: InputMaybe<BigIntFilter>;
+  contractAddress?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
 export type CreatedContractDistinctCountAggregates = {
   __typename?: 'CreatedContractDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of accountId across the matching connection */
   accountId?: Maybe<Scalars['BigInt']>;
   /** Distinct count of contractAddress across the matching connection */
@@ -538,6 +616,8 @@ export type CreatedContractDistinctCountAggregates = {
 
 /** A filter to be used against `CreatedContract` object types. All fields are combined with a logical ‘and.’ */
 export type CreatedContractFilter = {
+  /** Filter by the object’s `account` relation. */
+  account?: InputMaybe<UserFilter>;
   /** Filter by the object’s `accountId` field. */
   accountId?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
@@ -596,6 +676,7 @@ export enum CreatedContractsGroupBy {
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
   UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
@@ -864,9 +945,17 @@ export type Query = Node & {
 
 
 /** The root query type which gives access points into the data universe. */
+export type Query_MetadataArgs = {
+  chainId?: InputMaybe<Scalars['String']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryBlockEntitiesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Block_Entities_Distinct_Enum>>>;
   filter?: InputMaybe<BlockEntityFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -877,24 +966,28 @@ export type QueryBlockEntitiesArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Block_Entities_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryClaimedContractArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryClaimedContractByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Claimed_Contracts_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
@@ -903,6 +996,8 @@ export type QueryClaimedContractByNodeIdArgs = {
 export type QueryClaimedContractsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Claimed_Contracts_Distinct_Enum>>>;
   filter?: InputMaybe<ClaimedContractFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -913,12 +1008,14 @@ export type QueryClaimedContractsArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCreatedContractArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCreatedContractByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Created_Contracts_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
@@ -927,6 +1024,8 @@ export type QueryCreatedContractByNodeIdArgs = {
 export type QueryCreatedContractsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Created_Contracts_Distinct_Enum>>>;
   filter?: InputMaybe<CreatedContractFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -943,12 +1042,14 @@ export type QueryNodeArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Sponsored_Pools_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
@@ -957,6 +1058,8 @@ export type QuerySponsoredPoolByNodeIdArgs = {
 export type QuerySponsoredPoolsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Sponsored_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<SponsoredPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -967,12 +1070,14 @@ export type QuerySponsoredPoolsArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Transfers_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
@@ -981,6 +1086,8 @@ export type QueryTransferByNodeIdArgs = {
 export type QueryTransfersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Transfers_Distinct_Enum>>>;
   filter?: InputMaybe<TransferFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -991,24 +1098,28 @@ export type QueryTransfersArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<Users_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolArgs = {
+  blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolByNodeIdArgs = {
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
 
@@ -1017,6 +1128,8 @@ export type QueryUserJoinedPoolByNodeIdArgs = {
 export type QueryUserJoinedPoolsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<UserJoinedPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1029,6 +1142,8 @@ export type QueryUserJoinedPoolsArgs = {
 export type QueryUsersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Users_Distinct_Enum>>>;
   filter?: InputMaybe<UserFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1041,6 +1156,7 @@ export type SponsoredPool = Node & {
   amount: Scalars['BigFloat'];
   createdAt?: Maybe<Scalars['Datetime']>;
   discount: Scalars['Int'];
+  enabledWhitelist?: Maybe<Scalars['Boolean']>;
   id: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -1060,6 +1176,8 @@ export type SponsoredPool = Node & {
 export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<UserJoinedPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1071,6 +1189,8 @@ export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
 export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Users_Distinct_Enum>>>;
   filter?: InputMaybe<UserFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1115,12 +1235,18 @@ export type SponsoredPoolAverageAggregates = {
 
 export type SponsoredPoolDistinctCountAggregates = {
   __typename?: 'SponsoredPoolDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of amount across the matching connection */
   amount?: Maybe<Scalars['BigInt']>;
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']>;
   /** Distinct count of discount across the matching connection */
   discount?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of enabledWhitelist across the matching connection */
+  enabledWhitelist?: Maybe<Scalars['BigInt']>;
   /** Distinct count of id across the matching connection */
   id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of poolName across the matching connection */
@@ -1147,6 +1273,8 @@ export type SponsoredPoolFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `discount` field. */
   discount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `enabledWhitelist` field. */
+  enabledWhitelist?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -1165,6 +1293,10 @@ export type SponsoredPoolFilter = {
   txLimit?: InputMaybe<IntFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `userJoinedPoolsByPoolId` relation. */
+  userJoinedPoolsByPoolId?: InputMaybe<SponsoredPoolToManyUserJoinedPoolFilter>;
+  /** Some related `userJoinedPoolsByPoolId` exist. */
+  userJoinedPoolsByPoolIdExist?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type SponsoredPoolMaxAggregates = {
@@ -1227,6 +1359,18 @@ export type SponsoredPoolSumAggregates = {
   txLimit: Scalars['BigInt'];
 };
 
+/** A filter to be used against many `UserJoinedPool` object types. All fields are combined with a logical ‘and.’ */
+export type SponsoredPoolToManyUserJoinedPoolFilter = {
+  /** Aggregates across related `UserJoinedPool` match the filter criteria. */
+  aggregates?: InputMaybe<UserJoinedPoolAggregatesFilter>;
+  /** Every related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<UserJoinedPoolFilter>;
+  /** No related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<UserJoinedPoolFilter>;
+  /** Some related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<UserJoinedPoolFilter>;
+};
+
 /** A connection to a list of `User` values, with data from `UserJoinedPool`. */
 export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection = {
   __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection';
@@ -1267,6 +1411,8 @@ export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge =
 export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdgeUserJoinedPoolsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<UserJoinedPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1338,6 +1484,8 @@ export enum SponsoredPoolsGroupBy {
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Discount = 'DISCOUNT',
+  EnabledWhitelist = 'ENABLED_WHITELIST',
+  Id = 'ID',
   PoolName = 'POOL_NAME',
   PoolOwner = 'POOL_OWNER',
   Targets = 'TARGETS',
@@ -1452,6 +1600,8 @@ export enum SponsoredPoolsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   DiscountAsc = 'DISCOUNT_ASC',
   DiscountDesc = 'DISCOUNT_DESC',
+  EnabledWhitelistAsc = 'ENABLED_WHITELIST_ASC',
+  EnabledWhitelistDesc = 'ENABLED_WHITELIST_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
@@ -1471,6 +1621,8 @@ export enum SponsoredPoolsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdAverageAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdAverageAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdAverageBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdAverageBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdAverageCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdAverageCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdAverageIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_AVERAGE_ID_ASC',
@@ -1483,6 +1635,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdCountDesc = 'USER_JOINED_POOLS_BY_POOL_ID_COUNT_DESC',
   UserJoinedPoolsByPoolIdDistinctCountAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdDistinctCountAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdDistinctCountBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdDistinctCountBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdDistinctCountCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdDistinctCountCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdDistinctCountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_ID_ASC',
@@ -1493,6 +1647,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdDistinctCountUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdMaxAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdMaxAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdMaxBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdMaxBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdMaxCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdMaxCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdMaxIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_ID_ASC',
@@ -1503,6 +1659,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdMaxUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MAX_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdMinAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdMinAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdMinBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdMinBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdMinCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdMinCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdMinIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_ID_ASC',
@@ -1513,6 +1671,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdMinUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_MIN_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdStddevPopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdStddevPopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevPopulationBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdStddevPopulationBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdStddevPopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdStddevPopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdStddevPopulationIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_ID_ASC',
@@ -1523,6 +1683,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdStddevPopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdStddevSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdStddevSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdStddevSampleBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdStddevSampleBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdStddevSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdStddevSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdStddevSampleIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_ID_ASC',
@@ -1533,6 +1695,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdStddevSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdSumAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdSumAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdSumBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdSumBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdSumCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdSumCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdSumIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_ID_ASC',
@@ -1543,6 +1707,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdSumUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_SUM_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdVariancePopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdVariancePopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdVariancePopulationBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdVariancePopulationBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdVariancePopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdVariancePopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdVariancePopulationIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_ID_ASC',
@@ -1553,6 +1719,8 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdVariancePopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
   UserJoinedPoolsByPoolIdVarianceSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByPoolIdVarianceSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByPoolIdVarianceSampleBlockRangeAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByPoolIdVarianceSampleBlockRangeDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByPoolIdVarianceSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
   UserJoinedPoolsByPoolIdVarianceSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   UserJoinedPoolsByPoolIdVarianceSampleIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_ID_ASC',
@@ -1691,6 +1859,10 @@ export type TransferAverageAggregates = {
 
 export type TransferDistinctCountAggregates = {
   __typename?: 'TransferDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of amount across the matching connection */
   amount?: Maybe<Scalars['BigInt']>;
   /** Distinct count of blockNumber across the matching connection */
@@ -1817,6 +1989,7 @@ export enum TransfersGroupBy {
   Amount = 'AMOUNT',
   BlockNumber = 'BLOCK_NUMBER',
   From = 'FROM',
+  Id = 'ID',
   To = 'TO'
 }
 
@@ -1919,6 +2092,8 @@ export type User = Node & {
 export type UserClaimedContractsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Claimed_Contracts_Distinct_Enum>>>;
   filter?: InputMaybe<ClaimedContractFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1930,6 +2105,8 @@ export type UserClaimedContractsByAccountIdArgs = {
 export type UserCreatedContractsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Created_Contracts_Distinct_Enum>>>;
   filter?: InputMaybe<CreatedContractFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1941,6 +2118,8 @@ export type UserCreatedContractsByAccountIdArgs = {
 export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<Sponsored_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<SponsoredPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1952,6 +2131,8 @@ export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdArgs = {
 export type UserUserJoinedPoolsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<UserJoinedPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -1968,6 +2149,10 @@ export type UserAggregates = {
 
 export type UserDistinctCountAggregates = {
   __typename?: 'UserDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']>;
   /** Distinct count of h160Address across the matching connection */
@@ -1982,8 +2167,16 @@ export type UserDistinctCountAggregates = {
 export type UserFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `claimedContractsByAccountId` relation. */
+  claimedContractsByAccountId?: InputMaybe<UserToManyClaimedContractFilter>;
+  /** Some related `claimedContractsByAccountId` exist. */
+  claimedContractsByAccountIdExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdContractsByAccountId` relation. */
+  createdContractsByAccountId?: InputMaybe<UserToManyCreatedContractFilter>;
+  /** Some related `createdContractsByAccountId` exist. */
+  createdContractsByAccountIdExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `h160Address` field. */
   h160Address?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
@@ -1994,6 +2187,10 @@ export type UserFilter = {
   or?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `userJoinedPoolsByAccountId` relation. */
+  userJoinedPoolsByAccountId?: InputMaybe<UserToManyUserJoinedPoolFilter>;
+  /** Some related `userJoinedPoolsByAccountId` exist. */
+  userJoinedPoolsByAccountIdExist?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UserJoinedPool = Node & {
@@ -2018,8 +2215,30 @@ export type UserJoinedPoolAggregates = {
   keys?: Maybe<Array<Scalars['String']>>;
 };
 
+/** A filter to be used against aggregates of `UserJoinedPool` object types. */
+export type UserJoinedPoolAggregatesFilter = {
+  /** Distinct count aggregate over matching `UserJoinedPool` objects. */
+  distinctCount?: InputMaybe<UserJoinedPoolDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `UserJoinedPool` object to be included within the aggregate. */
+  filter?: InputMaybe<UserJoinedPoolFilter>;
+};
+
+export type UserJoinedPoolDistinctCountAggregateFilter = {
+  _blockRange?: InputMaybe<BigIntFilter>;
+  _id?: InputMaybe<BigIntFilter>;
+  accountId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  poolId?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
 export type UserJoinedPoolDistinctCountAggregates = {
   __typename?: 'UserJoinedPoolDistinctCountAggregates';
+  /** Distinct count of _blockRange across the matching connection */
+  _blockRange?: Maybe<Scalars['BigInt']>;
+  /** Distinct count of _id across the matching connection */
+  _id?: Maybe<Scalars['BigInt']>;
   /** Distinct count of accountId across the matching connection */
   accountId?: Maybe<Scalars['BigInt']>;
   /** Distinct count of createdAt across the matching connection */
@@ -2034,6 +2253,8 @@ export type UserJoinedPoolDistinctCountAggregates = {
 
 /** A filter to be used against `UserJoinedPool` object types. All fields are combined with a logical ‘and.’ */
 export type UserJoinedPoolFilter = {
+  /** Filter by the object’s `account` relation. */
+  account?: InputMaybe<UserFilter>;
   /** Filter by the object’s `accountId` field. */
   accountId?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
@@ -2046,6 +2267,8 @@ export type UserJoinedPoolFilter = {
   not?: InputMaybe<UserJoinedPoolFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<UserJoinedPoolFilter>>;
+  /** Filter by the object’s `pool` relation. */
+  pool?: InputMaybe<SponsoredPoolFilter>;
   /** Filter by the object’s `poolId` field. */
   poolId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -2091,6 +2314,7 @@ export enum UserJoinedPoolsGroupBy {
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Id = 'ID',
   PoolId = 'POOL_ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
@@ -2214,11 +2438,49 @@ export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge =
 export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdgeUserJoinedPoolsByPoolIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  blockHeight?: InputMaybe<Scalars['String']>;
+  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   filter?: InputMaybe<UserJoinedPoolFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+};
+
+/** A filter to be used against many `ClaimedContract` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyClaimedContractFilter = {
+  /** Aggregates across related `ClaimedContract` match the filter criteria. */
+  aggregates?: InputMaybe<ClaimedContractAggregatesFilter>;
+  /** Every related `ClaimedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ClaimedContractFilter>;
+  /** No related `ClaimedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ClaimedContractFilter>;
+  /** Some related `ClaimedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ClaimedContractFilter>;
+};
+
+/** A filter to be used against many `CreatedContract` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyCreatedContractFilter = {
+  /** Aggregates across related `CreatedContract` match the filter criteria. */
+  aggregates?: InputMaybe<CreatedContractAggregatesFilter>;
+  /** Every related `CreatedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<CreatedContractFilter>;
+  /** No related `CreatedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<CreatedContractFilter>;
+  /** Some related `CreatedContract` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<CreatedContractFilter>;
+};
+
+/** A filter to be used against many `UserJoinedPool` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyUserJoinedPoolFilter = {
+  /** Aggregates across related `UserJoinedPool` match the filter criteria. */
+  aggregates?: InputMaybe<UserJoinedPoolAggregatesFilter>;
+  /** Every related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<UserJoinedPoolFilter>;
+  /** No related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<UserJoinedPoolFilter>;
+  /** Some related `UserJoinedPool` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<UserJoinedPoolFilter>;
 };
 
 /** A connection to a list of `User` values. */
@@ -2260,6 +2522,7 @@ export enum UsersGroupBy {
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   H160Address = 'H160_ADDRESS',
+  Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
   UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
@@ -2329,6 +2592,8 @@ export type UsersHavingVarianceSampleInput = {
 export enum UsersOrderBy {
   ClaimedContractsByAccountIdAverageAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdAverageAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdAverageBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdAverageBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdAverageContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdAverageContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdAverageCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
@@ -2341,6 +2606,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdCountDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_COUNT_DESC',
   ClaimedContractsByAccountIdDistinctCountAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdDistinctCountAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdDistinctCountBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdDistinctCountBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdDistinctCountContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdDistinctCountContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdDistinctCountCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
@@ -2351,6 +2618,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdDistinctCountUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdMaxAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdMaxAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdMaxBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdMaxBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdMaxContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdMaxContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdMaxCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
@@ -2361,6 +2630,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdMaxUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdMinAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdMinAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdMinBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdMinBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdMinContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdMinContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdMinCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
@@ -2371,6 +2642,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdMinUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdStddevPopulationAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdStddevPopulationAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdStddevPopulationBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdStddevPopulationBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdStddevPopulationContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdStddevPopulationContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdStddevPopulationCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
@@ -2381,6 +2654,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdStddevPopulationUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdStddevSampleAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdStddevSampleAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdStddevSampleBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdStddevSampleBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdStddevSampleContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdStddevSampleContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdStddevSampleCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
@@ -2391,6 +2666,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdStddevSampleUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdSumAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdSumAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdSumBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdSumBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdSumContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdSumContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdSumCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
@@ -2401,6 +2678,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdSumUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdVariancePopulationAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdVariancePopulationAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdVariancePopulationBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdVariancePopulationBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdVariancePopulationContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdVariancePopulationContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdVariancePopulationCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
@@ -2411,6 +2690,8 @@ export enum UsersOrderBy {
   ClaimedContractsByAccountIdVariancePopulationUpdatedAtDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
   ClaimedContractsByAccountIdVarianceSampleAccountIdAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
   ClaimedContractsByAccountIdVarianceSampleAccountIdDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  ClaimedContractsByAccountIdVarianceSampleBlockRangeAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_ASC',
+  ClaimedContractsByAccountIdVarianceSampleBlockRangeDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_DESC',
   ClaimedContractsByAccountIdVarianceSampleContractAddressAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_ASC',
   ClaimedContractsByAccountIdVarianceSampleContractAddressDesc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_DESC',
   ClaimedContractsByAccountIdVarianceSampleCreatedAtAsc = 'CLAIMED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
@@ -2423,6 +2704,8 @@ export enum UsersOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   CreatedContractsByAccountIdAverageAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdAverageAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdAverageBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdAverageBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdAverageContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdAverageContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdAverageCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
@@ -2435,6 +2718,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdCountDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_COUNT_DESC',
   CreatedContractsByAccountIdDistinctCountAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdDistinctCountAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdDistinctCountBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdDistinctCountBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdDistinctCountContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdDistinctCountContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdDistinctCountCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
@@ -2445,6 +2730,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdDistinctCountUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   CreatedContractsByAccountIdMaxAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdMaxAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdMaxBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdMaxBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdMaxContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdMaxContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdMaxCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
@@ -2455,6 +2742,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdMaxUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
   CreatedContractsByAccountIdMinAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdMinAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdMinBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdMinBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdMinContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdMinContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdMinCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
@@ -2465,6 +2754,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdMinUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
   CreatedContractsByAccountIdStddevPopulationAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdStddevPopulationAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdStddevPopulationBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdStddevPopulationBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdStddevPopulationContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdStddevPopulationContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdStddevPopulationCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
@@ -2475,6 +2766,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdStddevPopulationUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
   CreatedContractsByAccountIdStddevSampleAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdStddevSampleAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdStddevSampleBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdStddevSampleBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdStddevSampleContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdStddevSampleContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdStddevSampleCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
@@ -2485,6 +2778,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdStddevSampleUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
   CreatedContractsByAccountIdSumAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdSumAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdSumBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdSumBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdSumContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdSumContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdSumCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
@@ -2495,6 +2790,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdSumUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
   CreatedContractsByAccountIdVariancePopulationAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdVariancePopulationAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdVariancePopulationBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdVariancePopulationBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdVariancePopulationContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdVariancePopulationContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdVariancePopulationCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
@@ -2505,6 +2802,8 @@ export enum UsersOrderBy {
   CreatedContractsByAccountIdVariancePopulationUpdatedAtDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
   CreatedContractsByAccountIdVarianceSampleAccountIdAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
   CreatedContractsByAccountIdVarianceSampleAccountIdDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  CreatedContractsByAccountIdVarianceSampleBlockRangeAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_ASC',
+  CreatedContractsByAccountIdVarianceSampleBlockRangeDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_DESC',
   CreatedContractsByAccountIdVarianceSampleContractAddressAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_ASC',
   CreatedContractsByAccountIdVarianceSampleContractAddressDesc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CONTRACT_ADDRESS_DESC',
   CreatedContractsByAccountIdVarianceSampleCreatedAtAsc = 'CREATED_CONTRACTS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
@@ -2524,6 +2823,8 @@ export enum UsersOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdAverageAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdAverageAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdAverageBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdAverageBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdAverageCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdAverageCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdAverageIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_AVERAGE_ID_ASC',
@@ -2536,6 +2837,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdCountDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_COUNT_DESC',
   UserJoinedPoolsByAccountIdDistinctCountAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdDistinctCountAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdDistinctCountBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdDistinctCountBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdDistinctCountCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdDistinctCountCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdDistinctCountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_ID_ASC',
@@ -2546,6 +2849,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdDistinctCountUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdMaxAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdMaxAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdMaxBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdMaxBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdMaxCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdMaxCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdMaxIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_ID_ASC',
@@ -2556,6 +2861,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdMaxUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MAX_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdMinAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdMinAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdMinBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdMinBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdMinCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdMinCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdMinIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_ID_ASC',
@@ -2566,6 +2873,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdMinUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_MIN_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdStddevPopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdStddevPopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevPopulationBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdStddevPopulationBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdStddevPopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdStddevPopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdStddevPopulationIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_ID_ASC',
@@ -2576,6 +2885,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdStddevPopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_POPULATION_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdStddevSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdStddevSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdStddevSampleBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdStddevSampleBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdStddevSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdStddevSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdStddevSampleIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_ID_ASC',
@@ -2586,6 +2897,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdStddevSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_STDDEV_SAMPLE_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdSumAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdSumAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdSumBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdSumBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdSumCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdSumCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdSumIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_ID_ASC',
@@ -2596,6 +2909,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdSumUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_SUM_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdVariancePopulationAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdVariancePopulationAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdVariancePopulationBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdVariancePopulationBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdVariancePopulationCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdVariancePopulationCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdVariancePopulationIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_ID_ASC',
@@ -2606,6 +2921,8 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdVariancePopulationUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_POPULATION_UPDATED_AT_DESC',
   UserJoinedPoolsByAccountIdVarianceSampleAccountIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_ASC',
   UserJoinedPoolsByAccountIdVarianceSampleAccountIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ACCOUNT_ID_DESC',
+  UserJoinedPoolsByAccountIdVarianceSampleBlockRangeAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_ASC',
+  UserJoinedPoolsByAccountIdVarianceSampleBlockRangeDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_BLOCK_RANGE_DESC',
   UserJoinedPoolsByAccountIdVarianceSampleCreatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
   UserJoinedPoolsByAccountIdVarianceSampleCreatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   UserJoinedPoolsByAccountIdVarianceSampleIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_ID_ASC',
@@ -2628,8 +2945,70 @@ export type _Metadata = {
   queryNodeVersion?: Maybe<Scalars['String']>;
   rowCountEstimate?: Maybe<Array<Maybe<TableEstimate>>>;
   specName?: Maybe<Scalars['String']>;
+  startHeight?: Maybe<Scalars['Int']>;
   targetHeight?: Maybe<Scalars['Int']>;
 };
+
+export enum Block_Entities_Distinct_Enum {
+  Field1 = 'FIELD1',
+  Field4 = 'FIELD4',
+  Field5 = 'FIELD5',
+  Field6 = 'FIELD6',
+  Id = 'ID'
+}
+
+export enum Claimed_Contracts_Distinct_Enum {
+  AccountId = 'ACCOUNT_ID',
+  ContractAddress = 'CONTRACT_ADDRESS',
+  CreatedAt = 'CREATED_AT',
+  Id = 'ID',
+  UpdatedAt = 'UPDATED_AT'
+}
+
+export enum Created_Contracts_Distinct_Enum {
+  AccountId = 'ACCOUNT_ID',
+  ContractAddress = 'CONTRACT_ADDRESS',
+  CreatedAt = 'CREATED_AT',
+  Id = 'ID',
+  UpdatedAt = 'UPDATED_AT'
+}
+
+export enum Sponsored_Pools_Distinct_Enum {
+  Amount = 'AMOUNT',
+  CreatedAt = 'CREATED_AT',
+  Discount = 'DISCOUNT',
+  EnabledWhitelist = 'ENABLED_WHITELIST',
+  Id = 'ID',
+  PoolName = 'POOL_NAME',
+  PoolOwner = 'POOL_OWNER',
+  Targets = 'TARGETS',
+  TotalUsers = 'TOTAL_USERS',
+  TxLimit = 'TX_LIMIT',
+  UpdatedAt = 'UPDATED_AT'
+}
+
+export enum Transfers_Distinct_Enum {
+  Amount = 'AMOUNT',
+  BlockNumber = 'BLOCK_NUMBER',
+  From = 'FROM',
+  Id = 'ID',
+  To = 'TO'
+}
+
+export enum User_Joined_Pools_Distinct_Enum {
+  AccountId = 'ACCOUNT_ID',
+  CreatedAt = 'CREATED_AT',
+  Id = 'ID',
+  PoolId = 'POOL_ID',
+  UpdatedAt = 'UPDATED_AT'
+}
+
+export enum Users_Distinct_Enum {
+  CreatedAt = 'CREATED_AT',
+  H160Address = 'H160_ADDRESS',
+  Id = 'ID',
+  UpdatedAt = 'UPDATED_AT'
+}
 
 export type SponsoredSearchPoolsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -2657,6 +3036,7 @@ export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 
 export type ClaimedContractsQueryVariables = Exact<{
   first: Scalars['Int'];
   offset: Scalars['Int'];
+  filter?: InputMaybe<ClaimedContractFilter>;
 }>;
 
 
@@ -2749,8 +3129,8 @@ export const useTransfersQuery = <
       options
     );
 export const ClaimedContractsDocument = `
-    query ClaimedContracts($first: Int!, $offset: Int!) {
-  claimedContracts(first: $first, offset: $offset) {
+    query ClaimedContracts($first: Int!, $offset: Int!, $filter: ClaimedContractFilter) {
+  claimedContracts(first: $first, offset: $offset, filter: $filter) {
     nodes {
       id
       contractAddress

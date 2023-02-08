@@ -1,4 +1,4 @@
-schema: https://playground.gafi.network/
+schema: https://api.subquery.network/sq/grindytech/gafi-query
 documents: './src/**/*.ts'
 generates:
   ./src/graphQL/generates.ts:
