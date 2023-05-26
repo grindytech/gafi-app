@@ -1,5 +1,23 @@
 import { gql } from 'graphql-request';
 
+import { ClaimedContractFilter } from './generates';
+
+// Query list sponsored poolName for feature search
+const sponsoredSearchPoolQuery = gql`
+  query SponsoredSearchPools(
+    $first: Int!
+    $offset: Int!
+    $filter: SponsoredPoolFilter
+  ) {
+    sponsoredPools(first: $first, offset: $offset, filter: $filter) {
+      nodes {
+        id
+        poolName
+      }
+    }
+  }
+`;
+
 // Query list sponsored pools for codegen
 const sponsoredPoolQuery = gql`
   query SponsoredPools(
@@ -16,6 +34,7 @@ const sponsoredPoolQuery = gql`
         discount
         txLimit
         createdAt
+        poolName
       }
       totalCount
       pageInfo {
@@ -36,6 +55,27 @@ const transferQuery = gql`
         from
       }
       totalCount
+    }
+  }
+`;
+
+const claimedContractQuery = gql`
+  query ClaimedContracts(
+    $first: Int!
+    $offset: Int!
+    $filter: ClaimedContractFilter
+  ) {
+    claimedContracts(first: $first, offset: $offset, filter: $filter) {
+      nodes {
+        id
+        contractAddress
+        accountId
+      }
+      totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;

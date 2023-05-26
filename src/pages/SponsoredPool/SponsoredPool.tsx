@@ -3,126 +3,139 @@ import {
   Button,
   HStack,
   Icon,
-  Text,
+  useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import { mdiPlus } from '@mdi/js';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryParam } from 'use-query-params';
 
 import ModalAddSponsoredPool from './components/ModalAddSponsoredPool';
+import SearchPoolName from './components/SearchPoolName';
 import SponsoredPoolTable from './components/SponsoredPoolTable';
 
+import Banner from 'components/Banner';
 import Pagination from 'components/pagination';
-import { getGAKIAccountAddress } from 'components/utils';
-import client from 'graphQL/client';
-import {
-  Scalars,
-  SponsoredPool,
-  useSponsoredPoolsQuery,
-} from 'graphQL/generates';
-import { useSubstrateState } from 'substrate-lib';
+import useAnalyticsEventTracker from 'hooks/useAnalyticsEventTracker';
+import useLoadSponsoredPool from 'hooks/useLoadSponsoredPool';
 import * as constants from 'utils/constants';
 
 const SponsoredPoolPage: React.FC = () => {
   const { t } = useTranslation();
-  const [type, setType] = useQueryParam('type');
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const [currentPage, setCurrentPage] = useState(1);
-  const { currentAccount } = useSubstrateState();
-  const isOwned = type === 'owned';
 
-  // Example for query data from graphql.
+  const gaEventTracker = useAnalyticsEventTracker('Sponsored pool');
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const isDisplay = useBreakpointValue({
+    md: true,
+  });
+
+  const breakpointsTablet = isDisplay ?? false;
 
   const {
-    data: sponsoredPoolData,
-    refetch,
+    isOwned,
+    sponsoredPools,
+    totalCount,
+    setCurrentPage,
+    currentPage,
     isLoading,
-  } = useSponsoredPoolsQuery(
-    client,
+    setQueryValue,
+  } = useLoadSponsoredPool();
+
+  const captions = [
     {
-      first: constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      offset: isOwned
-        ? 0
-        : (currentPage - 1) * constants.SPONSORED_POOL_AMOUNT_PER_PAGE,
-      filter: isOwned
-        ? {
-            poolOwner: {
-              equalTo: currentAccount?.addressRaw
-                ? getGAKIAccountAddress(currentAccount?.addressRaw)
-                : '',
-            },
-          }
-        : undefined,
+      label: t('OWNER'),
+      fieldName: 'poolOwner',
+      display: true,
     },
-    { enabled: !!currentAccount?.addressRaw }
-  );
-  const sponsoredPools = sponsoredPoolData?.sponsoredPools
-    ?.nodes as SponsoredPool[];
-  const totalCount = sponsoredPoolData?.sponsoredPools
-    ?.totalCount as Scalars['Int'];
-  const totalPage = Math.ceil(
-    totalCount / constants.SPONSORED_POOL_AMOUNT_PER_PAGE
-  );
-  const pageNumberOfNewPool = Math.ceil(
-    (totalCount + 1) / constants.SPONSORED_POOL_AMOUNT_PER_PAGE
-  );
+    {
+      label: t('DISCOUNT'),
+      fieldName: 'discount',
+      display: true,
+    },
+    {
+      label: t('TRANSACTION_LIMIT_AMOUNT_MINUTES', {
+        minuteAmount: 30,
+      }),
+      fieldName: 'txLimit',
+      display: breakpointsTablet,
+    },
+    {
+      label: t('BALANCE'),
+      fieldName: 'amount',
+      display: breakpointsTablet,
+    },
+    {
+      label: t('ACTIONS'),
+      fieldName: 'actions',
+      display: breakpointsTablet,
+    },
+  ];
 
   return (
-    <Box pt={{ base: '120px', md: '75px' }}>
-      <HStack justifyContent="space-between">
-        <Text fontWeight="bold" fontSize="2xl" mb={5}>
-          {t('POOL.SPONSORED_POOL')}
-        </Text>
-        <Button
-          background="primary"
-          color="white"
-          variant="solid"
-          leftIcon={
-            <Icon>
-              <path fill="currentColor" d={mdiPlus} />
-            </Icon>
-          }
-          onClick={onOpen}
-        >
-          {t('ADD_POOL')}
-        </Button>
-      </HStack>
-      <SponsoredPoolTable
-        title="Sponsored Pools"
-        captions={[
-          { label: t('OWNER'), fieldName: 'poolOwner' },
-          { label: t('DISCOUNT'), fieldName: 'discount' },
-          {
-            label: t('TRANSACTION_LIMIT', { minuteAmount: 30 }),
-            fieldName: 'txLimit',
-          },
-          { label: t('BALANCE'), fieldName: 'amount' },
-          { label: '', fieldName: '' },
-        ]}
-        sponsoredPools={sponsoredPools}
-        limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-        isLoading={isLoading}
-      >
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalCount={totalCount}
-          resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
-          totalPage={totalPage}
+    <Box pl={{ md: '10px' }}>
+      <Banner
+        title={isOwned ? t('MY_SPONSORED_POOLS') : t('POOL.SPONSORED_POOL')}
+        subTitle={
+          isOwned
+            ? t('POOL_DESCRIPTION.MY_SPONSORED_POOL')
+            : t('POOL_DESCRIPTION.SPONSORED_POOL')
+        }
+        bannerBg="/assets/layout/sponsored-banner-bg.svg"
+        btnLink="https://wiki.gafi.network/learn/sponsored-pool"
+      />
+
+      <Box p={{ sm: 4, md: 0 }}>
+        <HStack justifyContent="space-between">
+          <SearchPoolName setQueryValue={setQueryValue} />
+
+          <Button
+            size="xl"
+            variant="primary"
+            borderRadius="xl"
+            fontWeight="bold"
+            w={{ base: 'full', md: 'auto' }}
+            rightIcon={
+              breakpointsTablet ? (
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              ) : undefined
+            }
+            leftIcon={
+              breakpointsTablet ? undefined : (
+                <Icon>
+                  <path fill="currentColor" d={mdiPlus} />
+                </Icon>
+              )
+            }
+            onClick={() => {
+              gaEventTracker({ action: 'Click Add sponsored pool' });
+              onOpen();
+            }}
+          >
+            {t('ADD_POOL')}
+          </Button>
+        </HStack>
+
+        <SponsoredPoolTable
+          captions={captions}
+          sponsoredPools={sponsoredPools}
+          limitRow={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
           isLoading={isLoading}
-        />
-      </SponsoredPoolTable>
-      {isOpen && (
-        <ModalAddSponsoredPool
-          setCurrentPage={setCurrentPage}
-          pageNumberOfNewPool={pageNumberOfNewPool}
-          isOpen={isOpen}
-          onClose={onClose}
-          refetch={refetch}
-        />
-      )}
+        >
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalCount={totalCount}
+            resultsPerPage={constants.SPONSORED_POOL_AMOUNT_PER_PAGE}
+            isLoading={isLoading}
+          />
+        </SponsoredPoolTable>
+      </Box>
+
+      {isOpen && <ModalAddSponsoredPool isOpen={isOpen} onClose={onClose} />}
     </Box>
   );
 };

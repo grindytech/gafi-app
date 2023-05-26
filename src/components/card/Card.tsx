@@ -1,13 +1,13 @@
-import { Box, BoxProps, useStyleConfig } from "@chakra-ui/react";
-import { FC } from "react";
+import { Box, BoxProps, useStyleConfig, ThemingProps } from '@chakra-ui/react';
+import { FC } from 'react';
 
-const Card: FC<BoxProps> = (props) => {
-  // @ts-ignore
+interface CardProps extends BoxProps, ThemingProps<'div'> {}
+
+const Card: FC<CardProps> = props => {
   const { variant, children, ...rest } = props;
-  const styles = useStyleConfig("Card", { variant });
-  // Pass the computed styles into the `__css` prop
+  const styles = useStyleConfig('Card', { variant });
   return (
-    <Box __css={styles} p={5} {...rest}>
+    <Box __css={styles} {...rest}>
       {children}
     </Box>
   );

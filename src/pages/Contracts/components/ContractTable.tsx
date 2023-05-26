@@ -1,90 +1,104 @@
 import {
   Table,
-  TableCaption,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
-  useColorModeValue,
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import Card from 'components/card/Card';
-import CardBody from 'components/card/CardBody';
-import CardHeader from 'components/card/CardHeader';
 import React from 'react';
-import { IResponseContract } from '../Contracts';
-import ContractTableRow from './ContractTableRow';
-import * as constants from 'utils/constants';
+import { useTranslation } from 'react-i18next';
+
+import TableContent from './TableContent';
+
+import Card from 'components/card/Card';
 import SkeletonLoadingRow from 'components/SkeletonLoadingRow';
-import EmptyRow from 'components/EmptyRow';
+import { ClaimedContract } from 'graphQL/generates';
+import useLoadContracts from 'hooks/useLoadContracts';
+import * as constants from 'utils/constants';
 
 export interface ICaptions {
   label: string;
   fieldName: string;
 }
 
-interface IProps {
-  contracts?: IResponseContract[];
-  title: string;
-  captions: ICaptions[];
-  refreshData: () => void;
-  isLoading: boolean;
+interface IContractsTableProps {
+  children: React.ReactNode;
+  listContract: ClaimedContract[];
 }
 
-const ContractsTable: React.FC<IProps> = ({
-  title,
-  children,
-  captions,
-  contracts,
-  refreshData,
-  isLoading,
-}) => {
-  const textColor = useColorModeValue('gray.700', 'white');
+const ContractsTable = ({ children, listContract }: IContractsTableProps) => {
   const SkeletonArray = new Array(constants.CONTRACT_AMOUNT_PER_PAGE).fill(0);
+  const amountCharacter = useBreakpointValue({
+    sm: 3,
+    md: constants.CONTRACT_AMOUNT_PER_PAGE,
+  });
+  const { t } = useTranslation();
+
+  const isDisplay = useBreakpointValue({
+    md: true,
+  });
+
+  const breakpointsTablet = isDisplay ?? false;
+
+  const captions = [
+    {
+      label: t('OWNER'),
+      fieldName: 'poolOwner',
+      display: true,
+    },
+    {
+      label: t('CONTRACT_ADDRESS'),
+      fieldName: 'contractAddress',
+      display: breakpointsTablet,
+    },
+    {
+      label: t('ACTIONS'),
+      fieldName: 'actions',
+      display: breakpointsTablet,
+    },
+  ];
+
+  const { isLoading } = useLoadContracts();
+
   return (
-    <Card overflowX={{ sm: 'scroll', xl: 'hidden' }}>
-      <CardHeader p={[2, 0, 6, 0]}>
-        <Text fontSize="xl" color={textColor} fontWeight="bold">
-          {title}
-        </Text>
-      </CardHeader>
-      <CardBody>
-        <Table variant="simple" textAlign="center" color={textColor}>
-          <TableCaption>{children}</TableCaption>
+    <>
+      <Card p={0} mb={8} mt={4} overflowX={{ sm: 'scroll', xl: 'hidden' }}>
+        <Table variant="simple" textAlign="center">
           <Thead>
-            <Tr my={3} pl={0} color="gray.400">
+            <Tr>
               {React.Children.toArray(
                 captions.map(caption => (
-                  <Th color="gray.400">{caption.label}</Th>
+                  <Th
+                    sx={!caption.display ? { display: 'none' } : {}}
+                    textAlign={caption.label === 'owner' ? 'left' : 'center'}
+                    textTransform="capitalize"
+                  >
+                    {caption.label}
+                  </Th>
                 ))
               )}
             </Tr>
           </Thead>
           <Tbody justifyContent="flex-start">
-            {React.Children.toArray(
-              !isLoading ? (
-                !!contracts?.length ? (
-                  contracts?.map(contract => (
-                    <ContractTableRow
-                      refreshData={refreshData}
-                      contract={contract}
-                    />
-                  ))
-                ) : (
-                  <EmptyRow columnAmount={3} />
-                )
-              ) : (
+            {!isLoading ? (
+              <TableContent
+                listContract={listContract}
+                captionAmounts={captions.length}
+              />
+            ) : (
+              React.Children.toArray(
                 SkeletonArray.map(() => (
-                  <SkeletonLoadingRow
-                    columnAmount={constants.CONTRACT_AMOUNT_PER_PAGE}
-                  />
+                  <SkeletonLoadingRow columnAmount={amountCharacter} />
                 ))
               )
             )}
           </Tbody>
         </Table>
-      </CardBody>
-    </Card>
+      </Card>
+
+      {children}
+    </>
   );
 };
 

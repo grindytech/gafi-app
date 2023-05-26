@@ -1,58 +1,49 @@
 import {
-  Button,
   HStack,
+  Input,
   InputGroup,
-  InputRightElement,
-  NumberInput as ChakraNumberInput,
-  NumberInputField,
+  InputRightAddon,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
-
-import { cast } from 'utils/utils';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   value: string | number;
   onChange: (value: string | number) => void;
   max: number;
+  inputName?: string;
 }
 
-const NumberInput: React.FC<Props> = ({ value, onChange, max }) => (
-  <HStack>
-    <InputGroup>
-      <ChakraNumberInput
-        width="100%"
-        size="md"
-        keepWithinRange
-        precision={3}
-        min={0}
-        value={value}
-        onChange={valueAsString => {
-          if (!valueAsString) {
-            onChange(0);
-            return;
+const NumberInput: React.FC<Props> = ({
+  value = '', // empty string to not warns "uncontrolled input"
+  onChange,
+  max,
+  inputName,
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <HStack spacing={0}>
+      <InputGroup overflow="hidden">
+        <Input
+          name={inputName}
+          type="number"
+          value={value}
+          onChange={event =>
+            parseFloat(event.target.value) > max
+              ? onChange(Math.floor(max))
+              : onChange(event.target.value)
           }
-          onChange(valueAsString);
-        }}
-        onBlur={e => {
-          const value = cast(e.target.value, 1, 3);
-          const maxValue = Number(cast(max.toString(), 1, 3));
-          if (value) {
-            Number(value) > maxValue
-              ? onChange(maxValue)
-              : onChange(Number(value));
-          }
-        }}
-        clampValueOnBlur={false}
-      >
-        <NumberInputField paddingX="4" />
-      </ChakraNumberInput>
-      <InputRightElement>
-        <Button onClick={() => onChange(Number(cast(max.toString(), 1, 4)))}>
-          Max
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-  </HStack>
-);
+        />
+        <InputRightAddon onClick={() => onChange(Math.floor(max))}>
+          <Text textTransform="uppercase" fontWeight={700}>
+            {t('MAX')}
+          </Text>
+        </InputRightAddon>
+      </InputGroup>
+    </HStack>
+  );
+};
 
 export default NumberInput;

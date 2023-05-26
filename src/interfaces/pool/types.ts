@@ -1,7 +1,7 @@
-import { GafiPrimitivesPoolFlexService } from '@polkadot/types/lookup';
+import { GafiPrimitivesPoolService } from '@polkadot/types/lookup';
 
 export interface PoolInfo {
-  basic: GafiPrimitivesPoolFlexService;
-  medium: GafiPrimitivesPoolFlexService;
-  advance: GafiPrimitivesPoolFlexService;
+  basic: GafiPrimitivesPoolService;
+  medium: GafiPrimitivesPoolService;
+  advance: GafiPrimitivesPoolService;
 }

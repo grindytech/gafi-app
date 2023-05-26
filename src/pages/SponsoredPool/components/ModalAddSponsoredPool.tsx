@@ -3,184 +3,96 @@ import {
   FormControl,
   FormLabel,
   Icon,
-  IconButton,
   Input,
-  InputGroup,
-  InputRightElement,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
-  VStack,
 } from '@chakra-ui/react';
-import { mdiClose, mdiPlus } from '@mdi/js';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { BN } from '@polkadot/util';
-import React, { useEffect, useState } from 'react';
+import { mdiPlus } from '@mdi/js';
+import React from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import NumberInput from 'components/numberInput/NumberInput';
-import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
+import TargetFields from 'components/TargetFields';
+import useCreatePool from 'hooks/useCreatePool';
+import { usePolkadotBalance } from 'hooks/useUserBalance';
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
-  pageNumberOfNewPool: number;
-  setCurrentPage: any;
-  refetch: () => void;
 }
 
-interface SponsoredPoolForm {
+export interface ISponsoredPoolForm {
   targets: { contractAddress: string }[];
   name: string;
   poolAmount: number;
   discount: string;
   txLimit: string;
+  // enableWhitelist: boolean;
 }
 
-const ModalAddSponsoredPool: React.FC<IProps> = ({
-  isOpen,
-  onClose,
-  setCurrentPage,
-  pageNumberOfNewPool,
-  refetch,
-}) => {
-  const [loading, setLoading] = useState(false);
+const ModalAddSponsoredPool: React.FC<IProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const toast = useToast();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm<SponsoredPoolForm>({
-    defaultValues: { targets: [{ contractAddress: '' }] },
+  const history = useHistory();
+  const { register, handleSubmit, control } = useForm<ISponsoredPoolForm>({
+    defaultValues: {
+      // enableWhitelist: false,
+      targets: [
+        {
+          contractAddress: '',
+        },
+      ],
+    },
   });
-  const { api, currentAccount, chainDecimal } = useSubstrateState();
-  const [currentAccountBalance, setCurrentAccountBalance] = useState(
-    new BN(0, 10)
-  );
-  const base = new BN(10, 10).pow(new BN(chainDecimal));
 
-  useEffect(() => {
-    let unsub = () => {};
-    async function subscriptionBalance() {
-      const [account] = await getFromAcct(currentAccount);
+  const { polkadotBalance } = usePolkadotBalance();
+  const { createPool, isLoading } = useCreatePool(() => {
+    onClose();
+    history.push('/admin/sponsored-pool?type=owned');
+  });
 
-      // @ts-ignore
-      unsub = await api?.query.system.account(
-        account,
-        ({ data: { free: currentFree }, nonce: currentNonce }: any) => {
-          // Calculate the delta
-          const change = currentFree.sub(currentAccountBalance);
-
-          if (!change.isZero()) {
-            setCurrentAccountBalance(currentFree);
-          }
-        }
-      );
-    }
-    subscriptionBalance();
-    return () => unsub();
-  }, []);
-
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
-        isClosable: true,
-        status: 'success',
-      });
-      setLoading(false);
-      setCurrentPage(pageNumberOfNewPool);
-      refetch();
-      onClose();
-    } else {
-      toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
-
-  const onSubmit = async (data: SponsoredPoolForm) => {
-    setLoading(true);
-    const [account, options] = await getFromAcct(currentAccount);
-    if (api && account) {
-      const targets = data.targets.map(target => target.contractAddress);
-      const txExecute = api.tx.sponsoredPool.createPool(
-        targets,
-        new BN(data.poolAmount, 10).mul(base).toString(),
-        data.discount,
-        data.txLimit
-      );
-      if (options) {
-        try {
-          await txExecute.signAndSend(account, options, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoading(false);
-        }
-      } else {
-        try {
-          await txExecute.signAndSend(account, txCallback);
-        } catch (err: any) {
-          toast({
-            description: t('TRANSACTION_FAILED', {
-              errorMessage: err.toString(),
-            }),
-            isClosable: true,
-            status: 'error',
-          });
-          setLoading(false);
-        }
-      }
-    }
-  };
-
-  const { fields, append, prepend, remove, swap, move, insert } =
-    useFieldArray<SponsoredPoolForm>({
-      control,
-      name: 'targets',
-    });
+  const { fields, append, remove } = useFieldArray<ISponsoredPoolForm>({
+    control,
+    name: 'targets',
+  });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="2xl">
+    <Modal size="lg" isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create sponsored pool</ModalHeader>
-        <ModalCloseButton />
-        <form onSubmit={handleSubmit(onSubmit)}>
+
+      <ModalContent
+        sx={{
+          borderRadius: '16px',
+        }}
+        p={3}
+      >
+        <ModalHeader>{t('CREATE_SPONSORED_POOL')}</ModalHeader>
+
+        <form
+          name="add-pool-form"
+          onSubmit={handleSubmit((data: ISponsoredPoolForm) => {
+            createPool(data);
+          })}
+        >
           <ModalBody>
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Pool amount</FormLabel>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('POOL_AMOUNT')}
+              </FormLabel>
               <Controller
                 control={control}
                 name="poolAmount"
                 render={({ field }) => (
                   <NumberInput
+                    inputName="poolAmount"
                     value={field.value}
                     onChange={field.onChange}
-                    max={currentAccountBalance.div(base).toNumber()}
+                    max={parseFloat(polkadotBalance?.toString() || '0')}
                   />
                 )}
                 rules={{
@@ -192,79 +104,83 @@ const ModalAddSponsoredPool: React.FC<IProps> = ({
               />
             </FormControl>
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Discount</FormLabel>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('DISCOUNT')}
+              </FormLabel>
               <Input
+                size="lg"
                 id="discount"
                 type="text"
                 {...register('discount', { required: true })}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="">Transaction Limit</FormLabel>
+            <FormControl mb={4}>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('TRANSACTION_LIMIT')}
+              </FormLabel>
               <Input
+                size="lg"
                 id="txLimit"
                 type="text"
                 {...register('txLimit', { required: true })}
               />
             </FormControl>
+            {/* <FormControl mb={4}>
+              <Controller
+                control={control}
+                name="enableWhitelist"
+                render={({ field }) => (
+                  <Checkbox
+                    id="enableWhitelist"
+                    checked={field.value}
+                    onChange={e => {
+                      field.onChange(e.target.checked);
+                    }}
+                  >
+                    {t('ENABLE_WHITELIST')}
+                  </Checkbox>
+                )}
+              />
+            </FormControl> */}
             <FormControl mb={4}>
-              <FormLabel htmlFor="">Targets</FormLabel>
-              <VStack alignItems="flex-start">
-                {fields.map((field, index) => (
-                  <InputGroup>
-                    <Input
-                      key={field.id}
-                      type="text"
-                      {...register(
-                        `targets.${index}.contractAddress` as const,
-                        {
-                          required: true,
-                        }
-                      )}
-                    />
-                    <InputRightElement
-                      display={fields.length === 1 ? 'none' : 'block'}
-                    >
-                      <IconButton
-                        onClick={() => remove(index)}
-                        colorScheme="red"
-                        aria-label="remove target"
-                        icon={
-                          <Icon>
-                            <path fill="currentColor" d={mdiClose} />
-                          </Icon>
-                        }
-                      />
-                    </InputRightElement>
-                  </InputGroup>
-                ))}
-              </VStack>
+              <FormLabel fontSize="md" fontWeight="normal" htmlFor="">
+                {t('TARGETS')}
+              </FormLabel>
+              <TargetFields
+                fields={fields}
+                remove={remove}
+                register={register}
+              />
             </FormControl>
 
             <Button
               disabled={fields.length >= 5}
+              variant="primary"
+              size="sm"
               onClick={() => append({ contractAddress: '' })}
               leftIcon={
-                <Icon>
+                <Icon w={18} h={18}>
                   <path fill="currentColor" d={mdiPlus} />
                 </Icon>
               }
             >
-              Add Target
+              {t('ADD_TARGETS')}
             </Button>
           </ModalBody>
+
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              Close
+            <Button size="sm" variant="transparent" mr={3} onClick={onClose}>
+              {t('CANCEL')}
             </Button>
             <Button
               type="submit"
               color="white"
-              background="primary"
+              size="sm"
+              px={8}
               variant="solid"
-              isLoading={loading}
+              isLoading={isLoading}
             >
-              Save
+              {t('SAVE')}
             </Button>
           </ModalFooter>
         </form>

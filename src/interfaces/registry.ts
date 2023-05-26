@@ -1,10 +1,11 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { DevnetRuntime, EthbloomBloom, EthereumBlock, EthereumHeader, EthereumLog, EthereumReceiptEip658ReceiptData, EthereumReceiptReceiptV3, EthereumTransactionAccessListItem, EthereumTransactionEip1559Transaction, EthereumTransactionEip2930Transaction, EthereumTransactionLegacyTransaction, EthereumTransactionTransactionAction, EthereumTransactionTransactionSignature, EthereumTransactionTransactionV2, EthereumTypesHashH64, EvmCoreErrorExitError, EvmCoreErrorExitFatal, EvmCoreErrorExitReason, EvmCoreErrorExitRevert, EvmCoreErrorExitSucceed, FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FpRpcTransactionStatus, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchClass, FrameSupportWeightsDispatchInfo, FrameSupportWeightsPays, FrameSupportWeightsPerDispatchClassU32, FrameSupportWeightsPerDispatchClassU64, FrameSupportWeightsPerDispatchClassWeightsPerClass, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiPrimitivesPlayerTicketInfo, GafiPrimitivesPoolFlexService, GafiPrimitivesPoolLevel, GafiPrimitivesPoolService, GafiPrimitivesPoolTicket, GafiPrimitivesPoolTicketType, GafiTxCall, GafiTxError, GafiTxEvent, GameCreatorCall, GameCreatorError, GameCreatorEvent, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReleases, PalletBalancesReserveData, PalletBaseFeeCall, PalletBaseFeeEvent, PalletCacheCall, PalletCacheError, PalletCacheEvent, PalletCacheFlag, PalletCacheWrapData, PalletDynamicFeeCall, PalletEthereumCall, PalletEthereumError, PalletEthereumEvent, PalletEvmCall, PalletEvmError, PalletEvmEvent, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletPlayerCall, PalletPlayerError, PalletPlayerEvent, PalletPlayerPlayer, PalletPoolCall, PalletPoolError, PalletPoolEvent, PalletPoolNamesCall, PalletPoolNamesError, PalletPoolNamesEvent, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentReleases, ProofAddressMappingCall, ProofAddressMappingError, ProofAddressMappingEvent, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeArithmeticError, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SponsoredPool, SponsoredPoolCall, SponsoredPoolError, SponsoredPoolEvent, StakingPoolCall, StakingPoolError, StakingPoolEvent, UpfrontPoolCall, UpfrontPoolError, UpfrontPoolEvent } from '@polkadot/types/lookup';
+import type { DevnetOriginCaller, DevnetRuntime, EthbloomBloom, EthereumBlock, EthereumHeader, EthereumLog, EthereumReceiptEip658ReceiptData, EthereumReceiptReceiptV3, EthereumTransactionAccessListItem, EthereumTransactionEip1559Transaction, EthereumTransactionEip2930Transaction, EthereumTransactionLegacyTransaction, EthereumTransactionTransactionAction, EthereumTransactionTransactionSignature, EthereumTransactionTransactionV2, EthereumTypesHashH64, EvmCoreErrorExitError, EvmCoreErrorExitFatal, EvmCoreErrorExitReason, EvmCoreErrorExitRevert, EvmCoreErrorExitSucceed, FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FpRpcTransactionStatus, FrameSupportDispatchRawOrigin, FrameSupportPalletId, FrameSupportScheduleLookupError, FrameSupportScheduleMaybeHashed, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchClass, FrameSupportWeightsDispatchInfo, FrameSupportWeightsPays, FrameSupportWeightsPerDispatchClassU32, FrameSupportWeightsPerDispatchClassU64, FrameSupportWeightsPerDispatchClassWeightsPerClass, FrameSupportWeightsRuntimeDbWeight, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiMembershipCall, GafiMembershipError, GafiMembershipEvent, GafiMembershipMembershipInfo, GafiPrimitivesPoolPoolType, GafiPrimitivesPoolService, GafiPrimitivesSystemServicesSystemService, GafiPrimitivesTicket, GafiPrimitivesTicketTicketInfo, GafiPrimitivesTicketTicketType, GafiTxCall, GafiTxError, GafiTxEvent, GameCreatorCall, GameCreatorError, GameCreatorEvent, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReleases, PalletBalancesReserveData, PalletBaseFeeCall, PalletBaseFeeEvent, PalletCacheCall, PalletCacheError, PalletCacheEvent, PalletCacheFlag, PalletCacheWrapDataTicketInfo, PalletCacheWrapDataU128, PalletCollectiveCall, PalletCollectiveError, PalletCollectiveEvent, PalletCollectiveRawOrigin, PalletCollectiveVotes, PalletDemocracyCall, PalletDemocracyConviction, PalletDemocracyDelegations, PalletDemocracyError, PalletDemocracyEvent, PalletDemocracyPreimageStatus, PalletDemocracyReferendumInfo, PalletDemocracyReferendumStatus, PalletDemocracyReleases, PalletDemocracyTally, PalletDemocracyVoteAccountVote, PalletDemocracyVotePriorLock, PalletDemocracyVoteThreshold, PalletDemocracyVoteVoting, PalletDynamicFeeCall, PalletElectionsPhragmenCall, PalletElectionsPhragmenError, PalletElectionsPhragmenEvent, PalletElectionsPhragmenRenouncing, PalletElectionsPhragmenSeatHolder, PalletElectionsPhragmenVoter, PalletEthereumCall, PalletEthereumError, PalletEthereumEvent, PalletEthereumRawOrigin, PalletEvmCall, PalletEvmError, PalletEvmEvent, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletHotfixSufficientsCall, PalletHotfixSufficientsError, PalletPlayerCall, PalletPlayerError, PalletPlayerEvent, PalletPlayerPlayer, PalletPoolCall, PalletPoolError, PalletPoolEvent, PalletPoolNamesCall, PalletPoolNamesError, PalletPoolNamesEvent, PalletPreimageCall, PalletPreimageError, PalletPreimageEvent, PalletPreimageRequestStatus, PalletSchedulerCall, PalletSchedulerError, PalletSchedulerEvent, PalletSchedulerScheduledV3, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentEvent, PalletTransactionPaymentReleases, PalletTreasuryCall, PalletTreasuryError, PalletTreasuryEvent, PalletTreasuryProposal, PalletWhitelistCall, PalletWhitelistError, PalletWhitelistEvent, ProofAddressMappingCall, ProofAddressMappingError, ProofAddressMappingEvent, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeArithmeticError, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SponsoredPool, SponsoredPoolCall, SponsoredPoolError, SponsoredPoolEvent, StakingPoolCall, StakingPoolError, StakingPoolEvent, UpfrontPoolCall, UpfrontPoolError, UpfrontPoolEvent } from '@polkadot/types/lookup';
 
 declare module '@polkadot/types/types/registry' {
   export interface InterfaceTypes {
+    DevnetOriginCaller: DevnetOriginCaller;
     DevnetRuntime: DevnetRuntime;
     EthbloomBloom: EthbloomBloom;
     EthereumBlock: EthereumBlock;
@@ -30,6 +31,10 @@ declare module '@polkadot/types/types/registry' {
     FinalityGrandpaPrecommit: FinalityGrandpaPrecommit;
     FinalityGrandpaPrevote: FinalityGrandpaPrevote;
     FpRpcTransactionStatus: FpRpcTransactionStatus;
+    FrameSupportDispatchRawOrigin: FrameSupportDispatchRawOrigin;
+    FrameSupportPalletId: FrameSupportPalletId;
+    FrameSupportScheduleLookupError: FrameSupportScheduleLookupError;
+    FrameSupportScheduleMaybeHashed: FrameSupportScheduleMaybeHashed;
     FrameSupportTokensMiscBalanceStatus: FrameSupportTokensMiscBalanceStatus;
     FrameSupportWeightsDispatchClass: FrameSupportWeightsDispatchClass;
     FrameSupportWeightsDispatchInfo: FrameSupportWeightsDispatchInfo;
@@ -38,7 +43,6 @@ declare module '@polkadot/types/types/registry' {
     FrameSupportWeightsPerDispatchClassU64: FrameSupportWeightsPerDispatchClassU64;
     FrameSupportWeightsPerDispatchClassWeightsPerClass: FrameSupportWeightsPerDispatchClassWeightsPerClass;
     FrameSupportWeightsRuntimeDbWeight: FrameSupportWeightsRuntimeDbWeight;
-    FrameSupportWeightsWeightToFeeCoefficient: FrameSupportWeightsWeightToFeeCoefficient;
     FrameSystemAccountInfo: FrameSystemAccountInfo;
     FrameSystemCall: FrameSystemCall;
     FrameSystemError: FrameSystemError;
@@ -55,12 +59,16 @@ declare module '@polkadot/types/types/registry' {
     FrameSystemLimitsBlockWeights: FrameSystemLimitsBlockWeights;
     FrameSystemLimitsWeightsPerClass: FrameSystemLimitsWeightsPerClass;
     FrameSystemPhase: FrameSystemPhase;
-    GafiPrimitivesPlayerTicketInfo: GafiPrimitivesPlayerTicketInfo;
-    GafiPrimitivesPoolFlexService: GafiPrimitivesPoolFlexService;
-    GafiPrimitivesPoolLevel: GafiPrimitivesPoolLevel;
+    GafiMembershipCall: GafiMembershipCall;
+    GafiMembershipError: GafiMembershipError;
+    GafiMembershipEvent: GafiMembershipEvent;
+    GafiMembershipMembershipInfo: GafiMembershipMembershipInfo;
+    GafiPrimitivesPoolPoolType: GafiPrimitivesPoolPoolType;
     GafiPrimitivesPoolService: GafiPrimitivesPoolService;
-    GafiPrimitivesPoolTicket: GafiPrimitivesPoolTicket;
-    GafiPrimitivesPoolTicketType: GafiPrimitivesPoolTicketType;
+    GafiPrimitivesSystemServicesSystemService: GafiPrimitivesSystemServicesSystemService;
+    GafiPrimitivesTicket: GafiPrimitivesTicket;
+    GafiPrimitivesTicketTicketInfo: GafiPrimitivesTicketTicketInfo;
+    GafiPrimitivesTicketTicketType: GafiPrimitivesTicketTicketType;
     GafiTxCall: GafiTxCall;
     GafiTxError: GafiTxError;
     GafiTxEvent: GafiTxEvent;
@@ -81,11 +89,38 @@ declare module '@polkadot/types/types/registry' {
     PalletCacheError: PalletCacheError;
     PalletCacheEvent: PalletCacheEvent;
     PalletCacheFlag: PalletCacheFlag;
-    PalletCacheWrapData: PalletCacheWrapData;
+    PalletCacheWrapDataTicketInfo: PalletCacheWrapDataTicketInfo;
+    PalletCacheWrapDataU128: PalletCacheWrapDataU128;
+    PalletCollectiveCall: PalletCollectiveCall;
+    PalletCollectiveError: PalletCollectiveError;
+    PalletCollectiveEvent: PalletCollectiveEvent;
+    PalletCollectiveRawOrigin: PalletCollectiveRawOrigin;
+    PalletCollectiveVotes: PalletCollectiveVotes;
+    PalletDemocracyCall: PalletDemocracyCall;
+    PalletDemocracyConviction: PalletDemocracyConviction;
+    PalletDemocracyDelegations: PalletDemocracyDelegations;
+    PalletDemocracyError: PalletDemocracyError;
+    PalletDemocracyEvent: PalletDemocracyEvent;
+    PalletDemocracyPreimageStatus: PalletDemocracyPreimageStatus;
+    PalletDemocracyReferendumInfo: PalletDemocracyReferendumInfo;
+    PalletDemocracyReferendumStatus: PalletDemocracyReferendumStatus;
+    PalletDemocracyReleases: PalletDemocracyReleases;
+    PalletDemocracyTally: PalletDemocracyTally;
+    PalletDemocracyVoteAccountVote: PalletDemocracyVoteAccountVote;
+    PalletDemocracyVotePriorLock: PalletDemocracyVotePriorLock;
+    PalletDemocracyVoteThreshold: PalletDemocracyVoteThreshold;
+    PalletDemocracyVoteVoting: PalletDemocracyVoteVoting;
     PalletDynamicFeeCall: PalletDynamicFeeCall;
+    PalletElectionsPhragmenCall: PalletElectionsPhragmenCall;
+    PalletElectionsPhragmenError: PalletElectionsPhragmenError;
+    PalletElectionsPhragmenEvent: PalletElectionsPhragmenEvent;
+    PalletElectionsPhragmenRenouncing: PalletElectionsPhragmenRenouncing;
+    PalletElectionsPhragmenSeatHolder: PalletElectionsPhragmenSeatHolder;
+    PalletElectionsPhragmenVoter: PalletElectionsPhragmenVoter;
     PalletEthereumCall: PalletEthereumCall;
     PalletEthereumError: PalletEthereumError;
     PalletEthereumEvent: PalletEthereumEvent;
+    PalletEthereumRawOrigin: PalletEthereumRawOrigin;
     PalletEvmCall: PalletEvmCall;
     PalletEvmError: PalletEvmError;
     PalletEvmEvent: PalletEvmEvent;
@@ -97,6 +132,8 @@ declare module '@polkadot/types/types/registry' {
     PalletGrandpaEvent: PalletGrandpaEvent;
     PalletGrandpaStoredPendingChange: PalletGrandpaStoredPendingChange;
     PalletGrandpaStoredState: PalletGrandpaStoredState;
+    PalletHotfixSufficientsCall: PalletHotfixSufficientsCall;
+    PalletHotfixSufficientsError: PalletHotfixSufficientsError;
     PalletPlayerCall: PalletPlayerCall;
     PalletPlayerError: PalletPlayerError;
     PalletPlayerEvent: PalletPlayerEvent;
@@ -107,12 +144,28 @@ declare module '@polkadot/types/types/registry' {
     PalletPoolNamesCall: PalletPoolNamesCall;
     PalletPoolNamesError: PalletPoolNamesError;
     PalletPoolNamesEvent: PalletPoolNamesEvent;
+    PalletPreimageCall: PalletPreimageCall;
+    PalletPreimageError: PalletPreimageError;
+    PalletPreimageEvent: PalletPreimageEvent;
+    PalletPreimageRequestStatus: PalletPreimageRequestStatus;
+    PalletSchedulerCall: PalletSchedulerCall;
+    PalletSchedulerError: PalletSchedulerError;
+    PalletSchedulerEvent: PalletSchedulerEvent;
+    PalletSchedulerScheduledV3: PalletSchedulerScheduledV3;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;
     PalletTimestampCall: PalletTimestampCall;
     PalletTransactionPaymentChargeTransactionPayment: PalletTransactionPaymentChargeTransactionPayment;
+    PalletTransactionPaymentEvent: PalletTransactionPaymentEvent;
     PalletTransactionPaymentReleases: PalletTransactionPaymentReleases;
+    PalletTreasuryCall: PalletTreasuryCall;
+    PalletTreasuryError: PalletTreasuryError;
+    PalletTreasuryEvent: PalletTreasuryEvent;
+    PalletTreasuryProposal: PalletTreasuryProposal;
+    PalletWhitelistCall: PalletWhitelistCall;
+    PalletWhitelistError: PalletWhitelistError;
+    PalletWhitelistEvent: PalletWhitelistEvent;
     ProofAddressMappingCall: ProofAddressMappingCall;
     ProofAddressMappingError: ProofAddressMappingError;
     ProofAddressMappingEvent: ProofAddressMappingEvent;

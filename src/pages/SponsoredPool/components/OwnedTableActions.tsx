@@ -1,99 +1,301 @@
-import React from 'react';
-import { Button, useToast } from '@chakra-ui/react';
-import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
-import { useState } from 'react';
-import { SponsoredPool } from 'graphQL/generates';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { useMutation } from 'react-query';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  HStack,
+  Icon,
+  IconButton,
+  Input,
+  InputGroup,
+  Menu,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
+import { ErrorMessage } from '@hookform/error-message';
+import { mdiClose, mdiDotsVertical, mdiPlus } from '@mdi/js';
+import { u8aToHex } from '@polkadot/util';
+import { decodeAddress } from '@polkadot/util-crypto';
+import React, { useEffect } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+
+import useEnableWhitelist from 'hooks/useEnableWhitelist';
+import { useLoadWhitelist } from 'hooks/useLoadWhitelist';
+import { useWhitelistSource } from 'hooks/useWhitelistSource';
+import useWithdraw from 'hooks/useWithdraw';
+
+function ss58ToHex(address: string) {
+  const enAdd = u8aToHex(decodeAddress(address));
+  return enAdd;
+}
+
+export interface WhitelistForm {
+  whitelist: { address: string }[];
+}
 
 interface IProps {
   poolId: string;
   onClick: () => void;
+  onClickDetails: () => void;
 }
 
-const OwnedTableActions: React.FC<IProps> = ({ poolId, onClick }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { api, currentAccount } = useSubstrateState();
-  const toast = useToast();
+const OwnedTableActions: React.FC<IProps> = ({
+  poolId,
+  onClick,
+  onClickDetails,
+}) => {
   const { t } = useTranslation();
+  const { withdrawPoolBalance, isLoading } = useWithdraw();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenPopover,
+    onOpen: onOpenPopover,
+    onClose: onClosePopover,
+  } = useDisclosure();
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
+  const { response } = useWhitelistSource(poolId);
+  const {
+    mutationEnableWhitelist,
+    isLoading: isLoadingMutationEnableWhitelist,
+  } = useEnableWhitelist(poolId);
 
-  const mutation = useMutation(
-    async () => {
-      const [account, options] = await getFromAcct(currentAccount);
+  const { isLoadingMutationWhitelist, mutationWhitelist, data } =
+    useLoadWhitelist(poolId);
 
-      const txExecute = api?.tx.sponsoredPool.withdrawPool(poolId);
-      if (options) {
-        return txExecute?.signAndSend(account, options, txCallback);
-      }
-      return txExecute?.signAndSend(account, txCallback);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm<WhitelistForm>({
+    defaultValues: {
+      whitelist: [{ address: '' }],
     },
-    {
-      mutationKey: 'withdraw-pool',
-      onError: (err: any) => {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: err.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setIsLoading(false);
-      },
-    }
-  );
+  });
 
-  const onWithdraw = async () => {
-    setIsLoading(true);
-    mutation.mutate();
+  const { fields, remove, append } = useFieldArray<WhitelistForm>({
+    control,
+    name: 'whitelist',
+  });
+
+  useEffect(() => {
+    if (data) {
+      const whitelist = data?.map((item: string) => ({
+        address: item,
+      }));
+
+      reset({
+        whitelist,
+      });
+    }
+  }, [data, reset]);
+
+  const onSubmit = (submitData: WhitelistForm) => {
+    const address = submitData.whitelist
+      .map(item => {
+        if (!data?.includes(item.address)) {
+          return ss58ToHex(item.address).replace('0x', '');
+        }
+        return undefined;
+      })
+      .filter((item): item is string => !!item);
+
+    if (address.length > 0) {
+      if (!response) {
+        mutationEnableWhitelist.mutate();
+      }
+      mutationWhitelist.mutate({
+        pool_id: poolId.replace('0x', ''),
+        address,
+      });
+    }
   };
+
   return (
     <>
-      <Button
-        onClick={e => {
-          e.stopPropagation();
-          onClick();
+      <Text
+        onClick={() => onClickDetails()}
+        display={{
+          sm: 'block',
+          md: 'none',
         }}
         color="primary"
-        variant="solid"
       >
-        {t('EDIT')}
-      </Button>
-      <Button
-        onClick={e => {
-          e.stopPropagation();
-          onWithdraw();
-        }}
-        ml={3}
-        color="red.300"
-        variant="solid"
-        isLoading={isLoading}
+        {t('DETAIL')}
+      </Text>
+
+      <Popover
+        isOpen={isOpenPopover}
+        onOpen={onOpenPopover}
+        onClose={onClosePopover}
+        placement="bottom-start"
+        closeOnBlur
       >
-        {t('WITHDRAW')}
-      </Button>
+        <PopoverTrigger>
+          <IconButton
+            display={{
+              sm: 'none',
+              md: 'block',
+            }}
+            aria-label="sponsored pool actions"
+            variant="ghost"
+            icon={
+              <Icon w={10} color="primary">
+                <path fill="currentColor" d={mdiDotsVertical} />
+              </Icon>
+            }
+          />
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent w="full">
+            <Menu isOpen={isOpenPopover}>
+              <MenuList>
+                <MenuItem onClick={() => onClick()}>{t('EDIT')}</MenuItem>
+                <MenuItem onClick={onOpen}>{t('SET_WHITELIST')}</MenuItem>
+                <MenuItem
+                  isDisabled={isLoading}
+                  onClick={() => withdrawPoolBalance(poolId)}
+                >
+                  {t('WITHDRAW')}
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </PopoverContent>
+        </Portal>
+      </Popover>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        scrollBehavior="inside"
+        size="xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Set pool whitelist</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormLabel htmlFor="">{t('WHITELIST')}</FormLabel>
+              {React.Children.toArray(
+                fields.map((field, index) => (
+                  <FormControl
+                    isInvalid={
+                      !!errors.whitelist &&
+                      !!errors.whitelist[index] &&
+                      !!errors.whitelist[index].address
+                    }
+                    isRequired
+                    mb={4}
+                  >
+                    <VStack alignItems="flex-start">
+                      <InputGroup size="lg" display="flex" alignItems="center">
+                        <Input
+                          size="lg"
+                          key={field.id}
+                          sx={{
+                            borderRadius: '0.375rem 0 0 0.375rem',
+                          }}
+                          type="text"
+                          {...register(`whitelist.${index}.address`, {
+                            required: true,
+                            validate: (fieldData: string) => {
+                              const listAddress = watch('whitelist').map(
+                                item => item.address
+                              );
+                              const existTimes = listAddress.reduce(
+                                (
+                                  prevValue: Record<string, number>,
+                                  currentValue
+                                ) => ({
+                                  ...prevValue,
+                                  [currentValue]: prevValue[currentValue]
+                                    ? prevValue[currentValue] + 1
+                                    : 1,
+                                }),
+                                {}
+                              );
+
+                              if (existTimes[fieldData] > 1) {
+                                return 'Duplicate item';
+                              }
+                            },
+                          })}
+                        />
+                        <IconButton
+                          display={fields.length === 1 ? 'none' : 'flex'}
+                          onClick={() => remove(index)}
+                          sx={{
+                            borderRadius: '0 0.375rem 0.375rem 0',
+                          }}
+                          aria-label="remove address"
+                          variant="delete"
+                          icon={
+                            <Icon>
+                              <path fill="currentColor" d={mdiClose} />
+                            </Icon>
+                          }
+                        />
+                      </InputGroup>
+                    </VStack>
+                    <ErrorMessage
+                      errors={errors}
+                      name={`whitelist.${index}.address`}
+                      render={({ message }) => (
+                        <Text color="red.500">{message} 😱</Text>
+                      )}
+                    />
+                  </FormControl>
+                ))
+              )}
+
+              <Button
+                disabled={fields.length >= 5}
+                variant="primary"
+                size="sm"
+                onClick={() => append({ address: '' })}
+                leftIcon={
+                  <Icon w={18} h={18}>
+                    <path fill="currentColor" d={mdiPlus} />
+                  </Icon>
+                }
+              >
+                {t('ADD_ADDRESS')}
+              </Button>
+
+              <HStack justifyContent="flex-end">
+                <Button
+                  type="submit"
+                  color="white"
+                  size="sm"
+                  px={8}
+                  variant="solid"
+                  isLoading={
+                    isLoadingMutationWhitelist ||
+                    isLoadingMutationEnableWhitelist
+                  }
+                >
+                  {t('SAVE')}
+                </Button>
+              </HStack>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

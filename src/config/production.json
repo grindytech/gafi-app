@@ -1,8 +1,14 @@
 {
   "APP_NAME": "gafi-dashboard",
-  "PROVIDER_SOCKET": "wss://ws.gafi.network",
-  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/lhtrung307/gafi-query",
+  "PROVIDER_SOCKETS": [
+    "wss://ws-testnet.gafi.network",
+    "wss://ws-test.gafi.network"
+  ],
+  "GRAPHQL_ENDPOINT": "https://api.subquery.network/sq/grindytech/gafi-query",
   "FEATURE_FLAG": {
-    "PUBLIC_FEATURE_GAME_CREATOR": false
-  }
+    "PUBLIC_FEATURE_GAME_CREATOR": false,
+    "PUBLIC_NEW_DASHBOARD_UI": true
+  },
+  "WHITELIST_DEFAULT_URL": "https://whitelist.gafi.network",
+  "TRACKING_ID": "G-PB9GEPCD66"
 }

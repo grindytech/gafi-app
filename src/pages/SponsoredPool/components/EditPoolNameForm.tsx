@@ -5,30 +5,29 @@ import {
   HStack,
   Input,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 import { ErrorMessage } from '@hookform/error-message';
-import { getFromAcct, handleTxError } from 'components/utils';
-import { useSubstrateState } from 'substrate-lib';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { useMutation } from 'react-query';
-import { AddressOrPair, SignerOptions } from '@polkadot/api/types';
 import { useTranslation } from 'react-i18next';
 
-interface IEditPoolNameForm {
+import useEditPoolName from 'hooks/useEditPoolName';
+
+export interface IEditPoolNameForm {
   poolName: string;
 }
 
 interface IModalEditPoolNameProps {
+  onClose: () => void;
   poolId: string;
+  onCloseDetail: () => void;
 }
 
-const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
-  const { api, currentAccount } = useSubstrateState();
-  const [isLoading, setIsLoading] = useState(false);
-  const toast = useToast();
+const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({
+  poolId,
+  onClose,
+  onCloseDetail,
+}) => {
   const { t } = useTranslation();
   const {
     register,
@@ -45,68 +44,17 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
     { fieldName: t('POOL_NAME'), min: 8, max: 32 }
   );
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
-    if (status.isFinalized) {
-      handleTxError(events, api, toast);
-      toast({
-        description: t('FINALIZED_BLOCK_HASH', {
-          hash: status.asFinalized.toString(),
-        }),
-        isClosable: true,
-        status: 'success',
-      });
-      setIsLoading(false);
-    } else {
-      toast({
-        description: t('CURRENT_TRANSACTION_STATUS', {
-          statusType: status.type,
-        }),
-        isClosable: true,
-        status: 'info',
-      });
-    }
-  };
-
-  const mutation = useMutation(
-    async (poolName: string) => {
-      const [account, options] = await getFromAcct(currentAccount);
-      const txSetPoolNameExecute = api?.tx.sponsoredPool.setPoolName(
-        poolId,
-        poolName
-      );
-      if (options) {
-        return txSetPoolNameExecute?.signAndSend(
-          account,
-          options,
-          txCallback
-        ) as Promise<() => void>;
-      }
-      return txSetPoolNameExecute?.signAndSend(account, txCallback) as Promise<
-        () => void
-      >;
-    },
-    {
-      mutationKey: 'update-pool-name',
-      onError: (error: any) => {
-        toast({
-          description: t('TRANSACTION_FAILED', {
-            errorMessage: error.toString(),
-          }),
-          isClosable: true,
-          status: 'error',
-        });
-        setIsLoading(false);
-      },
-    }
-  );
-
-  const onSubmit = (data: IEditPoolNameForm) => {
-    setIsLoading(true);
-    mutation.mutate(data.poolName);
-  };
+  const { editPoolName, isLoading } = useEditPoolName(() => {
+    onClose();
+    onCloseDetail();
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((data: IEditPoolNameForm) => {
+        editPoolName(data.poolName, poolId);
+      })}
+    >
       <FormControl isInvalid={!!errors.poolName} isRequired mb={4}>
         <FormLabel htmlFor="">{t('NAME')}</FormLabel>
         <Input
@@ -135,7 +83,8 @@ const EditPoolNameForm: React.FC<IModalEditPoolNameProps> = ({ poolId }) => {
         <Button
           type="submit"
           color="white"
-          background="primary"
+          size="sm"
+          px={8}
           variant="solid"
           isLoading={isLoading}
         >
