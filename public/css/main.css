@@ -1,0 +1,11 @@
+/* it's is zone shown content of user look */
+@-ms-viewport {
+  width: device-width;
+}
+
+* {
+  /* Render text with grayscale antialiasing, */
+  font-smoothing: grayscale;
+  /* good performance for text that's easier read more */
+  text-rendering: optimizeLegibility;
+}
