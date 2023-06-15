@@ -57,20 +57,18 @@ export const fonts = {
 };
 
 const CardBox: ComponentStyleConfig = {
-  baseStyle: {
-    bg: 'white',
-    borderRadius: 'xl',
-    border: '0.0625rem solid transparent',
-  },
   variants: {
     createGames: {
+      bg: 'white',
+      borderRadius: 'xl',
+      border: '0.0625rem solid transparent',
       borderColor: 'shader.a.300',
       padding: 4,
     },
   },
 };
 
-const Button = {
+const Button: ComponentStyleConfig = {
   variants: {
     createGameSubmit: {
       display: 'flex',
@@ -91,6 +89,66 @@ const Button = {
   },
 };
 
+const Table: ComponentStyleConfig = {
+  variants: {
+    createGameSubmit: {
+      td: {
+        padding: 0,
+        border: 'unset',
+        fontSize: 'md',
+        wordBreak: 'break-all',
+
+        _odd: {
+          pt: 4,
+          pb: { md: 4 },
+          color: 'shader.a.600',
+          fontWeight: 'medium',
+        },
+        _even: {
+          pb: 4,
+          pt: { md: 4 },
+          color: 'shader.a.900',
+          fontWeight: 'semibold',
+          textAlign: {
+            md: 'right',
+          },
+        },
+      },
+      tr: {
+        _notLast: {
+          borderBottom: '0.0625rem solid',
+          borderColor: 'shader.a.200',
+        },
+
+        flexDirection: 'column',
+        display: {
+          base: 'flex',
+          md: 'table-row',
+        },
+      },
+    },
+  },
+};
+
+const Input: ComponentStyleConfig = {
+  variants: {
+    createGameSubmit: {
+      field: {
+        border: '0.0625rem solid',
+        borderColor: 'shader.a.400',
+        borderRadius: 'lg',
+        color: 'shader.a.900',
+        fontWeight: 'medium',
+        width: 'auto',
+        _placeholder: {
+          color: 'shader.a.500',
+          fontWeight: 'normal',
+        },
+      },
+    },
+  },
+};
+
 const theme = extendTheme({
   colors,
   styles,
@@ -99,6 +157,8 @@ const theme = extendTheme({
   components: {
     CardBox,
     Button,
+    Table,
+    Input,
   },
 });
 

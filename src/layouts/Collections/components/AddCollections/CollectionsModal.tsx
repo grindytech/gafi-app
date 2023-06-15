@@ -14,39 +14,31 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import React from 'react';
-
-import NewGamesProfile from './NewGamesProfile';
-
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import GafiAmount from 'components/GafiAmount';
+import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import React from 'react';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
-interface NewGamesFieldSubmitProps {
+interface CollectionsFieldSubmitProps {
   owner: {
     account: string;
     hash: string;
   };
-
-  title: string;
-  games_id: number;
-
-  admin: {
-    account: string;
-    hash: string;
-  };
+  collection_id: number;
+  game_id: number;
 }
 
-interface NewGamesAuthorizeProps {
+interface CollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function NewGamesAuthorize({
-  onClose,
+export default function CollectionsModal({
   getValues,
-}: NewGamesAuthorizeProps) {
-  const { owner, title, games_id, admin } =
-    getValues() as NewGamesFieldSubmitProps;
+  onClose,
+}: CollectionsModalProps) {
+  const { owner, collection_id, game_id } =
+    getValues() as CollectionsFieldSubmitProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -62,7 +54,7 @@ export default function NewGamesAuthorize({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Authorize transaction
+              Create collection
             </Heading>
 
             <ModalCloseButton
@@ -84,40 +76,19 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Tittle</Td>
-
-                <Td>{title}</Td>
+                <Td>Collection ID</Td>
+                <Td>{collection_id}</Td>
               </Tr>
 
               <Tr>
                 <Td>Game ID</Td>
-                <Td>{games_id}</Td>
+                <Td>{game_id}</Td>
               </Tr>
 
               <Tr>
                 <Td>Fee</Td>
                 <Td>
-                  <GafiAmount amount="50,689" />
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td>Admin</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={admin.hash}
-                    account={admin.account}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
+                  <GafiAmount amount="50,6895" />
                 </Td>
               </Tr>
             </Tbody>

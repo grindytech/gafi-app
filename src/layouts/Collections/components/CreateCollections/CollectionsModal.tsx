@@ -14,39 +14,36 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import React from 'react';
-
-import NewGamesProfile from './NewGamesProfile';
-
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import GafiAmount from 'components/GafiAmount';
+import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import React from 'react';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
-interface NewGamesFieldSubmitProps {
+interface CollectionsFieldSubmitProps {
   owner: {
     account: string;
     hash: string;
   };
 
-  title: string;
-  games_id: number;
-
+  collection_id: number;
+  mining_fee: number;
   admin: {
     account: string;
     hash: string;
   };
 }
 
-interface NewGamesAuthorizeProps {
+interface CollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function NewGamesAuthorize({
+export default function CollectionsModal({
   onClose,
   getValues,
-}: NewGamesAuthorizeProps) {
-  const { owner, title, games_id, admin } =
-    getValues() as NewGamesFieldSubmitProps;
+}: CollectionsModalProps) {
+  const { owner, admin, collection_id, mining_fee } =
+    getValues() as CollectionsFieldSubmitProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -62,7 +59,7 @@ export default function NewGamesAuthorize({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Authorize transaction
+              Create collection
             </Heading>
 
             <ModalCloseButton
@@ -84,20 +81,21 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Tittle</Td>
-
-                <Td>{title}</Td>
+                <Td>Collection ID</Td>
+                <Td>{collection_id}</Td>
               </Tr>
 
               <Tr>
-                <Td>Game ID</Td>
-                <Td>{games_id}</Td>
+                <Td>Mining fee</Td>
+                <Td>
+                  <GafiAmount amount={mining_fee} />
+                </Td>
               </Tr>
 
               <Tr>
                 <Td>Fee</Td>
                 <Td>
-                  <GafiAmount amount="50,689" />
+                  <GafiAmount amount="50,6895" />
                 </Td>
               </Tr>
 
