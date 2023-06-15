@@ -1,4 +1,4 @@
-import DefaultMain from 'pages/DefaultMain/DefaultMain';
+import DefaultRoot from 'layouts/default/DefaultRoot';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -18,9 +18,9 @@ const getRoutes = (item: IRouteProps[]) => {
 export default function App() {
   return (
     <BrowserRouter>
-      <DefaultMain>
+      <DefaultRoot>
         <Switch>{React.Children.toArray(getRoutes(routes))}</Switch>
-      </DefaultMain>
+      </DefaultRoot>
     </BrowserRouter>
   );
 }

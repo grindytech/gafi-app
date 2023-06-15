@@ -8,8 +8,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import BellIcon from 'public/assets/header/bell.svg';
-import GafiAppIcon from 'public/assets/header/GafiApp.svg';
+import BellIcon from 'public/assets/line/bell.svg';
+import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
 import UserProfileIcon from 'public/assets/header/user-profile.svg';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -32,8 +32,35 @@ export default function Header() {
   const { pathname } = useLocation();
 
   return (
-    <Box as="header" position="sticky" top={0} py={4}>
-      <Center as="nav" justifyContent="space-between">
+    <Box
+      as="header"
+      position="sticky"
+      top={0}
+      py={4}
+      mb={6}
+      height="4.5rem"
+      bg="white"
+      zIndex="dropdown"
+      _before={{
+        content: `''`,
+        position: 'fixed',
+        bg: 'inherit',
+        width: 'full',
+        height: 'inherit',
+        inset: '0 0 auto 0',
+        pointerEvents: 'none',
+        zIndex: 'inherit',
+        borderBottom: '0.0625rem solid',
+        borderColor: 'shader.a.200',
+      }}
+    >
+      <Center
+        as="nav"
+        justifyContent="space-between"
+        height="full"
+        position="relative"
+        zIndex="inherit"
+      >
         <Center>
           <IconButton
             variant="unstyled"
