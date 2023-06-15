@@ -1,6 +1,6 @@
 import { ConnectWalletProvider } from 'contexts/connectWalletContext/connectWalletContext';
 import { SubstrateContextProvider } from 'contexts/substrateContext';
-import DefaultMain from 'pages/DefaultMain/DefaultMain';
+import DefaultRoot from 'layouts/default/DefaultRoot';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -23,11 +23,11 @@ export default function App() {
     <SubstrateContextProvider>
       <ConnectWalletProvider>
         <BrowserRouter>
-          <DefaultMain>
+          <DefaultRoot>
             <QueryParamProvider ReactRouterRoute={Route}>
               <Switch>{React.Children.toArray(getRoutes(routes))}</Switch>
             </QueryParamProvider>
-          </DefaultMain>
+          </DefaultRoot>
         </BrowserRouter>
       </ConnectWalletProvider>
     </SubstrateContextProvider>
