@@ -4,13 +4,17 @@ import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 
-interface Web3OwnerProps {
+interface OwnerProfileProps {
   account: string;
   hash: string;
   balance: number | string;
 }
 
-export default function Web3Owner({ account, hash, balance }: Web3OwnerProps) {
+export default function OwnerProfile({
+  account,
+  hash,
+  balance,
+}: OwnerProfileProps) {
   return (
     <CardBox variant="createGames" padding={6}>
       <Box>

@@ -1,4 +1,4 @@
-import Web3Owner from 'components/Web3Owner/Web3Owner';
+import OwnerProfile from 'components/OwnerProfile/OwnerProfile';
 
 import React from 'react';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
@@ -16,5 +16,5 @@ export default function CollectionsOwner({ setValue }: CollectionsOwnerProps) {
     hash: value,
   });
 
-  return <Web3Owner account={owner} hash={value} balance="1,499,034.999 " />;
+  return <OwnerProfile account={owner} hash={value} balance="1,499,034.999 " />;
 }

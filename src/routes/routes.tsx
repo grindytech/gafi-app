@@ -1,7 +1,8 @@
 import Web3 from 'layouts/web3/Web3';
-import Items from 'layouts/Items';
+
 import NewGames from 'layouts/NewGames';
 import Collections from 'layouts/Collections';
+import Items from 'layouts/Items';
 
 export interface IRouteProps {
   path: string;
