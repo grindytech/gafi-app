@@ -11,25 +11,25 @@ export const ListWeb3Project = [
   {
     title: 'New Games',
     icon: <GamesIcon />,
-    link: '/games',
+    link: '/web3/games',
     background: 'gradient.linear.2',
   },
   {
     title: 'Collections',
     icon: <CollectionsIcon />,
-    link: '/',
+    link: '/web3/collections',
     background: 'gradient.linear.3',
   },
   {
     title: 'Items',
     icon: <ItemsIcon />,
-    link: '/items',
+    link: '/web3/items',
     background: 'gradient.linear.4',
   },
   {
     title: 'Metadata',
     icon: <MetadataIcon />,
-    link: '/',
+    link: '/web3/metadata',
     background: 'gradient.linear.5',
   },
 ];

@@ -19,15 +19,15 @@ const routes = [
     component: () => <Web3 />,
   },
   {
-    path: '/items',
+    path: '/web3/items',
     component: () => <Items />,
   },
   {
-    path: '/games',
+    path: '/web3/games',
     component: () => <NewGames />,
   },
   {
-    path: '/collections',
+    path: '/web3/collections',
     component: () => <Collections />,
   },
 ] as IRouteProps[];

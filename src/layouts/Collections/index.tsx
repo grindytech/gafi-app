@@ -19,64 +19,62 @@ import CollectionsAdd from './components/AddCollections';
 
 export default function Collections() {
   return (
-    <>
-      <Box
-        px={{
-          lg: 48,
-        }}
-      >
-        <GoBack />
+    <Box
+      px={{
+        lg: 48,
+      }}
+    >
+      <GoBack />
 
-        <Tabs variant="unstyled">
-          <TabList
-            gap={4}
-            mt={8}
-            mb={4}
-            sx={{
-              button: {
-                fontSize: 'sm',
-                fontWeight: 'medium',
-                color: 'shader.a.900',
-                borderRadius: 'lg',
-                border: '0.0625rem solid',
-                borderColor: 'shader.a.400',
+      <Tabs variant="unstyled">
+        <TabList
+          gap={4}
+          mt={8}
+          mb={4}
+          sx={{
+            button: {
+              fontSize: 'sm',
+              fontWeight: 'medium',
+              color: 'shader.a.900',
+              borderRadius: 'lg',
+              border: '0.0625rem solid',
+              borderColor: 'shader.a.400',
 
-                _selected: {
-                  color: 'white',
-                  borderColor: 'transparent',
-                  bg: 'primary.a.500',
-                  fontWeight: 'semibold',
-                },
+              _selected: {
+                color: 'white',
+                borderColor: 'transparent',
+                bg: 'primary.a.500',
+                fontWeight: 'semibold',
               },
-            }}
-          >
-            <Tab>Create Collection</Tab>
+            },
+          }}
+        >
+          <Tab>Create Collection</Tab>
 
-            <Tab>
-              <Center gap={2}>
-                <Icon as={LineAddIcon as any} width={4} height={4} />
-                <Text>Add collection</Text>
-              </Center>
-            </Tab>
-          </TabList>
+          <Tab>
+            <Center gap={2}>
+              <Icon as={LineAddIcon as any} width={4} height={4} />
+              <Text>Add collection</Text>
+            </Center>
+          </Tab>
+        </TabList>
 
-          <TabPanels
-            sx={{
-              '> div': {
-                padding: 0,
-              },
-            }}
-          >
-            <TabPanel>
-              <CollectionsCreate />
-            </TabPanel>
+        <TabPanels
+          sx={{
+            '> div': {
+              padding: 0,
+            },
+          }}
+        >
+          <TabPanel>
+            <CollectionsCreate />
+          </TabPanel>
 
-            <TabPanel>
-              <CollectionsAdd />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-    </>
+          <TabPanel>
+            <CollectionsAdd />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
   );
 }
