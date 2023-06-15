@@ -1,10 +1,16 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from '@polkadot/api-base/types';
+// import type lookup before we augment - in some environments
+// this is required to allow for ambient/previous definitions
+import '@polkadot/api-base/types/errors';
+
+import type { ApiTypes, AugmentedError } from '@polkadot/api-base/types';
+
+export type __AugmentedError<ApiType extends ApiTypes> = AugmentedError<ApiType>;
 
 declare module '@polkadot/api-base/types/errors' {
-  export interface AugmentedErrors<ApiType extends ApiTypes> {
+  interface AugmentedErrors<ApiType extends ApiTypes> {
     balances: {
       /**
        * Beneficiary account must pre-exist
@@ -19,7 +25,7 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       ExistingVestingSchedule: AugmentedError<ApiType>;
       /**
-       * Balance too low to send value
+       * Balance too low to send value.
        **/
       InsufficientBalance: AugmentedError<ApiType>;
       /**
@@ -43,263 +49,86 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    council: {
-      /**
-       * Members are already initialized!
-       **/
-      AlreadyInitialized: AugmentedError<ApiType>;
-      /**
-       * Duplicate proposals not allowed
-       **/
-      DuplicateProposal: AugmentedError<ApiType>;
-      /**
-       * Duplicate vote ignored
-       **/
-      DuplicateVote: AugmentedError<ApiType>;
-      /**
-       * Account is not a member
-       **/
-      NotMember: AugmentedError<ApiType>;
-      /**
-       * Proposal must exist
-       **/
-      ProposalMissing: AugmentedError<ApiType>;
-      /**
-       * The close call was made too early, before the end of the voting.
-       **/
-      TooEarly: AugmentedError<ApiType>;
-      /**
-       * There can only be a maximum of `MaxProposals` active proposals.
-       **/
-      TooManyProposals: AugmentedError<ApiType>;
-      /**
-       * Mismatched index
-       **/
-      WrongIndex: AugmentedError<ApiType>;
-      /**
-       * The given length bound for the proposal was too low.
-       **/
-      WrongProposalLength: AugmentedError<ApiType>;
-      /**
-       * The given weight bound for the proposal was too low.
-       **/
-      WrongProposalWeight: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    democracy: {
-      /**
-       * Cannot cancel the same proposal twice
-       **/
-      AlreadyCanceled: AugmentedError<ApiType>;
-      /**
-       * The account is already delegating.
-       **/
-      AlreadyDelegating: AugmentedError<ApiType>;
-      /**
-       * Identity may not veto a proposal twice
-       **/
-      AlreadyVetoed: AugmentedError<ApiType>;
-      /**
-       * Preimage already noted
-       **/
-      DuplicatePreimage: AugmentedError<ApiType>;
-      /**
-       * Proposal already made
-       **/
-      DuplicateProposal: AugmentedError<ApiType>;
-      /**
-       * Imminent
-       **/
-      Imminent: AugmentedError<ApiType>;
-      /**
-       * The instant referendum origin is currently disallowed.
-       **/
-      InstantNotAllowed: AugmentedError<ApiType>;
-      /**
-       * Too high a balance was provided that the account cannot afford.
-       **/
-      InsufficientFunds: AugmentedError<ApiType>;
-      /**
-       * Invalid hash
-       **/
-      InvalidHash: AugmentedError<ApiType>;
-      /**
-       * Maximum number of votes reached.
-       **/
-      MaxVotesReached: AugmentedError<ApiType>;
-      /**
-       * No proposals waiting
-       **/
-      NoneWaiting: AugmentedError<ApiType>;
-      /**
-       * Delegation to oneself makes no sense.
-       **/
-      Nonsense: AugmentedError<ApiType>;
-      /**
-       * The actor has no permission to conduct the action.
-       **/
-      NoPermission: AugmentedError<ApiType>;
-      /**
-       * No external proposal
-       **/
-      NoProposal: AugmentedError<ApiType>;
-      /**
-       * The account is not currently delegating.
-       **/
-      NotDelegating: AugmentedError<ApiType>;
-      /**
-       * Not imminent
-       **/
-      NotImminent: AugmentedError<ApiType>;
-      /**
-       * Next external proposal not simple majority
-       **/
-      NotSimpleMajority: AugmentedError<ApiType>;
-      /**
-       * The given account did not vote on the referendum.
-       **/
-      NotVoter: AugmentedError<ApiType>;
-      /**
-       * Invalid preimage
-       **/
-      PreimageInvalid: AugmentedError<ApiType>;
-      /**
-       * Preimage not found
-       **/
-      PreimageMissing: AugmentedError<ApiType>;
-      /**
-       * Proposal still blacklisted
-       **/
-      ProposalBlacklisted: AugmentedError<ApiType>;
-      /**
-       * Proposal does not exist
-       **/
-      ProposalMissing: AugmentedError<ApiType>;
-      /**
-       * Vote given for invalid referendum
-       **/
-      ReferendumInvalid: AugmentedError<ApiType>;
-      /**
-       * Too early
-       **/
-      TooEarly: AugmentedError<ApiType>;
-      /**
-       * Maximum number of proposals reached.
-       **/
-      TooManyProposals: AugmentedError<ApiType>;
-      /**
-       * Value too low
-       **/
-      ValueLow: AugmentedError<ApiType>;
-      /**
-       * The account currently has votes attached to it and the operation cannot succeed until
-       * these are removed, either through `unvote` or `reap_vote`.
-       **/
-      VotesExist: AugmentedError<ApiType>;
-      /**
-       * Voting period too low
-       **/
-      VotingPeriodLow: AugmentedError<ApiType>;
-      /**
-       * Invalid upper bound.
-       **/
-      WrongUpperBound: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    ethereum: {
-      /**
-       * Signature is invalid.
-       **/
-      InvalidSignature: AugmentedError<ApiType>;
-      /**
-       * Pre-log is present, therefore transact is not allowed.
-       **/
-      PreLogExists: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    evm: {
-      /**
-       * Not enough balance to perform action
-       **/
-      BalanceLow: AugmentedError<ApiType>;
-      /**
-       * Calculating total fee overflowed
-       **/
-      FeeOverflow: AugmentedError<ApiType>;
-      /**
-       * Gas limit is too high.
-       **/
-      GasLimitTooHigh: AugmentedError<ApiType>;
-      /**
-       * Gas limit is too low.
-       **/
-      GasLimitTooLow: AugmentedError<ApiType>;
-      /**
-       * Gas price is too low.
-       **/
-      GasPriceTooLow: AugmentedError<ApiType>;
-      /**
-       * Nonce is invalid
-       **/
-      InvalidNonce: AugmentedError<ApiType>;
-      /**
-       * Calculating total payment overflowed
-       **/
-      PaymentOverflow: AugmentedError<ApiType>;
-      /**
-       * Undefined error.
-       **/
-      Undefined: AugmentedError<ApiType>;
-      /**
-       * Withdraw fee failed
-       **/
-      WithdrawFailed: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     faucet: {
       DontBeGreedy: AugmentedError<ApiType>;
       NotEnoughBalance: AugmentedError<ApiType>;
+      OutOfFaucet: AugmentedError<ApiType>;
       PleaseWait: AugmentedError<ApiType>;
-      TransferToSelf: AugmentedError<ApiType>;
+      SelfTransfer: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    gafiMembership: {
-      AlreadyRegistered: AugmentedError<ApiType>;
-      ExceedMaxMembers: AugmentedError<ApiType>;
-      MemberNotExist: AugmentedError<ApiType>;
+    game: {
       /**
-       * Generic error
+       * The asking price is higher than the set price.
        **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    gameCreator: {
+      AskTooHigh: AugmentedError<ApiType>;
+      AuctionEnded: AugmentedError<ApiType>;
+      AuctionInProgress: AugmentedError<ApiType>;
+      AuctionNotStarted: AugmentedError<ApiType>;
       /**
-       * The contract had claimed
+       * The bid is lower than the set price.
        **/
-      ContractClaimed: AugmentedError<ApiType>;
+      BidTooLow: AugmentedError<ApiType>;
       /**
-       * Claim the contract does not exist
+       * Add the same collection into a game
        **/
-      ContractNotFound: AugmentedError<ApiType>;
+      CollectionExists: AugmentedError<ApiType>;
       /**
-       * Not the contract creator either game creator
+       * The number minted items require exceeds the amount allowed per tx
        **/
-      NotContractOwner: AugmentedError<ApiType>;
+      ExceedAllowedAmount: AugmentedError<ApiType>;
+      /**
+       * Exceed max collections in a bundle
+       **/
+      ExceedMaxBundle: AugmentedError<ApiType>;
+      /**
+       * Exceed the maximum allowed collection in a game
+       **/
+      ExceedMaxCollection: AugmentedError<ApiType>;
+      /**
+       * Exceed the maximum allowed item in a collection
+       **/
+      ExceedMaxItem: AugmentedError<ApiType>;
+      /**
+       * The number minted items require exceeds the available items in the reserve
+       **/
+      ExceedTotalAmount: AugmentedError<ApiType>;
+      IncorrectCollection: AugmentedError<ApiType>;
+      IncorrectItem: AugmentedError<ApiType>;
+      InsufficientItemBalance: AugmentedError<ApiType>;
+      InsufficientReservedBalance: AugmentedError<ApiType>;
+      /**
+       * item amount = 0
+       **/
+      InvalidAmount: AugmentedError<ApiType>;
+      /**
+       * Transfer is locked for any trade
+       **/
+      ItemLocked: AugmentedError<ApiType>;
+      NoPermission: AugmentedError<ApiType>;
+      NotAuction: AugmentedError<ApiType>;
+      NotBundle: AugmentedError<ApiType>;
+      NotSetBuy: AugmentedError<ApiType>;
+      NotSetPrice: AugmentedError<ApiType>;
+      NotSwap: AugmentedError<ApiType>;
+      NotWishlist: AugmentedError<ApiType>;
+      SoldOut: AugmentedError<ApiType>;
+      TradeIdInUse: AugmentedError<ApiType>;
+      UnknownAuction: AugmentedError<ApiType>;
+      UnknownBid: AugmentedError<ApiType>;
+      UnknownCollection: AugmentedError<ApiType>;
+      UnknownGame: AugmentedError<ApiType>;
+      UnknownItem: AugmentedError<ApiType>;
+      UnknownTrade: AugmentedError<ApiType>;
+      UnknownUpgrade: AugmentedError<ApiType>;
+      UpgradeExists: AugmentedError<ApiType>;
+      /**
+       * Too many attempts
+       **/
+      WithdrawReserveFailed: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -341,151 +170,157 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    hotfixSufficients: {
+    nfts: {
       /**
-       * Maximum address count exceeded
+       * The provided Item was already used for claiming.
        **/
-      MaxAddressCountExceeded: AugmentedError<ApiType>;
+      AlreadyClaimed: AugmentedError<ApiType>;
+      /**
+       * The item ID has already been used for an item.
+       **/
+      AlreadyExists: AugmentedError<ApiType>;
+      /**
+       * The approval had a deadline that expired, so the approval isn't valid anymore.
+       **/
+      ApprovalExpired: AugmentedError<ApiType>;
+      /**
+       * The witness data given does not match the current state of the chain.
+       **/
+      BadWitness: AugmentedError<ApiType>;
+      /**
+       * The provided bid is too low.
+       **/
+      BidTooLow: AugmentedError<ApiType>;
+      /**
+       * Collection ID is already taken.
+       **/
+      CollectionIdInUse: AugmentedError<ApiType>;
+      /**
+       * The deadline has already expired.
+       **/
+      DeadlineExpired: AugmentedError<ApiType>;
+      /**
+       * Item's config already exists and should be equal to the provided one.
+       **/
+      InconsistentItemConfig: AugmentedError<ApiType>;
+      /**
+       * The provided data is incorrect.
+       **/
+      IncorrectData: AugmentedError<ApiType>;
+      /**
+       * The item is locked (non-transferable).
+       **/
+      ItemLocked: AugmentedError<ApiType>;
+      /**
+       * Items within that collection are non-transferable.
+       **/
+      ItemsNonTransferable: AugmentedError<ApiType>;
+      /**
+       * Collection's attributes are locked.
+       **/
+      LockedCollectionAttributes: AugmentedError<ApiType>;
+      /**
+       * Collection's metadata is locked.
+       **/
+      LockedCollectionMetadata: AugmentedError<ApiType>;
+      /**
+       * Item's attributes are locked.
+       **/
+      LockedItemAttributes: AugmentedError<ApiType>;
+      /**
+       * Item's metadata is locked.
+       **/
+      LockedItemMetadata: AugmentedError<ApiType>;
+      /**
+       * The max supply is locked and can't be changed.
+       **/
+      MaxSupplyLocked: AugmentedError<ApiType>;
+      /**
+       * All items have been minted.
+       **/
+      MaxSupplyReached: AugmentedError<ApiType>;
+      /**
+       * The provided max supply is less than the number of items a collection already has.
+       **/
+      MaxSupplyTooSmall: AugmentedError<ApiType>;
+      /**
+       * The method is disabled by system settings.
+       **/
+      MethodDisabled: AugmentedError<ApiType>;
+      /**
+       * Mint has already ended.
+       **/
+      MintEnded: AugmentedError<ApiType>;
+      /**
+       * Mint has not started yet.
+       **/
+      MintNotStarted: AugmentedError<ApiType>;
+      /**
+       * Config for a collection or an item can't be found.
+       **/
+      NoConfig: AugmentedError<ApiType>;
+      /**
+       * The signing account has no permission to do the operation.
+       **/
+      NoPermission: AugmentedError<ApiType>;
+      /**
+       * The provided account is not a delegate.
+       **/
+      NotDelegate: AugmentedError<ApiType>;
+      /**
+       * Item is not for sale.
+       **/
+      NotForSale: AugmentedError<ApiType>;
+      /**
+       * The item has reached its approval limit.
+       **/
+      ReachedApprovalLimit: AugmentedError<ApiType>;
+      /**
+       * Some roles were not cleared.
+       **/
+      RolesNotCleared: AugmentedError<ApiType>;
+      /**
+       * The named owner has not signed ownership acceptance of the collection.
+       **/
+      Unaccepted: AugmentedError<ApiType>;
+      /**
+       * No approval exists that would allow the transfer.
+       **/
+      Unapproved: AugmentedError<ApiType>;
+      /**
+       * The given item ID is unknown.
+       **/
+      UnknownCollection: AugmentedError<ApiType>;
+      /**
+       * The given item ID is unknown.
+       **/
+      UnknownItem: AugmentedError<ApiType>;
+      /**
+       * Swap doesn't exist.
+       **/
+      UnknownSwap: AugmentedError<ApiType>;
+      /**
+       * The delegate turned out to be different to what was expected.
+       **/
+      WrongDelegate: AugmentedError<ApiType>;
+      /**
+       * The duration provided should be less than or equal to `MaxDeadlineDuration`.
+       **/
+      WrongDuration: AugmentedError<ApiType>;
+      /**
+       * The owner turned out to be different to what was expected.
+       **/
+      WrongOwner: AugmentedError<ApiType>;
+      /**
+       * The provided setting can't be set.
+       **/
+      WrongSetting: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
     palletCache: {
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    palletCacheFaucet: {
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    palletWhitelist: {
-      AlreadyJoined: AugmentedError<ApiType>;
-      AlreadyWhitelist: AugmentedError<ApiType>;
-      NotPoolOwner: AugmentedError<ApiType>;
-      NotWhitelist: AugmentedError<ApiType>;
-      PoolNotFound: AugmentedError<ApiType>;
-      PoolNotWhitelist: AugmentedError<ApiType>;
-      URLTooLong: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    phragmenElection: {
-      /**
-       * Duplicated candidate submission.
-       **/
-      DuplicatedCandidate: AugmentedError<ApiType>;
-      /**
-       * Candidate does not have enough funds.
-       **/
-      InsufficientCandidateFunds: AugmentedError<ApiType>;
-      /**
-       * The renouncing origin presented a wrong `Renouncing` parameter.
-       **/
-      InvalidRenouncing: AugmentedError<ApiType>;
-      /**
-       * Prediction regarding replacement after member removal is wrong.
-       **/
-      InvalidReplacement: AugmentedError<ApiType>;
-      /**
-       * The provided count of number of votes is incorrect.
-       **/
-      InvalidVoteCount: AugmentedError<ApiType>;
-      /**
-       * The provided count of number of candidates is incorrect.
-       **/
-      InvalidWitnessData: AugmentedError<ApiType>;
-      /**
-       * Cannot vote with stake less than minimum balance.
-       **/
-      LowBalance: AugmentedError<ApiType>;
-      /**
-       * Cannot vote more than maximum allowed.
-       **/
-      MaximumVotesExceeded: AugmentedError<ApiType>;
-      /**
-       * Member cannot re-submit candidacy.
-       **/
-      MemberSubmit: AugmentedError<ApiType>;
-      /**
-       * Must be a voter.
-       **/
-      MustBeVoter: AugmentedError<ApiType>;
-      /**
-       * Not a member.
-       **/
-      NotMember: AugmentedError<ApiType>;
-      /**
-       * Must vote for at least one candidate.
-       **/
-      NoVotes: AugmentedError<ApiType>;
-      /**
-       * Cannot report self.
-       **/
-      ReportSelf: AugmentedError<ApiType>;
-      /**
-       * Runner cannot re-submit candidacy.
-       **/
-      RunnerUpSubmit: AugmentedError<ApiType>;
-      /**
-       * Cannot vote more than candidates.
-       **/
-      TooManyVotes: AugmentedError<ApiType>;
-      /**
-       * Voter can not pay voting bond.
-       **/
-      UnableToPayBond: AugmentedError<ApiType>;
-      /**
-       * Cannot vote when no candidates or members exist.
-       **/
-      UnableToVote: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    player: {
-      PlayerExisted: AugmentedError<ApiType>;
-      PlayerIdUsed: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    pool: {
-      AlreadyJoined: AugmentedError<ApiType>;
-      ComingSoon: AugmentedError<ApiType>;
-      ExceedJoinedPool: AugmentedError<ApiType>;
-      NotFoundInPool: AugmentedError<ApiType>;
-      NotPoolOwner: AugmentedError<ApiType>;
-      NotWhitelist: AugmentedError<ApiType>;
-      ParserIdFail: AugmentedError<ApiType>;
-      PoolNotFound: AugmentedError<ApiType>;
-      TicketNotFound: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    poolName: {
-      /**
-       * A name is too long.
-       **/
-      TooLong: AugmentedError<ApiType>;
-      /**
-       * A name is too short.
-       **/
-      TooShort: AugmentedError<ApiType>;
-      /**
-       * A pool isn't named.
-       **/
-      Unnamed: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -515,16 +350,7 @@ declare module '@polkadot/api-base/types/errors' {
       /**
        * Preimage is too large to store on-chain.
        **/
-      TooLarge: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    proofAddressMapping: {
-      AlreadyBond: AugmentedError<ApiType>;
-      NonbondAccount: AugmentedError<ApiType>;
-      SignatureOrAddressNotCorrect: AugmentedError<ApiType>;
+      TooBig: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -535,6 +361,10 @@ declare module '@polkadot/api-base/types/errors' {
        * Failed to schedule a call
        **/
       FailedToSchedule: AugmentedError<ApiType>;
+      /**
+       * Attempt to use a non-named function on a named task.
+       **/
+      Named: AugmentedError<ApiType>;
       /**
        * Cannot find the scheduled call.
        **/
@@ -547,44 +377,6 @@ declare module '@polkadot/api-base/types/errors' {
        * Given target block number is in the past.
        **/
       TargetBlockNumberInPast: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    sponsoredPool: {
-      ExceedMaxPoolOwned: AugmentedError<ApiType>;
-      ExceedPoolTarget: AugmentedError<ApiType>;
-      GreaterThanMaxTxLimit: AugmentedError<ApiType>;
-      GreaterThanMinDiscountPercent: AugmentedError<ApiType>;
-      /**
-       * Can not convert pool id to account
-       **/
-      IntoAccountFail: AugmentedError<ApiType>;
-      IntoU32Fail: AugmentedError<ApiType>;
-      LessThanMinDiscountPercent: AugmentedError<ApiType>;
-      LessThanMinTxLimit: AugmentedError<ApiType>;
-      NotReachMinPoolBalance: AugmentedError<ApiType>;
-      /**
-       * Origin not the owner
-       **/
-      NotTheOwner: AugmentedError<ApiType>;
-      /**
-       * Generate the pool id that duplicated
-       **/
-      PoolIdExisted: AugmentedError<ApiType>;
-      PoolNotExist: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    stakingPool: {
-      IntoBalanceFail: AugmentedError<ApiType>;
-      LevelNotFound: AugmentedError<ApiType>;
-      PlayerNotStake: AugmentedError<ApiType>;
-      PoolNotFound: AugmentedError<ApiType>;
-      StakeCountOverflow: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -629,53 +421,6 @@ declare module '@polkadot/api-base/types/errors' {
        * and the new runtime.
        **/
       SpecVersionNeedsToIncrease: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    treasury: {
-      /**
-       * The spend origin is valid but the amount it is allowed to spend is lower than the
-       * amount to be spent.
-       **/
-      InsufficientPermission: AugmentedError<ApiType>;
-      /**
-       * Proposer's balance is too low.
-       **/
-      InsufficientProposersBalance: AugmentedError<ApiType>;
-      /**
-       * No proposal or bounty at that index.
-       **/
-      InvalidIndex: AugmentedError<ApiType>;
-      /**
-       * Proposal has not been approved.
-       **/
-      ProposalNotApproved: AugmentedError<ApiType>;
-      /**
-       * Too many approvals in the queue.
-       **/
-      TooManyApprovals: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    txHandler: {
-      IntoAccountFail: AugmentedError<ApiType>;
-      IntoBalanceFail: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    upfrontPool: {
-      CanNotClearNewPlayers: AugmentedError<ApiType>;
-      ExceedMaxPlayer: AugmentedError<ApiType>;
-      IntoBalanceFail: AugmentedError<ApiType>;
-      PlayerCountOverflow: AugmentedError<ApiType>;
-      PlayerNotFound: AugmentedError<ApiType>;
-      PoolNotFound: AugmentedError<ApiType>;
       /**
        * Generic error
        **/

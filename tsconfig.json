@@ -8,7 +8,14 @@
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
-      "public/*": ["public/*"]
+      "public/*": ["public/*"],
+      // this is the package name we use (in the interface imports, --package for generators)
+      "gafi-dashboard/*": ["./*"],
+      // here we replace the @polkadot/api augmentation with our own, generated from chain
+      "@polkadot/api/augment": ["interfaces/augment-api.ts"],
+      // replace the augmented types with our own, as generated from definitions
+      "@polkadot/types/augment": ["interfaces/augment-types.ts"],
+      "@polkadot/types/lookup": ["interfaces/types-lookup.ts"]
     },
 
     /* Bundler mode */
@@ -23,8 +30,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["src/**/*", "public/**/*", "src/env-d.ts"],
+  "include": ["src/**/*", "public/**/*", "src/env-d.ts", "src/window.d.ts"],
+  "exclude": ["build/**/*", "node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

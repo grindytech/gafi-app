@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useContext, useState } from 'react';
 
 import WalletConnect from 'layouts/WalletConnect/WalletConnect';
@@ -26,7 +27,7 @@ const ConnectWalletProvider: React.FC<Record<string, unknown>> = props => {
     <>
       <ConnectWalletContext.Provider value={{ isOpen, onOpen, onClose }}>
         <WalletConnect />
-        {children}
+        {children as any}
       </ConnectWalletContext.Provider>
     </>
   );

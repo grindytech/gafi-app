@@ -2,12 +2,17 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite --host",
     "lint": "eslint src --ext .ts,.tsx",
     "build": "vite build",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "typegen": "yarn get:testnet:metadata && yarn generate:defs && yarn generate:meta",
+    "mainnet:typegen": "yarn mainnet:generate:defs && yarn mainnet:generate:meta",
+    "get:testnet:metadata": "rm -rf ./edgeware.json && curl -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc-test.gafi.network >> edgeware.json",
+    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package gafi-dashboard/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
+    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package gafi-dashboard/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
+    "generate:graphql": "graphql-codegen"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.4.5",
@@ -47,6 +52,7 @@
     "web3-utils": "1.7.1"
   },
   "devDependencies": {
+    "@polkadot/typegen": "^8.1.1",
     "@types/node": "^20.2.6",
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",
