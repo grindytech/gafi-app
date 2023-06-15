@@ -1,14 +1,12 @@
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import React from 'react';
-
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-
-interface NewGamesAdminProps {
+interface CollectionsAdminProps {
   setValue: UseFormSetValue<FieldValues>;
 }
 
-export default function NewGamesAdmin({ setValue }: NewGamesAdminProps) {
+export default function CollectionsAdmin({ setValue }: CollectionsAdminProps) {
   const value = '5DPA2URG1G8....ScaFqiuu3hb9';
   const admin = 'Alex Pham';
 
@@ -35,9 +33,5 @@ export default function NewGamesAdmin({ setValue }: NewGamesAdminProps) {
     },
   ];
 
-  return (
-    <>
-      <SwitchAdmin accounts={ListAccounts} setValue={setValue} />
-    </>
-  );
+  return <SwitchAdmin accounts={ListAccounts} setValue={setValue} />;
 }
