@@ -8,7 +8,7 @@ import '@polkadot/api-base/types/consts';
 import type { ApiTypes, AugmentedConst } from '@polkadot/api-base/types';
 import type { u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
-import type { FrameSupportPalletId, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight, SpWeightsWeightV2Weight } from '@polkadot/types/lookup';
+import type { FrameSupportPalletId, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight } from '@polkadot/types/lookup';
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 
@@ -16,9 +16,24 @@ declare module '@polkadot/api-base/types/consts' {
   interface AugmentedConsts<ApiType extends ApiTypes> {
     balances: {
       /**
-       * The minimum amount required to keep an account open.
+       * The minimum amount required to keep an account open. MUST BE GREATER THAN ZERO!
+       * 
+       * If you *really* need it to be zero, you can enable the feature `insecure_zero_ed` for
+       * this pallet. However, you do so at your own risk: this will open up a major DoS vector.
+       * In case you have multiple sources of provider references, you may also get unexpected
+       * behaviour if you set this to zero.
+       * 
+       * Bottom line: Do yourself a favour and make it at least one!
        **/
       existentialDeposit: u128 & AugmentedConst<ApiType>;
+      /**
+       * The maximum number of individual freeze locks that can exist on an account at any time.
+       **/
+      maxFreezes: u32 & AugmentedConst<ApiType>;
+      /**
+       * The maximum number of holds that can exist on an account at any time.
+       **/
+      maxHolds: u32 & AugmentedConst<ApiType>;
       /**
        * The maximum number of locks that should exist on an account.
        * Not strictly enforced, but used for weight estimation.
@@ -39,25 +54,37 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       bundleDeposit: u128 & AugmentedConst<ApiType>;
       /**
-       * The basic amount of funds that must be reserved for game.
+       * The basic amount of funds that must be reserved for a game.
        **/
       gameDeposit: u128 & AugmentedConst<ApiType>;
       /**
-       * Maximum collection in a bundle
+       * Maximum collection in a bundle for trade
        **/
       maxBundle: u32 & AugmentedConst<ApiType>;
       /**
-       * Max number of collections in a game
+       * Maximum number of collections in a  game.
        **/
       maxGameCollection: u32 & AugmentedConst<ApiType>;
+      /**
+       * Maximum number of games a collection can share.
+       **/
+      maxGameShare: u32 & AugmentedConst<ApiType>;
       /**
        * Maximum number of item that a collection could has
        **/
       maxItem: u32 & AugmentedConst<ApiType>;
       /**
+       * Maximum number of loot that a table could has
+       **/
+      maxLoot: u32 & AugmentedConst<ApiType>;
+      /**
        * Maximum number of item minted once
        **/
       maxMintItem: u32 & AugmentedConst<ApiType>;
+      /**
+       * The basic amount of funds that must be reserved for a mining pool.
+       **/
+      miningPoolDeposit: u128 & AugmentedConst<ApiType>;
       /**
        * The Game's pallet id
        **/
@@ -76,6 +103,15 @@ declare module '@polkadot/api-base/types/consts' {
        * Max Authorities in use
        **/
       maxAuthorities: u32 & AugmentedConst<ApiType>;
+      /**
+       * The maximum number of entries to keep in the set id to session index mapping.
+       * 
+       * Since the `SetIdSession` map is only used for validating equivocations this
+       * value should relate to the bonding duration of whatever staking system is
+       * being used (if any). If equivocation handling is not enabled then this value
+       * can be zero.
+       **/
+      maxSetIdSessionEntries: u64 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -116,6 +152,10 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       keyLimit: u32 & AugmentedConst<ApiType>;
       /**
+       * The max number of attributes a user could set per call.
+       **/
+      maxAttributesPerCall: u32 & AugmentedConst<ApiType>;
+      /**
        * The max duration in blocks for deadlines.
        **/
       maxDeadlineDuration: u32 & AugmentedConst<ApiType>;
@@ -145,20 +185,6 @@ declare module '@polkadot/api-base/types/consts' {
        * Cache will clean the data after this time
        **/
       cleanTime: u128 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    scheduler: {
-      /**
-       * The maximum weight that may be scheduled per block for any dispatchables.
-       **/
-      maximumWeight: SpWeightsWeightV2Weight & AugmentedConst<ApiType>;
-      /**
-       * The maximum number of scheduled calls in the queue for a single block.
-       **/
-      maxScheduledPerBlock: u32 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
