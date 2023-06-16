@@ -30,18 +30,20 @@ interface SwitchAdminProps {
     id: number;
   }[];
   sx?: BoxProps;
+  type?: 'admin' | 'mint';
 }
 
 export default function SwitchAdmin({
   setValue,
   accounts,
   sx,
+  type = 'admin',
 }: SwitchAdminProps) {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const [currentAccount, setCurrentAccount] = useState(accounts[0]);
 
-  setValue('admin', {
+  setValue(type, {
     account: currentAccount.account,
     hash: currentAccount.hash,
   });
@@ -60,7 +62,7 @@ export default function SwitchAdmin({
         fontWeight="semibold"
         color="primary.a.500"
       >
-        Admin
+        {type === 'admin' ? 'Admin' : 'Mint To'}
       </Heading>
 
       <Accordion index={isOpen ? 0 : 1}>

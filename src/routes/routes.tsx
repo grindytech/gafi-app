@@ -3,6 +3,7 @@ import Web3 from 'layouts/web3/Web3';
 import NewGames from 'layouts/NewGames';
 import Collections from 'layouts/Collections';
 import Items from 'layouts/Items';
+import Mint from 'layouts/Mint';
 
 export interface IRouteProps {
   path: string;
@@ -29,6 +30,10 @@ const routes = [
   {
     path: '/web3/collections',
     component: () => <Collections />,
+  },
+  {
+    path: '/mint',
+    component: () => <Mint />,
   },
 ] as IRouteProps[];
 export default routes;

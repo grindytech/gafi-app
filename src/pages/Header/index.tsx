@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  Icon,
   IconButton,
   List,
   ListItem,
@@ -12,11 +13,17 @@ import BellIcon from 'public/assets/line/bell.svg';
 import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
 import UserProfileIcon from 'public/assets/header/user-profile.svg';
 import { Link, useLocation } from 'react-router-dom';
+import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 const ListHeader = [
   {
     title: 'Web3 Games',
     link: '/web3',
+  },
+  {
+    title: 'Mint',
+    link: '/mint',
+    icon: PickaxeIcon,
   },
   {
     title: 'Blockchain',
@@ -80,13 +87,20 @@ export default function Header() {
                 return (
                   <ListItem>
                     <Text
+                      display="flex"
                       as={Link}
+                      alignItems="center"
+                      gap={1}
                       to={header.link}
                       color={isActive ? 'primary.a.500' : 'shader.a.900'}
                       fontSize="md"
                       fontWeight={isActive ? 'bold' : 'medium'}
                       textDecoration="none"
                     >
+                      {header.icon && (
+                        <Icon as={header.icon as any} width={4} height={4} />
+                      )}
+
                       {header.title}
                     </Text>
                   </ListItem>

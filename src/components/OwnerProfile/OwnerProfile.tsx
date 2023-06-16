@@ -1,4 +1,4 @@
-import { Box, Center, Divider, Heading } from '@chakra-ui/react';
+import { Box, BoxProps, Center, Divider, Heading } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
@@ -8,15 +8,17 @@ interface OwnerProfileProps {
   account: string;
   hash: string;
   balance: number | string;
+  sx?: BoxProps;
 }
 
 export default function OwnerProfile({
   account,
   hash,
   balance,
+  sx,
 }: OwnerProfileProps) {
   return (
-    <CardBox variant="createGames" padding={6}>
+    <CardBox variant="createGames" padding={6} {...sx}>
       <Box>
         <Heading
           as="h3"
@@ -34,7 +36,9 @@ export default function OwnerProfile({
       <Divider borderColor="shader.a.300" my={4} />
 
       <Center justifyContent="space-between">
-        <Heading as="h6">Balance</Heading>
+        <Heading className="balance" as="h6">
+          Balance
+        </Heading>
 
         <GafiAmount amount={balance} sx={{ fontSize: 'xl' }} />
       </Center>
