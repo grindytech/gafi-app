@@ -14,7 +14,6 @@ import type { BlockHash } from '@polkadot/types/interfaces/chain';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
 import type { AuthorityList, GrandpaEquivocationProof, SetId } from '@polkadot/types/interfaces/grandpa';
-import type { OpaqueMetadata } from '@polkadot/types/interfaces/metadata';
 import type { AccountId, Block, Header, Index, KeyTypeId, SlotDuration } from '@polkadot/types/interfaces/runtime';
 import type { RuntimeVersion } from '@polkadot/types/interfaces/state';
 import type { ApplyExtrinsicResult } from '@polkadot/types/interfaces/system';
@@ -112,17 +111,6 @@ declare module '@polkadot/api-base/types/calls' {
        * Submits an unsigned extrinsic to report an equivocation.
        **/
       submitReportEquivocationUnsignedExtrinsic: AugmentedCall<ApiType, (equivocationProof: GrandpaEquivocationProof | { setId?: any; equivocation?: any } | string | Uint8Array, keyOwnerProof: OpaqueKeyOwnershipProof | string | Uint8Array) => Observable<Option<Null>>>;
-      /**
-       * Generic call
-       **/
-      [key: string]: DecoratedCallBase<ApiType>;
-    };
-    /** 0x37e397fc7c91f5e4/1 */
-    metadata: {
-      /**
-       * Returns the metadata of a runtime
-       **/
-      metadata: AugmentedCall<ApiType, () => Observable<OpaqueMetadata>>;
       /**
        * Generic call
        **/

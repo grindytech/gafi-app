@@ -13,35 +13,43 @@ declare module '@polkadot/api-base/types/errors' {
   interface AugmentedErrors<ApiType extends ApiTypes> {
     balances: {
       /**
-       * Beneficiary account must pre-exist
+       * Beneficiary account must pre-exist.
        **/
       DeadAccount: AugmentedError<ApiType>;
       /**
-       * Value too low to create account due to existential deposit
+       * Value too low to create account due to existential deposit.
        **/
       ExistentialDeposit: AugmentedError<ApiType>;
       /**
-       * A vesting schedule already exists for this account
+       * A vesting schedule already exists for this account.
        **/
       ExistingVestingSchedule: AugmentedError<ApiType>;
+      /**
+       * Transfer/payment would kill account.
+       **/
+      Expendability: AugmentedError<ApiType>;
       /**
        * Balance too low to send value.
        **/
       InsufficientBalance: AugmentedError<ApiType>;
       /**
-       * Transfer/payment would kill account
-       **/
-      KeepAlive: AugmentedError<ApiType>;
-      /**
-       * Account liquidity restrictions prevent withdrawal
+       * Account liquidity restrictions prevent withdrawal.
        **/
       LiquidityRestrictions: AugmentedError<ApiType>;
       /**
-       * Number of named reserves exceed MaxReserves
+       * Number of freezes exceed `MaxFreezes`.
+       **/
+      TooManyFreezes: AugmentedError<ApiType>;
+      /**
+       * Number of holds exceed `MaxHolds`.
+       **/
+      TooManyHolds: AugmentedError<ApiType>;
+      /**
+       * Number of named reserves exceed `MaxReserves`.
        **/
       TooManyReserves: AugmentedError<ApiType>;
       /**
-       * Vesting balance too high to send value
+       * Vesting balance too high to send value.
        **/
       VestingBalance: AugmentedError<ApiType>;
       /**
@@ -89,15 +97,25 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       ExceedMaxCollection: AugmentedError<ApiType>;
       /**
+       * Exceeded the maximum number of games that can be shared between collections
+       **/
+      ExceedMaxGameShare: AugmentedError<ApiType>;
+      /**
        * Exceed the maximum allowed item in a collection
        **/
       ExceedMaxItem: AugmentedError<ApiType>;
       /**
+       * Exceed max loots in a table
+       **/
+      ExceedMaxLoot: AugmentedError<ApiType>;
+      /**
        * The number minted items require exceeds the available items in the reserve
        **/
       ExceedTotalAmount: AugmentedError<ApiType>;
+      GameIdInUse: AugmentedError<ApiType>;
       IncorrectCollection: AugmentedError<ApiType>;
       IncorrectItem: AugmentedError<ApiType>;
+      InfiniteSupply: AugmentedError<ApiType>;
       InsufficientItemBalance: AugmentedError<ApiType>;
       InsufficientReservedBalance: AugmentedError<ApiType>;
       /**
@@ -108,15 +126,20 @@ declare module '@polkadot/api-base/types/errors' {
        * Transfer is locked for any trade
        **/
       ItemLocked: AugmentedError<ApiType>;
+      MintFailed: AugmentedError<ApiType>;
       NoPermission: AugmentedError<ApiType>;
       NotAuction: AugmentedError<ApiType>;
       NotBundle: AugmentedError<ApiType>;
+      NotInfiniteSupply: AugmentedError<ApiType>;
       NotSetBuy: AugmentedError<ApiType>;
       NotSetPrice: AugmentedError<ApiType>;
       NotSwap: AugmentedError<ApiType>;
       NotWishlist: AugmentedError<ApiType>;
+      PoolIdInUse: AugmentedError<ApiType>;
       SoldOut: AugmentedError<ApiType>;
       TradeIdInUse: AugmentedError<ApiType>;
+      UnknowMiningPool: AugmentedError<ApiType>;
+      UnknownAcceptance: AugmentedError<ApiType>;
       UnknownAuction: AugmentedError<ApiType>;
       UnknownBid: AugmentedError<ApiType>;
       UnknownCollection: AugmentedError<ApiType>;
@@ -184,6 +207,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       ApprovalExpired: AugmentedError<ApiType>;
       /**
+       * The provided attribute can't be found.
+       **/
+      AttributeNotFound: AugmentedError<ApiType>;
+      /**
        * The witness data given does not match the current state of the chain.
        **/
       BadWitness: AugmentedError<ApiType>;
@@ -196,6 +223,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       CollectionIdInUse: AugmentedError<ApiType>;
       /**
+       * Can't delete non-empty collections.
+       **/
+      CollectionNotEmpty: AugmentedError<ApiType>;
+      /**
        * The deadline has already expired.
        **/
       DeadlineExpired: AugmentedError<ApiType>;
@@ -207,6 +238,10 @@ declare module '@polkadot/api-base/types/errors' {
        * The provided data is incorrect.
        **/
       IncorrectData: AugmentedError<ApiType>;
+      /**
+       * The provided metadata might be too long.
+       **/
+      IncorrectMetadata: AugmentedError<ApiType>;
       /**
        * The item is locked (non-transferable).
        **/
@@ -232,6 +267,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       LockedItemMetadata: AugmentedError<ApiType>;
       /**
+       * Can't set more attributes per one call.
+       **/
+      MaxAttributesLimitReached: AugmentedError<ApiType>;
+      /**
        * The max supply is locked and can't be changed.
        **/
       MaxSupplyLocked: AugmentedError<ApiType>;
@@ -243,6 +282,10 @@ declare module '@polkadot/api-base/types/errors' {
        * The provided max supply is less than the number of items a collection already has.
        **/
       MaxSupplyTooSmall: AugmentedError<ApiType>;
+      /**
+       * The given item has no metadata set.
+       **/
+      MetadataNotFound: AugmentedError<ApiType>;
       /**
        * The method is disabled by system settings.
        **/
@@ -308,6 +351,14 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       WrongDuration: AugmentedError<ApiType>;
       /**
+       * The provided namespace isn't supported in this call.
+       **/
+      WrongNamespace: AugmentedError<ApiType>;
+      /**
+       * The extrinsic was sent by the wrong origin.
+       **/
+      WrongOrigin: AugmentedError<ApiType>;
+      /**
        * The owner turned out to be different to what was expected.
        **/
       WrongOwner: AugmentedError<ApiType>;
@@ -316,67 +367,15 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       WrongSetting: AugmentedError<ApiType>;
       /**
+       * The provided signature is incorrect.
+       **/
+      WrongSignature: AugmentedError<ApiType>;
+      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
     palletCache: {
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    preimage: {
-      /**
-       * Preimage has already been noted on-chain.
-       **/
-      AlreadyNoted: AugmentedError<ApiType>;
-      /**
-       * The user is not authorized to perform this action.
-       **/
-      NotAuthorized: AugmentedError<ApiType>;
-      /**
-       * The preimage cannot be removed since it has not yet been noted.
-       **/
-      NotNoted: AugmentedError<ApiType>;
-      /**
-       * The preimage request cannot be removed since no outstanding requests exist.
-       **/
-      NotRequested: AugmentedError<ApiType>;
-      /**
-       * A preimage may not be removed when there are outstanding requests.
-       **/
-      Requested: AugmentedError<ApiType>;
-      /**
-       * Preimage is too large to store on-chain.
-       **/
-      TooBig: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    scheduler: {
-      /**
-       * Failed to schedule a call
-       **/
-      FailedToSchedule: AugmentedError<ApiType>;
-      /**
-       * Attempt to use a non-named function on a named task.
-       **/
-      Named: AugmentedError<ApiType>;
-      /**
-       * Cannot find the scheduled call.
-       **/
-      NotFound: AugmentedError<ApiType>;
-      /**
-       * Reschedule failed because it does not change scheduled time.
-       **/
-      RescheduleNoChange: AugmentedError<ApiType>;
-      /**
-       * Given target block number is in the past.
-       **/
-      TargetBlockNumberInPast: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
