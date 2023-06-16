@@ -13,12 +13,16 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { getFromAcct } from 'utils/gafiApp.utils';
+import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallback from 'hooks/useTxCallback';
 
 interface CollectionsFieldSubmitProps {
   owner: {
@@ -45,6 +49,24 @@ export default function CollectionsModal({
 }: CollectionsModalProps) {
   const { owner, admin, collection_id, mining_fee } =
     getValues() as CollectionsFieldSubmitProps;
+
+  const { api, currentAccount } = useSubstrateState();
+
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+    status: 'error',
+  });
+
+  const refetch = () => {
+    // do something
+  };
+
+  const onFinalize = () => {
+    // do something
+  };
+
+  const txCallback = useTxCallback(refetch, onFinalize);
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -129,9 +151,12 @@ export default function CollectionsModal({
             margin="unset"
             onClick={async () => {
               console.log(getValues());
+              console.log(currentAccount);
 
-              const wsProvider = new WsProvider('wss://gafi-test.gafi.network');
-              const api = await ApiPromise.create({ provider: wsProvider });
+              const txHash = await api?.tx.game
+                .createCollection(admin.hash).signAndSend(owner.account);
+
+              console.log(`Submitted with hash ${txHash}`);
             }}
           >
             Sign & Submit
