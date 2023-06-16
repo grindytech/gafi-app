@@ -6,10 +6,10 @@
 import '@polkadot/api-base/types/events';
 
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
-import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
-import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscAttributeNamespace, FrameSupportTokensMiscBalanceStatus, GafiSupportGameTypesPackage, PalletNftsPriceWithDirection, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
+import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscBalanceStatus, GafiSupportGameTypesLoot, GafiSupportGameTypesNft, GafiSupportGameTypesPackage, PalletGamePoolType, PalletNftsAttributeNamespace, PalletNftsPalletAttributes, PalletNftsPriceWithDirection, SpConsensusGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -19,7 +19,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A balance was set by root.
        **/
-      BalanceSet: AugmentedEvent<ApiType, [who: AccountId32, free: u128, reserved: u128], { who: AccountId32, free: u128, reserved: u128 }>;
+      BalanceSet: AugmentedEvent<ApiType, [who: AccountId32, free: u128], { who: AccountId32, free: u128 }>;
+      /**
+       * Some amount was burned from an account.
+       **/
+      Burned: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some amount was deposited (e.g. for transaction fees).
        **/
@@ -34,6 +38,26 @@ declare module '@polkadot/api-base/types/events' {
        **/
       Endowed: AugmentedEvent<ApiType, [account: AccountId32, freeBalance: u128], { account: AccountId32, freeBalance: u128 }>;
       /**
+       * Some balance was frozen.
+       **/
+      Frozen: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * Total issuance was increased by `amount`, creating a credit to be balanced.
+       **/
+      Issued: AugmentedEvent<ApiType, [amount: u128], { amount: u128 }>;
+      /**
+       * Some balance was locked.
+       **/
+      Locked: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * Some amount was minted into an account.
+       **/
+      Minted: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * Total issuance was decreased by `amount`, creating a debt to be balanced.
+       **/
+      Rescinded: AugmentedEvent<ApiType, [amount: u128], { amount: u128 }>;
+      /**
        * Some balance was reserved (moved from free to reserved).
        **/
       Reserved: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
@@ -43,17 +67,37 @@ declare module '@polkadot/api-base/types/events' {
        **/
       ReserveRepatriated: AugmentedEvent<ApiType, [from: AccountId32, to: AccountId32, amount: u128, destinationStatus: FrameSupportTokensMiscBalanceStatus], { from: AccountId32, to: AccountId32, amount: u128, destinationStatus: FrameSupportTokensMiscBalanceStatus }>;
       /**
+       * Some amount was restored into an account.
+       **/
+      Restored: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
        * Some amount was removed from the account (e.g. for misbehavior).
        **/
       Slashed: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * Some amount was suspended from an account (it can be restored later).
+       **/
+      Suspended: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * Some balance was thawed.
+       **/
+      Thawed: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Transfer succeeded.
        **/
       Transfer: AugmentedEvent<ApiType, [from: AccountId32, to: AccountId32, amount: u128], { from: AccountId32, to: AccountId32, amount: u128 }>;
       /**
+       * Some balance was unlocked.
+       **/
+      Unlocked: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
        * Some balance was unreserved (moved from reserved to free).
        **/
       Unreserved: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
+      /**
+       * An account was upgraded.
+       **/
+      Upgraded: AugmentedEvent<ApiType, [who: AccountId32], { who: AccountId32 }>;
       /**
        * Some amount was withdrawn from the account (e.g. for transaction fees).
        **/
@@ -71,6 +115,7 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     game: {
+      AddingAcceptanceSet: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       AuctionClaimed: AugmentedEvent<ApiType, [trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>>], { trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>> }>;
       AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32 }>;
       Bid: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bid: u128], { trade: u32, who: AccountId32, bid: u128 }>;
@@ -78,13 +123,15 @@ declare module '@polkadot/api-base/types/events' {
       BundleSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
       Burned: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
       BuySet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
+      CollectionAdded: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       CollectionCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32], { who: AccountId32, collection: u32 }>;
       CollectionRemoved: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       GameCreated: AugmentedEvent<ApiType, [who: AccountId32, game: u32], { who: AccountId32, game: u32 }>;
       ItemAdded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
       ItemBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128 }>;
-      ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
-      Minted: AugmentedEvent<ApiType, [who: AccountId32, target: AccountId32, collection: u32, items: Vec<u32>], { who: AccountId32, target: AccountId32, collection: u32, items: Vec<u32> }>;
+      ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32>], { who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32> }>;
+      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot> }>;
+      Minted: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>], { pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft> }>;
       PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
       SetBuyClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128 }>;
       SwapClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, maybeBidPrice: Option<u128>], { trade: u32, who: AccountId32, maybeBidPrice: Option<u128> }>;
@@ -104,7 +151,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * New authority set has been applied.
        **/
-      NewAuthorities: AugmentedEvent<ApiType, [authoritySet: Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>>], { authoritySet: Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>> }>;
+      NewAuthorities: AugmentedEvent<ApiType, [authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>>], { authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>> }>;
       /**
        * Current authority set has been paused.
        **/
@@ -131,11 +178,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Attribute metadata has been cleared for a `collection` or `item`.
        **/
-      AttributeCleared: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: FrameSupportTokensMiscAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: FrameSupportTokensMiscAttributeNamespace }>;
+      AttributeCleared: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: PalletNftsAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: PalletNftsAttributeNamespace }>;
       /**
        * New attribute metadata has been set for a `collection` or `item`.
        **/
-      AttributeSet: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: FrameSupportTokensMiscAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: FrameSupportTokensMiscAttributeNamespace }>;
+      AttributeSet: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: PalletNftsAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: PalletNftsAttributeNamespace }>;
       /**
        * An `item` was destroyed.
        **/
@@ -233,6 +280,15 @@ declare module '@polkadot/api-base/types/events' {
        **/
       OwnershipAcceptanceChanged: AugmentedEvent<ApiType, [who: AccountId32, maybeCollection: Option<u32>], { who: AccountId32, maybeCollection: Option<u32> }>;
       /**
+       * A new attribute in the `Pallet` namespace was set for the `collection` or an `item`
+       * within that `collection`.
+       **/
+      PalletAttributeSet: AugmentedEvent<ApiType, [collection: u32, item: Option<u32>, attribute: PalletNftsPalletAttributes, value: Bytes], { collection: u32, item: Option<u32>, attribute: PalletNftsPalletAttributes, value: Bytes }>;
+      /**
+       * New attributes have been set for an `item` of the `collection`.
+       **/
+      PreSignedAttributesSet: AugmentedEvent<ApiType, [collection: u32, item: u32, namespace: PalletNftsAttributeNamespace], { collection: u32, item: u32, namespace: PalletNftsAttributeNamespace }>;
+      /**
        * The deposit for a set of `item`s within a `collection` has been updated.
        **/
       Redeposited: AugmentedEvent<ApiType, [collection: u32, successfulItems: Vec<u32>], { collection: u32, successfulItems: Vec<u32> }>;
@@ -251,7 +307,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * The management team changed.
        **/
-      TeamChanged: AugmentedEvent<ApiType, [collection: u32, issuer: AccountId32, admin: AccountId32, freezer: AccountId32], { collection: u32, issuer: AccountId32, admin: AccountId32, freezer: AccountId32 }>;
+      TeamChanged: AugmentedEvent<ApiType, [collection: u32, issuer: Option<AccountId32>, admin: Option<AccountId32>, freezer: Option<AccountId32>], { collection: u32, issuer: Option<AccountId32>, admin: Option<AccountId32>, freezer: Option<AccountId32> }>;
       /**
        * A tip was sent.
        **/
@@ -271,54 +327,6 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     palletCache: {
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
-    preimage: {
-      /**
-       * A preimage has ben cleared.
-       **/
-      Cleared: AugmentedEvent<ApiType, [hash_: H256], { hash_: H256 }>;
-      /**
-       * A preimage has been noted.
-       **/
-      Noted: AugmentedEvent<ApiType, [hash_: H256], { hash_: H256 }>;
-      /**
-       * A preimage has been requested.
-       **/
-      Requested: AugmentedEvent<ApiType, [hash_: H256], { hash_: H256 }>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
-    scheduler: {
-      /**
-       * The call for the provided hash was not found so the task has been aborted.
-       **/
-      CallUnavailable: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
-      /**
-       * Canceled some task.
-       **/
-      Canceled: AugmentedEvent<ApiType, [when: u32, index: u32], { when: u32, index: u32 }>;
-      /**
-       * Dispatched some task.
-       **/
-      Dispatched: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>, result: Result<Null, SpRuntimeDispatchError>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed>, result: Result<Null, SpRuntimeDispatchError> }>;
-      /**
-       * The given task was unable to be renewed since the agenda is full at that block.
-       **/
-      PeriodicFailed: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
-      /**
-       * The given task can never be executed since it is overweight.
-       **/
-      PermanentlyOverweight: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
-      /**
-       * Scheduled some task.
-       **/
-      Scheduled: AugmentedEvent<ApiType, [when: u32, index: u32], { when: u32, index: u32 }>;
       /**
        * Generic event
        **/

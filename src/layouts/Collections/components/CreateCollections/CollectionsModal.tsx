@@ -18,6 +18,7 @@ import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { ApiPromise, WsProvider } from '@polkadot/api';
 
 interface CollectionsFieldSubmitProps {
   owner: {
@@ -126,8 +127,11 @@ export default function CollectionsModal({
           <Button
             variant="createGameSubmit"
             margin="unset"
-            onClick={() => {
+            onClick={async () => {
               console.log(getValues());
+
+              const wsProvider = new WsProvider('wss://gafi-test.gafi.network');
+              const api = await ApiPromise.create({ provider: wsProvider });
             }}
           >
             Sign & Submit
