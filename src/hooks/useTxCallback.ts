@@ -19,7 +19,8 @@ export default function useTxCallback(
     isClosable: true,
   });
 
-  const txCallback = ({ status, events }: ISubmittableResult) => {
+  const txCallback = (result: any) => {
+    const { status, events } = result as ISubmittableResult;
     if (status.isFinalized) {
       toast({
         title: t(success ?? 'FINALIZED_BLOCK_HASH'),
