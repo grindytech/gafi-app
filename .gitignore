@@ -1,7 +1,7 @@
 node_modules/
 .vscode
+build/
 .yarn
 dist
 **/.DS_Store
 .vercel
-.env

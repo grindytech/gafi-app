@@ -5,7 +5,7 @@
 // this is required to allow for ambient/previous definitions
 import '@polkadot/types/types/registry';
 
-import type { FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FrameSupportDispatchDispatchClass, FrameSupportDispatchDispatchInfo, FrameSupportDispatchPays, FrameSupportDispatchPerDispatchClassU32, FrameSupportDispatchPerDispatchClassWeight, FrameSupportDispatchPerDispatchClassWeightsPerClass, FrameSupportDispatchRawOrigin, FrameSupportPalletId, FrameSupportPreimagesBounded, FrameSupportTokensMiscAttributeNamespace, FrameSupportTokensMiscBalanceStatus, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiSupportGameTypesPackage, GafiSupportGameTypesTradeType, Game3RuntimeOriginCaller, Game3RuntimeRuntime, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReserveData, PalletCacheError, PalletCacheEvent, PalletCacheFlag, PalletCacheWrapData, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGameAuctionConfig, PalletGameCall, PalletGameError, PalletGameEvent, PalletGameGameDetails, PalletGameItem, PalletGameTradeConfig, PalletGameUpgradeItemConfig, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletNftsAttributeDeposit, PalletNftsCollectionConfig, PalletNftsCollectionDetails, PalletNftsCollectionMetadata, PalletNftsCollectionRole, PalletNftsCollectionSetting, PalletNftsError, PalletNftsEvent, PalletNftsItemConfig, PalletNftsItemDeposit, PalletNftsItemDetails, PalletNftsItemMetadata, PalletNftsItemSetting, PalletNftsMintSettings, PalletNftsMintType, PalletNftsPalletFeature, PalletNftsPendingSwap, PalletNftsPriceDirection, PalletNftsPriceWithDirection, PalletPreimageCall, PalletPreimageError, PalletPreimageEvent, PalletPreimageRequestStatus, PalletSchedulerCall, PalletSchedulerError, PalletSchedulerEvent, PalletSchedulerScheduled, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentEvent, PalletTransactionPaymentReleases, SpArithmeticArithmeticError, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight, SpWeightsWeightV2Weight } from '@polkadot/types/lookup';
+import type { FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FrameSupportDispatchDispatchClass, FrameSupportDispatchDispatchInfo, FrameSupportDispatchPays, FrameSupportDispatchPerDispatchClassU32, FrameSupportDispatchPerDispatchClassWeight, FrameSupportDispatchPerDispatchClassWeightsPerClass, FrameSupportPalletId, FrameSupportTokensMiscBalanceStatus, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, GafiSupportGameTypesLoot, GafiSupportGameTypesNft, GafiSupportGameTypesPackage, GafiSupportGameTypesTradeType, Game3RuntimeRuntime, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesIdAmount, PalletBalancesReasons, PalletBalancesReserveData, PalletCacheError, PalletCacheEvent, PalletCacheFlag, PalletCacheWrapData, PalletFaucetCall, PalletFaucetError, PalletFaucetEvent, PalletGameAuctionConfig, PalletGameCall, PalletGameError, PalletGameEvent, PalletGameGameDetails, PalletGamePoolDetails, PalletGamePoolType, PalletGameTradeConfig, PalletGameUpgradeItemConfig, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletNftsAttributeDeposit, PalletNftsAttributeNamespace, PalletNftsCollectionConfig, PalletNftsCollectionDetails, PalletNftsCollectionMetadata, PalletNftsCollectionRole, PalletNftsCollectionSetting, PalletNftsError, PalletNftsEvent, PalletNftsItemConfig, PalletNftsItemDeposit, PalletNftsItemDetails, PalletNftsItemMetadata, PalletNftsItemMetadataDeposit, PalletNftsItemSetting, PalletNftsMintSettings, PalletNftsMintType, PalletNftsPalletAttributes, PalletNftsPalletFeature, PalletNftsPendingSwap, PalletNftsPriceDirection, PalletNftsPriceWithDirection, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentEvent, PalletTransactionPaymentReleases, SpArithmeticArithmeticError, SpConsensusGrandpaAppPublic, SpConsensusGrandpaAppSignature, SpConsensusGrandpaEquivocation, SpConsensusGrandpaEquivocationProof, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight, SpWeightsWeightV2Weight } from '@polkadot/types/lookup';
 
 declare module '@polkadot/types/types/registry' {
   interface InterfaceTypes {
@@ -19,10 +19,7 @@ declare module '@polkadot/types/types/registry' {
     FrameSupportDispatchPerDispatchClassU32: FrameSupportDispatchPerDispatchClassU32;
     FrameSupportDispatchPerDispatchClassWeight: FrameSupportDispatchPerDispatchClassWeight;
     FrameSupportDispatchPerDispatchClassWeightsPerClass: FrameSupportDispatchPerDispatchClassWeightsPerClass;
-    FrameSupportDispatchRawOrigin: FrameSupportDispatchRawOrigin;
     FrameSupportPalletId: FrameSupportPalletId;
-    FrameSupportPreimagesBounded: FrameSupportPreimagesBounded;
-    FrameSupportTokensMiscAttributeNamespace: FrameSupportTokensMiscAttributeNamespace;
     FrameSupportTokensMiscBalanceStatus: FrameSupportTokensMiscBalanceStatus;
     FrameSystemAccountInfo: FrameSystemAccountInfo;
     FrameSystemCall: FrameSystemCall;
@@ -40,15 +37,17 @@ declare module '@polkadot/types/types/registry' {
     FrameSystemLimitsBlockWeights: FrameSystemLimitsBlockWeights;
     FrameSystemLimitsWeightsPerClass: FrameSystemLimitsWeightsPerClass;
     FrameSystemPhase: FrameSystemPhase;
+    GafiSupportGameTypesLoot: GafiSupportGameTypesLoot;
+    GafiSupportGameTypesNft: GafiSupportGameTypesNft;
     GafiSupportGameTypesPackage: GafiSupportGameTypesPackage;
     GafiSupportGameTypesTradeType: GafiSupportGameTypesTradeType;
-    Game3RuntimeOriginCaller: Game3RuntimeOriginCaller;
     Game3RuntimeRuntime: Game3RuntimeRuntime;
     PalletBalancesAccountData: PalletBalancesAccountData;
     PalletBalancesBalanceLock: PalletBalancesBalanceLock;
     PalletBalancesCall: PalletBalancesCall;
     PalletBalancesError: PalletBalancesError;
     PalletBalancesEvent: PalletBalancesEvent;
+    PalletBalancesIdAmount: PalletBalancesIdAmount;
     PalletBalancesReasons: PalletBalancesReasons;
     PalletBalancesReserveData: PalletBalancesReserveData;
     PalletCacheError: PalletCacheError;
@@ -63,7 +62,8 @@ declare module '@polkadot/types/types/registry' {
     PalletGameError: PalletGameError;
     PalletGameEvent: PalletGameEvent;
     PalletGameGameDetails: PalletGameGameDetails;
-    PalletGameItem: PalletGameItem;
+    PalletGamePoolDetails: PalletGamePoolDetails;
+    PalletGamePoolType: PalletGamePoolType;
     PalletGameTradeConfig: PalletGameTradeConfig;
     PalletGameUpgradeItemConfig: PalletGameUpgradeItemConfig;
     PalletGrandpaCall: PalletGrandpaCall;
@@ -72,6 +72,7 @@ declare module '@polkadot/types/types/registry' {
     PalletGrandpaStoredPendingChange: PalletGrandpaStoredPendingChange;
     PalletGrandpaStoredState: PalletGrandpaStoredState;
     PalletNftsAttributeDeposit: PalletNftsAttributeDeposit;
+    PalletNftsAttributeNamespace: PalletNftsAttributeNamespace;
     PalletNftsCollectionConfig: PalletNftsCollectionConfig;
     PalletNftsCollectionDetails: PalletNftsCollectionDetails;
     PalletNftsCollectionMetadata: PalletNftsCollectionMetadata;
@@ -83,21 +84,15 @@ declare module '@polkadot/types/types/registry' {
     PalletNftsItemDeposit: PalletNftsItemDeposit;
     PalletNftsItemDetails: PalletNftsItemDetails;
     PalletNftsItemMetadata: PalletNftsItemMetadata;
+    PalletNftsItemMetadataDeposit: PalletNftsItemMetadataDeposit;
     PalletNftsItemSetting: PalletNftsItemSetting;
     PalletNftsMintSettings: PalletNftsMintSettings;
     PalletNftsMintType: PalletNftsMintType;
+    PalletNftsPalletAttributes: PalletNftsPalletAttributes;
     PalletNftsPalletFeature: PalletNftsPalletFeature;
     PalletNftsPendingSwap: PalletNftsPendingSwap;
     PalletNftsPriceDirection: PalletNftsPriceDirection;
     PalletNftsPriceWithDirection: PalletNftsPriceWithDirection;
-    PalletPreimageCall: PalletPreimageCall;
-    PalletPreimageError: PalletPreimageError;
-    PalletPreimageEvent: PalletPreimageEvent;
-    PalletPreimageRequestStatus: PalletPreimageRequestStatus;
-    PalletSchedulerCall: PalletSchedulerCall;
-    PalletSchedulerError: PalletSchedulerError;
-    PalletSchedulerEvent: PalletSchedulerEvent;
-    PalletSchedulerScheduled: PalletSchedulerScheduled;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;
@@ -106,15 +101,15 @@ declare module '@polkadot/types/types/registry' {
     PalletTransactionPaymentEvent: PalletTransactionPaymentEvent;
     PalletTransactionPaymentReleases: PalletTransactionPaymentReleases;
     SpArithmeticArithmeticError: SpArithmeticArithmeticError;
+    SpConsensusGrandpaAppPublic: SpConsensusGrandpaAppPublic;
+    SpConsensusGrandpaAppSignature: SpConsensusGrandpaAppSignature;
+    SpConsensusGrandpaEquivocation: SpConsensusGrandpaEquivocation;
+    SpConsensusGrandpaEquivocationProof: SpConsensusGrandpaEquivocationProof;
     SpCoreEcdsaSignature: SpCoreEcdsaSignature;
     SpCoreEd25519Public: SpCoreEd25519Public;
     SpCoreEd25519Signature: SpCoreEd25519Signature;
     SpCoreSr25519Signature: SpCoreSr25519Signature;
     SpCoreVoid: SpCoreVoid;
-    SpFinalityGrandpaAppPublic: SpFinalityGrandpaAppPublic;
-    SpFinalityGrandpaAppSignature: SpFinalityGrandpaAppSignature;
-    SpFinalityGrandpaEquivocation: SpFinalityGrandpaEquivocation;
-    SpFinalityGrandpaEquivocationProof: SpFinalityGrandpaEquivocationProof;
     SpRuntimeDigest: SpRuntimeDigest;
     SpRuntimeDigestDigestItem: SpRuntimeDigestDigestItem;
     SpRuntimeDispatchError: SpRuntimeDispatchError;
