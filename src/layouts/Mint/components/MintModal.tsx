@@ -18,33 +18,29 @@ import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { ApiPromise, WsProvider } from '@polkadot/api';
 
-interface CollectionsFieldSubmitProps {
+interface MintFieldSubmitProps {
   owner: {
     account: string;
     hash: string;
   };
 
-  collection_id: number;
-  mining_fee: number;
-  admin: {
+  mint: {
     account: string;
     hash: string;
   };
+
+  amount: string;
+  pool_id: string;
 }
 
-interface CollectionsModalProps {
+interface MintModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function CollectionsModal({
-  onClose,
-  getValues,
-}: CollectionsModalProps) {
-  const { owner, admin, collection_id, mining_fee } =
-    getValues() as CollectionsFieldSubmitProps;
+export default function MintModal({ getValues, onClose }: MintModalProps) {
+  const { amount, pool_id, mint, owner } = getValues() as MintFieldSubmitProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -60,7 +56,7 @@ export default function CollectionsModal({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Create collection
+              Mining
             </Heading>
 
             <ModalCloseButton
@@ -82,30 +78,29 @@ export default function CollectionsModal({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Collection ID</Td>
-                <Td>{collection_id}</Td>
+                <Td>Pool ID</Td>
+
+                <Td>{pool_id}</Td>
               </Tr>
 
               <Tr>
-                <Td>Mining fee</Td>
-                <Td>
-                  <GafiAmount amount={mining_fee} />
-                </Td>
+                <Td>Amount ID</Td>
+                <Td>{amount}</Td>
               </Tr>
 
               <Tr>
                 <Td>Fee</Td>
                 <Td>
-                  <GafiAmount amount="50,6895" />
+                  <GafiAmount amount="50,689" />
                 </Td>
               </Tr>
 
               <Tr>
-                <Td>Admin</Td>
+                <Td>Mint to</Td>
                 <Td>
                   <NewGamesProfile
-                    hash={admin.hash}
-                    account={admin.account}
+                    hash={mint.hash}
+                    account={mint.account}
                     sx={{
                       textAlign: 'left',
                       mt: {
@@ -127,11 +122,8 @@ export default function CollectionsModal({
           <Button
             variant="createGameSubmit"
             margin="unset"
-            onClick={async () => {
+            onClick={() => {
               console.log(getValues());
-
-              const wsProvider = new WsProvider('wss://gafi-test.gafi.network');
-              const api = await ApiPromise.create({ provider: wsProvider });
             }}
           >
             Sign & Submit

@@ -14,39 +14,29 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React, { useState } from 'react';
+import React, { Dispatch } from 'react';
 
 import Chevron01Icon from 'public/assets//line/chevron-01.svg';
 import UserProfileIcon from 'public/assets/header/user-profile.svg';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
+
 import ButtonCopy from 'components/ButtonCopy';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import { currentAccountProps } from 'layouts/Mint/components/MintTo';
 
-interface SwitchAdminProps {
-  setValue: UseFormSetValue<FieldValues>;
-  accounts: {
-    account: string;
-    hash: string;
-    id: number;
-  }[];
+interface SwitchAdmin2Props {
+  currentAccount: currentAccountProps;
+  setCurrentAccount: Dispatch<React.SetStateAction<currentAccountProps>>;
+  accounts: currentAccountProps[];
   sx?: BoxProps;
-  type?: 'admin' | 'mint';
 }
 
-export default function SwitchAdmin({
-  setValue,
+export default function SwitchAdmin2({
   accounts,
+  currentAccount,
+  setCurrentAccount,
   sx,
-  type = 'admin',
-}: SwitchAdminProps) {
+}: SwitchAdmin2Props) {
   const { isOpen, onToggle, onClose } = useDisclosure();
-
-  const [currentAccount, setCurrentAccount] = useState(accounts[0]);
-
-  setValue(type, {
-    account: currentAccount.account,
-    hash: currentAccount.hash,
-  });
 
   const GetCurrentAccount = accounts.filter(
     item => item.hash !== currentAccount.hash
@@ -62,7 +52,7 @@ export default function SwitchAdmin({
         fontWeight="semibold"
         color="primary.a.500"
       >
-        {type === 'admin' ? 'Admin' : 'Mint To'}
+        Mint to
       </Heading>
 
       <Accordion index={isOpen ? 0 : 1}>
@@ -85,7 +75,7 @@ export default function SwitchAdmin({
                 fontWeight="semibold"
                 color="shader.a.900"
               >
-                {currentAccount.account}
+                {currentAccount.account || accounts[0].account}
               </Heading>
 
               <Text
@@ -100,9 +90,9 @@ export default function SwitchAdmin({
                   sm: 'center',
                 }}
               >
-                {currentAccount.hash}
+                {currentAccount.hash || accounts[0].hash}
 
-                <ButtonCopy value={currentAccount.hash} />
+                <ButtonCopy value={currentAccount.hash || accounts[0].hash} />
               </Text>
             </Box>
 

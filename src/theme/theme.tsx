@@ -37,6 +37,8 @@ export const colors = {
   },
   second: {
     red: '#DB2330',
+    orange: '#FF7B00',
+    purple: '#8338EC',
   },
   ...backgrounds,
 };
