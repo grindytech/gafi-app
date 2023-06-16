@@ -42,7 +42,7 @@ const rococo = {
   TRACKING_ID: 'G-PB9GEPCD66',
 };
 const test = {
-  PROVIDER_SOCKET: 'wss://dev-node.substrate.dev',
+  PROVIDER_SOCKETS: ['wss://dev-node.substrate.dev'],
 };
 
 const config = {
