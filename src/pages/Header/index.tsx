@@ -1,19 +1,25 @@
 import {
   Box,
+  Button,
   Center,
   Icon,
   IconButton,
   List,
   ListItem,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import BellIcon from 'public/assets/line/bell.svg';
 import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
-import UserProfileIcon from 'public/assets/header/user-profile.svg';
+
 import { Link, useLocation } from 'react-router-dom';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
+import { useWallet } from 'use-wallet';
+import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+import { shorten } from 'utils/utils';
+import ConnectWallet from 'components/ConnectWallet';
 
 const ListHeader = [
   {
@@ -37,6 +43,7 @@ const ListHeader = [
 
 export default function Header() {
   const { pathname } = useLocation();
+  const { connect, account, reset } = useWallet();
 
   return (
     <Box
@@ -116,7 +123,17 @@ export default function Header() {
           </ListItem>
 
           <ListItem>
-            <UserProfileIcon />
+            {account ? (
+              <Tooltip label="click to disconnect">
+                <Center gap={2} cursor="pointer" onClick={reset}>
+                  <AccountJazzicon address={account} />
+
+                  <Text color="shader.a.600">{shorten(account, 6)}</Text>
+                </Center>
+              </Tooltip>
+            ) : (
+              <ConnectWallet />
+            )}
           </ListItem>
         </List>
       </Center>

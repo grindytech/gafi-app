@@ -3,15 +3,18 @@ import React from 'react';
 
 import GoBack from 'components/GoBack';
 
-import NewGamesUpload from './components/NewGamesUpload';
-import NewGamesAccount from './components/NewGamesAccount';
-import NewGamesTitle from './components/NewGamesTitle';
-import NewsGamesID from './components/NewsGamesID';
-import NewGamesAdmin from './components/NewGamesAdmin';
 import NewGamesAuthorize from './components/NewGamesAuthorize';
 import { useForm } from 'react-hook-form';
+import GameOwner from 'components/Game/GameOwner';
+import GameID from 'components/Game/GameID';
+import useAccount from 'hooks/useAccount';
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import NewGamesUpload from './components/NewGamesUpload';
+import NewGamesTitle from './components/NewGamesTitle';
+
 export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getAccounts } = useAccount();
 
   const { register, setValue, getValues } = useForm();
 
@@ -33,28 +36,20 @@ export default function NewGames() {
         🎮 Create games
       </Heading>
 
-      <Flex
-        flexDirection="column"
-        gap={3}
-        sx={{
-          h6: {
-            fontSize: 'md',
-            fontWeight: 'medium',
-            color: 'shader.a.600',
-          },
-        }}
-      >
-        <NewGamesAccount setValue={setValue} />
+      <Flex flexDirection="column" gap={3}>
+        <GameOwner type="Owner" setValue={setValue} />
 
         {/* hidden */}
-        <NewGamesUpload register={register} />
+        {/* <NewGamesUpload register={register} /> */}
 
         {/* hidden */}
-        <NewGamesTitle register={register} />
+        {/* <NewGamesTitle register={register} /> */}
 
-        <NewsGamesID setValue={setValue} />
+        <GameID setValue={setValue} />
 
-        <NewGamesAdmin setValue={setValue} />
+        {getAccounts ? (
+          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
+        ) : null}
 
         <Button
           variant="createGameSubmit"

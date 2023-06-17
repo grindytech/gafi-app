@@ -12,8 +12,9 @@ import {
 import GoBack from 'components/GoBack';
 import React from 'react';
 import LineAddIcon from 'public/assets/line/add.svg';
+
 import CreateItem from './components/CreateItem';
-import AddItem from './components/AddItem';
+import AddSupply from './components/AddSupply';
 
 export default function Items() {
   return (
@@ -52,7 +53,7 @@ export default function Items() {
           <Tab>
             <Center gap={2}>
               <Icon as={LineAddIcon as any} width={4} height={4} />
-              <Text>Add Item</Text>
+              <Text>Add Supply</Text>
             </Center>
           </Tab>
         </TabList>
@@ -69,7 +70,7 @@ export default function Items() {
           </TabPanel>
 
           <TabPanel>
-            <AddItem />
+            <AddSupply />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -40,13 +40,15 @@ interface MintModalProps {
 }
 
 export default function MintModal({ getValues, onClose }: MintModalProps) {
-  const { amount, pool_id, mint, owner } = getValues() as MintFieldSubmitProps;
+  // const { amount, pool_id, mint, owner } = getValues() as MintFieldSubmitProps;
+
+  console.log(getValues());
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
-      <ModalOverlay />
+      {/* <ModalOverlay /> */}
 
-      <ModalContent
+      {/* <ModalContent
         padding={{
           base: 4,
           md: 6,
@@ -129,7 +131,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
             Sign & Submit
           </Button>
         </ModalFooter>
-      </ModalContent>
+      </ModalContent> */}
     </Modal>
   );
 }

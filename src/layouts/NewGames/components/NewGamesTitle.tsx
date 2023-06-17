@@ -21,7 +21,7 @@ export default function NewGamesTitle({ register }: NewGamesTitleProps) {
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading as="h6">Tittle</Heading>
+      <Heading variant="game">Tittle</Heading>
 
       <Center>
         <InputGroup size="sm">

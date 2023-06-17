@@ -13,30 +13,39 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
+import { useSubstrateState } from 'contexts/substrateContext';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { getInjectedWeb3 } from 'utils/utils';
 
-interface CollectionsFieldSubmitProps {
-  owner: {
-    account: string;
-    hash: string;
+interface AddCollectionFieldProps {
+  admin: {
+    address: string;
+    name: string;
   };
-  collection_id: number;
-  item_id: number;
-  amount: number;
+  collection_id: string;
+  game_id: string;
 }
 
-interface ItemModalProps {
+interface AddCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function ItemModal({ getValues, onClose }: ItemModalProps) {
-  const { owner, amount, collection_id, item_id } =
-    getValues() as CollectionsFieldSubmitProps;
+export default function AddCollectionsModal({
+  getValues,
+  onClose,
+}: AddCollectionsModalProps) {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { api } = useSubstrateState();
+  const { admin, collection_id, game_id } =
+    getValues() as AddCollectionFieldProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -52,7 +61,7 @@ export default function ItemModal({ getValues, onClose }: ItemModalProps) {
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Create Item
+              Add collection
             </Heading>
 
             <ModalCloseButton
@@ -63,7 +72,7 @@ export default function ItemModal({ getValues, onClose }: ItemModalProps) {
             />
           </Center>
 
-          <NewGamesProfile account={owner.account} hash={owner.hash} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -74,18 +83,13 @@ export default function ItemModal({ getValues, onClose }: ItemModalProps) {
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Item ID</Td>
-                <Td>{item_id}</Td>
-              </Tr>
-
-              <Tr>
                 <Td>Collection ID</Td>
                 <Td>{collection_id}</Td>
               </Tr>
 
               <Tr>
-                <Td>Amount</Td>
-                <Td>{amount}</Td>
+                <Td>Game ID</Td>
+                <Td>{game_id}</Td>
               </Tr>
 
               <Tr>
@@ -101,9 +105,45 @@ export default function ItemModal({ getValues, onClose }: ItemModalProps) {
         <ModalFooter px={0} pb={0}>
           <Button
             variant="createGameSubmit"
+            isLoading={isLoading}
+            _hover={{}}
             margin="unset"
-            onClick={() => {
-              console.log(getValues());
+            onClick={async () => {
+              const injected = await getInjectedWeb3();
+
+              if (api && injected) {
+                const submit = api.tx.game.addGameCollection(
+                  game_id,
+                  collection_id
+                );
+
+                await submit
+                  .signAndSend(
+                    admin.address,
+                    {
+                      signer: injected.signer,
+                    },
+                    () => {
+                      toast({
+                        position: 'top-right',
+                        description: 'success',
+                        status: 'success',
+                      });
+
+                      setIsLoading(true);
+                      onClose();
+                    }
+                  )
+                  .catch(error => {
+                    setIsLoading(false);
+
+                    toast({
+                      position: 'top-right',
+                      description: error.message,
+                      status: 'error',
+                    });
+                  });
+              }
             }}
           >
             Sign & Submit

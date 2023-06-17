@@ -16,38 +16,39 @@ interface MintAmountProps {
 }
 
 export default function MintAmount({ setValue, watch }: MintAmountProps) {
-  const maxiumLength = 10;
   const currentAmount = watch('amount');
+  const maxiumLength = 10;
+  const min = 0;
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading as="h6">Amount</Heading>
+      <Heading variant="game">Amount</Heading>
 
       <Center>
         <InputGroup>
           <Input
-            id="input"
-            onBlur={e => {
-              const { value, min, max } = e.target;
+            onChange={e => {
+              const { value, max, min } = e.target;
 
-              if (Number(value) < Number(min)) {
-                return setValue('amount', Number(min));
-              }
               if (Number(value) > Number(max)) {
-                return setValue('amount', Number(max));
+                return setValue('amount', max);
+              }
+              if (Number(value) < Number(min)) {
+                return setValue('amount', min);
               }
 
-              setValue('amount', Number(value));
+              setValue('amount', value);
             }}
+            value={currentAmount}
             max={maxiumLength}
-            min={0}
+            min={min}
             variant="createGameSubmit"
             placeholder="Ex: 0"
           />
 
           <InputRightAddon bg="transparent">
             <Text as="span" color="shader.a.500" fontSize="sm">
-              {currentAmount || 0}/{maxiumLength}
+              {currentAmount || min}/{maxiumLength}
             </Text>
           </InputRightAddon>
         </InputGroup>

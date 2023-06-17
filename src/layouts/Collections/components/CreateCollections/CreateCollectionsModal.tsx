@@ -13,38 +13,43 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { ApiPromise, WsProvider } from '@polkadot/api';
 
-interface CollectionsFieldSubmitProps {
+import { getInjectedWeb3 } from 'utils/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
+
+interface CreateCollectionFieldProps {
   owner: {
-    account: string;
-    hash: string;
+    address: string;
+    name: string;
   };
-
-  collection_id: number;
-  mining_fee: number;
   admin: {
-    account: string;
-    hash: string;
+    address: string;
+    name: string;
   };
+  collection_id: string;
 }
 
-interface CollectionsModalProps {
+interface CreateCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function CollectionsModal({
+export default function CreateCollectionsModal({
   onClose,
   getValues,
-}: CollectionsModalProps) {
-  const { owner, admin, collection_id, mining_fee } =
-    getValues() as CollectionsFieldSubmitProps;
+}: CreateCollectionsModalProps) {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { api } = useSubstrateState();
+  const { collection_id, owner, admin } =
+    getValues() as CreateCollectionFieldProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -71,7 +76,7 @@ export default function CollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={owner.account} hash={owner.hash} />
+          <NewGamesProfile account={owner.name} hash={owner.address} />
         </ModalHeader>
 
         <ModalBody
@@ -87,13 +92,6 @@ export default function CollectionsModal({
               </Tr>
 
               <Tr>
-                <Td>Mining fee</Td>
-                <Td>
-                  <GafiAmount amount={mining_fee} />
-                </Td>
-              </Tr>
-
-              <Tr>
                 <Td>Fee</Td>
                 <Td>
                   <GafiAmount amount="50,6895" />
@@ -104,8 +102,8 @@ export default function CollectionsModal({
                 <Td>Admin</Td>
                 <Td>
                   <NewGamesProfile
-                    hash={admin.hash}
-                    account={admin.account}
+                    hash={admin.address}
+                    account={admin.name}
                     sx={{
                       textAlign: 'left',
                       mt: {
@@ -126,12 +124,43 @@ export default function CollectionsModal({
         <ModalFooter px={0} pb={0}>
           <Button
             variant="createGameSubmit"
+            isLoading={isLoading}
+            _hover={{}}
             margin="unset"
             onClick={async () => {
-              console.log(getValues());
+              const injected = await getInjectedWeb3();
 
-              const wsProvider = new WsProvider('wss://gafi-test.gafi.network');
-              const api = await ApiPromise.create({ provider: wsProvider });
+              if (api && injected) {
+                const submit = api.tx.game.createCollection(admin.address);
+                setIsLoading(true);
+
+                await submit
+                  .signAndSend(
+                    owner.address,
+                    {
+                      signer: injected.signer,
+                    },
+                    () => {
+                      toast({
+                        position: 'top-right',
+                        description: 'success',
+                        status: 'success',
+                      });
+
+                      setIsLoading(true);
+                      onClose();
+                    }
+                  )
+                  .catch(error => {
+                    setIsLoading(false);
+
+                    toast({
+                      position: 'top-right',
+                      description: error.message,
+                      status: 'error',
+                    });
+                  });
+              }
             }}
           >
             Sign & Submit

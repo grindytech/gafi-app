@@ -1,36 +1,34 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import CollectionsOwner from '../CollectionsOwner';
-import CollectionsID from './CollectionsID';
-import CollectionsAdmin from './CollectionsAdmin';
-import CollectionsModal from './CollectionsModal';
+
+import CreateCollectionsModal from './CreateCollectionsModal';
 import { useForm } from 'react-hook-form';
-import CollectionsMining from './CollectionsMining';
+import GameOwner from 'components/Game/GameOwner';
+import CollectionID from 'components/Collection/CollectionID';
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import useAccount from 'hooks/useAccount';
 
 export default function CollectionsCreate() {
-  const { setValue, getValues, register } = useForm();
+  const { setValue, getValues } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getAccounts } = useAccount();
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        gap={3}
-        sx={{
-          h6: {
-            fontSize: 'md',
-            fontWeight: 'medium',
-            color: 'shader.a.600',
-          },
-        }}
-      >
-        <CollectionsOwner setValue={setValue} />
+      <Flex flexDirection="column" gap={3}>
+        <GameOwner
+          type="Owner"
+          setValue={setValue}
+          sx={{
+            padding: 4,
+          }}
+        />
 
-        <CollectionsID setValue={setValue} />
+        <CollectionID setValue={setValue} />
 
-        <CollectionsMining register={register} />
-
-        <CollectionsAdmin setValue={setValue} />
+        {getAccounts ? (
+          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
+        ) : null}
 
         <Button
           variant="createGameSubmit"
@@ -42,7 +40,9 @@ export default function CollectionsCreate() {
         </Button>
       </Flex>
 
-      {isOpen && <CollectionsModal onClose={onClose} getValues={getValues} />}
+      {isOpen && (
+        <CreateCollectionsModal onClose={onClose} getValues={getValues} />
+      )}
     </>
   );
 }

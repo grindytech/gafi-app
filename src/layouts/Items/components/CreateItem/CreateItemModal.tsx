@@ -15,42 +15,36 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react';
-import React from 'react';
-
-import NewGamesProfile from './NewGamesProfile';
-
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
 
+import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import React from 'react';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { getInjectedWeb3 } from 'utils/utils';
 
-interface NewGamesFieldProps {
-  owner: {
-    address: string;
-    name: string;
-  };
+interface CreateItemFieldProps {
   admin: {
     address: string;
     name: string;
   };
-  game_id: string;
+  collection_id: number;
+  item_id: number;
 }
 
-interface NewGamesAuthorizeProps {
+interface CreateItemModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function NewGamesAuthorize({
-  onClose,
+export default function CreateItemModal({
   getValues,
-}: NewGamesAuthorizeProps) {
+  onClose,
+}: CreateItemModalProps) {
   const toast = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const { api } = useSubstrateState();
-  const { game_id, owner, admin } = getValues() as NewGamesFieldProps;
+  const { collection_id, item_id, admin } = getValues() as CreateItemFieldProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -66,7 +60,7 @@ export default function NewGamesAuthorize({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Authorize transaction
+              Create Item
             </Heading>
 
             <ModalCloseButton
@@ -77,7 +71,7 @@ export default function NewGamesAuthorize({
             />
           </Center>
 
-          <NewGamesProfile account={owner.name} hash={owner.address} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -88,35 +82,13 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Game ID</Td>
-                <Td>{game_id}</Td>
+                <Td>Collection ID</Td>
+                <Td>{collection_id}</Td>
               </Tr>
 
               <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,689" />
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td>Admin</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={admin.address}
-                    account={admin.name}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
-                </Td>
+                <Td>Item ID</Td>
+                <Td>{item_id}</Td>
               </Tr>
             </Tbody>
           </Table>
@@ -125,19 +97,24 @@ export default function NewGamesAuthorize({
         <ModalFooter px={0} pb={0}>
           <Button
             variant="createGameSubmit"
-            isLoading={isLoading}
-            _hover={{}}
             margin="unset"
             onClick={async () => {
               const injected = await getInjectedWeb3();
 
               if (api && injected) {
-                const submit = api.tx.game.createGame(admin.address);
-                setIsLoading(true);
+                const PalletNftsItemConfig = 0;
+                const maybeSupply = null;
+
+                const submit = api.tx.game.createItem(
+                  collection_id,
+                  item_id,
+                  PalletNftsItemConfig,
+                  maybeSupply
+                );
 
                 await submit
                   .signAndSend(
-                    owner.address,
+                    admin.address,
                     {
                       signer: injected.signer,
                     },

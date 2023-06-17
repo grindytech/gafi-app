@@ -2,16 +2,20 @@ import { Box, Flex, FlexProps, Heading, Text } from '@chakra-ui/react';
 import ButtonCopy from 'components/ButtonCopy';
 import React from 'react';
 import UserProfileIcon from 'public/assets/header/user-profile.svg';
+import { shorten } from 'utils/utils';
+import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 
 interface NewGamesProfileProps {
-  account?: string;
+  account: string;
   hash: string;
+  shortenLength?: number;
   sx?: FlexProps;
 }
 
 export default function NewGamesProfile({
   account,
   hash,
+  shortenLength = 12,
   sx,
 }: NewGamesProfileProps) {
   return (
@@ -23,7 +27,7 @@ export default function NewGamesProfile({
       flexWrap="wrap"
       {...sx}
     >
-      <UserProfileIcon />
+      <AccountJazzicon address={hash} />
 
       <Box>
         <Heading
@@ -32,7 +36,7 @@ export default function NewGamesProfile({
           fontWeight="semibold"
           color="shader.a.900"
         >
-          {account || '-'}
+          {account}
         </Heading>
 
         <Text
@@ -46,7 +50,7 @@ export default function NewGamesProfile({
             sm: 'center',
           }}
         >
-          {hash}
+          {shorten(hash, shortenLength)}
           <ButtonCopy value={hash} />
         </Text>
       </Box>

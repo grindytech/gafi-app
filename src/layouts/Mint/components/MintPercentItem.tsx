@@ -1,34 +1,40 @@
 import { Box, Grid, Heading, Text } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import CardBox from 'components/CardBox';
+import { useSubstrateState } from 'contexts/substrateContext';
 import React from 'react';
 import { FieldValues, UseFormWatch } from 'react-hook-form';
+
 import { colors } from 'theme/theme';
+
+type TypeLootTableOfProps = {
+  maybeNFT: string | null;
+  weight: number;
+};
 
 interface MintPercentItemProps {
   watch: UseFormWatch<FieldValues>;
 }
 
 export default function MintPercentItem({ watch }: MintPercentItemProps) {
-  const pool_id = watch('pool_id');
-  const amount = watch('amount');
+  const pool_id: string = watch('pool_id');
+  const { api } = useSubstrateState();
 
-  const ListItem = [
-    {
-      item: 0,
-      amount: 1300,
-      rare: 50,
+  const { data } = useQuery(
+    ['getItemsOfPoolID'],
+    async () => {
+      if (api && pool_id) {
+        const res = await api.query.game.lootTableOf(pool_id);
+
+        return res.toJSON() as TypeLootTableOfProps[];
+      }
     },
     {
-      item: 1,
-      amount: 700,
-      rare: 25,
-    },
-    {
-      item: 2,
-      amount: 80,
-      rare: 10,
-    },
-  ];
+      enabled: !!pool_id,
+    }
+  );
+
+  console.log({ data, pool_id });
 
   const PercentColor = (percent: number) => {
     if (percent >= 50) return colors.primary.a[500];
@@ -38,7 +44,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
 
   return (
     <>
-      {pool_id && amount ? (
+      {data && data.length && pool_id ? (
         <CardBox variant="createGames">
           <Box>
             <Heading fontWeight="medium" fontSize="sm" color="shader.a.500">
@@ -50,26 +56,26 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
           </Box>
 
           <Grid gridTemplateColumns="repeat(3, 1fr)" pt={3} gap={3}>
-            {ListItem.map(mint => (
+            {data.map((mint, index) => (
               <Box
-                key={mint.item}
+                key={mint.weight}
                 border="1px solid #D4D4D8"
                 borderRadius="xl"
                 padding={4}
               >
                 <Heading fontSize="lg" fontWeight="medium" color="shader.a.900">
-                  Item {mint.item}
+                  Item {index}
                 </Heading>
 
                 <Box mt={4}>
                   <Text>
                     Amount&nbsp;
                     <Text as="span" color="shader.a.900" fontWeight="semibold">
-                      {mint.amount}
+                      {mint.weight}
                     </Text>
                   </Text>
 
-                  <Text>
+                  {/* <Text>
                     Rare&nbsp;
                     <Text
                       as="span"
@@ -78,7 +84,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
                     >
                       {mint.rare}%
                     </Text>
-                  </Text>
+                  </Text> */}
                 </Box>
               </Box>
             ))}

@@ -123,11 +123,6 @@ export const getFromAcct = async (
   return [address, { signer }];
 };
 
-export const shorten = (hash: string, length = 6) => {
-  const n = hash.length;
-  return `${hash.substr(0, length)}...${hash.substr(n - length)}`;
-};
-
 export const handleTxError = (
   events: EventRecord[],
   api: ApiPromise | null,

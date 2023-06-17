@@ -1,19 +1,19 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
-
-import { useForm } from 'react-hook-form';
-
-import useAccount from 'hooks/useAccount';
-
+import CardBox from 'components/CardBox';
 import CollectionAdd from 'components/Collection/CollectionAdd';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import CreateItemModal from './CreateItemModal';
+import useAccount from 'hooks/useAccount';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import ItemAdd from '../ItemAdd';
+import AddSupplyAmount from './AddSupplyAmount';
+import AddSupplyModal from './AddSupplyModal';
 
-export default function CreateItem() {
-  const { setValue, getValues } = useForm();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function AddSupply() {
+  const { getValues, setValue } = useForm();
   const { getAccounts } = useAccount();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -26,6 +26,8 @@ export default function CreateItem() {
 
         <ItemAdd setValue={setValue} />
 
+        <AddSupplyAmount setValue={setValue} />
+
         <Button
           variant="createGameSubmit"
           isDisabled={isOpen}
@@ -36,7 +38,7 @@ export default function CreateItem() {
         </Button>
       </Flex>
 
-      {isOpen && <CreateItemModal onClose={onClose} getValues={getValues} />}
+      {isOpen && <AddSupplyModal onClose={onClose} getValues={getValues} />}
     </>
   );
 }
