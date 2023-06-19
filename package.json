@@ -25,11 +25,12 @@
     "@graphql-codegen/typescript-operations": "^2.4.0",
     "@graphql-codegen/typescript-react-query": "^3.5.12",
     "@mdi/js": "^7.2.96",
+    "@mdi/react": "^1.6.1",
     "@polkadot/api": "^8.14.2-12",
     "@polkadot/extension-dapp": "0.43.1",
     "@polkadot/keyring": "^9.0.1",
     "@polkadot/networks": "^8.4.1",
-    "@polkadot/types": "^8.1.1",
+    "@polkadot/types": "^8.14.2-12",
     "@polkadot/ui-keyring": "2.0.1",
     "@polkadot/ui-settings": "2.0.1",
     "@polkadot/util": "^9.0.1",
@@ -54,7 +55,7 @@
     "web3-utils": "1.7.1"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^8.1.1",
+    "@polkadot/typegen": "^8.14.2-12",
     "@types/node": "^20.2.6",
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",
