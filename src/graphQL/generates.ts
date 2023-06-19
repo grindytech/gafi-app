@@ -3,12 +3,24 @@ import { RequestInit } from 'graphql-request/dist/types.dom';
 import { useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 
-function fetcher<TData, TVariables>(client: GraphQLClient, query: string, variables?: TVariables, headers?: RequestInit['headers']) {
-  return async (): Promise<TData> => client.request<TData, TVariables>(query, variables, headers);
+function fetcher<TData, TVariables>(
+  client: GraphQLClient,
+  query: string,
+  variables?: TVariables,
+  headers?: RequestInit['headers']
+) {
+  return async (): Promise<TData> =>
+    client.request<TData, TVariables>(query, variables, headers);
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -107,7 +119,6 @@ export type BlockEntitiesConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `BlockEntity` values. */
 export type BlockEntitiesConnectionGroupedAggregatesArgs = {
   groupBy: Array<BlockEntitiesGroupBy>;
@@ -131,7 +142,7 @@ export enum BlockEntitiesGroupBy {
   Field4TruncatedToHour = 'FIELD4_TRUNCATED_TO_HOUR',
   Field5 = 'FIELD5',
   Field6 = 'FIELD6',
-  Id = 'ID'
+  Id = 'ID',
 }
 
 export type BlockEntitiesHavingAverageInput = {
@@ -208,7 +219,7 @@ export enum BlockEntitiesOrderBy {
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
 export type BlockEntity = Node & {
@@ -452,7 +463,6 @@ export type ClaimedContractsConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `ClaimedContract` values. */
 export type ClaimedContractsConnectionGroupedAggregatesArgs = {
   groupBy: Array<ClaimedContractsGroupBy>;
@@ -478,7 +488,7 @@ export enum ClaimedContractsGroupBy {
   Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
 }
 
 export type ClaimedContractsHavingAverageInput = {
@@ -555,7 +565,7 @@ export enum ClaimedContractsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
 }
 
 export type CreatedContract = Node & {
@@ -653,7 +663,6 @@ export type CreatedContractsConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `CreatedContract` values. */
 export type CreatedContractsConnectionGroupedAggregatesArgs = {
   groupBy: Array<CreatedContractsGroupBy>;
@@ -679,7 +688,7 @@ export enum CreatedContractsGroupBy {
   Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
 }
 
 export type CreatedContractsHavingAverageInput = {
@@ -756,7 +765,7 @@ export enum CreatedContractsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
 }
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -943,12 +952,10 @@ export type Query = Node & {
   users?: Maybe<UsersConnection>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type Query_MetadataArgs = {
   chainId?: InputMaybe<Scalars['String']>;
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntitiesArgs = {
@@ -963,13 +970,11 @@ export type QueryBlockEntitiesArgs = {
   orderBy?: InputMaybe<Array<BlockEntitiesOrderBy>>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryBlockEntityByNodeIdArgs = {
@@ -977,20 +982,17 @@ export type QueryBlockEntityByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryClaimedContractArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryClaimedContractByNodeIdArgs = {
   distinct?: InputMaybe<Array<InputMaybe<Claimed_Contracts_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryClaimedContractsArgs = {
@@ -1005,20 +1007,17 @@ export type QueryClaimedContractsArgs = {
   orderBy?: InputMaybe<Array<ClaimedContractsOrderBy>>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryCreatedContractArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryCreatedContractByNodeIdArgs = {
   distinct?: InputMaybe<Array<InputMaybe<Created_Contracts_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCreatedContractsArgs = {
@@ -1033,12 +1032,10 @@ export type QueryCreatedContractsArgs = {
   orderBy?: InputMaybe<Array<CreatedContractsOrderBy>>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolArgs = {
@@ -1046,13 +1043,11 @@ export type QuerySponsoredPoolArgs = {
   id: Scalars['String'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolByNodeIdArgs = {
   distinct?: InputMaybe<Array<InputMaybe<Sponsored_Pools_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySponsoredPoolsArgs = {
@@ -1067,20 +1062,17 @@ export type QuerySponsoredPoolsArgs = {
   orderBy?: InputMaybe<Array<SponsoredPoolsOrderBy>>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryTransferByNodeIdArgs = {
   distinct?: InputMaybe<Array<InputMaybe<Transfers_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTransfersArgs = {
@@ -1095,13 +1087,11 @@ export type QueryTransfersArgs = {
   orderBy?: InputMaybe<Array<TransfersOrderBy>>;
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByNodeIdArgs = {
@@ -1109,20 +1099,17 @@ export type QueryUserByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolArgs = {
   blockHeight?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
-
 /** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolByNodeIdArgs = {
   distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
   nodeId: Scalars['ID'];
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserJoinedPoolsArgs = {
@@ -1136,7 +1123,6 @@ export type QueryUserJoinedPoolsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
 };
-
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUsersArgs = {
@@ -1172,7 +1158,6 @@ export type SponsoredPool = Node & {
   usersByUserJoinedPoolPoolIdAndAccountId: SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection;
 };
 
-
 export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -1184,7 +1169,6 @@ export type SponsoredPoolUserJoinedPoolsByPoolIdArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
 };
-
 
 export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
@@ -1372,53 +1356,55 @@ export type SponsoredPoolToManyUserJoinedPoolFilter = {
 };
 
 /** A connection to a list of `User` values, with data from `UserJoinedPool`. */
-export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection = {
-  __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<UserAggregates>;
-  /** A list of edges which contains the `User`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
-  edges: Array<SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<UserAggregates>>;
-  /** A list of `User` objects. */
-  nodes: Array<Maybe<User>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `User` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection =
+  {
+    __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnection';
+    /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+    aggregates?: Maybe<UserAggregates>;
+    /** A list of edges which contains the `User`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
+    edges: Array<SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge>;
+    /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+    groupedAggregates?: Maybe<Array<UserAggregates>>;
+    /** A list of `User` objects. */
+    nodes: Array<Maybe<User>>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** The count of *all* `User` you could get from the connection. */
+    totalCount: Scalars['Int'];
+  };
 
 /** A connection to a list of `User` values, with data from `UserJoinedPool`. */
-export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnectionGroupedAggregatesArgs = {
-  groupBy: Array<UsersGroupBy>;
-  having?: InputMaybe<UsersHavingInput>;
-};
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyConnectionGroupedAggregatesArgs =
+  {
+    groupBy: Array<UsersGroupBy>;
+    having?: InputMaybe<UsersHavingInput>;
+  };
 
 /** A `User` edge in the connection, with data from `UserJoinedPool`. */
-export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge = {
-  __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `User` at the end of the edge. */
-  node?: Maybe<User>;
-  /** Reads and enables pagination through a set of `UserJoinedPool`. */
-  userJoinedPoolsByAccountId: UserJoinedPoolsConnection;
-};
-
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge =
+  {
+    __typename?: 'SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdge';
+    /** A cursor for use in pagination. */
+    cursor?: Maybe<Scalars['Cursor']>;
+    /** The `User` at the end of the edge. */
+    node?: Maybe<User>;
+    /** Reads and enables pagination through a set of `UserJoinedPool`. */
+    userJoinedPoolsByAccountId: UserJoinedPoolsConnection;
+  };
 
 /** A `User` edge in the connection, with data from `UserJoinedPool`. */
-export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdgeUserJoinedPoolsByAccountIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  blockHeight?: InputMaybe<Scalars['String']>;
-  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
-  filter?: InputMaybe<UserJoinedPoolFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
-};
+export type SponsoredPoolUsersByUserJoinedPoolPoolIdAndAccountIdManyToManyEdgeUserJoinedPoolsByAccountIdArgs =
+  {
+    after?: InputMaybe<Scalars['Cursor']>;
+    before?: InputMaybe<Scalars['Cursor']>;
+    blockHeight?: InputMaybe<Scalars['String']>;
+    distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
+    filter?: InputMaybe<UserJoinedPoolFilter>;
+    first?: InputMaybe<Scalars['Int']>;
+    last?: InputMaybe<Scalars['Int']>;
+    offset?: InputMaybe<Scalars['Int']>;
+    orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+  };
 
 export type SponsoredPoolVariancePopulationAggregates = {
   __typename?: 'SponsoredPoolVariancePopulationAggregates';
@@ -1461,7 +1447,6 @@ export type SponsoredPoolsConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `SponsoredPool` values. */
 export type SponsoredPoolsConnectionGroupedAggregatesArgs = {
   groupBy: Array<SponsoredPoolsGroupBy>;
@@ -1493,7 +1478,7 @@ export enum SponsoredPoolsGroupBy {
   TxLimit = 'TX_LIMIT',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
 }
 
 export type SponsoredPoolsHavingAverageInput = {
@@ -1728,7 +1713,7 @@ export enum SponsoredPoolsOrderBy {
   UserJoinedPoolsByPoolIdVarianceSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_POOL_ID_ASC',
   UserJoinedPoolsByPoolIdVarianceSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_POOL_ID_DESC',
   UserJoinedPoolsByPoolIdVarianceSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
-  UserJoinedPoolsByPoolIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC'
+  UserJoinedPoolsByPoolIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_POOL_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC',
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -1968,7 +1953,6 @@ export type TransfersConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `Transfer` values. */
 export type TransfersConnectionGroupedAggregatesArgs = {
   groupBy: Array<TransfersGroupBy>;
@@ -1990,7 +1974,7 @@ export enum TransfersGroupBy {
   BlockNumber = 'BLOCK_NUMBER',
   From = 'FROM',
   Id = 'ID',
-  To = 'TO'
+  To = 'TO',
 }
 
 export type TransfersHavingAverageInput = {
@@ -2067,7 +2051,7 @@ export enum TransfersOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ToAsc = 'TO_ASC',
-  ToDesc = 'TO_DESC'
+  ToDesc = 'TO_DESC',
 }
 
 export type User = Node & {
@@ -2088,7 +2072,6 @@ export type User = Node & {
   userJoinedPoolsByAccountId: UserJoinedPoolsConnection;
 };
 
-
 export type UserClaimedContractsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -2100,7 +2083,6 @@ export type UserClaimedContractsByAccountIdArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ClaimedContractsOrderBy>>;
 };
-
 
 export type UserCreatedContractsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
@@ -2114,7 +2096,6 @@ export type UserCreatedContractsByAccountIdArgs = {
   orderBy?: InputMaybe<Array<CreatedContractsOrderBy>>;
 };
 
-
 export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -2126,7 +2107,6 @@ export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<SponsoredPoolsOrderBy>>;
 };
-
 
 export type UserUserJoinedPoolsByAccountIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
@@ -2292,7 +2272,6 @@ export type UserJoinedPoolsConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `UserJoinedPool` values. */
 export type UserJoinedPoolsConnectionGroupedAggregatesArgs = {
   groupBy: Array<UserJoinedPoolsGroupBy>;
@@ -2318,7 +2297,7 @@ export enum UserJoinedPoolsGroupBy {
   PoolId = 'POOL_ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
 }
 
 export type UserJoinedPoolsHavingAverageInput = {
@@ -2395,57 +2374,59 @@ export enum UserJoinedPoolsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
 }
 
 /** A connection to a list of `SponsoredPool` values, with data from `UserJoinedPool`. */
-export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection = {
-  __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<SponsoredPoolAggregates>;
-  /** A list of edges which contains the `SponsoredPool`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
-  edges: Array<UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<SponsoredPoolAggregates>>;
-  /** A list of `SponsoredPool` objects. */
-  nodes: Array<Maybe<SponsoredPool>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `SponsoredPool` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection =
+  {
+    __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnection';
+    /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+    aggregates?: Maybe<SponsoredPoolAggregates>;
+    /** A list of edges which contains the `SponsoredPool`, info from the `UserJoinedPool`, and the cursor to aid in pagination. */
+    edges: Array<UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge>;
+    /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+    groupedAggregates?: Maybe<Array<SponsoredPoolAggregates>>;
+    /** A list of `SponsoredPool` objects. */
+    nodes: Array<Maybe<SponsoredPool>>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** The count of *all* `SponsoredPool` you could get from the connection. */
+    totalCount: Scalars['Int'];
+  };
 
 /** A connection to a list of `SponsoredPool` values, with data from `UserJoinedPool`. */
-export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnectionGroupedAggregatesArgs = {
-  groupBy: Array<SponsoredPoolsGroupBy>;
-  having?: InputMaybe<SponsoredPoolsHavingInput>;
-};
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyConnectionGroupedAggregatesArgs =
+  {
+    groupBy: Array<SponsoredPoolsGroupBy>;
+    having?: InputMaybe<SponsoredPoolsHavingInput>;
+  };
 
 /** A `SponsoredPool` edge in the connection, with data from `UserJoinedPool`. */
-export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge = {
-  __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `SponsoredPool` at the end of the edge. */
-  node?: Maybe<SponsoredPool>;
-  /** Reads and enables pagination through a set of `UserJoinedPool`. */
-  userJoinedPoolsByPoolId: UserJoinedPoolsConnection;
-};
-
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge =
+  {
+    __typename?: 'UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdge';
+    /** A cursor for use in pagination. */
+    cursor?: Maybe<Scalars['Cursor']>;
+    /** The `SponsoredPool` at the end of the edge. */
+    node?: Maybe<SponsoredPool>;
+    /** Reads and enables pagination through a set of `UserJoinedPool`. */
+    userJoinedPoolsByPoolId: UserJoinedPoolsConnection;
+  };
 
 /** A `SponsoredPool` edge in the connection, with data from `UserJoinedPool`. */
-export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdgeUserJoinedPoolsByPoolIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  blockHeight?: InputMaybe<Scalars['String']>;
-  distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
-  filter?: InputMaybe<UserJoinedPoolFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
-};
+export type UserSponsoredPoolsByUserJoinedPoolAccountIdAndPoolIdManyToManyEdgeUserJoinedPoolsByPoolIdArgs =
+  {
+    after?: InputMaybe<Scalars['Cursor']>;
+    before?: InputMaybe<Scalars['Cursor']>;
+    blockHeight?: InputMaybe<Scalars['String']>;
+    distinct?: InputMaybe<Array<InputMaybe<User_Joined_Pools_Distinct_Enum>>>;
+    filter?: InputMaybe<UserJoinedPoolFilter>;
+    first?: InputMaybe<Scalars['Int']>;
+    last?: InputMaybe<Scalars['Int']>;
+    offset?: InputMaybe<Scalars['Int']>;
+    orderBy?: InputMaybe<Array<UserJoinedPoolsOrderBy>>;
+  };
 
 /** A filter to be used against many `ClaimedContract` object types. All fields are combined with a logical ‘and.’ */
 export type UserToManyClaimedContractFilter = {
@@ -2500,7 +2481,6 @@ export type UsersConnection = {
   totalCount: Scalars['Int'];
 };
 
-
 /** A connection to a list of `User` values. */
 export type UsersConnectionGroupedAggregatesArgs = {
   groupBy: Array<UsersGroupBy>;
@@ -2525,7 +2505,7 @@ export enum UsersGroupBy {
   Id = 'ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
 }
 
 export type UsersHavingAverageInput = {
@@ -2930,7 +2910,7 @@ export enum UsersOrderBy {
   UserJoinedPoolsByAccountIdVarianceSamplePoolIdAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_POOL_ID_ASC',
   UserJoinedPoolsByAccountIdVarianceSamplePoolIdDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_POOL_ID_DESC',
   UserJoinedPoolsByAccountIdVarianceSampleUpdatedAtAsc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_ASC',
-  UserJoinedPoolsByAccountIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC'
+  UserJoinedPoolsByAccountIdVarianceSampleUpdatedAtDesc = 'USER_JOINED_POOLS_BY_ACCOUNT_ID_VARIANCE_SAMPLE_UPDATED_AT_DESC',
 }
 
 export type _Metadata = {
@@ -2954,7 +2934,7 @@ export enum Block_Entities_Distinct_Enum {
   Field4 = 'FIELD4',
   Field5 = 'FIELD5',
   Field6 = 'FIELD6',
-  Id = 'ID'
+  Id = 'ID',
 }
 
 export enum Claimed_Contracts_Distinct_Enum {
@@ -2962,7 +2942,7 @@ export enum Claimed_Contracts_Distinct_Enum {
   ContractAddress = 'CONTRACT_ADDRESS',
   CreatedAt = 'CREATED_AT',
   Id = 'ID',
-  UpdatedAt = 'UPDATED_AT'
+  UpdatedAt = 'UPDATED_AT',
 }
 
 export enum Created_Contracts_Distinct_Enum {
@@ -2970,7 +2950,7 @@ export enum Created_Contracts_Distinct_Enum {
   ContractAddress = 'CONTRACT_ADDRESS',
   CreatedAt = 'CREATED_AT',
   Id = 'ID',
-  UpdatedAt = 'UPDATED_AT'
+  UpdatedAt = 'UPDATED_AT',
 }
 
 export enum Sponsored_Pools_Distinct_Enum {
@@ -2984,7 +2964,7 @@ export enum Sponsored_Pools_Distinct_Enum {
   Targets = 'TARGETS',
   TotalUsers = 'TOTAL_USERS',
   TxLimit = 'TX_LIMIT',
-  UpdatedAt = 'UPDATED_AT'
+  UpdatedAt = 'UPDATED_AT',
 }
 
 export enum Transfers_Distinct_Enum {
@@ -2992,7 +2972,7 @@ export enum Transfers_Distinct_Enum {
   BlockNumber = 'BLOCK_NUMBER',
   From = 'FROM',
   Id = 'ID',
-  To = 'TO'
+  To = 'TO',
 }
 
 export enum User_Joined_Pools_Distinct_Enum {
@@ -3000,14 +2980,14 @@ export enum User_Joined_Pools_Distinct_Enum {
   CreatedAt = 'CREATED_AT',
   Id = 'ID',
   PoolId = 'POOL_ID',
-  UpdatedAt = 'UPDATED_AT'
+  UpdatedAt = 'UPDATED_AT',
 }
 
 export enum Users_Distinct_Enum {
   CreatedAt = 'CREATED_AT',
   H160Address = 'H160_ADDRESS',
   Id = 'ID',
-  UpdatedAt = 'UPDATED_AT'
+  UpdatedAt = 'UPDATED_AT',
 }
 
 export type SponsoredSearchPoolsQueryVariables = Exact<{
@@ -3016,8 +2996,17 @@ export type SponsoredSearchPoolsQueryVariables = Exact<{
   filter?: InputMaybe<SponsoredPoolFilter>;
 }>;
 
-
-export type SponsoredSearchPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', nodes: Array<{ __typename?: 'SponsoredPool', id: string, poolName?: string | null } | null> } | null };
+export type SponsoredSearchPoolsQuery = {
+  __typename?: 'Query';
+  sponsoredPools?: {
+    __typename?: 'SponsoredPoolsConnection';
+    nodes: Array<{
+      __typename?: 'SponsoredPool';
+      id: string;
+      poolName?: string | null;
+    } | null>;
+  } | null;
+};
 
 export type SponsoredPoolsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -3025,13 +3014,45 @@ export type SponsoredPoolsQueryVariables = Exact<{
   filter?: InputMaybe<SponsoredPoolFilter>;
 }>;
 
+export type SponsoredPoolsQuery = {
+  __typename?: 'Query';
+  sponsoredPools?: {
+    __typename?: 'SponsoredPoolsConnection';
+    totalCount: number;
+    nodes: Array<{
+      __typename?: 'SponsoredPool';
+      id: string;
+      amount: any;
+      poolOwner: string;
+      targets: any;
+      discount: number;
+      txLimit: number;
+      createdAt?: any | null;
+      poolName?: string | null;
+    } | null>;
+    pageInfo: {
+      __typename?: 'PageInfo';
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+    };
+  } | null;
+};
 
-export type SponsoredPoolsQuery = { __typename?: 'Query', sponsoredPools?: { __typename?: 'SponsoredPoolsConnection', totalCount: number, nodes: Array<{ __typename?: 'SponsoredPool', id: string, amount: any, poolOwner: string, targets: any, discount: number, txLimit: number, createdAt?: any | null, poolName?: string | null } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
+export type TransfersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type TransfersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type TransfersQuery = { __typename?: 'Query', transfers?: { __typename?: 'TransfersConnection', totalCount: number, nodes: Array<{ __typename?: 'Transfer', id: string, amount: any, from: string } | null> } | null };
+export type TransfersQuery = {
+  __typename?: 'Query';
+  transfers?: {
+    __typename?: 'TransfersConnection';
+    totalCount: number;
+    nodes: Array<{
+      __typename?: 'Transfer';
+      id: string;
+      amount: any;
+      from: string;
+    } | null>;
+  } | null;
+};
 
 export type ClaimedContractsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -3039,9 +3060,24 @@ export type ClaimedContractsQueryVariables = Exact<{
   filter?: InputMaybe<ClaimedContractFilter>;
 }>;
 
-
-export type ClaimedContractsQuery = { __typename?: 'Query', claimedContracts?: { __typename?: 'ClaimedContractsConnection', totalCount: number, nodes: Array<{ __typename?: 'ClaimedContract', id: string, contractAddress: string, accountId: string } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean } } | null };
-
+export type ClaimedContractsQuery = {
+  __typename?: 'Query';
+  claimedContracts?: {
+    __typename?: 'ClaimedContractsConnection';
+    totalCount: number;
+    nodes: Array<{
+      __typename?: 'ClaimedContract';
+      id: string;
+      contractAddress: string;
+      accountId: string;
+    } | null>;
+    pageInfo: {
+      __typename?: 'PageInfo';
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+    };
+  } | null;
+};
 
 export const SponsoredSearchPoolsDocument = `
     query SponsoredSearchPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
@@ -3054,19 +3090,24 @@ export const SponsoredSearchPoolsDocument = `
 }
     `;
 export const useSponsoredSearchPoolsQuery = <
-      TData = SponsoredSearchPoolsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: SponsoredSearchPoolsQueryVariables,
-      options?: UseQueryOptions<SponsoredSearchPoolsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<SponsoredSearchPoolsQuery, TError, TData>(
-      ['SponsoredSearchPools', variables],
-      fetcher<SponsoredSearchPoolsQuery, SponsoredSearchPoolsQueryVariables>(client, SponsoredSearchPoolsDocument, variables, headers),
-      options
-    );
+  TData = SponsoredSearchPoolsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: SponsoredSearchPoolsQueryVariables,
+  options?: UseQueryOptions<SponsoredSearchPoolsQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<SponsoredSearchPoolsQuery, TError, TData>(
+    ['SponsoredSearchPools', variables],
+    fetcher<SponsoredSearchPoolsQuery, SponsoredSearchPoolsQueryVariables>(
+      client,
+      SponsoredSearchPoolsDocument,
+      variables,
+      headers
+    ),
+    options
+  );
 export const SponsoredPoolsDocument = `
     query SponsoredPools($first: Int!, $offset: Int!, $filter: SponsoredPoolFilter) {
   sponsoredPools(first: $first, offset: $offset, filter: $filter) {
@@ -3089,19 +3130,24 @@ export const SponsoredPoolsDocument = `
 }
     `;
 export const useSponsoredPoolsQuery = <
-      TData = SponsoredPoolsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: SponsoredPoolsQueryVariables,
-      options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<SponsoredPoolsQuery, TError, TData>(
-      ['SponsoredPools', variables],
-      fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(client, SponsoredPoolsDocument, variables, headers),
-      options
-    );
+  TData = SponsoredPoolsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: SponsoredPoolsQueryVariables,
+  options?: UseQueryOptions<SponsoredPoolsQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<SponsoredPoolsQuery, TError, TData>(
+    ['SponsoredPools', variables],
+    fetcher<SponsoredPoolsQuery, SponsoredPoolsQueryVariables>(
+      client,
+      SponsoredPoolsDocument,
+      variables,
+      headers
+    ),
+    options
+  );
 export const TransfersDocument = `
     query Transfers {
   transfers(first: 5) {
@@ -3114,20 +3160,22 @@ export const TransfersDocument = `
   }
 }
     `;
-export const useTransfersQuery = <
-      TData = TransfersQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: TransfersQueryVariables,
-      options?: UseQueryOptions<TransfersQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<TransfersQuery, TError, TData>(
-      variables === undefined ? ['Transfers'] : ['Transfers', variables],
-      fetcher<TransfersQuery, TransfersQueryVariables>(client, TransfersDocument, variables, headers),
-      options
-    );
+export const useTransfersQuery = <TData = TransfersQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables?: TransfersQueryVariables,
+  options?: UseQueryOptions<TransfersQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<TransfersQuery, TError, TData>(
+    variables === undefined ? ['Transfers'] : ['Transfers', variables],
+    fetcher<TransfersQuery, TransfersQueryVariables>(
+      client,
+      TransfersDocument,
+      variables,
+      headers
+    ),
+    options
+  );
 export const ClaimedContractsDocument = `
     query ClaimedContracts($first: Int!, $offset: Int!, $filter: ClaimedContractFilter) {
   claimedContracts(first: $first, offset: $offset, filter: $filter) {
@@ -3145,16 +3193,21 @@ export const ClaimedContractsDocument = `
 }
     `;
 export const useClaimedContractsQuery = <
-      TData = ClaimedContractsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: ClaimedContractsQueryVariables,
-      options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<ClaimedContractsQuery, TError, TData>(
-      ['ClaimedContracts', variables],
-      fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(client, ClaimedContractsDocument, variables, headers),
-      options
-    );
+  TData = ClaimedContractsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: ClaimedContractsQueryVariables,
+  options?: UseQueryOptions<ClaimedContractsQuery, TError, TData>,
+  headers?: RequestInit['headers']
+) =>
+  useQuery<ClaimedContractsQuery, TError, TData>(
+    ['ClaimedContracts', variables],
+    fetcher<ClaimedContractsQuery, ClaimedContractsQueryVariables>(
+      client,
+      ClaimedContractsDocument,
+      variables,
+      headers
+    ),
+    options
+  );

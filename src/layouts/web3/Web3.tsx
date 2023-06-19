@@ -206,6 +206,7 @@ export default function Web3() {
                 <Tab position="relative">Collections {collections.length}</Tab>
 
                 <Tab>
+                  Items&nbsp;
                   {items
                     .map(item => item.length)
                     .reduce((prev, current) => prev + current)}

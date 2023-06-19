@@ -141,15 +141,17 @@ export default function NewGamesAuthorize({
                     {
                       signer: injected.signer,
                     },
-                    () => {
-                      toast({
-                        position: 'top-right',
-                        description: 'success',
-                        status: 'success',
-                      });
-
+                    e => {
                       setIsLoading(true);
-                      onClose();
+
+                      if (e.isFinalized) {
+                        toast({
+                          position: 'top-right',
+                          description: e.status.type,
+                          status: 'info',
+                        });
+                        onClose();
+                      }
                     }
                   )
                   .catch(error => {
@@ -157,8 +159,8 @@ export default function NewGamesAuthorize({
 
                     toast({
                       position: 'top-right',
-                      description: error.message,
-                      status: 'error',
+                      description: error.toString(),
+                      status: 'info',
                     });
                   });
               }

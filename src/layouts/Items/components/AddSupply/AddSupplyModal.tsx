@@ -120,16 +120,16 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
                       signer: injected.signer,
                     },
                     e => {
-                      console.log(e);
-
-                      toast({
-                        position: 'top-right',
-                        description: 'success',
-                        status: 'success',
-                      });
-
                       setIsLoading(true);
-                      onClose();
+
+                      if (e.isFinalized) {
+                        toast({
+                          position: 'top-right',
+                          description: e.status.type,
+                          status: 'info',
+                        });
+                        onClose();
+                      }
                     }
                   )
                   .catch(error => {
@@ -137,8 +137,8 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
 
                     toast({
                       position: 'top-right',
-                      description: error.message,
-                      status: 'error',
+                      description: error.toString(),
+                      status: 'info',
                     });
                   });
               }
