@@ -153,11 +153,11 @@ export default function Web3() {
       },
     ],
   });
+
   const games = data[0].data;
   const collections = data[1].data;
   const items = data[2].data;
 
-  console.log(data);
   if (data[0].isLoading && data[1].isLoading && data[2].isLoading) {
     return (
       <Center py={24} gap={4}>

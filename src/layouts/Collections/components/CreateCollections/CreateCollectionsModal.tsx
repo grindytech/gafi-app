@@ -13,21 +13,16 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
-import { getInjectedWeb3 } from 'utils/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallBack from 'hooks/useTxCallBack';
 
 interface CreateCollectionFieldProps {
-  owner: {
-    address: string;
-    name: string;
-  };
   admin: {
     address: string;
     name: string;
@@ -44,12 +39,17 @@ export default function CreateCollectionsModal({
   onClose,
   getValues,
 }: CreateCollectionsModalProps) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
-  const { collection_id, owner, admin } =
-    getValues() as CreateCollectionFieldProps;
+  const { collection_id, admin } = getValues() as CreateCollectionFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['createCollection', collection_id],
+    submit: api?.tx.game.createCollection(admin.address),
+    onSuccess() {
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -76,7 +76,7 @@ export default function CreateCollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={owner.name} hash={owner.address} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -97,26 +97,6 @@ export default function CreateCollectionsModal({
                   <GafiAmount amount="50,6895" />
                 </Td>
               </Tr>
-
-              <Tr>
-                <Td>Admin</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={admin.address}
-                    account={admin.name}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
-                </Td>
-              </Tr>
             </Tbody>
           </Table>
         </ModalBody>
@@ -127,43 +107,7 @@ export default function CreateCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-
-              if (api && injected) {
-                const submit = api.tx.game.createCollection(admin.address);
-                setIsLoading(true);
-
-                await submit
-                  .signAndSend(
-                    owner.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

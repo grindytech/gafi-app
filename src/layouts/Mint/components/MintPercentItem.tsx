@@ -1,4 +1,12 @@
-import { Box, Grid, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  CircularProgress,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import CardBox from 'components/CardBox';
 import { useSubstrateState } from 'contexts/substrateContext';
@@ -7,9 +15,9 @@ import { FieldValues, UseFormWatch } from 'react-hook-form';
 
 import { colors } from 'theme/theme';
 
-type TypeLootTableOfProps = {
-  maybeNFT: string | null;
-  weight: number;
+type TypeMaybeNFT = {
+  collection: number;
+  item: number;
 };
 
 interface MintPercentItemProps {
@@ -17,24 +25,60 @@ interface MintPercentItemProps {
 }
 
 export default function MintPercentItem({ watch }: MintPercentItemProps) {
-  const pool_id: string = watch('pool_id');
+  const pool_id: number = watch('pool_id');
+
   const { api } = useSubstrateState();
 
   const { data } = useQuery(
-    ['getItemsOfPoolID'],
+    ['getItemsOfPoolID', pool_id],
     async () => {
-      if (api && pool_id) {
+      if (api && api.query.game) {
         const res = await api.query.game.lootTableOf(pool_id);
 
-        return res.toJSON() as TypeLootTableOfProps[];
+        const getSupplyOfItems = await Promise.all(
+          res.map(async ([maybeNft, weight]) => {
+            const getWeight = weight[1].toPrimitive() as number;
+
+            if (maybeNft[1].isEmpty) {
+              return {
+                rare: getWeight,
+              };
+            }
+
+            const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
+
+            const itemsOfCollection = await api.query.game.supplyOf(
+              collection,
+              item
+            );
+
+            return {
+              item_id: item,
+              amount: itemsOfCollection.toPrimitive(),
+              rare: getWeight,
+            };
+          })
+        );
+
+        const getTotalWeight = getSupplyOfItems
+          .map(item => item.rare)
+          .reduce((prev, current) => prev + current);
+
+        return getSupplyOfItems.map(item => {
+          const { item_id, amount, rare } = item;
+
+          return {
+            item_id,
+            amount,
+            rare: ((rare / getTotalWeight) * 100).toFixed(1),
+          };
+        });
       }
     },
     {
-      enabled: !!pool_id,
+      enabled: !!(api && api.query.game),
     }
   );
-
-  console.log({ data, pool_id });
 
   const PercentColor = (percent: number) => {
     if (percent >= 50) return colors.primary.a[500];
@@ -42,55 +86,72 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
     if (percent >= 0) return colors.second.purple;
   };
 
+  if (!pool_id) return <></>;
+
   return (
     <>
-      {data && data.length && pool_id ? (
+      {data && data.length ? (
         <CardBox variant="createGames">
-          <Box>
-            <Heading fontWeight="medium" fontSize="sm" color="shader.a.500">
-              Total items&nbsp;
-              <Text as="span" color="primary.a.500">
-                2,080
-              </Text>
-            </Heading>
-          </Box>
+          <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
+            {React.Children.toArray(
+              data.map(item => {
+                const { amount, item_id, rare } = item;
 
-          <Grid gridTemplateColumns="repeat(3, 1fr)" pt={3} gap={3}>
-            {data.map((mint, index) => (
-              <Box
-                key={mint.weight}
-                border="1px solid #D4D4D8"
-                borderRadius="xl"
-                padding={4}
-              >
-                <Heading fontSize="lg" fontWeight="medium" color="shader.a.900">
-                  Item {index}
-                </Heading>
-
-                <Box mt={4}>
-                  <Text>
-                    Amount&nbsp;
-                    <Text as="span" color="shader.a.900" fontWeight="semibold">
-                      {mint.weight}
-                    </Text>
-                  </Text>
-
-                  {/* <Text>
-                    Rare&nbsp;
-                    <Text
-                      as="span"
-                      color={PercentColor(mint.rare)}
-                      fontWeight="semibold"
+                return (
+                  <Flex
+                    flexDirection="column"
+                    justifyContent="space-between"
+                    border="0.0625rem solid"
+                    borderColor="shader.a.400"
+                    borderRadius="xl"
+                    padding={4}
+                  >
+                    <Heading
+                      fontSize="lg"
+                      fontWeight="medium"
+                      color="shader.a.900"
                     >
-                      {mint.rare}%
-                    </Text>
-                  </Text> */}
-                </Box>
-              </Box>
-            ))}
+                      {typeof item_id === 'number'
+                        ? `Item ${item_id}`
+                        : 'Nothing'}
+                    </Heading>
+
+                    <Box mt={4}>
+                      {typeof amount === 'number' ? (
+                        <Text>
+                          Amount&nbsp;
+                          <Text
+                            as="span"
+                            color="shader.a.900"
+                            fontWeight="semibold"
+                          >
+                            {amount}
+                          </Text>
+                        </Text>
+                      ) : null}
+
+                      <Text>
+                        Rare&nbsp;
+                        <Text
+                          as="span"
+                          color={PercentColor(Number(rare))}
+                          fontWeight="semibold"
+                        >
+                          {rare}%
+                        </Text>
+                      </Text>
+                    </Box>
+                  </Flex>
+                );
+              })
+            )}
           </Grid>
         </CardBox>
-      ) : null}
+      ) : (
+        <Center py={4}>
+          <CircularProgress isIndeterminate color="primary.a.500" />
+        </Center>
+      )}
     </>
   );
 }

@@ -41,13 +41,11 @@ export default function SwitchAdmin({
 }: SwitchAdmin) {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const [currentAccount, setCurrentAccount] = React.useState(
-    getAccounts[0] || 'undefined'
-  );
+  const [currentAccount, setCurrentAccount] = React.useState(getAccounts[0]);
 
-  const loadAccount = getAccounts
-    ? getAccounts.filter(item => item.address != currentAccount.address)
-    : null;
+  const loadAccount = getAccounts.filter(
+    item => item.address !== currentAccount.address
+  );
 
   React.useEffect(() => {
     setValue('admin', {

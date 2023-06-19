@@ -9,6 +9,8 @@ import { shorten } from 'utils/utils';
 export default function ConnectWallet() {
   const { getAccounts, getAccount } = useAccount();
 
+  console.log({ getAccounts, getAccount });
+
   const loadAccount =
     getAccounts && getAccount
       ? getAccounts.filter(item => item.address !== getAccount.address)

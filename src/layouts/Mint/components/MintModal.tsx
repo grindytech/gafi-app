@@ -10,24 +10,25 @@ import {
   ModalHeader,
   ModalOverlay,
   Table,
+  TableCaption,
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
-import React from 'react';
+import React, { useState } from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import MintPercentItem from './MintPercentItem';
+import { useSubstrateState } from 'contexts/substrateContext';
+import { getInjectedWeb3 } from 'utils/utils';
+import useTxCallBack from 'hooks/useTxCallBack';
 
-interface MintFieldSubmitProps {
-  owner: {
-    account: string;
-    hash: string;
-  };
-
-  mint: {
-    account: string;
-    hash: string;
+export interface MintFieldSubmitProps {
+  admin: {
+    address: string;
+    name: string;
   };
 
   amount: string;
@@ -40,15 +41,21 @@ interface MintModalProps {
 }
 
 export default function MintModal({ getValues, onClose }: MintModalProps) {
-  // const { amount, pool_id, mint, owner } = getValues() as MintFieldSubmitProps;
+  const { amount, pool_id, admin } = getValues() as MintFieldSubmitProps;
 
-  console.log(getValues());
+  const { api } = useSubstrateState();
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['Minging', pool_id],
+    submit: api?.tx.game.mint(pool_id, admin.address, amount),
+  });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
-      {/* <ModalOverlay /> */}
+    <Modal isOpen={true} onClose={onClose} size="2xl">
+      <ModalOverlay />
 
-      {/* <ModalContent
+      <ModalContent
         padding={{
           base: 4,
           md: 6,
@@ -69,7 +76,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
             />
           </Center>
 
-          <NewGamesProfile account={owner.account} hash={owner.hash} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -96,26 +103,6 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
                   <GafiAmount amount="50,689" />
                 </Td>
               </Tr>
-
-              <Tr>
-                <Td>Mint to</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={mint.hash}
-                    account={mint.account}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
-                </Td>
-              </Tr>
             </Tbody>
           </Table>
         </ModalBody>
@@ -124,14 +111,14 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
           <Button
             variant="createGameSubmit"
             margin="unset"
-            onClick={() => {
-              console.log(getValues());
-            }}
+            _hover={{}}
+            isLoading={isLoading}
+            onClick={() => mutation.mutateAsync()}
           >
             Sign & Submit
           </Button>
         </ModalFooter>
-      </ModalContent> */}
+      </ModalContent>
     </Modal>
   );
 }

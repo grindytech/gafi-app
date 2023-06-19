@@ -3,7 +3,7 @@ import React from 'react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
 import { useForm } from 'react-hook-form';
-import GameOwner from 'components/Game/GameOwner';
+
 import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import useAccount from 'hooks/useAccount';
@@ -12,23 +12,16 @@ export default function CollectionsCreate() {
   const { setValue, getValues } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getAccounts } = useAccount();
+  // onClose();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        <GameOwner
-          type="Owner"
-          setValue={setValue}
-          sx={{
-            padding: 4,
-          }}
-        />
-
-        <CollectionID setValue={setValue} />
-
         {getAccounts ? (
           <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
         ) : null}
+
+        <CollectionID setValue={setValue} refetch={onClose} />
 
         <Button
           variant="createGameSubmit"

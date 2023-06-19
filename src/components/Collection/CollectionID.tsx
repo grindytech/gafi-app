@@ -6,8 +6,9 @@ import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 interface CollectionIDProps {
   setValue: UseFormSetValue<FieldValues>;
+  refetch?: () => void;
 }
-export default function CollectionID({ setValue }: CollectionIDProps) {
+export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
   const { api } = useSubstrateState();
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -23,7 +24,7 @@ export default function CollectionID({ setValue }: CollectionIDProps) {
     };
 
     getCollectionID();
-  }, [api?.query]);
+  }, [api?.query, refetch]);
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
