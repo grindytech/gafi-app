@@ -28,7 +28,7 @@
     "@polkadot/extension-dapp": "0.43.1",
     "@polkadot/keyring": "^9.0.1",
     "@polkadot/networks": "^8.4.1",
-    "@polkadot/types": "^8.1.1",
+    "@polkadot/types": "^8.14.2-12",
     "@polkadot/ui-keyring": "2.0.1",
     "@polkadot/ui-settings": "2.0.1",
     "@polkadot/util": "^9.0.1",
@@ -40,6 +40,7 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga": "^3.3.1",
     "react-hook-form": "^7.44.3",
     "react-i18next": "^12.3.1",
     "react-jazzicon": "^1.0.4",
@@ -53,7 +54,7 @@
     "web3-utils": "1.7.1"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^8.1.1",
+    "@polkadot/typegen": "^8.14.2-12",
     "@types/node": "^20.2.6",
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",

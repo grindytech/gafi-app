@@ -1,7 +1,4 @@
-import _ from 'lodash';
-import cfg from './config';
-// Using `require` as `import` does not support dynamic loading (yet).
-const configEnv = _.get(cfg, import.meta.env.VITE_APP_ENV || 'development');
+const configEnv = await import(`./config`).then(env => env.default);
 
 // Accepting React env vars and aggregating them into `config` object.
 const envVarNames = ['VITE_APP_PROVIDER_SOCKET'];
@@ -11,5 +8,9 @@ const envVars = envVarNames.reduce((mem: Record<string, unknown>, n) => {
   return mem;
 }, {});
 
-const config = { ...cfg.common, ...configEnv, ...envVars };
+const config = {
+  ...configEnv['common'],
+  ...configEnv[import.meta.env.VITE_APP_ENV as keyof typeof configEnv],
+  ...envVars,
+};
 export default config;

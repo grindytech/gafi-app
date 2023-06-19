@@ -107,6 +107,11 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       game: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<Option<PalletGameGameDetails>>, [u32]> & QueryableStorageEntry<ApiType, [u32]>;
       /**
+       * The games owned by any given account; set out this way so that games owned by
+       * a single account can be enumerated.
+       **/
+      gameAccount: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<Null>>, [AccountId32, u32]> & QueryableStorageEntry<ApiType, [AccountId32, u32]>;
+      /**
        * Game roles
        **/
       gameRoleOf: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: AccountId32 | string | Uint8Array) => Observable<Option<u8>>, [u32, AccountId32]> & QueryableStorageEntry<ApiType, [u32, AccountId32]>;

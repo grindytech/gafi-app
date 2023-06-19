@@ -24,7 +24,7 @@ const parsedQuery = new URLSearchParams(window.location.search);
 // Using temporary 'as'. Remove when add type for config.
 
 const connectedSocket =
-  parsedQuery.get('rpc') || (config.PROVIDER_SOCKETS as string[])[0];
+  parsedQuery.get('rpc') || ((config as any).PROVIDER_SOCKETS as string[])[0];
 
 // Initial state for `useReducer`
 
@@ -235,7 +235,9 @@ const SubstrateContext = React.createContext<{
 
 let keyringLoadAll = false;
 
-const SubstrateContextProvider: React.FC<Record<string, unknown>> = props => {
+const SubstrateContextProvider: React.FC<Record<string, unknown>> = (
+  props: any
+) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
