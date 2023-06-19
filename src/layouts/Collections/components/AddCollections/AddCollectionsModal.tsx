@@ -13,38 +13,39 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
+import { useSubstrateState } from 'contexts/substrateContext';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { getInjectedWeb3 } from 'utils/utils';
 
-interface CollectionsFieldSubmitProps {
-  owner: {
-    account: string;
-    hash: string;
-  };
-
-  collection_id: number;
-  mining_fee: number;
+interface AddCollectionFieldProps {
   admin: {
-    account: string;
-    hash: string;
+    address: string;
+    name: string;
   };
+  collection_id: string;
+  game_id: string;
 }
 
-interface CollectionsModalProps {
+interface AddCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function CollectionsModal({
-  onClose,
+export default function AddCollectionsModal({
   getValues,
-}: CollectionsModalProps) {
-  const { owner, admin, collection_id, mining_fee } =
-    getValues() as CollectionsFieldSubmitProps;
+  onClose,
+}: AddCollectionsModalProps) {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const { api } = useSubstrateState();
+  const { admin, collection_id, game_id } =
+    getValues() as AddCollectionFieldProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -60,7 +61,7 @@ export default function CollectionsModal({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Create collection
+              Add collection
             </Heading>
 
             <ModalCloseButton
@@ -71,7 +72,7 @@ export default function CollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={owner.account} hash={owner.hash} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -87,36 +88,14 @@ export default function CollectionsModal({
               </Tr>
 
               <Tr>
-                <Td>Mining fee</Td>
-                <Td>
-                  <GafiAmount amount={mining_fee} />
-                </Td>
+                <Td>Game ID</Td>
+                <Td>{game_id}</Td>
               </Tr>
 
               <Tr>
                 <Td>Fee</Td>
                 <Td>
                   <GafiAmount amount="50,6895" />
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td>Admin</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={admin.hash}
-                    account={admin.account}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
                 </Td>
               </Tr>
             </Tbody>
@@ -126,12 +105,47 @@ export default function CollectionsModal({
         <ModalFooter px={0} pb={0}>
           <Button
             variant="createGameSubmit"
+            isLoading={isLoading}
+            _hover={{}}
             margin="unset"
             onClick={async () => {
-              console.log(getValues());
+              const injected = await getInjectedWeb3();
 
-              const wsProvider = new WsProvider('wss://gafi-test.gafi.network');
-              const api = await ApiPromise.create({ provider: wsProvider });
+              if (api && injected) {
+                const submit = api.tx.game.addGameCollection(
+                  game_id,
+                  collection_id
+                );
+
+                await submit
+                  .signAndSend(
+                    admin.address,
+                    {
+                      signer: injected.signer,
+                    },
+                    e => {
+                      setIsLoading(true);
+
+                      if (e.isFinalized) {
+                        toast({
+                          position: 'top-right',
+                          description: e.status.type,
+                          status: 'info',
+                        });
+                        onClose();
+                      }
+                    }
+                  )
+                  .catch(error => {
+                    setIsLoading(false);
+
+                    toast({
+                      position: 'top-right',
+                      description: error.toString(),
+                      status: 'info',
+                    });
+                  });
+              }
             }}
           >
             Sign & Submit

@@ -4,26 +4,19 @@ import * as ReactDOM from 'react-dom/client';
 import App from './App';
 
 import '@fontsource-variable/lexend';
-import { Suspense } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Route } from 'react-router-dom';
+
 import theme from 'theme/theme';
-import { QueryParamProvider } from 'use-query-params';
+
 import { UseWalletProvider } from 'use-wallet';
+import { QueryClientProvider } from '@tanstack/react-query';
+import getQueryClient from 'utils/queryClient';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-});
+
 root.render(
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={getQueryClient}>
     <UseWalletProvider
       connectors={{
         walletconnect: {
@@ -36,9 +29,7 @@ root.render(
       autoConnect
     >
       <ChakraProvider theme={theme}>
-        <Suspense fallback="...">
-          <App />
-        </Suspense>
+        <App />
       </ChakraProvider>
     </UseWalletProvider>
   </QueryClientProvider>

@@ -13,16 +13,22 @@ import MiningIcon from 'public/assets/art/mining.svg';
 import { useForm } from 'react-hook-form';
 
 import MintModal from './components/MintModal';
-import MintOwner from './components/MintOwner';
+
 import MintPercentItem from './components/MintPercentItem';
-import MintTo from './components/MintTo';
+
 import MintAmount from './components/MintAmount';
 
 import MintPoolID from './components/MintPoolID';
 
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+
+import GameOwner from 'components/Game/GameOwner';
+import useAccount from 'hooks/useAccount';
+
 export default function Mint() {
-  const { setValue, getValues, watch } = useForm();
+  const { register, setValue, getValues, watch } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getAccounts } = useAccount();
 
   return (
     <>
@@ -40,7 +46,7 @@ export default function Mint() {
 
             <Text fontSize="sm" color="shader.a.600" whiteSpace="pre-line">
               {`Lorem ipsum dolor sit amet consectetur. 
-          Neque velit commodo convallis`}
+              Neque velit commodo convallis`}
             </Text>
           </Box>
 
@@ -52,21 +58,28 @@ export default function Mint() {
         <Flex
           flexDirection="column"
           gap={3}
-          sx={{
-            h6: {
-              fontSize: 'md',
-              fontWeight: 'medium',
-              color: 'shader.a.600',
-            },
-          }}
+          px={12}
+          transform="translateY(-10%)"
         >
-          <MintOwner setValue={setValue} />
+          <GameOwner
+            setValue={setValue}
+            type="Owner"
+            sx={{
+              padding: 4,
+            }}
+          />
 
-          <MintTo setValue={setValue} />
+          {getAccounts ? (
+            <SwitchAdmin
+              getAccounts={getAccounts}
+              setValue={setValue}
+              type="Mint to"
+            />
+          ) : null}
 
           <MintAmount setValue={setValue} watch={watch} />
 
-          <MintPoolID setValue={setValue} />
+          <MintPoolID register={register} />
 
           <MintPercentItem watch={watch} />
 

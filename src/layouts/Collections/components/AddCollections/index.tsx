@@ -1,34 +1,29 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import CollectionsID from './CollectionsID';
 import { useForm } from 'react-hook-form';
 
-import CollectionsGameID from './CollectionsGameID';
-import CollectionsOwner from '../CollectionsOwner';
-import CollectionsModal from './CollectionsModal';
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import useAccount from 'hooks/useAccount';
+import AddCollectionsModal from './AddCollectionsModal';
+import CollectionAdd from 'components/Collection/CollectionAdd';
+import GameIDAdd from 'components/Game/GameIDAdd';
 
-export default function CollectionsAdd() {
-  const { register, setValue, getValues } = useForm();
+export default function AddCollections() {
+  const { setValue, getValues } = useForm();
+  const { getAccounts } = useAccount();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        gap={3}
-        sx={{
-          h6: {
-            fontSize: 'md',
-            fontWeight: 'medium',
-            color: 'shader.a.600',
-          },
-        }}
-      >
-        <CollectionsOwner setValue={setValue} />
+      <Flex flexDirection="column" gap={3}>
+        {getAccounts ? (
+          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
+        ) : null}
 
-        <CollectionsID register={register} />
+        <CollectionAdd setValue={setValue} />
 
-        <CollectionsGameID register={register} />
+        <GameIDAdd setValue={setValue} />
 
         <Button
           variant="createGameSubmit"
@@ -40,7 +35,9 @@ export default function CollectionsAdd() {
         </Button>
       </Flex>
 
-      {isOpen && <CollectionsModal onClose={onClose} getValues={getValues} />}
+      {isOpen && (
+        <AddCollectionsModal onClose={onClose} getValues={getValues} />
+      )}
     </>
   );
 }

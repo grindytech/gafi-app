@@ -1,19 +1,20 @@
-import { Button, Flex, useDisclosure } from '@chakra-ui/react';
+import Balance from 'components/Balance/Balance';
+import CardBox from 'components/CardBox';
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import useAccount from 'hooks/useAccount';
 import React from 'react';
-
 import { useForm } from 'react-hook-form';
 
-import useAccount from 'hooks/useAccount';
-
+import { Button, Flex, useDisclosure } from '@chakra-ui/react';
+import AcceptCollectionsModal from './AcceptCollectionsModal';
 import CollectionAdd from 'components/Collection/CollectionAdd';
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import CreateItemModal from './CreateItemModal';
-import ItemAdd from '../ItemAdd';
+import GameIDAdd from 'components/Game/GameIDAdd';
 
-export default function CreateItem() {
-  const { setValue, getValues } = useForm();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function AcceptCollections() {
   const { getAccounts } = useAccount();
+  const { setValue, getValues } = useForm();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -24,7 +25,7 @@ export default function CreateItem() {
 
         <CollectionAdd setValue={setValue} />
 
-        <ItemAdd setValue={setValue} />
+        <GameIDAdd setValue={setValue} />
 
         <Button
           variant="createGameSubmit"
@@ -36,7 +37,9 @@ export default function CreateItem() {
         </Button>
       </Flex>
 
-      {isOpen && <CreateItemModal onClose={onClose} getValues={getValues} />}
+      {isOpen && (
+        <AcceptCollectionsModal onClose={onClose} getValues={getValues} />
+      )}
     </>
   );
 }

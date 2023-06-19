@@ -15,17 +15,15 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react';
-import React from 'react';
-
-import NewGamesProfile from './NewGamesProfile';
-
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import GafiAmount from 'components/GafiAmount';
-import { useSubstrateState } from 'contexts/substrateContext';
+import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import React from 'react';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
 import { getInjectedWeb3 } from 'utils/utils';
+import { useSubstrateState } from 'contexts/substrateContext';
 
-interface NewGamesFieldProps {
+interface CreateCollectionFieldProps {
   owner: {
     address: string;
     name: string;
@@ -34,23 +32,24 @@ interface NewGamesFieldProps {
     address: string;
     name: string;
   };
-  game_id: string;
+  collection_id: string;
 }
 
-interface NewGamesAuthorizeProps {
+interface CreateCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
 }
 
-export default function NewGamesAuthorize({
+export default function CreateCollectionsModal({
   onClose,
   getValues,
-}: NewGamesAuthorizeProps) {
+}: CreateCollectionsModalProps) {
   const toast = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const { api } = useSubstrateState();
-  const { game_id, owner, admin } = getValues() as NewGamesFieldProps;
+  const { collection_id, owner, admin } =
+    getValues() as CreateCollectionFieldProps;
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -66,7 +65,7 @@ export default function NewGamesAuthorize({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Authorize transaction
+              Create collection
             </Heading>
 
             <ModalCloseButton
@@ -88,14 +87,14 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
-                <Td>Game ID</Td>
-                <Td>{game_id}</Td>
+                <Td>Collection ID</Td>
+                <Td>{collection_id}</Td>
               </Tr>
 
               <Tr>
                 <Td>Fee</Td>
                 <Td>
-                  <GafiAmount amount="50,689" />
+                  <GafiAmount amount="50,6895" />
                 </Td>
               </Tr>
 
@@ -132,7 +131,7 @@ export default function NewGamesAuthorize({
               const injected = await getInjectedWeb3();
 
               if (api && injected) {
-                const submit = api.tx.game.createGame(admin.address);
+                const submit = api.tx.game.createCollection(admin.address);
                 setIsLoading(true);
 
                 await submit

@@ -151,16 +151,31 @@ const Input: ComponentStyleConfig = {
   },
 };
 
+const Heading: ComponentStyleConfig = {
+  variants: {
+    switch: {
+      fontSize: 'sm',
+      fontWeight: 'semibold',
+      color: 'primary.a.500',
+    },
+    game: {
+      fontSize: 'md',
+      fontWeight: 'medium',
+      color: 'shader.a.600',
+    },
+  },
+};
+
 const theme = extendTheme({
   colors,
   styles,
   fonts,
-
   components: {
     CardBox,
     Button,
     Table,
     Input,
+    Heading,
   },
 });
 

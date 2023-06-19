@@ -7,7 +7,7 @@ import CollectionsIcon from 'public/assets/illustration/collections.svg';
 import ItemsIcon from 'public/assets/illustration/items.svg';
 import MetadataIcon from 'public/assets/illustration/metadata.svg';
 
-export const ListWeb3Project = [
+export const ListWeb3Item = [
   {
     title: 'New Games',
     icon: <GamesIcon />,
@@ -49,7 +49,7 @@ export default function DefaultWeb3({ children }: PropsWithChildren) {
         mb={10}
       >
         {React.Children.toArray(
-          ListWeb3Project.map(project => (
+          ListWeb3Item.map(project => (
             <Center
               as={Link}
               to={project.link}

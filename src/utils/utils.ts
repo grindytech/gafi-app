@@ -1,3 +1,6 @@
+import config from 'config';
+import { GAFI_WALLET_STORAGE_KEY } from './constants';
+
 export const convertHex = (color: string, opacity: number) => {
   /* 
     - https://stackoverflow.com/a/7018987/16151303
@@ -12,4 +15,21 @@ export const convertHex = (color: string, opacity: number) => {
       ${parseInt(color.substring(5, 7), 16)}, ${opacity}`;
 
   return `rgba(${hexColorToRGBA})`;
+};
+
+export const shorten = (hash: string, length = 6) => {
+  const n = hash.length;
+  return hash.slice(0, length) + '…' + hash.slice(n - length);
+};
+
+export const getInjectedWeb3 = async () => {
+  const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
+
+  if (extensionName) {
+    const result = await window.injectedWeb3[extensionName].enable(
+      config.APP_NAME
+    );
+
+    return result;
+  }
 };

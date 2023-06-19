@@ -15,7 +15,8 @@ import React from 'react';
 import LineAddIcon from 'public/assets/line/add.svg';
 
 import CollectionsCreate from './components/CreateCollections';
-import CollectionsAdd from './components/AddCollections';
+import AcceptCollections from './components/AcceptCollections';
+import AddCollections from './components/AddCollections';
 
 export default function Collections() {
   return (
@@ -57,6 +58,8 @@ export default function Collections() {
               <Text>Add collection</Text>
             </Center>
           </Tab>
+
+          <Tab>Add Accept Adding</Tab>
         </TabList>
 
         <TabPanels
@@ -71,7 +74,11 @@ export default function Collections() {
           </TabPanel>
 
           <TabPanel>
-            <CollectionsAdd />
+            <AddCollections />
+          </TabPanel>
+
+          <TabPanel>
+            <AcceptCollections />
           </TabPanel>
         </TabPanels>
       </Tabs>

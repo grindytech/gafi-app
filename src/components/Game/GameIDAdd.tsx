@@ -1,14 +1,14 @@
 import { BoxProps, Center, Heading, Input } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import React from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
-interface MintPoolIDProps {
+interface GameIDAddProps {
+  setValue: UseFormSetValue<FieldValues>;
   sx?: BoxProps;
-  register: UseFormRegister<FieldValues>;
 }
 
-export default function MintPoolID({ register, sx }: MintPoolIDProps) {
+export default function GameIDAdd({ setValue, sx }: GameIDAddProps) {
   return (
     <CardBox
       as={Center}
@@ -16,10 +16,14 @@ export default function MintPoolID({ register, sx }: MintPoolIDProps) {
       justifyContent="space-between"
       {...sx}
     >
-      <Heading variant="game">Pool ID</Heading>
+      <Heading variant="game">Game ID</Heading>
 
       <Input
-        {...register('pool_id')}
+        onBlur={e => {
+          const { value } = e.target;
+
+          setValue('game_id', value);
+        }}
         min={0}
         variant="createGameSubmit"
         placeholder="Ex: 0"
