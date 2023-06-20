@@ -32,6 +32,7 @@ import Web3Items, { Web3ItemsDataProps } from './components/Web3Items';
 
 import Web3FirstBuild from './components/Web3FirstBuild';
 import DefaultWeb3 from 'layouts/default/DefaultWeb3';
+import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 export default function Web3() {
   const { api } = useSubstrateState();

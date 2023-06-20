@@ -7,12 +7,13 @@ import { useForm } from 'react-hook-form';
 import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import useAccount from 'hooks/useAccount';
+import useForceMount from 'hooks/useForceMount';
 
 export default function CollectionsCreate() {
   const { setValue, getValues } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getAccounts } = useAccount();
-  // onClose();
+  const { mounting, setMounting } = useForceMount();
 
   return (
     <>
@@ -21,7 +22,7 @@ export default function CollectionsCreate() {
           <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
         ) : null}
 
-        <CollectionID setValue={setValue} refetch={onClose} />
+        <CollectionID setValue={setValue} refetch={mounting} />
 
         <Button
           variant="createGameSubmit"
@@ -34,7 +35,11 @@ export default function CollectionsCreate() {
       </Flex>
 
       {isOpen && (
-        <CreateCollectionsModal onClose={onClose} getValues={getValues} />
+        <CreateCollectionsModal
+          refetch={setMounting}
+          onClose={onClose}
+          getValues={getValues}
+        />
       )}
     </>
   );

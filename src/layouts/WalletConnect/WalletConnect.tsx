@@ -12,27 +12,28 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { useConnectWallet } from 'contexts/connectWalletContext/connectWalletContext';
 import { useSubstrate } from 'contexts/substrateContext';
 import { CHROME_EXT_URL, FIREFOX_ADDON_URL, wallets } from 'utils/constants';
 
 export default function WalletConnect() {
-  const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState('');
-  const { isOpen, onClose } = useConnectWallet();
+  const { isOpen, onClose } = useDisclosure();
 
   const { setAccounts } = useSubstrate();
 
+  console.log(isOpen);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+    <Modal isOpen={!isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <ModalOverlay />
 
       <ModalContent p={4}>
-        <ModalHeader>{t('CONNECT_WALLET')}</ModalHeader>
+        <ModalHeader>Connect Wallet</ModalHeader>
 
         <ModalBody alignSelf="center">
           <ButtonGroup
@@ -58,10 +59,11 @@ export default function WalletConnect() {
                   iconSpacing={4}
                   onClick={async () => {
                     const message = await setAccounts(button.extensionName);
-                    if (!message) {
-                      onClose();
-                    } else {
-                      setErrorMessage(message);
+
+                    onClose();
+
+                    if (message) {
+                      return setErrorMessage(message);
                     }
                   }}
                   disabled={
@@ -69,13 +71,13 @@ export default function WalletConnect() {
                     !window.injectedWeb3[button.extensionName]
                   }
                 >
-                  {t(button.title)}
+                  {button.title}
                 </Button>
               ))
             )}
             <FormControl isInvalid={!!errorMessage}>
               <FormErrorMessage textAlign="center">
-                {t(errorMessage)}
+                {errorMessage}
               </FormErrorMessage>
             </FormControl>
           </ButtonGroup>

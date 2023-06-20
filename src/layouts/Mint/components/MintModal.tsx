@@ -10,19 +10,17 @@ import {
   ModalHeader,
   ModalOverlay,
   Table,
-  TableCaption,
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
-import React, { useState } from 'react';
+import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import MintPercentItem from './MintPercentItem';
+
 import { useSubstrateState } from 'contexts/substrateContext';
-import { getInjectedWeb3 } from 'utils/utils';
+
 import useTxCallBack from 'hooks/useTxCallBack';
 
 export interface MintFieldSubmitProps {
@@ -49,6 +47,9 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
     address: admin.address,
     key: ['Minging', pool_id],
     submit: api?.tx.game.mint(pool_id, admin.address, amount),
+    onSuccess() {
+      onClose();
+    },
   });
 
   return (

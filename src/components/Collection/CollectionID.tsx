@@ -6,7 +6,7 @@ import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 interface CollectionIDProps {
   setValue: UseFormSetValue<FieldValues>;
-  refetch?: () => void;
+  refetch: () => void;
 }
 export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
   const { api } = useSubstrateState();

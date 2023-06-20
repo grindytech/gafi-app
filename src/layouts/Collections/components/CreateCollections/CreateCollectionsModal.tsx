@@ -33,11 +33,13 @@ interface CreateCollectionFieldProps {
 interface CreateCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
+  refetch: () => void;
 }
 
 export default function CreateCollectionsModal({
   onClose,
   getValues,
+  refetch,
 }: CreateCollectionsModalProps) {
   const { api } = useSubstrateState();
   const { collection_id, admin } = getValues() as CreateCollectionFieldProps;
@@ -47,6 +49,7 @@ export default function CreateCollectionsModal({
     key: ['createCollection', collection_id],
     submit: api?.tx.game.createCollection(admin.address),
     onSuccess() {
+      refetch();
       onClose();
     },
   });

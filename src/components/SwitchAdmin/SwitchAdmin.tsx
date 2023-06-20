@@ -25,6 +25,7 @@ import { stateAccountProps } from 'hooks/useAccount';
 import { shorten } from 'utils/utils';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 interface SwitchAdmin {
   getAccounts: stateAccountProps[];
@@ -40,6 +41,10 @@ export default function SwitchAdmin({
   sx,
 }: SwitchAdmin) {
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  // const { account, allAccount, setAccount } = useConnectWallet();
+  // console.log('account', account);
+  // console.log('allAccount', allAccount);
 
   const [currentAccount, setCurrentAccount] = React.useState(getAccounts[0]);
 

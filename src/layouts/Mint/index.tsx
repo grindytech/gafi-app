@@ -12,7 +12,7 @@ import MiningIcon from 'public/assets/art/mining.svg';
 
 import { useForm } from 'react-hook-form';
 
-import MintModal, { MintFieldSubmitProps } from './components/MintModal';
+import MintModal from './components/MintModal';
 
 import MintPercentItem from './components/MintPercentItem';
 
@@ -22,15 +22,12 @@ import MintPoolID from './components/MintPoolID';
 
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 
-import GameOwner from 'components/Game/GameOwner';
 import useAccount from 'hooks/useAccount';
 
 export default function Mint() {
   const { register, setValue, getValues, watch } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getAccounts, getAccount } = useAccount();
-
-  const { pool_id } = getValues() as MintFieldSubmitProps;
+  const { getAccounts } = useAccount();
 
   return (
     <>

@@ -29,7 +29,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
 
   const { api } = useSubstrateState();
 
-  const { data } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ['getItemsOfPoolID', pool_id],
     async () => {
       if (api && api.query.game) {
@@ -86,7 +86,21 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
     if (percent >= 0) return colors.second.purple;
   };
 
-  if (!pool_id) return <></>;
+  if (!pool_id) return undefined;
+
+  if (isError)
+    return (
+      <CardBox variant="createGames" as={Center} py={4}>
+        Not Found
+      </CardBox>
+    );
+
+  if (isLoading)
+    return (
+      <Center py={4}>
+        <CircularProgress isIndeterminate color="primary.a.500" />
+      </Center>
+    );
 
   return (
     <>
@@ -147,11 +161,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
             )}
           </Grid>
         </CardBox>
-      ) : (
-        <Center py={4}>
-          <CircularProgress isIndeterminate color="primary.a.500" />
-        </Center>
-      )}
+      ) : null}
     </>
   );
 }

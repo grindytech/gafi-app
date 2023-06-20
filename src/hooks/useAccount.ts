@@ -31,12 +31,14 @@ export default function useAccount() {
       if (checkAccount && injtected) {
         const getAccounts = await injtected.accounts.get();
 
-        setAccount(getAccounts as keyof typeof account);
+        if (!account) {
+          setAccount(getAccounts as keyof typeof account);
+        }
       }
     };
 
     getAccounts();
-  }, []);
+  });
 
   return {
     getAccounts: account,
