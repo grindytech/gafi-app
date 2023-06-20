@@ -12,24 +12,27 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import { useConnectWallet } from 'contexts/connectWalletContext/connectWalletContext';
 import { useSubstrate } from 'contexts/substrateContext';
 import { CHROME_EXT_URL, FIREFOX_ADDON_URL, wallets } from 'utils/constants';
 
-export default function WalletConnect() {
+interface ConnectWalletModalProps {
+  mounting: boolean;
+  setMounting: React.DispatchWithoutAction;
+}
+
+export default function ConnectWalletModal({
+  mounting,
+  setMounting,
+}: ConnectWalletModalProps) {
   const [errorMessage, setErrorMessage] = useState('');
-  const { isOpen, onClose } = useDisclosure();
 
   const { setAccounts } = useSubstrate();
 
-  console.log(isOpen);
-
   return (
-    <Modal isOpen={!isOpen} onClose={onClose} closeOnOverlayClick={false}>
+    <Modal isOpen={mounting} onClose={() => ({})}>
       <ModalOverlay />
 
       <ModalContent p={4}>
@@ -50,8 +53,8 @@ export default function WalletConnect() {
                   w="full"
                   leftIcon={
                     <Image
-                      w="32px"
-                      height="32px"
+                      width={8}
+                      height={8}
                       src={button.icon}
                       alt={button.title}
                     />
@@ -60,10 +63,11 @@ export default function WalletConnect() {
                   onClick={async () => {
                     const message = await setAccounts(button.extensionName);
 
-                    onClose();
-
+                    if (!message) {
+                      setMounting();
+                    }
                     if (message) {
-                      return setErrorMessage(message);
+                      setErrorMessage(message);
                     }
                   }}
                   disabled={

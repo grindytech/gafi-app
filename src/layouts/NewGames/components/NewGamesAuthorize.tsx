@@ -19,7 +19,6 @@ import React from 'react';
 import NewGamesProfile from './NewGamesProfile';
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
 
 import useTxCallBack from 'hooks/useTxCallBack';
@@ -94,13 +93,6 @@ export default function NewGamesAuthorize({
               <Tr>
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
-              </Tr>
-
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,689" />
-                </Td>
               </Tr>
             </Tbody>
           </Table>

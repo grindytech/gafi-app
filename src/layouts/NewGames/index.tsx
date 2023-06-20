@@ -7,14 +7,14 @@ import NewGamesAuthorize from './components/NewGamesAuthorize';
 import { useForm } from 'react-hook-form';
 
 import GameID from 'components/Game/GameID';
-import useAccount from 'hooks/useAccount';
+
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
+import GameOwner from 'components/Game/GameOwner';
 
 export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getAccounts } = useAccount();
 
   const { mounting, setMounting } = useForceMount();
   const { setValue, getValues } = useForm();
@@ -38,9 +38,8 @@ export default function NewGames() {
       </Heading>
 
       <Flex flexDirection="column" gap={3}>
-        {getAccounts ? (
-          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
-        ) : null}
+        <GameOwner setValue={setValue} />
+        <SwitchAdmin setValue={setValue} />
 
         <GameID setValue={setValue} refetch={mounting} />
 

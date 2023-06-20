@@ -2,7 +2,7 @@ import { Flex, FlexProps, Heading } from '@chakra-ui/react';
 import { formatBalance } from '@polkadot/util';
 import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
-import useAccount from 'hooks/useAccount';
+
 import React, { useState } from 'react';
 
 type TypeGetBalance = {
@@ -12,21 +12,21 @@ type TypeGetBalance = {
 };
 
 interface BalanceProps {
+  currentAccount: string;
   sx?: FlexProps;
 }
 
-export default function Balance({ sx }: BalanceProps) {
+export default function Balance({ currentAccount, sx }: BalanceProps) {
   const [balance, setBalance] = useState<string>('...');
-
-  const { getAccount } = useAccount();
   const { api, chainDecimal } = useSubstrateState();
 
   React.useEffect(() => {
     const getBalance = async () => {
-      if (api && api.query.system && getAccount) {
-        const res = await api.query.system.account(getAccount.address);
+      if (api && api.query.system) {
+        const res = await api.query.system.account(currentAccount);
 
         const getBalance = res.toPrimitive() as TypeGetBalance;
+
         setBalance(
           formatBalance(
             getBalance.data.free,
@@ -40,7 +40,7 @@ export default function Balance({ sx }: BalanceProps) {
       }
     };
     getBalance();
-  }, [api?.query]);
+  }, [api?.query, currentAccount]);
 
   return (
     <Flex justifyContent="space-between" alignItems="center" {...sx}>

@@ -36,7 +36,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
         const res = await api.query.game.lootTableOf(pool_id);
 
         const getSupplyOfItems = await Promise.all(
-          res.map(async ([maybeNft, weight]) => {
+          res.map(async ([maybeNft, weight], ind) => {
             const getWeight = weight[1].toPrimitive() as number;
 
             if (maybeNft[1].isEmpty) {
@@ -47,14 +47,39 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
 
             const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
 
-            const itemsOfCollection = await api.query.game.supplyOf(
-              collection,
-              item
+            const itemsOfCollection = await api.query.nfts.item.entries(
+              collection
             );
+
+            const adu = itemsOfCollection.filter(
+              async (
+                [
+                  {
+                    args: [he, ho],
+                  },
+                ],
+                index
+              ) => {
+                const id = he.toPrimitive();
+                const items = ho.toPrimitive();
+
+                console.log({ index, ind });
+
+                if (index === ind) {
+                  console.log(items);
+                }
+              }
+            );
+
+            adu;
+            // const itemsOfCollection = await api.query.game.supplyOf(
+            //   collection,
+            //   item
+            // );
 
             return {
               item_id: item,
-              amount: itemsOfCollection.toPrimitive(),
+              amount: itemsOfCollection,
               rare: getWeight,
             };
           })
@@ -127,13 +152,13 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
                     >
                       {typeof item_id === 'number'
                         ? `Item ${item_id}`
-                        : 'Nothing'}
+                        : 'Empty'}
                     </Heading>
 
                     <Box mt={4}>
-                      {typeof amount === 'number' ? (
+                      {/* {typeof amount === 'number' ? (
                         <Text>
-                          Amount&nbsp;
+                          Weight&nbsp;
                           <Text
                             as="span"
                             color="shader.a.900"
@@ -142,10 +167,10 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
                             {amount}
                           </Text>
                         </Text>
-                      ) : null}
+                      ) : null} */}
 
                       <Text>
-                        Rare&nbsp;
+                        Rarity&nbsp;
                         <Text
                           as="span"
                           color={PercentColor(Number(rare))}

@@ -18,8 +18,8 @@ const development = {
 const production = {
   APP_NAME: 'gafi-dashboard',
   PROVIDER_SOCKETS: [
-    'wss://ws-testnet.gafi.network',
     'wss://ws-test.gafi.network',
+    'wss://ws-testnet.gafi.network',
   ],
   GRAPHQL_ENDPOINT: 'https://api.subquery.network/sq/grindytech/gafi-query',
   FEATURE_FLAG: {

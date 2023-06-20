@@ -14,7 +14,6 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -92,13 +91,6 @@ export default function CreateCollectionsModal({
               <Tr>
                 <Td>Collection ID</Td>
                 <Td>{collection_id}</Td>
-              </Tr>
-
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,6895" />
-                </Td>
               </Tr>
             </Tbody>
           </Table>

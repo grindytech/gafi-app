@@ -41,6 +41,8 @@ interface MintModalProps {
 export default function MintModal({ getValues, onClose }: MintModalProps) {
   const { amount, pool_id, admin } = getValues() as MintFieldSubmitProps;
 
+  console.log('admin', admin);
+
   const { api } = useSubstrateState();
 
   const { isLoading, mutation } = useTxCallBack({

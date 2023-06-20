@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import useAccount from 'hooks/useAccount';
 import { useSubstrateState } from 'contexts/substrateContext';
 
 import Chevron02Icon from 'public/assets/line/chevron-02.svg';
@@ -35,18 +34,16 @@ import DefaultWeb3 from 'layouts/default/DefaultWeb3';
 import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 export default function Web3() {
+  const { account } = useConnectWallet();
   const { api } = useSubstrateState();
-  const { getAccount } = useAccount();
 
   const data = useQueries({
     queries: [
       {
         queryKey: ['gameAccount'],
         queryFn: async () => {
-          if (api && api.query.game && getAccount) {
-            const res = await api.query.game.gameAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.game && account) {
+            const res = await api.query.game.gameAccount.entries(account);
 
             const getGames = await Promise.all(
               res.map(
@@ -76,10 +73,8 @@ export default function Web3() {
       {
         queryKey: ['collectionAccount'],
         queryFn: async () => {
-          if (api && api.query.nfts && getAccount) {
-            const res = await api.query.nfts.collectionAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.nfts && account) {
+            const res = await api.query.nfts.collectionAccount.entries(account);
 
             const getCollections = await Promise.all(
               res.map(
@@ -109,10 +104,8 @@ export default function Web3() {
       {
         queryKey: ['item'],
         queryFn: async () => {
-          if (api && api.query.nfts && getAccount) {
-            const res = await api.query.nfts.collectionAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.nfts && account) {
+            const res = await api.query.nfts.collectionAccount.entries(account);
 
             const getCollections = res.map(
               ([

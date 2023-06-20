@@ -6,21 +6,22 @@ import { useForm } from 'react-hook-form';
 
 import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import useAccount from 'hooks/useAccount';
+
 import useForceMount from 'hooks/useForceMount';
+import GameOwner from 'components/Game/GameOwner';
 
 export default function CollectionsCreate() {
   const { setValue, getValues } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getAccounts } = useAccount();
+
   const { mounting, setMounting } = useForceMount();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        {getAccounts ? (
-          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
-        ) : null}
+        <GameOwner setValue={setValue} sx={{ padding: 4 }} />
+
+        <SwitchAdmin setValue={setValue} />
 
         <CollectionID setValue={setValue} refetch={mounting} />
 

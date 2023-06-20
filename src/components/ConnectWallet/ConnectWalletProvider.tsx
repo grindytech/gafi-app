@@ -1,5 +1,3 @@
-import useAccount from 'hooks/useAccount';
-import WalletConnect from 'layouts/WalletConnect/WalletConnect';
 import React, { Dispatch } from 'react';
 import {
   GAFI_WALLET_ACCOUNT_KEY,
@@ -8,7 +6,10 @@ import {
 import { getInjectedWeb3 } from 'utils/utils';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
 
-interface stateAccountProps {
+import useForceMount from 'hooks/useForceMount';
+import ConnectWalletModal from './ConnectWalletModal';
+
+export interface stateAccountProps {
   account: string | null | undefined;
   allAccount?: InjectedAccount[] | undefined;
 }
@@ -28,6 +29,7 @@ const ConnetWalletContext = React.createContext<ConnetWalletContextProps>({
 export default function ConnectWalletProvider({
   children,
 }: React.PropsWithChildren) {
+  const { mounting, setMounting } = useForceMount();
   const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
 
   const [account, setAccount] = React.useState<stateAccountProps>({
@@ -53,11 +55,7 @@ export default function ConnectWalletProvider({
     };
 
     getAccounts();
-  }, [GAFI_WALLET_ACCOUNT_KEY]);
-
-  console.log('extensionName', extensionName);
-
-  console.log('value', account);
+  }, [GAFI_WALLET_ACCOUNT_KEY, mounting]);
 
   return (
     <ConnetWalletContext.Provider
@@ -67,7 +65,12 @@ export default function ConnectWalletProvider({
         setAccount,
       }}
     >
-      {!extensionName && <WalletConnect />}
+      {!extensionName && (
+        <ConnectWalletModal
+          mounting={mounting % 2 === 0}
+          setMounting={setMounting}
+        />
+      )}
 
       {children}
     </ConnetWalletContext.Provider>

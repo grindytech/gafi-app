@@ -14,7 +14,6 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
 import useTxCallBack from 'hooks/useTxCallBack';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
@@ -92,13 +91,6 @@ export default function AddCollectionsModal({
               <Tr>
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
-              </Tr>
-
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,6895" />
-                </Td>
               </Tr>
             </Tbody>
           </Table>

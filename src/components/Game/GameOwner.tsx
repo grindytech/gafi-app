@@ -2,38 +2,46 @@ import React from 'react';
 
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
-import useAccount from 'hooks/useAccount';
 import CardBox from 'components/CardBox';
 import { Box, BoxProps, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
 import Balance from 'components/Balance/Balance';
+import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 interface GameOwnerProps {
   setValue: UseFormSetValue<FieldValues>;
-  type: 'Owner' | 'Admin';
   sx?: BoxProps;
 }
 
-export default function GameOwner({ setValue, type, sx }: GameOwnerProps) {
-  const { getAccount } = useAccount();
+export default function GameOwner({ setValue, sx }: GameOwnerProps) {
+  const { account, allAccount } = useConnectWallet();
+  const [currentAccount, setCurrentAccount] = React.useState<{
+    address?: string;
+    name?: string;
+  }>({});
 
   React.useEffect(() => {
-    if (getAccount) {
-      setValue('owner', {
-        address: getAccount.address,
-        name: getAccount.name,
+    if (account && allAccount) {
+      const [{ address, name }] = allAccount.filter(item => {
+        return item.address === account;
       });
+
+      setValue('owner', {
+        address,
+        name,
+      });
+      setCurrentAccount({ address, name });
     }
-  }, [getAccount]);
+  }, [account, allAccount]);
 
   return (
     <>
-      {getAccount && (
+      {currentAccount.address && currentAccount.name && (
         <CardBox variant="createGames" padding={6} {...sx}>
           <Box>
-            <Heading variant="switch">{type}</Heading>
+            <Heading variant="switch">Owner</Heading>
 
             <Flex
               mt={4}
@@ -43,7 +51,7 @@ export default function GameOwner({ setValue, type, sx }: GameOwnerProps) {
                 md: 4,
               }}
             >
-              <AccountJazzicon address={getAccount.address} />
+              <AccountJazzicon address={currentAccount.address} />
 
               <Box>
                 <Heading
@@ -52,7 +60,7 @@ export default function GameOwner({ setValue, type, sx }: GameOwnerProps) {
                   fontWeight="semibold"
                   color="shader.a.900"
                 >
-                  {getAccount.name}
+                  {currentAccount.name}
                 </Heading>
 
                 <Text
@@ -67,8 +75,8 @@ export default function GameOwner({ setValue, type, sx }: GameOwnerProps) {
                     sm: 'center',
                   }}
                 >
-                  {shorten(getAccount.address, 12)}
-                  <ButtonCopy value={getAccount.address} />
+                  {shorten(currentAccount.address, 12)}
+                  <ButtonCopy value={currentAccount.address} />
                 </Text>
               </Box>
             </Flex>
@@ -76,7 +84,7 @@ export default function GameOwner({ setValue, type, sx }: GameOwnerProps) {
 
           <Divider borderColor="shader.a.300" my={4} />
 
-          <Balance />
+          <Balance currentAccount={currentAccount.address} />
         </CardBox>
       )}
     </>

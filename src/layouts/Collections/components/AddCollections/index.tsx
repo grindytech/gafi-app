@@ -3,23 +3,23 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import useAccount from 'hooks/useAccount';
+
 import AddCollectionsModal from './AddCollectionsModal';
 import CollectionAdd from 'components/Collection/CollectionAdd';
 import GameIDAdd from 'components/Game/GameIDAdd';
+import GameOwner from 'components/Game/GameOwner';
 
 export default function AddCollections() {
   const { setValue, getValues } = useForm();
-  const { getAccounts } = useAccount();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        {getAccounts ? (
-          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
-        ) : null}
+        <GameOwner setValue={setValue} sx={{ padding: 4 }} />
+
+        <SwitchAdmin setValue={setValue} />
 
         <CollectionAdd setValue={setValue} />
 

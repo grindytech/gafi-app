@@ -28,6 +28,7 @@ interface CreateItemFieldProps {
   };
   collection_id: number;
   item_id: number;
+  maybeSupply: number;
 }
 
 interface CreateItemModalProps {
@@ -40,9 +41,8 @@ export default function CreateItemModal({
   onClose,
 }: CreateItemModalProps) {
   const { api } = useSubstrateState();
-  const { collection_id, item_id, admin } = getValues() as CreateItemFieldProps;
-
-  const maybeSupply = null;
+  const { collection_id, item_id, admin, maybeSupply } =
+    getValues() as CreateItemFieldProps;
 
   const { isLoading, mutation } = useTxCallBack({
     address: admin.address,
