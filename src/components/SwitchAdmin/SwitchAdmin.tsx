@@ -93,34 +93,41 @@ export default function SwitchAdmin({
                   md: 4,
                 }}
               >
-                <AccountJazzicon address={loadAccounts.address} />
+                <Box
+                  display={{
+                    sm: 'flex',
+                  }}
+                  gap={4}
+                  flex={1}
+                >
+                  <AccountJazzicon address={loadAccounts.address} />
 
-                <Box flex={1}>
-                  <Heading
-                    as="h6"
-                    fontSize="md"
-                    fontWeight="semibold"
-                    color="shader.a.900"
-                  >
-                    {loadAccounts.name}
-                  </Heading>
+                  <Box>
+                    <Heading
+                      as="h6"
+                      fontSize="md"
+                      fontWeight="semibold"
+                      color="shader.a.900"
+                    >
+                      {loadAccounts.name}
+                    </Heading>
 
-                  <Text
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="shader.a.600"
-                    display="flex"
-                    flexWrap="wrap"
-                    gap={1}
-                    alignItems={{
-                      base: 'flex-start',
-                      sm: 'center',
-                    }}
-                  >
-                    {shorten(loadAccounts.address, 12)}
+                    <Text
+                      fontSize="sm"
+                      fontWeight="medium"
+                      color="shader.a.600"
+                      display="flex"
+                      gap={1}
+                      alignItems={{
+                        base: 'flex-start',
+                        sm: 'center',
+                      }}
+                    >
+                      {shorten(loadAccounts.address, 12)}
 
-                    <ButtonCopy value={loadAccounts.address} />
-                  </Text>
+                      <ButtonCopy value={loadAccounts.address} />
+                    </Text>
+                  </Box>
                 </Box>
 
                 <Box>

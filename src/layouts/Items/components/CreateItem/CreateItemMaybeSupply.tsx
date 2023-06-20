@@ -1,4 +1,4 @@
-import { Center, CenterProps, Heading, Input } from '@chakra-ui/react';
+import { Center, CenterProps, Input, Text } from '@chakra-ui/react';
 
 import React from 'react';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
@@ -15,13 +15,15 @@ export default function CreateItemMaybeSupply({
   return (
     <>
       <Center justifyContent="space-between" {...sx}>
-        <Heading variant="game">Maybe Supply</Heading>
+        <Text fontSize="sm" fontWeight="normal" color="shader.a.500">
+          Amount
+        </Text>
 
         <Input
           onBlur={e => {
             const { value } = e.target;
 
-            setValue('maybe_supply', value);
+            setValue('maybeSupply', value);
           }}
           min={0}
           variant="createGameSubmit"

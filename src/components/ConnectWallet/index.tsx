@@ -35,6 +35,7 @@ export default function ConnectWallet() {
       setIsLoading(false);
     },
   });
+
   const { account, allAccount, setAccount } = useConnectWallet();
 
   return (

@@ -6,7 +6,7 @@ import GamesIcon from 'public/assets/illustration/games.svg';
 import CollectionsIcon from 'public/assets/illustration/collections.svg';
 import ItemsIcon from 'public/assets/illustration/items.svg';
 import MetadataIcon from 'public/assets/illustration/metadata.svg';
-
+import PoolsIcon from 'public/assets/illustration/pools.svg';
 export const ListWeb3Item = [
   {
     title: 'New Games',
@@ -25,6 +25,12 @@ export const ListWeb3Item = [
     icon: <ItemsIcon />,
     link: '/web3/items',
     background: 'gradient.linear.4',
+  },
+  {
+    title: 'Pools',
+    icon: <PoolsIcon />,
+    link: '/web3/pools',
+    background: 'gradient.linear.6',
   },
   {
     title: 'Metadata',

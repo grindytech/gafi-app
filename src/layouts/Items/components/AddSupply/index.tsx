@@ -18,7 +18,7 @@ export default function AddSupply() {
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        <GameOwner setValue={setValue} sx={{ padding: 4 }} />
+        <GameOwner />
 
         <SwitchAdmin setValue={setValue} />
 

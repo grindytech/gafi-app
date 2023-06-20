@@ -11,11 +11,10 @@ import Balance from 'components/Balance/Balance';
 import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 interface GameOwnerProps {
-  setValue: UseFormSetValue<FieldValues>;
   sx?: BoxProps;
 }
 
-export default function GameOwner({ setValue, sx }: GameOwnerProps) {
+export default function GameOwner({ sx }: GameOwnerProps) {
   const { account, allAccount } = useConnectWallet();
   const [currentAccount, setCurrentAccount] = React.useState<{
     address?: string;
@@ -28,10 +27,6 @@ export default function GameOwner({ setValue, sx }: GameOwnerProps) {
         return item.address === account;
       });
 
-      setValue('owner', {
-        address,
-        name,
-      });
       setCurrentAccount({ address, name });
     }
   }, [account, allAccount]);
@@ -39,7 +34,7 @@ export default function GameOwner({ setValue, sx }: GameOwnerProps) {
   return (
     <>
       {currentAccount.address && currentAccount.name && (
-        <CardBox variant="createGames" padding={6} {...sx}>
+        <CardBox variant="createGames" {...sx}>
           <Box>
             <Heading variant="switch">Owner</Heading>
 

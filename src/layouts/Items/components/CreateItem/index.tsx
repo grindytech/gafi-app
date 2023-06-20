@@ -13,14 +13,23 @@ import CreateItemMaybeSupply from './CreateItemMaybeSupply';
 import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
 
 export default function CreateItem() {
-  const { setValue, getValues } = useForm();
+  const { setValue, getValues, reset } = useForm();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: optionOpen, onToggle: optionToggle } = useDisclosure();
+
+  React.useEffect(() => {
+    if (!optionOpen) {
+      reset(prev => ({
+        ...prev,
+        maybeSupply: null,
+      }));
+    }
+  }, [optionOpen]);
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        <GameOwner setValue={setValue} sx={{ padding: 4 }} />
+        <GameOwner />
 
         <SwitchAdmin setValue={setValue} />
 
@@ -29,12 +38,9 @@ export default function CreateItem() {
         <ItemAdd setValue={setValue} />
 
         <MaybeOptions
+          title="Supply"
           isOpen={optionOpen}
           onToggle={optionToggle}
-          sx={{
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-          }}
         >
           <CreateItemMaybeSupply setValue={setValue} />
         </MaybeOptions>

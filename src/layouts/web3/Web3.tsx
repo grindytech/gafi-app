@@ -154,7 +154,7 @@ export default function Web3() {
 
   if (data[0].isLoading && data[1].isLoading && data[2].isLoading) {
     return (
-      <Center py={24} gap={4}>
+      <Center height="full" gap={4}>
         <Spinner color="primary.a.500" size="md" />
         <Heading fontSize="lg" color="shader.a.600" fontWeight="medium">
           Loading
@@ -173,7 +173,7 @@ export default function Web3() {
       items.length ? (
         <DefaultWeb3>
           <Tabs variant="unstyled">
-            <TabList>
+            <TabList flexWrap="wrap-reverse" gap={4}>
               <Flex
                 flexWrap="wrap"
                 gap={3}
@@ -213,7 +213,7 @@ export default function Web3() {
                 fontSize="sm"
                 gap={3}
                 flex={{
-                  sm: 1,
+                  md: 1,
                 }}
               >
                 <Center gap={2}>

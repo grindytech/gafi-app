@@ -14,14 +14,13 @@ import { useForm } from 'react-hook-form';
 
 import MintModal from './components/MintModal';
 
-import MintPercentItem from './components/MintPercentItem';
-
 import MintAmount from './components/MintAmount';
 
 import MintPoolID from './components/MintPoolID';
 
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import GameOwner from 'components/Game/GameOwner';
+import MintWeight from './components/MintWeight';
 
 export default function Mint() {
   const { register, setValue, getValues, watch } = useForm();
@@ -58,7 +57,7 @@ export default function Mint() {
           px={12}
           transform="translateY(-10%)"
         >
-          <GameOwner setValue={setValue} sx={{ padding: 4 }} />
+          <GameOwner />
 
           <SwitchAdmin setValue={setValue} type="Mint to" />
 
@@ -66,7 +65,7 @@ export default function Mint() {
 
           <MintPoolID register={register} />
 
-          <MintPercentItem watch={watch} />
+          <MintWeight watch={watch} />
 
           <Button
             variant="createGameSubmit"

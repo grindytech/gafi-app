@@ -20,11 +20,11 @@ type TypeMaybeNFT = {
   item: number;
 };
 
-interface MintPercentItemProps {
+interface MintWeightProps {
   watch: UseFormWatch<FieldValues>;
 }
 
-export default function MintPercentItem({ watch }: MintPercentItemProps) {
+export default function MintWeight({ watch }: MintWeightProps) {
   const pool_id: number = watch('pool_id');
 
   const { api } = useSubstrateState();
@@ -36,66 +36,39 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
         const res = await api.query.game.lootTableOf(pool_id);
 
         const getSupplyOfItems = await Promise.all(
-          res.map(async ([maybeNft, weight], ind) => {
+          res.map(async ([maybeNft, weight]) => {
             const getWeight = weight[1].toPrimitive() as number;
 
             if (maybeNft[1].isEmpty) {
               return {
-                rare: getWeight,
+                rarity: getWeight,
               };
             }
 
             const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
 
-            const itemsOfCollection = await api.query.nfts.item.entries(
-              collection
-            );
-
-            const adu = itemsOfCollection.filter(
-              async (
-                [
-                  {
-                    args: [he, ho],
-                  },
-                ],
-                index
-              ) => {
-                const id = he.toPrimitive();
-                const items = ho.toPrimitive();
-
-                console.log({ index, ind });
-
-                if (index === ind) {
-                  console.log(items);
-                }
-              }
-            );
-
-            adu;
-            // const itemsOfCollection = await api.query.game.supplyOf(
-            //   collection,
-            //   item
-            // );
-
             return {
               item_id: item,
-              amount: itemsOfCollection,
-              rare: getWeight,
+              collection_id: collection,
+              rarity: getWeight,
             };
           })
         );
 
-        const getTotalWeight = getSupplyOfItems
-          .map(item => item.rare)
+        const getTotalRarity = getSupplyOfItems
+          .map(item => item.rarity)
           .reduce((prev, current) => prev + current);
 
         return getSupplyOfItems.map(item => {
-          const { item_id, amount, rare } = item;
+          const { collection_id, item_id, rarity } = item;
+
+          const total = `${(rarity / getTotalRarity) * 100}`;
+          const [prefix, suffixed] = total.split('.');
 
           return {
+            collection_id,
             item_id,
-            amount,
-            rare: ((rare / getTotalWeight) * 100).toFixed(1),
+            rarity: suffixed ? Number(total).toFixed(1) : prefix,
           };
         });
       }
@@ -134,7 +107,7 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
           <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
             {React.Children.toArray(
               data.map(item => {
-                const { amount, item_id, rare } = item;
+                const { collection_id, item_id, rarity } = item;
 
                 return (
                   <Flex
@@ -151,32 +124,25 @@ export default function MintPercentItem({ watch }: MintPercentItemProps) {
                       color="shader.a.900"
                     >
                       {typeof item_id === 'number'
-                        ? `Item ${item_id}`
+                        ? `Item: ${item_id}`
                         : 'Empty'}
                     </Heading>
 
                     <Box mt={4}>
-                      {/* {typeof amount === 'number' ? (
+                      {typeof collection_id === 'number' ? (
                         <Text>
-                          Weight&nbsp;
-                          <Text
-                            as="span"
-                            color="shader.a.900"
-                            fontWeight="semibold"
-                          >
-                            {amount}
-                          </Text>
+                          Collection ID:&nbsp;
+                          <Text as="span">{collection_id}</Text>
                         </Text>
-                      ) : null} */}
-
+                      ) : null}
                       <Text>
-                        Rarity&nbsp;
+                        Rarity:&nbsp;
                         <Text
                           as="span"
-                          color={PercentColor(Number(rare))}
+                          color={PercentColor(Number(rarity))}
                           fontWeight="semibold"
                         >
-                          {rare}%
+                          {rarity}%
                         </Text>
                       </Text>
                     </Box>

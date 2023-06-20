@@ -38,7 +38,8 @@ export default function NewGames() {
       </Heading>
 
       <Flex flexDirection="column" gap={3}>
-        <GameOwner setValue={setValue} />
+        <GameOwner />
+
         <SwitchAdmin setValue={setValue} />
 
         <GameID setValue={setValue} refetch={mounting} />
