@@ -133,25 +133,6 @@ const Table: ComponentStyleConfig = {
   },
 };
 
-const Input: ComponentStyleConfig = {
-  variants: {
-    createGameSubmit: {
-      field: {
-        border: '0.0625rem solid',
-        borderColor: 'shader.a.400',
-        borderRadius: 'lg',
-        color: 'shader.a.900',
-        fontWeight: 'medium',
-        width: 'auto',
-        _placeholder: {
-          color: 'shader.a.500',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
-};
-
 const Heading: ComponentStyleConfig = {
   variants: {
     switch: {
@@ -175,7 +156,6 @@ const theme = extendTheme({
     CardBox,
     Button,
     Table,
-    Input,
     Heading,
   },
 });

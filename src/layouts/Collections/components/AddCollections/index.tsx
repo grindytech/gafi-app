@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 
 import AddCollectionsModal from './AddCollectionsModal';
-import CollectionAdd from 'components/Collection/CollectionAdd';
-import GameIDAdd from 'components/Game/GameIDAdd';
 import GameOwner from 'components/Game/GameOwner';
+import NumberInput from 'components/NumberInput';
+import CardBox from 'components/CardBox';
 
 export default function AddCollections() {
   const { setValue, getValues } = useForm();
@@ -21,9 +21,23 @@ export default function AddCollections() {
 
         <SwitchAdmin setValue={setValue} />
 
-        <CollectionAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="collection_id"
+            title="Collection ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
-        <GameIDAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="game_id"
+            title="Game ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
         <Button
           variant="createGameSubmit"

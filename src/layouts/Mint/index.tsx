@@ -21,9 +21,11 @@ import MintPoolID from './components/MintPoolID';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import GameOwner from 'components/Game/GameOwner';
 import MintWeight from './components/MintWeight';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 export default function Mint() {
   const { register, setValue, getValues, watch } = useForm();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

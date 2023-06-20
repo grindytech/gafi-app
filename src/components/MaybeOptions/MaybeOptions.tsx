@@ -1,20 +1,20 @@
-import { Box, Flex, FlexProps, Heading, Switch } from '@chakra-ui/react';
+import { Flex, FlexProps, Heading, Switch } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import React, { PropsWithChildren } from 'react';
 
 interface MaybeOptionsProps extends PropsWithChildren {
-  isOpen: boolean;
-  onToggle: () => void;
   title: string;
+  isOpen: boolean;
   sx?: FlexProps;
+  onToggle: () => void;
 }
 
 export default function MaybeOptions({
-  children,
+  title,
   isOpen,
   onToggle,
-  title,
   sx,
+  children,
 }: MaybeOptionsProps) {
   const padding = 4;
 
@@ -27,13 +27,18 @@ export default function MaybeOptions({
       </Flex>
 
       {isOpen ? (
-        <Box
-          borderTop="0.0625rem solid"
-          borderColor="shader.a.300"
-          padding={padding}
+        <Flex
+          flexDirection="column"
+          sx={{
+            '> div': {
+              borderTop: '0.0625rem solid',
+              borderColor: 'shader.a.300',
+              padding,
+            },
+          }}
         >
           {children}
-        </Box>
+        </Flex>
       ) : null}
     </CardBox>
   );

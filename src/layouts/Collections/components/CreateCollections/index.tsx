@@ -4,11 +4,11 @@ import React from 'react';
 import CreateCollectionsModal from './CreateCollectionsModal';
 import { useForm } from 'react-hook-form';
 
-import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
 import GameOwner from 'components/Game/GameOwner';
+import CollectionID from 'components/Collection/CollectionID';
 
 export default function CollectionsCreate() {
   const { setValue, getValues } = useForm();

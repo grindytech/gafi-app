@@ -6,12 +6,11 @@ import GoBack from 'components/GoBack';
 import NewGamesAuthorize from './components/NewGamesAuthorize';
 import { useForm } from 'react-hook-form';
 
-import GameID from 'components/Game/GameID';
-
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
 import GameOwner from 'components/Game/GameOwner';
+import GameID from 'components/Game/GameID';
 
 export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -22,6 +22,8 @@ import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useSubstrateState } from 'contexts/substrateContext';
 
 import useTxCallBack from 'hooks/useTxCallBack';
+import { useQuery } from '@tanstack/react-query';
+import { formatGAFI } from 'utils/utils';
 
 export interface MintFieldSubmitProps {
   admin: {
@@ -41,9 +43,22 @@ interface MintModalProps {
 export default function MintModal({ getValues, onClose }: MintModalProps) {
   const { amount, pool_id, admin } = getValues() as MintFieldSubmitProps;
 
-  console.log('admin', admin);
-
   const { api } = useSubstrateState();
+  const { data } = useQuery({
+    queryKey: ['poolOf', pool_id],
+    queryFn: async () => {
+      if (api) {
+        const res = await api.query.game.poolOf(pool_id);
+
+        return res.toPrimitive() as {
+          fee: number;
+        };
+      }
+    },
+    enabled: !!(api && api.query.game),
+  });
+
+  console.log(data);
 
   const { isLoading, mutation } = useTxCallBack({
     address: admin.address,
@@ -100,12 +115,14 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
                 <Td>{amount}</Td>
               </Tr>
 
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,689" />
-                </Td>
-              </Tr>
+              {data ? (
+                <Tr>
+                  <Td>Fee</Td>
+                  <Td>
+                    <GafiAmount amount={formatGAFI(data.fee)} />
+                  </Td>
+                </Tr>
+              ) : null}
             </Tbody>
           </Table>
         </ModalBody>

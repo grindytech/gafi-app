@@ -1,5 +1,6 @@
 import { BoxProps, Center, Heading, Input } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
+import { NumberInputStyle } from 'components/NumberInput';
 import React from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
@@ -20,8 +21,9 @@ export default function MintPoolID({ register, sx }: MintPoolIDProps) {
 
       <Input
         {...register('pool_id')}
+        {...NumberInputStyle}
+        width="auto"
         min={0}
-        variant="createGameSubmit"
         placeholder="Ex: 0"
       />
     </CardBox>

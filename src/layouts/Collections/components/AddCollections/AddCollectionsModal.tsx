@@ -46,6 +46,9 @@ export default function AddCollectionsModal({
     address: admin.address,
     key: ['addCollection', collection_id],
     submit: api?.tx.game.addGameCollection(game_id, collection_id),
+    onSuccess() {
+      onClose();
+    },
   });
 
   return (

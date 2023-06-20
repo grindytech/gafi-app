@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
-
 import CardBox from 'components/CardBox';
 import { Box, BoxProps, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';

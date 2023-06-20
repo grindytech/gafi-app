@@ -47,6 +47,9 @@ export default function AcceptCollectionsModal({
     address: admin.address,
     key: ['acceptAdding', collection_id],
     submit: api?.tx.game.setAcceptAdding(game_id, collection_id),
+    onSuccess() {
+      onClose();
+    },
   });
 
   return (

@@ -26,12 +26,12 @@ export const ListWeb3Item = [
     link: '/web3/items',
     background: 'gradient.linear.4',
   },
-  {
-    title: 'Pools',
-    icon: <PoolsIcon />,
-    link: '/web3/pools',
-    background: 'gradient.linear.6',
-  },
+  // {
+  //   title: 'Pools',
+  //   icon: <PoolsIcon />,
+  //   link: '/web3/pools',
+  //   background: 'gradient.linear.6',
+  // },
   {
     title: 'Metadata',
     icon: <MetadataIcon />,

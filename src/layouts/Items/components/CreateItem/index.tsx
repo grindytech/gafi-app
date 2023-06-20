@@ -3,14 +3,13 @@ import React from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import CollectionAdd from 'components/Collection/CollectionAdd';
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import CreateItemModal from './CreateItemModal';
-import ItemAdd from '../ItemAdd';
 import GameOwner from 'components/Game/GameOwner';
 
-import CreateItemMaybeSupply from './CreateItemMaybeSupply';
 import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
+import CardBox from 'components/CardBox';
+import NumberInput from 'components/NumberInput';
 
 export default function CreateItem() {
   const { setValue, getValues, reset } = useForm();
@@ -33,16 +32,43 @@ export default function CreateItem() {
 
         <SwitchAdmin setValue={setValue} />
 
-        <CollectionAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="collection_id"
+            title="Collection ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
-        <ItemAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="item_id"
+            title="Item ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
         <MaybeOptions
           title="Supply"
           isOpen={optionOpen}
           onToggle={optionToggle}
         >
-          <CreateItemMaybeSupply setValue={setValue} />
+          <NumberInput
+            value="maybeSupply"
+            title="Amount"
+            setValue={setValue}
+            sx={{
+              sx: {
+                h2: {
+                  fontSize: 'sm',
+                  fontWeight: 'normal',
+                  color: 'shader.,a.500',
+                },
+              },
+            }}
+          />
         </MaybeOptions>
 
         <Button

@@ -44,8 +44,6 @@ export default function CreateItemModal({
   const { collection_id, item_id, admin, maybeSupply } =
     getValues() as CreateItemFieldProps;
 
-  console.log(getValues());
-
   const { isLoading, mutation } = useTxCallBack({
     address: admin.address,
     key: ['createItem', String(item_id)],
