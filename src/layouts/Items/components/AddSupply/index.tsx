@@ -1,32 +1,53 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import CardBox from 'components/CardBox';
-import CollectionAdd from 'components/Collection/CollectionAdd';
+
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import useAccount from 'hooks/useAccount';
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import ItemAdd from '../ItemAdd';
-import AddSupplyAmount from './AddSupplyAmount';
+
 import AddSupplyModal from './AddSupplyModal';
+import GameOwner from 'components/Game/GameOwner';
+import CardBox from 'components/CardBox';
+import NumberInput from 'components/NumberInput';
 
 export default function AddSupply() {
   const { getValues, setValue } = useForm();
-  const { getAccounts } = useAccount();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        {getAccounts ? (
-          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
-        ) : null}
+        <GameOwner />
 
-        <CollectionAdd setValue={setValue} />
+        <SwitchAdmin setValue={setValue} />
 
-        <ItemAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="collection_id"
+            title="Collection ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
-        <AddSupplyAmount setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="item_id"
+            title="Item ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
+
+        <CardBox variant="createGames">
+          <NumberInput
+            value="amount"
+            title="Amount"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
         <Button
           variant="createGameSubmit"

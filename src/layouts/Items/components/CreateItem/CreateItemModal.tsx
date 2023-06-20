@@ -13,14 +13,13 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallBack from 'hooks/useTxCallBack';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { getInjectedWeb3 } from 'utils/utils';
 
 interface CreateItemFieldProps {
   admin: {
@@ -29,6 +28,7 @@ interface CreateItemFieldProps {
   };
   collection_id: number;
   item_id: number;
+  maybeSupply: number | null;
 }
 
 interface CreateItemModalProps {
@@ -40,11 +40,18 @@ export default function CreateItemModal({
   getValues,
   onClose,
 }: CreateItemModalProps) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
-  const { collection_id, item_id, admin } = getValues() as CreateItemFieldProps;
+  const { collection_id, item_id, admin, maybeSupply } =
+    getValues() as CreateItemFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['createItem', String(item_id)],
+    submit: api?.tx.game.createItem(collection_id, item_id, {}, maybeSupply),
+    onSuccess() {
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -90,6 +97,13 @@ export default function CreateItemModal({
                 <Td>Item ID</Td>
                 <Td>{item_id}</Td>
               </Tr>
+
+              {maybeSupply && (
+                <Tr>
+                  <Td>Supply</Td>
+                  <Td>{maybeSupply}</Td>
+                </Tr>
+              )}
             </Tbody>
           </Table>
         </ModalBody>
@@ -98,50 +112,9 @@ export default function CreateItemModal({
           <Button
             variant="createGameSubmit"
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-
-              if (api && injected) {
-                const PalletNftsItemConfig = 0;
-                const maybeSupply = null;
-
-                const submit = api.tx.game.createItem(
-                  collection_id,
-                  item_id,
-                  PalletNftsItemConfig,
-                  maybeSupply
-                );
-
-                await submit
-                  .signAndSend(
-                    admin.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            isLoading={isLoading}
+            _hover={{}}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

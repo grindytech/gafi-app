@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import useAccount from 'hooks/useAccount';
 import { useSubstrateState } from 'contexts/substrateContext';
 
 import Chevron02Icon from 'public/assets/line/chevron-02.svg';
@@ -32,20 +31,19 @@ import Web3Items, { Web3ItemsDataProps } from './components/Web3Items';
 
 import Web3FirstBuild from './components/Web3FirstBuild';
 import DefaultWeb3 from 'layouts/default/DefaultWeb3';
+import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 export default function Web3() {
+  const { account } = useConnectWallet();
   const { api } = useSubstrateState();
-  const { getAccount } = useAccount();
 
   const data = useQueries({
     queries: [
       {
         queryKey: ['gameAccount'],
         queryFn: async () => {
-          if (api && api.query.game && getAccount) {
-            const res = await api.query.game.gameAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.game && account) {
+            const res = await api.query.game.gameAccount.entries(account);
 
             const getGames = await Promise.all(
               res.map(
@@ -75,10 +73,8 @@ export default function Web3() {
       {
         queryKey: ['collectionAccount'],
         queryFn: async () => {
-          if (api && api.query.nfts && getAccount) {
-            const res = await api.query.nfts.collectionAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.nfts && account) {
+            const res = await api.query.nfts.collectionAccount.entries(account);
 
             const getCollections = await Promise.all(
               res.map(
@@ -108,10 +104,8 @@ export default function Web3() {
       {
         queryKey: ['item'],
         queryFn: async () => {
-          if (api && api.query.nfts && getAccount) {
-            const res = await api.query.nfts.collectionAccount.entries(
-              getAccount.address
-            );
+          if (api && api.query.nfts && account) {
+            const res = await api.query.nfts.collectionAccount.entries(account);
 
             const getCollections = res.map(
               ([
@@ -153,14 +147,14 @@ export default function Web3() {
       },
     ],
   });
+
   const games = data[0].data;
   const collections = data[1].data;
   const items = data[2].data;
 
-  console.log(data);
   if (data[0].isLoading && data[1].isLoading && data[2].isLoading) {
     return (
-      <Center py={24} gap={4}>
+      <Center height="full" gap={4}>
         <Spinner color="primary.a.500" size="md" />
         <Heading fontSize="lg" color="shader.a.600" fontWeight="medium">
           Loading
@@ -179,7 +173,7 @@ export default function Web3() {
       items.length ? (
         <DefaultWeb3>
           <Tabs variant="unstyled">
-            <TabList>
+            <TabList flexWrap="wrap-reverse" gap={4}>
               <Flex
                 flexWrap="wrap"
                 gap={3}
@@ -219,7 +213,7 @@ export default function Web3() {
                 fontSize="sm"
                 gap={3}
                 flex={{
-                  sm: 1,
+                  md: 1,
                 }}
               >
                 <Center gap={2}>

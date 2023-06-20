@@ -13,14 +13,12 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
-import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallBack from 'hooks/useTxCallBack';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { getInjectedWeb3 } from 'utils/utils';
 
 interface AddCollectionFieldProps {
   admin: {
@@ -40,12 +38,18 @@ export default function AddCollectionsModal({
   getValues,
   onClose,
 }: AddCollectionsModalProps) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
   const { admin, collection_id, game_id } =
     getValues() as AddCollectionFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['addCollection', collection_id],
+    submit: api?.tx.game.addGameCollection(game_id, collection_id),
+    onSuccess() {
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -91,13 +95,6 @@ export default function AddCollectionsModal({
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
               </Tr>
-
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,6895" />
-                </Td>
-              </Tr>
             </Tbody>
           </Table>
         </ModalBody>
@@ -108,45 +105,7 @@ export default function AddCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-
-              if (api && injected) {
-                const submit = api.tx.game.addGameCollection(
-                  game_id,
-                  collection_id
-                );
-
-                await submit
-                  .signAndSend(
-                    admin.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

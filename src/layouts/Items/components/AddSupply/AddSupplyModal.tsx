@@ -13,14 +13,13 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallBack from 'hooks/useTxCallBack';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { getInjectedWeb3 } from 'utils/utils';
 
 interface AddSupplyFieldProps {
   admin: {
@@ -38,12 +37,18 @@ interface AddSupplyModal {
 }
 
 export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
   const { collection_id, item_id, amount, admin } =
     getValues() as AddSupplyFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['createItem', String(item_id)],
+    submit: api?.tx.game.addSupply(collection_id, item_id, amount),
+    onSuccess() {
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -102,47 +107,9 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
           <Button
             variant="createGameSubmit"
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-              console.log(getValues());
-
-              if (api && injected) {
-                const submit = api.tx.game.addSupply(
-                  collection_id,
-                  item_id,
-                  amount
-                );
-
-                await submit
-                  .signAndSend(
-                    admin.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            isLoading={isLoading}
+            _hover={{}}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

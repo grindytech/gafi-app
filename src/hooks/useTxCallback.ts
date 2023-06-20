@@ -1,50 +1,64 @@
 import { useToast } from '@chakra-ui/react';
-import { ISubmittableResult } from '@polkadot/types/types';
-import { useTranslation } from 'react-i18next';
-
+import { useMutation } from '@tanstack/react-query';
 import { useSubstrateState } from 'contexts/substrateContext';
-import { handleTxError } from 'utils';
+import { getInjectedWeb3 } from 'utils/utils';
+import { SubmittableExtrinsic } from '@polkadot/api/types';
+import { ISubmittableResult } from '@polkadot/types/types';
+import useTxError from './useTxError';
+import { useState } from 'react';
 
-export default function useTxCallback(
-  onSuccess: () => void,
-  onFinalize?: () => void,
-  success?: string
-) {
+interface useTxCallBackProps {
+  address: string;
+  submit: SubmittableExtrinsic<'promise', ISubmittableResult> | undefined;
+  key: string[];
+  onSuccess?: () => void;
+}
+
+export default function useTxCallBack({
+  submit,
+  address,
+  key,
+  onSuccess,
+}: useTxCallBackProps) {
+  const toast = useToast();
   const { api } = useSubstrateState();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { t } = useTranslation();
+  const { txError } = useTxError({
+    onSuccess() {
+      setIsLoading(false);
 
-  const toast = useToast({
-    position: 'top-right',
-    isClosable: true,
-  });
-
-  const txCallback = (result: any) => {
-    const { status, events } = result as ISubmittableResult;
-    if (status.isFinalized) {
-      toast({
-        title: t(success ?? 'FINALIZED_BLOCK_HASH'),
-        description: status.asFinalized.toString(),
-        status: 'success',
-      });
-
-      const hasError = handleTxError(events, api, toast);
-
-      if (!hasError) {
+      if (onSuccess) {
         onSuccess();
       }
+    },
+  });
 
-      if (onFinalize) {
-        onFinalize();
+  const mutation = useMutation({
+    mutationKey: key,
+    mutationFn: async () => {
+      const injected = await getInjectedWeb3();
+      setIsLoading(true);
+
+      if (submit && api && injected) {
+        await submit.signAndSend(address, { signer: injected.signer }, txError);
       }
-    } else {
+    },
+    onError: (error: Error) => {
       toast({
-        title: t('CURRENT_TRANSACTION_STATUS'),
-        description: status.type,
-        status: 'info',
+        position: 'top-right',
+        status: 'error',
+        description: error.message,
+        isClosable: true,
       });
-    }
-  };
 
-  return txCallback;
+      setIsLoading(false);
+    },
+  });
+
+  return {
+    isLoading,
+    setIsLoading,
+    mutation,
+  };
 }

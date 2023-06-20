@@ -8,20 +8,37 @@ import { ListWeb3Item } from 'layouts/default/DefaultWeb3';
 
 export default function Web3FirstBuild() {
   return (
-    <Box padding={48}>
+    <Box
+      py={{
+        base: 12,
+        sm: 24,
+        lg: 48,
+      }}
+      px={{
+        lg: 48,
+      }}
+    >
       <Box textAlign="center" mb={6}>
         <Heading color="shader.a.900" fontSize="xl" fontWeight="semibold">
           🛠 Build your first projects!
         </Heading>
 
-        <Text color="shader.a.500" whiteSpace="pre-line" mt={1}>
+        <Text
+          color="shader.a.500"
+          whiteSpace={{
+            sm: 'pre-line',
+          }}
+          mt={1}
+        >
           {`Lorem ipsum dolor sit amet consectetur. Diam bibendum justo
             sollicitudin rutrum. Neque velit commodo convallis`}
         </Text>
       </Box>
 
       <Grid
-        gridTemplateColumns="repeat(2, 1fr)"
+        gridTemplateColumns={{
+          sm: 'repeat(2, 1fr)',
+        }}
         color="shader.a.900"
         border="0.0625rem solid"
         borderRadius="xl"

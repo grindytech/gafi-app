@@ -6,8 +6,6 @@ import {
   IconButton,
   List,
   ListItem,
-  Text,
-  Tooltip,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -16,9 +14,7 @@ import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
 
 import { Link, useLocation } from 'react-router-dom';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
-import { useWallet } from 'use-wallet';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
-import { shorten } from 'utils/utils';
+
 import ConnectWallet from 'components/ConnectWallet';
 
 const ListHeader = [
@@ -34,16 +30,17 @@ const ListHeader = [
   {
     title: 'Blockchain',
     link: '/blockchain',
+    disabled: true,
   },
   {
     title: 'Market place',
     link: '/marketplace',
+    disabled: true,
   },
 ];
 
 export default function Header() {
   const { pathname } = useLocation();
-  const { connect, account, reset } = useWallet();
 
   return (
     <Box
@@ -86,31 +83,50 @@ export default function Header() {
             icon={<GafiAppIcon />}
           />
 
-          <List display="flex" gap={8} padding={0}>
+          <List
+            display={{
+              base: 'none',
+              md: 'flex',
+            }}
+            gap={8}
+            padding={0}
+          >
             {React.Children.toArray(
               ListHeader.map(header => {
                 const isActive = pathname.includes(header.link);
 
                 return (
-                  <ListItem>
-                    <Text
-                      display="flex"
-                      as={Link}
-                      alignItems="center"
-                      gap={1}
-                      to={header.link}
-                      color={isActive ? 'primary.a.500' : 'shader.a.900'}
-                      fontSize="md"
-                      fontWeight={isActive ? 'bold' : 'medium'}
-                      textDecoration="none"
-                    >
-                      {header.icon && (
-                        <Icon as={header.icon as any} width={4} height={4} />
-                      )}
+                  <Button
+                    as={Link}
+                    to={header.link}
+                    onClick={e =>
+                      header.disabled ? e.preventDefault() : undefined
+                    }
+                    display="flex"
+                    color={isActive ? 'primary.a.500' : 'shader.a.900'}
+                    fontSize="md"
+                    fontWeight={isActive ? 'bold' : 'medium'}
+                    gap={1}
+                    isDisabled={header.disabled}
+                    variant="unstyled"
+                    height="auto"
+                    minWidth="auto"
+                    sx={{
+                      svg: {
+                        path: {
+                          fill: isActive
+                            ? 'currentColor'
+                            : 'url(#PickAxeDefaultColor)',
+                        },
+                      },
+                    }}
+                  >
+                    {header.icon && (
+                      <Icon as={header.icon as any} width={4} height={4} />
+                    )}
 
-                      {header.title}
-                    </Text>
-                  </ListItem>
+                    {header.title}
+                  </Button>
                 );
               })
             )}
@@ -123,17 +139,7 @@ export default function Header() {
           </ListItem>
 
           <ListItem>
-            {account ? (
-              <Tooltip label="click to disconnect">
-                <Center gap={2} cursor="pointer" onClick={reset}>
-                  <AccountJazzicon address={account} />
-
-                  <Text color="shader.a.600">{shorten(account, 6)}</Text>
-                </Center>
-              </Tooltip>
-            ) : (
-              <ConnectWallet />
-            )}
+            <ConnectWallet />
           </ListItem>
         </List>
       </Center>

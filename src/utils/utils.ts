@@ -1,5 +1,7 @@
 import config from 'config';
 import { GAFI_WALLET_STORAGE_KEY } from './constants';
+import { formatBalance } from '@polkadot/util';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 export const convertHex = (color: string, opacity: number) => {
   /* 
@@ -32,4 +34,19 @@ export const getInjectedWeb3 = async () => {
 
     return result;
   }
+};
+
+export const formatGAFI = (fee: number) => {
+  const { chainDecimal } = useSubstrateState();
+
+  const formatNumber = formatBalance(
+    fee,
+    {
+      withSi: false,
+      forceUnit: '-',
+    },
+    chainDecimal
+  );
+
+  return formatNumber;
 };

@@ -13,23 +13,17 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import NewGamesProfile from './NewGamesProfile';
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import GafiAmount from 'components/GafiAmount';
 import { useSubstrateState } from 'contexts/substrateContext';
 
-import { getInjectedWeb3 } from 'utils/utils';
+import useTxCallBack from 'hooks/useTxCallBack';
 
 interface NewGamesFieldProps {
-  owner: {
-    address: string;
-    name: string;
-  };
   admin: {
     address: string;
     name: string;
@@ -40,17 +34,26 @@ interface NewGamesFieldProps {
 interface NewGamesAuthorizeProps {
   onClose: () => void;
   getValues: UseFormGetValues<FieldValues>;
+  refetch: () => void;
 }
 
 export default function NewGamesAuthorize({
   onClose,
   getValues,
+  refetch,
 }: NewGamesAuthorizeProps) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
-  const { game_id, owner, admin } = getValues() as NewGamesFieldProps;
+  const { game_id, admin } = getValues() as NewGamesFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['createGame', game_id],
+    submit: api?.tx.game.createGame(admin.address),
+    onSuccess() {
+      refetch();
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -77,7 +80,7 @@ export default function NewGamesAuthorize({
             />
           </Center>
 
-          <NewGamesProfile account={owner.name} hash={owner.address} />
+          <NewGamesProfile account={admin.name} hash={admin.address} />
         </ModalHeader>
 
         <ModalBody
@@ -91,33 +94,6 @@ export default function NewGamesAuthorize({
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
               </Tr>
-
-              <Tr>
-                <Td>Fee</Td>
-                <Td>
-                  <GafiAmount amount="50,689" />
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td>Admin</Td>
-                <Td>
-                  <NewGamesProfile
-                    hash={admin.address}
-                    account={admin.name}
-                    sx={{
-                      textAlign: 'left',
-                      mt: {
-                        base: 2,
-                        md: 0,
-                      },
-                      justifyContent: {
-                        md: 'flex-end',
-                      },
-                    }}
-                  />
-                </Td>
-              </Tr>
             </Tbody>
           </Table>
         </ModalBody>
@@ -128,43 +104,7 @@ export default function NewGamesAuthorize({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-
-              if (api && injected) {
-                const submit = api.tx.game.createGame(admin.address);
-                setIsLoading(true);
-
-                await submit
-                  .signAndSend(
-                    owner.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

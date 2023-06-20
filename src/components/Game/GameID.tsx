@@ -6,8 +6,9 @@ import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 interface GameIDProps {
   setValue: UseFormSetValue<FieldValues>;
+  refetch: () => void;
 }
-export default function GameID({ setValue }: GameIDProps) {
+export default function GameID({ setValue, refetch }: GameIDProps) {
   const { api } = useSubstrateState();
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -23,7 +24,7 @@ export default function GameID({ setValue }: GameIDProps) {
     };
 
     getGameID();
-  }, [api?.query]);
+  }, [api?.query, refetch]);
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">

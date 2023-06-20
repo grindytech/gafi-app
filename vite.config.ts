@@ -18,6 +18,8 @@ export default ({ mode }) => {
         exportAsDefault: true,
       }),
     ],
+    // root: './',
+    publicDir: 'assets',
     define: { 'process.env': process.env },
     build: {
       manifest: true,

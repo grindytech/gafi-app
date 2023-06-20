@@ -3,27 +3,41 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import useAccount from 'hooks/useAccount';
+
 import AddCollectionsModal from './AddCollectionsModal';
-import CollectionAdd from 'components/Collection/CollectionAdd';
-import GameIDAdd from 'components/Game/GameIDAdd';
+import GameOwner from 'components/Game/GameOwner';
+import NumberInput from 'components/NumberInput';
+import CardBox from 'components/CardBox';
 
 export default function AddCollections() {
   const { setValue, getValues } = useForm();
-  const { getAccounts } = useAccount();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
-        {getAccounts ? (
-          <SwitchAdmin getAccounts={getAccounts} setValue={setValue} />
-        ) : null}
+        <GameOwner />
 
-        <CollectionAdd setValue={setValue} />
+        <SwitchAdmin setValue={setValue} />
 
-        <GameIDAdd setValue={setValue} />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="collection_id"
+            title="Collection ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
+
+        <CardBox variant="createGames">
+          <NumberInput
+            value="game_id"
+            title="Game ID"
+            setValue={setValue}
+            required={true}
+          />
+        </CardBox>
 
         <Button
           variant="createGameSubmit"

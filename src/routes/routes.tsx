@@ -4,6 +4,7 @@ import NewGames from 'layouts/NewGames';
 import Collections from 'layouts/Collections';
 import Items from 'layouts/Items';
 import Mint from 'layouts/Mint';
+import Pools from 'layouts/Pools';
 
 export interface IRouteProps {
   path: string;
@@ -30,6 +31,10 @@ const routes = [
   {
     path: '/web3/collections',
     component: () => <Collections />,
+  },
+  {
+    path: '/web3/pools',
+    component: () => <Pools />,
   },
   {
     path: '/mint',

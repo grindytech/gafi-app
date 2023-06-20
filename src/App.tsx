@@ -1,4 +1,4 @@
-import { ConnectWalletProvider } from 'contexts/connectWalletContext/connectWalletContext';
+import ConnectWalletProvider from 'components/ConnectWallet/ConnectWalletProvider';
 import { SubstrateContextProvider } from 'contexts/substrateContext';
 import DefaultRoot from 'layouts/default/DefaultRoot';
 import React from 'react';

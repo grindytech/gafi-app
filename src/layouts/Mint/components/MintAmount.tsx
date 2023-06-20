@@ -7,6 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
+import { NumberInputStyle } from 'components/NumberInput';
 import React from 'react';
 import { FieldValues, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
@@ -27,6 +28,7 @@ export default function MintAmount({ setValue, watch }: MintAmountProps) {
       <Center>
         <InputGroup>
           <Input
+            {...NumberInputStyle}
             onChange={e => {
               const { value, max, min } = e.target;
 
@@ -42,7 +44,6 @@ export default function MintAmount({ setValue, watch }: MintAmountProps) {
             value={currentAmount}
             max={maxiumLength}
             min={min}
-            variant="createGameSubmit"
             placeholder="Ex: 0"
           />
 

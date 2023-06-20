@@ -12,6 +12,7 @@ export const backgrounds = {
       3: 'linear-gradient(135deg, #FFC966 0%, #FF9000 100%)',
       4: 'linear-gradient(135deg, #75EA85 0%, #1FBA53 100%)',
       5: 'linear-gradient(135deg, #8199FB 0%, #2E4FF4 100%)',
+      6: 'linear-gradient(135deg, #F0ABFC 0%, #D946EF 100%)',
     },
   },
 };
@@ -132,25 +133,6 @@ const Table: ComponentStyleConfig = {
   },
 };
 
-const Input: ComponentStyleConfig = {
-  variants: {
-    createGameSubmit: {
-      field: {
-        border: '0.0625rem solid',
-        borderColor: 'shader.a.400',
-        borderRadius: 'lg',
-        color: 'shader.a.900',
-        fontWeight: 'medium',
-        width: 'auto',
-        _placeholder: {
-          color: 'shader.a.500',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
-};
-
 const Heading: ComponentStyleConfig = {
   variants: {
     switch: {
@@ -174,7 +156,6 @@ const theme = extendTheme({
     CardBox,
     Button,
     Table,
-    Input,
     Heading,
   },
 });

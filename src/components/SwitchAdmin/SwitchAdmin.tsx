@@ -14,51 +14,62 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Chevron01Icon from 'public/assets//line/chevron-01.svg';
 
 import ButtonCopy from 'components/ButtonCopy';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 
-import { stateAccountProps } from 'hooks/useAccount';
 import { shorten } from 'utils/utils';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
 interface SwitchAdmin {
-  getAccounts: stateAccountProps[];
   setValue: UseFormSetValue<FieldValues>;
   type?: 'Admin' | 'Mint to';
   sx?: BoxProps;
 }
 
 export default function SwitchAdmin({
-  getAccounts,
   setValue,
   type = 'Admin',
   sx,
 }: SwitchAdmin) {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { account, allAccount } = useConnectWallet();
+  const { isOpen, onClose, onToggle } = useDisclosure();
 
   const [currentAccount, setCurrentAccount] = React.useState(
-    getAccounts[0] || 'undefined'
+    allAccount
+      ? allAccount[0]
+      : {
+          address: account,
+        }
   );
 
-  const loadAccount = getAccounts
-    ? getAccounts.filter(item => item.address != currentAccount.address)
-    : null;
+  const loadAccounts = useMemo(() => {
+    if (currentAccount && allAccount) {
+      const [{ address, name }] = allAccount.filter(item => {
+        return item.address === currentAccount.address;
+      });
+
+      return { address, name };
+    }
+  }, [currentAccount, allAccount]);
 
   React.useEffect(() => {
-    setValue('admin', {
-      address: currentAccount.address,
-      name: currentAccount.name,
-    });
-  }, [currentAccount]);
+    if (loadAccounts) {
+      setValue('admin', {
+        address: loadAccounts.address,
+        name: loadAccounts.name,
+      });
+    }
+  }, [loadAccounts]);
 
   return (
     <>
-      {loadAccount && loadAccount.length ? (
+      {allAccount && loadAccounts ? (
         <CardBox variant="createGames" padding={0} {...sx}>
           <Heading
             pt={4}
@@ -82,34 +93,41 @@ export default function SwitchAdmin({
                   md: 4,
                 }}
               >
-                <AccountJazzicon address={currentAccount.address} />
+                <Box
+                  display={{
+                    sm: 'flex',
+                  }}
+                  gap={4}
+                  flex={1}
+                >
+                  <AccountJazzicon address={loadAccounts.address} />
 
-                <Box flex={1}>
-                  <Heading
-                    as="h6"
-                    fontSize="md"
-                    fontWeight="semibold"
-                    color="shader.a.900"
-                  >
-                    {currentAccount.name}
-                  </Heading>
+                  <Box>
+                    <Heading
+                      as="h6"
+                      fontSize="md"
+                      fontWeight="semibold"
+                      color="shader.a.900"
+                    >
+                      {loadAccounts.name}
+                    </Heading>
 
-                  <Text
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="shader.a.600"
-                    display="flex"
-                    flexWrap="wrap"
-                    gap={1}
-                    alignItems={{
-                      base: 'flex-start',
-                      sm: 'center',
-                    }}
-                  >
-                    {shorten(currentAccount.address, 12)}
+                    <Text
+                      fontSize="sm"
+                      fontWeight="medium"
+                      color="shader.a.600"
+                      display="flex"
+                      gap={1}
+                      alignItems={{
+                        base: 'flex-start',
+                        sm: 'center',
+                      }}
+                    >
+                      {shorten(loadAccounts.address, 12)}
 
-                    <ButtonCopy value={currentAccount.address} />
-                  </Text>
+                      <ButtonCopy value={loadAccounts.address} />
+                    </Text>
+                  </Box>
                 </Box>
 
                 <Box>
@@ -128,14 +146,15 @@ export default function SwitchAdmin({
 
               <AccordionPanel padding={0}>
                 <List>
-                  {loadAccount &&
-                    loadAccount.map(item => (
+                  {allAccount
+                    .filter(item => item.address !== currentAccount.address)
+                    .map(account => (
                       <ListItem
-                        key={item.address}
+                        key={account.address}
                         padding={4}
                         onClick={() => {
                           onClose();
-                          setCurrentAccount(item);
+                          setCurrentAccount(account);
                         }}
                         cursor="pointer"
                         _hover={{
@@ -144,8 +163,8 @@ export default function SwitchAdmin({
                         }}
                       >
                         <NewGamesProfile
-                          hash={item.address}
-                          account={item.name}
+                          hash={account.address}
+                          account={String(account.name)}
                           sx={{
                             sx: {
                               button: {

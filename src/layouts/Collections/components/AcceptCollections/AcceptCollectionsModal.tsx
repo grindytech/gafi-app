@@ -13,14 +13,13 @@ import {
   Tbody,
   Td,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
-import { getInjectedWeb3 } from 'utils/utils';
 import { useSubstrateState } from 'contexts/substrateContext';
+import useTxCallBack from 'hooks/useTxCallBack';
 
 interface CreateCollectionFieldProps {
   admin: {
@@ -40,12 +39,18 @@ export default function AcceptCollectionsModal({
   onClose,
   getValues,
 }: AcceptCollectionsModalProps) {
-  const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const { api } = useSubstrateState();
   const { collection_id, game_id, admin } =
     getValues() as CreateCollectionFieldProps;
+
+  const { isLoading, mutation } = useTxCallBack({
+    address: admin.address,
+    key: ['acceptAdding', collection_id],
+    submit: api?.tx.game.setAcceptAdding(game_id, collection_id),
+    onSuccess() {
+      onClose();
+    },
+  });
 
   return (
     <Modal isOpen={true} onClose={onClose} size="xl">
@@ -101,47 +106,7 @@ export default function AcceptCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={async () => {
-              const injected = await getInjectedWeb3();
-
-              if (api && injected) {
-                const submit = api.tx.game.setAcceptAdding(
-                  game_id,
-                  collection_id
-                );
-
-                setIsLoading(true);
-
-                await submit
-                  .signAndSend(
-                    admin.address,
-                    {
-                      signer: injected.signer,
-                    },
-                    e => {
-                      setIsLoading(true);
-
-                      if (e.isFinalized) {
-                        toast({
-                          position: 'top-right',
-                          description: e.status.type,
-                          status: 'info',
-                        });
-                        onClose();
-                      }
-                    }
-                  )
-                  .catch(error => {
-                    setIsLoading(false);
-
-                    toast({
-                      position: 'top-right',
-                      description: error.toString(),
-                      status: 'info',
-                    });
-                  });
-              }
-            }}
+            onClick={() => mutation.mutate()}
           >
             Sign & Submit
           </Button>

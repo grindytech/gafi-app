@@ -1,24 +1,28 @@
 import {
   Box,
+  Button,
   Center,
-  Icon,
+  Flex,
+  Heading,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
+  useDisclosure,
 } from '@chakra-ui/react';
+import GameID from 'components/Game/GameID';
+import GameOwner from 'components/Game/GameOwner';
 import GoBack from 'components/GoBack';
+import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import useForceMount from 'hooks/useForceMount';
+import CreateItem from 'layouts/Items/components/CreateItem';
+import NewGamesAuthorize from 'layouts/NewGames/components/NewGamesAuthorize';
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import PoolsCreateDynamic from './PoolsCreateDynamic';
 
-import LineAddIcon from 'public/assets/line/add.svg';
-
-import CollectionsCreate from './components/CreateCollections';
-import AcceptCollections from './components/AcceptCollections';
-import AddCollections from './components/AddCollections';
-
-export default function Collections() {
+export default function Pools() {
   return (
     <Box
       px={{
@@ -29,13 +33,9 @@ export default function Collections() {
 
       <Tabs variant="unstyled">
         <TabList
-          gap={{
-            base: 2,
-            md: 4,
-          }}
+          gap={4}
           mt={8}
           mb={4}
-          flexWrap="wrap"
           sx={{
             button: {
               fontSize: 'sm',
@@ -54,16 +54,7 @@ export default function Collections() {
             },
           }}
         >
-          <Tab>Create Collection</Tab>
-
-          <Tab>
-            <Center gap={2}>
-              <Icon as={LineAddIcon as any} width={4} height={4} />
-              <Text>Add collection</Text>
-            </Center>
-          </Tab>
-
-          <Tab>Add Accept Adding</Tab>
+          <Tab>Create Dynamic Pool</Tab>
         </TabList>
 
         <TabPanels
@@ -74,15 +65,7 @@ export default function Collections() {
           }}
         >
           <TabPanel>
-            <CollectionsCreate />
-          </TabPanel>
-
-          <TabPanel>
-            <AddCollections />
-          </TabPanel>
-
-          <TabPanel>
-            <AcceptCollections />
+            <PoolsCreateDynamic />
           </TabPanel>
         </TabPanels>
       </Tabs>

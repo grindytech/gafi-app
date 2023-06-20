@@ -9,18 +9,18 @@ export const FIREFOX_ADDON_URL =
 
 export const wallets = [
   {
-    title: 'POLKADOT_WALLET',
-    icon: '/assets/logo/polkadot-js.svg',
+    title: 'Polkadot Wallet',
+    icon: 'public/assets/wallet/polkadot-js.svg',
     extensionName: 'polkadot-js',
   },
   {
-    title: 'SUBWALLET',
-    icon: '/assets/logo/subwallet.png',
+    title: 'SubWallet',
+    icon: 'public/assets/wallet/subwallet.png',
     extensionName: 'subwallet-js',
   },
   {
-    title: 'CLOVER_WALLET',
-    icon: '/assets/logo/clover.svg',
+    title: 'CloverWallet',
+    icon: 'public/assets/wallet/clover.svg',
     extensionName: 'clover',
   },
 ];
