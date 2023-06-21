@@ -1,7 +1,6 @@
 import { Box, Flex, FlexProps, Heading, Text } from '@chakra-ui/react';
 import ButtonCopy from 'components/ButtonCopy';
 import React from 'react';
-import UserProfileIcon from 'public/assets/header/user-profile.svg';
 import { shorten } from 'utils/utils';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 

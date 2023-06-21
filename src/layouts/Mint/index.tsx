@@ -13,18 +13,21 @@ import MiningIcon from 'public/assets/art/mining.svg';
 import { useForm } from 'react-hook-form';
 
 import MintModal from './components/MintModal';
-
 import MintAmount from './components/MintAmount';
-
-import MintPoolID from './components/MintPoolID';
-
 import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
 import GameOwner from 'components/Game/GameOwner';
 import MintWeight from './components/MintWeight';
-import { useSubstrateState } from 'contexts/substrateContext';
+import NumberInput from 'components/NumberInput';
+import CardBox from 'components/CardBox';
 
 export default function Mint() {
-  const { register, setValue, getValues, watch } = useForm();
+  const {
+    register,
+    setValue,
+    getValues,
+    watch,
+    // formState: {},
+  } = useForm();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,15 +60,22 @@ export default function Mint() {
           flexDirection="column"
           gap={3}
           px={12}
-          transform="translateY(-10%)"
+          transform="translateY(-2%)"
         >
           <GameOwner />
 
           <SwitchAdmin setValue={setValue} type="Mint to" />
 
-          <MintAmount setValue={setValue} watch={watch} />
+          <MintAmount register={register} />
 
-          <MintPoolID register={register} />
+          <CardBox variant="createGames">
+            <NumberInput
+              register={register}
+              title="Pool ID"
+              value="pool_id"
+              required={true}
+            />
+          </CardBox>
 
           <MintWeight watch={watch} />
 

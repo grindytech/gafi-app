@@ -1,27 +1,24 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useSubstrateState } from 'contexts/substrateContext';
+
 import { getInjectedWeb3 } from 'utils/utils';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 import useTxError from './useTxError';
 import { useState } from 'react';
 
-interface useTxCallBackProps {
+interface useSignAndSendProps {
   address: string;
-  submit: SubmittableExtrinsic<'promise', ISubmittableResult> | undefined;
   key: string[];
   onSuccess?: () => void;
 }
 
-export default function useTxCallBack({
-  submit,
+export default function useSignAndSend({
   address,
   key,
   onSuccess,
-}: useTxCallBackProps) {
+}: useSignAndSendProps) {
   const toast = useToast();
-  const { api } = useSubstrateState();
   const [isLoading, setIsLoading] = useState(false);
 
   const { txError } = useTxError({
@@ -34,14 +31,16 @@ export default function useTxCallBack({
     },
   });
 
-  const mutation = useMutation({
+  const getMutation = useMutation({
     mutationKey: key,
-    mutationFn: async () => {
+    mutationFn: async (
+      parmas: SubmittableExtrinsic<'promise', ISubmittableResult>
+    ) => {
       const injected = await getInjectedWeb3();
       setIsLoading(true);
 
-      if (submit && api && injected) {
-        await submit.signAndSend(address, { signer: injected.signer }, txError);
+      if (injected) {
+        await parmas.signAndSend(address, { signer: injected.signer }, txError);
       }
     },
     onError: (error: Error) => {
@@ -55,6 +54,10 @@ export default function useTxCallBack({
       setIsLoading(false);
     },
   });
+
+  const mutation = (submit: any) => {
+    getMutation.mutate(submit);
+  };
 
   return {
     isLoading,

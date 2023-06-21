@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
@@ -44,10 +44,9 @@ export default function CreateItemModal({
   const { collection_id, item_id, admin, maybeSupply } =
     getValues() as CreateItemFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['createItem', String(item_id)],
-    submit: api?.tx.game.createItem(collection_id, item_id, {}, maybeSupply),
     onSuccess() {
       onClose();
     },
@@ -114,7 +113,18 @@ export default function CreateItemModal({
             margin="unset"
             isLoading={isLoading}
             _hover={{}}
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(
+                  api.tx.game.createItem(
+                    collection_id,
+                    item_id,
+                    {},
+                    maybeSupply
+                  )
+                );
+              }
+            }}
           >
             Sign & Submit
           </Button>

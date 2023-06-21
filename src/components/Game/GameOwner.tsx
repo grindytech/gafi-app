@@ -1,7 +1,16 @@
 import React from 'react';
 
 import CardBox from 'components/CardBox';
-import { Box, BoxProps, Divider, Flex, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  BoxProps,
+  Divider,
+  Flex,
+  Heading,
+  Skeleton,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
@@ -31,7 +40,7 @@ export default function GameOwner({ sx }: GameOwnerProps) {
 
   return (
     <>
-      {currentAccount.address && currentAccount.name && (
+      {currentAccount.address && currentAccount.name ? (
         <CardBox variant="createGames" {...sx}>
           <Box>
             <Heading variant="switch">Owner</Heading>
@@ -78,6 +87,12 @@ export default function GameOwner({ sx }: GameOwnerProps) {
           <Divider borderColor="shader.a.300" my={4} />
 
           <Balance currentAccount={currentAccount.address} />
+        </CardBox>
+      ) : (
+        <CardBox variant="createGames" as={Stack}>
+          <Skeleton height={4} />
+          <Skeleton height={4} />
+          <Skeleton height={4} />
         </CardBox>
       )}
     </>

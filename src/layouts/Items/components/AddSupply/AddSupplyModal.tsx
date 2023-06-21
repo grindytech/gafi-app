@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
@@ -41,10 +41,9 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
   const { collection_id, item_id, amount, admin } =
     getValues() as AddSupplyFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['createItem', String(item_id)],
-    submit: api?.tx.game.addSupply(collection_id, item_id, amount),
     onSuccess() {
       onClose();
     },
@@ -109,7 +108,11 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
             margin="unset"
             isLoading={isLoading}
             _hover={{}}
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.addSupply(collection_id, item_id, amount));
+              }
+            }}
           >
             Sign & Submit
           </Button>

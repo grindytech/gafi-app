@@ -1,58 +1,61 @@
 import {
   Center,
   Heading,
-  Input,
-  InputGroup,
-  InputRightAddon,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Text,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import { NumberInputStyle } from 'components/NumberInput';
 import React from 'react';
-import { FieldValues, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface MintAmountProps {
-  setValue: UseFormSetValue<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
+  register: UseFormRegister<FieldValues>;
 }
 
-export default function MintAmount({ setValue, watch }: MintAmountProps) {
-  const currentAmount = watch('amount');
+export default function MintAmount({ register }: MintAmountProps) {
   const maxiumLength = 10;
   const min = 0;
 
+  const [currentAmount, setCurrentAmount] = React.useState(min);
+
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading variant="game">Amount</Heading>
+      <Heading variant="game">
+        Amount&nbsp;
+        <Text as="span" color="second.red" fontWeight="normal">
+          *
+        </Text>
+      </Heading>
 
       <Center>
-        <InputGroup>
-          <Input
+        <NumberInput
+          min={min}
+          max={maxiumLength}
+          defaultValue={0}
+          onChange={e => {
+            setCurrentAmount(Number(e));
+          }}
+        >
+          <NumberInputField
             {...NumberInputStyle}
-            onChange={e => {
-              const { value, max, min } = e.target;
-
-              if (Number(value) > Number(max)) {
-                return setValue('amount', max);
-              }
-              if (Number(value) < Number(min)) {
-                return setValue('amount', min);
-              }
-
-              setValue('amount', value);
-            }}
-            value={currentAmount}
-            max={maxiumLength}
-            min={min}
+            {...register('amount')}
             placeholder="Ex: 0"
           />
-
-          <InputRightAddon bg="transparent">
+          <NumberInputStepper
+            px={3}
+            justifyContent="center"
+            width="auto"
+            borderLeft="0.0625rem solid"
+            borderColor="shader.a.300"
+          >
             <Text as="span" color="shader.a.500" fontSize="sm">
-              {currentAmount || min}/{maxiumLength}
+              {currentAmount}/{maxiumLength}
             </Text>
-          </InputRightAddon>
-        </InputGroup>
+          </NumberInputStepper>
+        </NumberInput>
       </Center>
     </CardBox>
   );

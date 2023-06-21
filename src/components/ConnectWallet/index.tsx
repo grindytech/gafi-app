@@ -16,27 +16,24 @@ import {
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 
-import React, { useState } from 'react';
+import React from 'react';
 import SwapCircleIcon from 'public/assets/fill/swap-circle.svg';
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
-import { getInjectedWeb3, shorten } from 'utils/utils';
+import { shorten } from 'utils/utils';
 import { useConnectWallet } from './ConnectWalletProvider';
 import { useSubstrateState } from 'contexts/substrateContext';
-
-import useTxError from 'hooks/useTxError';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 export default function ConnectWallet() {
-  const { api } = useSubstrateState();
+  const { api, apiState } = useSubstrateState();
   const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { txError } = useTxError({
-    onSuccess() {
-      setIsLoading(false);
-    },
-  });
 
   const { account, allAccount, setAccount } = useConnectWallet();
+
+  const { isLoading, mutation } = useSignAndSend({
+    address: account || '',
+    key: ['faucet'],
+  });
 
   return (
     <Menu closeOnSelect={false} placement="bottom-end">
@@ -47,12 +44,19 @@ export default function ConnectWallet() {
       ) : (
         <MenuButton
           onClick={() => {
+            if (apiState !== 'READY') {
+              return toast({
+                title: `please wait api`,
+                position: 'top-right',
+                status: 'warning',
+                isClosable: true,
+              });
+            }
+
             if (allAccount && allAccount.length) {
               const getAccount = allAccount[0].address;
 
               localStorage.setItem(GAFI_WALLET_ACCOUNT_KEY, getAccount);
-
-              console.log(getAccount);
 
               return setAccount(prev => ({
                 ...prev,
@@ -61,7 +65,7 @@ export default function ConnectWallet() {
             }
 
             toast({
-              title: 'not found account',
+              title: 'not found account ',
               position: 'top-right',
               status: 'warning',
               isClosable: true,
@@ -74,11 +78,12 @@ export default function ConnectWallet() {
 
       {account && allAccount ? (
         <MenuList borderRadius="lg">
-          <MenuItem _hover={{}} bg="unset">
+          <MenuItem _hover={{}} bg="unset" as="div">
             <Accordion allowToggle>
               <AccordionItem>
                 <Flex gap={1} pb={2}>
                   <Text
+                    as="div"
                     padding={2}
                     borderRadius="lg"
                     display="flex"
@@ -139,36 +144,25 @@ export default function ConnectWallet() {
                       </Text>
                     </AccordionPanel>
                   ))}
-
-                <Button
-                  bg="#2A79D6"
-                  color="white"
-                  width="full"
-                  mt={4}
-                  borderRadius="lg"
-                  isLoading={isLoading}
-                  onClick={async () => {
-                    const injected = await getInjectedWeb3();
-                    setIsLoading(true);
-
-                    if (account && api && injected) {
-                      const submit = api.tx.faucet.faucet();
-
-                      await submit.signAndSend(
-                        account,
-                        {
-                          signer: injected.signer,
-                        },
-                        txError
-                      );
-                    }
-                  }}
-                  _hover={{}}
-                  _active={{}}
-                >
-                  Faucet
-                </Button>
               </AccordionItem>
+
+              <Button
+                bg="#2A79D6"
+                color="white"
+                width="full"
+                mt={4}
+                borderRadius="lg"
+                isLoading={isLoading}
+                onClick={() => {
+                  if (api) {
+                    mutation(api.tx.faucet.faucet());
+                  }
+                }}
+                _hover={{}}
+                _active={{}}
+              >
+                Faucet
+              </Button>
             </Accordion>
           </MenuItem>
         </MenuList>

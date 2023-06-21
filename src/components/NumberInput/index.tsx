@@ -8,10 +8,11 @@ import {
 } from '@chakra-ui/react';
 
 import React from 'react';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
+import { FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 interface NumberInputProps {
-  setValue: UseFormSetValue<FieldValues>;
+  setValue?: UseFormSetValue<FieldValues>;
+  register?: UseFormRegister<FieldValues>;
   title: string;
   value: string;
   sx?: BoxProps;
@@ -32,6 +33,7 @@ export const NumberInputStyle = {
 
 export default function NumberInput({
   setValue,
+  register,
   title,
   value,
   sx,
@@ -51,14 +53,20 @@ export default function NumberInput({
       <NumberInputChakra>
         <Input
           {...NumberInputStyle}
+          {...(register ? register(value) : undefined)}
           type="number"
           min={0}
           placeholder="Ex: 0"
-          onBlur={e => {
-            const { value: valueChange } = e.target;
+          defaultValue={0}
+          onBlur={
+            setValue
+              ? e => {
+                  const { value: valueChange } = e.target;
 
-            setValue(value, valueChange);
-          }}
+                  setValue(value, valueChange);
+                }
+              : undefined
+          }
         />
       </NumberInputChakra>
     </Center>

@@ -3,7 +3,7 @@ import {
   ButtonGroup,
   FormControl,
   FormErrorMessage,
-  Image,
+  Icon,
   Link,
   Modal,
   ModalBody,
@@ -16,12 +16,34 @@ import {
 import React, { useState } from 'react';
 
 import { useSubstrate } from 'contexts/substrateContext';
-import { CHROME_EXT_URL, FIREFOX_ADDON_URL, wallets } from 'utils/constants';
+import { CHROME_EXT_URL, FIREFOX_ADDON_URL } from 'utils/constants';
 
 interface ConnectWalletModalProps {
   mounting: boolean;
   setMounting: React.DispatchWithoutAction;
 }
+
+import PolkadotIcon from 'public/assets/wallet/polkadot-js.svg';
+import SubWalletIcon from 'public/assets/wallet/subwallet.svg';
+import CloverWallet from 'public/assets/wallet/clover.svg';
+
+const wallets = [
+  {
+    title: 'Polkadot Wallet',
+    icon: PolkadotIcon,
+    extensionName: 'polkadot-js',
+  },
+  {
+    title: 'SubWallet',
+    icon: SubWalletIcon,
+    extensionName: 'subwallet-js',
+  },
+  {
+    title: 'CloverWallet',
+    icon: CloverWallet,
+    extensionName: 'clover',
+  },
+];
 
 export default function ConnectWalletModal({
   mounting,
@@ -52,12 +74,7 @@ export default function ConnectWalletModal({
                   justifyContent="start"
                   w="full"
                   leftIcon={
-                    <Image
-                      width={8}
-                      height={8}
-                      src={button.icon}
-                      alt={button.title}
-                    />
+                    <Icon as={button.icon as any} width={8} height={8} />
                   }
                   iconSpacing={4}
                   onClick={async () => {

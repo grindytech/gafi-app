@@ -8,6 +8,7 @@ import { InjectedAccount } from '@polkadot/extension-inject/types';
 
 import useForceMount from 'hooks/useForceMount';
 import ConnectWalletModal from './ConnectWalletModal';
+import { useSubstrateState } from 'contexts/substrateContext';
 
 export interface stateAccountProps {
   account: string | null | undefined;
@@ -29,6 +30,7 @@ const ConnetWalletContext = React.createContext<ConnetWalletContextProps>({
 export default function ConnectWalletProvider({
   children,
 }: React.PropsWithChildren) {
+  const { apiState } = useSubstrateState();
   const { mounting, setMounting } = useForceMount();
   const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
 
@@ -37,25 +39,27 @@ export default function ConnectWalletProvider({
   });
 
   React.useEffect(() => {
-    const getAccounts = async () => {
-      const injtected = await getInjectedWeb3();
+    if (apiState === 'READY') {
+      const getAccounts = async () => {
+        const injtected = await getInjectedWeb3();
 
-      if (injtected) {
-        const getAccounts = await injtected.accounts.get();
+        if (injtected) {
+          const getAccounts = await injtected.accounts.get();
 
-        if (account.allAccount && !account.allAccount.length) {
-          localStorage.removeItem(GAFI_WALLET_ACCOUNT_KEY);
+          if (account.allAccount && !account.allAccount.length) {
+            localStorage.removeItem(GAFI_WALLET_ACCOUNT_KEY);
+          }
+
+          setAccount(prev => ({
+            ...prev,
+            allAccount: getAccounts,
+          }));
         }
+      };
 
-        setAccount(prev => ({
-          ...prev,
-          allAccount: getAccounts,
-        }));
-      }
-    };
-
-    getAccounts();
-  }, [GAFI_WALLET_ACCOUNT_KEY, mounting]);
+      getAccounts();
+    }
+  }, [apiState, mounting]);
 
   return (
     <ConnetWalletContext.Provider

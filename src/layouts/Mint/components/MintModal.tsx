@@ -21,9 +21,9 @@ import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 
-import useTxCallBack from 'hooks/useTxCallBack';
 import { useQuery } from '@tanstack/react-query';
 import { formatGAFI } from 'utils/utils';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 export interface MintFieldSubmitProps {
   admin: {
@@ -44,6 +44,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
   const { amount, pool_id, admin } = getValues() as MintFieldSubmitProps;
 
   const { api } = useSubstrateState();
+
   const { data } = useQuery({
     queryKey: ['poolOf', pool_id],
     queryFn: async () => {
@@ -58,16 +59,17 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
     enabled: !!(api && api.query.game),
   });
 
-  console.log(data);
-
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['Minging', pool_id],
-    submit: api?.tx.game.mint(pool_id, admin.address, amount),
     onSuccess() {
       onClose();
     },
   });
+
+  console.log(data);
+
+  console.log(getValues());
 
   return (
     <Modal isOpen={true} onClose={onClose} size="2xl">
@@ -133,7 +135,11 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
             margin="unset"
             _hover={{}}
             isLoading={isLoading}
-            onClick={() => mutation.mutateAsync()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.mint(pool_id, admin.address, amount));
+              }
+            }}
           >
             Sign & Submit
           </Button>

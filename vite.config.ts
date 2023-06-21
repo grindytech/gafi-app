@@ -16,10 +16,13 @@ export default ({ mode }) => {
       tsconfigPaths(),
       svgr({
         exportAsDefault: true,
+        esbuildOptions: {
+          minify: true,
+        },
       }),
     ],
-    // root: './',
-    publicDir: 'assets',
+    root: './',
+    publicDir: process.env.VITE_PUBLIC_DIR,
     define: { 'process.env': process.env },
     build: {
       manifest: true,
@@ -33,7 +36,7 @@ export default ({ mode }) => {
     resolve: {
       alias: {
         src: path.resolve(__dirname, './src'),
-        public: path.resolve(__dirname, './public'),
+        assets: path.resolve(__dirname, './public/assets'),
       },
     },
   });

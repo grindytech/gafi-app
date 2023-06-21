@@ -62,7 +62,10 @@ export default function MintWeight({ watch }: MintWeightProps) {
         return getSupplyOfItems.map(item => {
           const { collection_id, item_id, rarity } = item;
 
-          const total = `${(rarity / getTotalRarity) * 100}`;
+          const isNaN = rarity >= 1;
+
+          const total = isNaN ? String((rarity / getTotalRarity) * 100) : '0';
+
           const [prefix, suffixed] = total.split('.');
 
           return {

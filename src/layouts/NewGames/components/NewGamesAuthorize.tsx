@@ -20,8 +20,7 @@ import NewGamesProfile from './NewGamesProfile';
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useSubstrateState } from 'contexts/substrateContext';
-
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 interface NewGamesFieldProps {
   admin: {
@@ -45,10 +44,9 @@ export default function NewGamesAuthorize({
   const { api } = useSubstrateState();
   const { game_id, admin } = getValues() as NewGamesFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['createGame', game_id],
-    submit: api?.tx.game.createGame(admin.address),
     onSuccess() {
       refetch();
       onClose();
@@ -104,7 +102,11 @@ export default function NewGamesAuthorize({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.createGame(admin.address));
+              }
+            }}
           >
             Sign & Submit
           </Button>

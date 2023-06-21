@@ -1,7 +1,22 @@
-node_modules/
+# trash
 .vscode
-build/
 .yarn
-dist
 **/.DS_Store
+
+# modules
+node_modules/
+
+# build
+dist
+
+# vercel
 .vercel
+
+# firebase
+.firebase
+.firebaserc
+firebase.json
+
+# env
+.env
+.env.production

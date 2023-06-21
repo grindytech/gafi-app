@@ -10,6 +10,8 @@ import {
   Icon,
   List,
   ListItem,
+  Skeleton,
+  Stack,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -180,7 +182,13 @@ export default function SwitchAdmin({
             </AccordionItem>
           </Accordion>
         </CardBox>
-      ) : null}
+      ) : (
+        <CardBox variant="createGames" as={Stack}>
+          <Skeleton height={4} />
+          <Skeleton height={4} />
+          <Skeleton height={4} />
+        </CardBox>
+      )}
     </>
   );
 }

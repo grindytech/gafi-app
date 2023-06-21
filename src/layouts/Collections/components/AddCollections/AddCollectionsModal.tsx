@@ -15,7 +15,8 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
+
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -42,10 +43,9 @@ export default function AddCollectionsModal({
   const { admin, collection_id, game_id } =
     getValues() as AddCollectionFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['addCollection', collection_id],
-    submit: api?.tx.game.addGameCollection(game_id, collection_id),
     onSuccess() {
       onClose();
     },
@@ -105,7 +105,11 @@ export default function AddCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.addGameCollection(game_id, collection_id));
+              }
+            }}
           >
             Sign & Submit
           </Button>

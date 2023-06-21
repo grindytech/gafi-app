@@ -19,7 +19,7 @@ import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 interface CreateCollectionFieldProps {
   admin: {
@@ -43,10 +43,9 @@ export default function CreateCollectionsModal({
   const { api } = useSubstrateState();
   const { collection_id, admin } = getValues() as CreateCollectionFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['createCollection', collection_id],
-    submit: api?.tx.game.createCollection(admin.address),
     onSuccess() {
       refetch();
       onClose();
@@ -102,7 +101,11 @@ export default function CreateCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.createCollection(admin.address));
+              }
+            }}
           >
             Sign & Submit
           </Button>

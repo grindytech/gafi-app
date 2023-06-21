@@ -19,7 +19,7 @@ import React from 'react';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
 import { useSubstrateState } from 'contexts/substrateContext';
-import useTxCallBack from 'hooks/useTxCallBack';
+import useSignAndSend from 'hooks/useSignAndSend';
 
 interface CreateCollectionFieldProps {
   admin: {
@@ -43,10 +43,9 @@ export default function AcceptCollectionsModal({
   const { collection_id, game_id, admin } =
     getValues() as CreateCollectionFieldProps;
 
-  const { isLoading, mutation } = useTxCallBack({
+  const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: ['acceptAdding', collection_id],
-    submit: api?.tx.game.setAcceptAdding(game_id, collection_id),
     onSuccess() {
       onClose();
     },
@@ -106,7 +105,11 @@ export default function AcceptCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              if (api) {
+                mutation(api.tx.game.setAcceptAdding(game_id, collection_id));
+              }
+            }}
           >
             Sign & Submit
           </Button>

@@ -9,8 +9,8 @@ import { ListWeb3Item } from 'layouts/default/DefaultWeb3';
 export default function Web3FirstBuild() {
   return (
     <Box
-      py={{
-        base: 12,
+      pt={{
+        base: 4,
         sm: 24,
         lg: 48,
       }}
