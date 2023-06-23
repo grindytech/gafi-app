@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import config from 'config';
 
 import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
-import { acctAddr, getGAKIAccountAddress } from 'utils/gafiApp.utils';
+import { acctAddr } from 'utils/gafiApp.utils';
 
 const parsedQuery = new URLSearchParams(window.location.search);
 // Using temporary 'as'. Remove when add type for config.
@@ -293,44 +293,6 @@ const useSubstrate = () => {
 
   const setConnectSocket = (socket: string) => {
     dispatch({ type: 'SET_CONNECT_SOCKET', payload: socket });
-  };
-
-  const loadCurrentAccount = (
-    metamaskAccount: string | null,
-    state: SubstrateContextState,
-    dispatch: React.Dispatch<Action>
-  ) => {
-    const asyncLoadCurrentAccounts = async () => {
-      const { keyring, api, currentAccount } = state;
-      dispatch({ type: 'LOAD_CURRENT_ACCOUNT' });
-      try {
-        const pairs = keyring?.getPairs() || [];
-        const response = await api?.query.proofAddressMapping.h160Mapping(
-          metamaskAccount
-        );
-        const polkadotAccountWasMapped = (await response?.toHuman()) || '';
-
-        const currentPair = pairs.find(
-          (pair: KeyringPair) =>
-            getGAKIAccountAddress(pair.addressRaw) === polkadotAccountWasMapped
-        );
-        if (currentPair) {
-          dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: currentPair });
-        } else if (pairs.length > 0) {
-          dispatch({ type: 'SET_CURRENT_ACCOUNT', payload: pairs[0] });
-        }
-
-        dispatch({
-          type: 'SET_CURRENT_POLKADOT_ACCOUNT',
-          payload: acctAddr(currentAccount),
-        });
-      } catch (error) {
-        console.error(error);
-        dispatch({ type: 'KEYRING_ERROR' });
-      }
-    };
-
-    asyncLoadCurrentAccounts();
   };
 
   return {

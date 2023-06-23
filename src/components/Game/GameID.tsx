@@ -1,38 +1,36 @@
-import { Center, Heading, Text } from '@chakra-ui/react';
+import { Center, Heading, Skeleton, Text } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { useSubstrateState } from 'contexts/substrateContext';
-import React, { useRef } from 'react';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
+import useNextGameID from 'hooks/useNextGameID';
+import React from 'react';
+import { TypeSetValue } from 'types';
 
 interface GameIDProps {
-  setValue: UseFormSetValue<FieldValues>;
+  setValue: TypeSetValue;
   refetch: () => void;
 }
+
 export default function GameID({ setValue, refetch }: GameIDProps) {
-  const { api } = useSubstrateState();
-  const ref = useRef<HTMLParagraphElement>(null);
+  const { ID } = useNextGameID({
+    refetch: () => {
+      refetch();
+    },
+  });
 
   React.useEffect(() => {
-    const getGameID = async () => {
-      if (api && api.query.game && ref && ref.current) {
-        const res = await api.query.game.nextGameId();
-        const id = res.toString();
-
-        ref.current.innerHTML = id;
-        setValue('game_id', id);
-      }
-    };
-
-    getGameID();
-  }, [api?.query, refetch]);
+    setValue('game_id', ID);
+  }, [ID]);
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
       <Heading variant="game">Game ID</Heading>
 
-      <Text ref={ref} fontWeight="medium" color="shader.a.900">
-        ...
-      </Text>
+      {ID ? (
+        <Text fontWeight="medium" color="shader.a.900">
+          {ID}
+        </Text>
+      ) : (
+        <Skeleton width={4} height={4} />
+      )}
     </CardBox>
   );
 }

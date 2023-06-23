@@ -1,0 +1,22 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="GAFI_token" clip-path="url(#clip0_481_1395)">
+    <g id="Group">
+      <path id="Vector"
+        d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z"
+        fill="#2A7AD7" />
+      <g id="Group_2">
+        <path id="Vector_2" d="M11.1 5V12.2L8.70001 17H6.10001C5.50001 16 5.60001 16.2 5.10001 15.2L11.1 5Z"
+          fill="white" />
+        <path id="Vector_3" d="M12.9 5V12.2L15.3 17H18C18.5 16.2 18.6 16 19 15.2L12.9 5Z" fill="white" />
+        <path id="Vector_4"
+          d="M11.6 15L10 18.2C10.2 18.5 10.2 18.6 10.4 18.9H13.6C13.8 18.6 13.8 18.5 14 18.2L12.4 15C12 15 12 15 11.6 15Z"
+          fill="white" />
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="clip0_481_1395">
+      <rect width="24" height="24" fill="white" />
+    </clipPath>
+  </defs>
+</svg>

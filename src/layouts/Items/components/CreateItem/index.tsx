@@ -1,36 +1,39 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import { useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import SwitchAdmin, {
+  TypeSwitchAdmin,
+} from 'components/SwitchAdmin/SwitchAdmin';
 import CreateItemModal from './CreateItemModal';
 import GameOwner from 'components/Game/GameOwner';
 
-import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
+export interface CreateItemFieldProps extends TypeSwitchAdmin {
+  collection_id: number;
+  item_id: number;
+  maybeSupply: number | null;
+}
+
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 
-export default function CreateItem() {
-  const { setValue, getValues, reset } = useForm();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: optionOpen, onToggle: optionToggle } = useDisclosure();
+import useMaybeOption from 'hooks/useMaybeOption';
+import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
 
-  React.useEffect(() => {
-    if (!optionOpen) {
-      reset(prev => ({
-        ...prev,
-        maybeSupply: null,
-      }));
-    }
-  }, [optionOpen]);
+export default function CreateItem() {
+  const { setValue, getValues } = useForm<CreateItemFieldProps>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { setIsExpanded, isExpanded } = useMaybeOption();
 
   return (
     <>
       <Flex flexDirection="column" gap={3}>
         <GameOwner />
 
-        <SwitchAdmin setValue={setValue} />
+        <SwitchAdmin
+          setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
+        />
 
         <CardBox variant="createGames">
           <NumberInput
@@ -51,24 +54,13 @@ export default function CreateItem() {
         </CardBox>
 
         <MaybeOptions
-          title="Supply"
-          isOpen={optionOpen}
-          onToggle={optionToggle}
+          title={`Supply`}
+          arrow={{
+            isChecked: isExpanded[0],
+            onClick: () => setIsExpanded(0),
+          }}
         >
-          <NumberInput
-            value="maybeSupply"
-            title="Amount"
-            setValue={setValue}
-            sx={{
-              sx: {
-                h2: {
-                  fontSize: 'sm',
-                  fontWeight: 'normal',
-                  color: 'shader.,a.500',
-                },
-              },
-            }}
-          />
+          <NumberInput value="maybeSupply" title="Amount" setValue={setValue} />
         </MaybeOptions>
 
         <Button

@@ -1,8 +1,9 @@
 import { Box, Container, Flex } from '@chakra-ui/react';
-import { breakpointsContainer } from 'constants/constants';
+
 import Footer from 'pages/Footer';
 import Header from 'pages/Header';
 import React, { PropsWithChildren } from 'react';
+import { breakpointsContainer } from 'utils/constants';
 
 export default function DefaultMain({ children }: PropsWithChildren) {
   return (

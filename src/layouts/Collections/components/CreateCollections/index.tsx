@@ -2,16 +2,22 @@ import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
-import { useForm } from 'react-hook-form';
+import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import SwitchAdmin, {
+  TypeSwitchAdmin,
+} from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
 import GameOwner from 'components/Game/GameOwner';
 import CollectionID from 'components/Collection/CollectionID';
 
+export interface CreateCollectionFieldProps extends TypeSwitchAdmin {
+  collection_id: string;
+}
+
 export default function CollectionsCreate() {
-  const { setValue, getValues } = useForm();
+  const { setValue, getValues } = useForm<CreateCollectionFieldProps>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { mounting, setMounting } = useForceMount();
@@ -21,7 +27,9 @@ export default function CollectionsCreate() {
       <Flex flexDirection="column" gap={3}>
         <GameOwner />
 
-        <SwitchAdmin setValue={setValue} />
+        <SwitchAdmin
+          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        />
 
         <CollectionID setValue={setValue} refetch={mounting} />
 

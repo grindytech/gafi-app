@@ -1,26 +1,8 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useDisclosure,
-} from '@chakra-ui/react';
-import GameID from 'components/Game/GameID';
-import GameOwner from 'components/Game/GameOwner';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import GoBack from 'components/GoBack';
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
-import useForceMount from 'hooks/useForceMount';
-import CreateItem from 'layouts/Items/components/CreateItem';
-import NewGamesAuthorize from 'layouts/NewGames/components/NewGamesAuthorize';
+
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import PoolsCreateDynamic from './PoolsCreateDynamic';
+import PoolsCreate from './components/PoolsCreate';
 
 export default function Pools() {
   return (
@@ -55,6 +37,8 @@ export default function Pools() {
           }}
         >
           <Tab>Create Dynamic Pool</Tab>
+
+          <Tab>Create Stable Pool</Tab>
         </TabList>
 
         <TabPanels
@@ -65,7 +49,11 @@ export default function Pools() {
           }}
         >
           <TabPanel>
-            <PoolsCreateDynamic />
+            <PoolsCreate type="createDynamicPool" />
+          </TabPanel>
+
+          <TabPanel>
+            <PoolsCreate type="createStablePool" />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -7,6 +7,8 @@ import CollectionsIcon from 'public/assets/illustration/collections.svg';
 import ItemsIcon from 'public/assets/illustration/items.svg';
 import MetadataIcon from 'public/assets/illustration/metadata.svg';
 import PoolsIcon from 'public/assets/illustration/pools.svg';
+import UpgradeIcon from 'public/assets/illustration/upgrade.svg';
+
 export const ListWeb3Item = [
   {
     title: 'New Games',
@@ -26,17 +28,23 @@ export const ListWeb3Item = [
     link: '/web3/items',
     background: 'gradient.linear.4',
   },
-  // {
-  //   title: 'Pools',
-  //   icon: <PoolsIcon />,
-  //   link: '/web3/pools',
-  //   background: 'gradient.linear.6',
-  // },
+  {
+    title: 'Pools',
+    icon: <PoolsIcon />,
+    link: '/web3/pools',
+    background: 'gradient.linear.6',
+  },
   {
     title: 'Metadata',
     icon: <MetadataIcon />,
     link: '/web3/metadata',
     background: 'gradient.linear.5',
+  },
+  {
+    title: 'Upgrade',
+    icon: <UpgradeIcon />,
+    link: '/web3/upgrade',
+    background: 'linear-gradient(135deg, #3EDBFF 0%, #00B2FF 100%)',
   },
 ];
 

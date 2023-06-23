@@ -16,23 +16,15 @@ import {
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 import useSignAndSend from 'hooks/useSignAndSend';
-
-interface CreateCollectionFieldProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-  collection_id: string;
-  game_id: string;
-}
+import { AcceptCollectionsFieldProps } from './index';
 
 interface AcceptCollectionsModalProps {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<AcceptCollectionsFieldProps>;
 }
 
 export default function AcceptCollectionsModal({
@@ -40,8 +32,7 @@ export default function AcceptCollectionsModal({
   getValues,
 }: AcceptCollectionsModalProps) {
   const { api } = useSubstrateState();
-  const { collection_id, game_id, admin } =
-    getValues() as CreateCollectionFieldProps;
+  const { collection_id, game_id, admin } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,

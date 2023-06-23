@@ -11,9 +11,8 @@ import { useQuery } from '@tanstack/react-query';
 import CardBox from 'components/CardBox';
 import { useSubstrateState } from 'contexts/substrateContext';
 import React from 'react';
-import { FieldValues, UseFormWatch } from 'react-hook-form';
 
-import { colors } from 'theme/theme';
+import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
 
 type TypeMaybeNFT = {
   collection: number;
@@ -21,12 +20,10 @@ type TypeMaybeNFT = {
 };
 
 interface MintWeightProps {
-  watch: UseFormWatch<FieldValues>;
+  pool_id: string;
 }
 
-export default function MintWeight({ watch }: MintWeightProps) {
-  const pool_id: number = watch('pool_id');
-
+export default function MintWeight({ pool_id }: MintWeightProps) {
   const { api } = useSubstrateState();
 
   const { data, isLoading, isError } = useQuery(
@@ -55,23 +52,18 @@ export default function MintWeight({ watch }: MintWeightProps) {
           })
         );
 
-        const getTotalRarity = getSupplyOfItems
-          .map(item => item.rarity)
-          .reduce((prev, current) => prev + current);
-
         return getSupplyOfItems.map(item => {
           const { collection_id, item_id, rarity } = item;
 
-          const isNaN = rarity >= 1;
-
-          const total = isNaN ? String((rarity / getTotalRarity) * 100) : '0';
-
-          const [prefix, suffixed] = total.split('.');
+          const weight = CalculatorOfRarity(
+            rarity,
+            getSupplyOfItems.map(item => item.rarity)
+          );
 
           return {
             collection_id,
             item_id,
-            rarity: suffixed ? Number(total).toFixed(1) : prefix,
+            rarity: weight,
           };
         });
       }
@@ -80,12 +72,6 @@ export default function MintWeight({ watch }: MintWeightProps) {
       enabled: !!(api && api.query.game),
     }
   );
-
-  const PercentColor = (percent: number) => {
-    if (percent >= 50) return colors.primary.a[500];
-    if (percent >= 25) return colors.second.orange;
-    if (percent >= 0) return colors.second.purple;
-  };
 
   if (!pool_id) return undefined;
 
@@ -142,7 +128,7 @@ export default function MintWeight({ watch }: MintWeightProps) {
                         Rarity:&nbsp;
                         <Text
                           as="span"
-                          color={PercentColor(Number(rarity))}
+                          color={ColorOfRarity(rarity)}
                           fontWeight="semibold"
                         >
                           {rarity}%

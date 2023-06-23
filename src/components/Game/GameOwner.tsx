@@ -40,13 +40,14 @@ export default function GameOwner({ sx }: GameOwnerProps) {
 
   return (
     <>
-      {currentAccount.address && currentAccount.name ? (
-        <CardBox variant="createGames" {...sx}>
-          <Box>
-            <Heading variant="switch">Owner</Heading>
+      <CardBox variant="createGames" {...sx}>
+        <Heading variant="switch" mb={4}>
+          Owner
+        </Heading>
 
+        {currentAccount.address && currentAccount.name ? (
+          <>
             <Flex
-              mt={4}
               flexWrap="wrap"
               gap={{
                 base: 2,
@@ -82,19 +83,19 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                 </Text>
               </Box>
             </Flex>
-          </Box>
 
-          <Divider borderColor="shader.a.300" my={4} />
+            <Divider borderColor="shader.a.300" my={4} />
 
-          <Balance currentAccount={currentAccount.address} />
-        </CardBox>
-      ) : (
-        <CardBox variant="createGames" as={Stack}>
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-        </CardBox>
-      )}
+            <Balance currentAccount={currentAccount.address} />
+          </>
+        ) : (
+          <Stack>
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+          </Stack>
+        )}
+      </CardBox>
     </>
   );
 }

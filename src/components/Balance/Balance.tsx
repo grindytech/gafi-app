@@ -1,15 +1,8 @@
-import { Flex, FlexProps, Heading } from '@chakra-ui/react';
-import { formatBalance } from '@polkadot/util';
+import { Flex, FlexProps, Heading, Skeleton } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
-import { useSubstrateState } from 'contexts/substrateContext';
+import useBalance from 'hooks/useBalance';
 
-import React, { useState } from 'react';
-
-type TypeGetBalance = {
-  data: {
-    free: string;
-  };
-};
+import React from 'react';
 
 interface BalanceProps {
   currentAccount: string;
@@ -17,30 +10,9 @@ interface BalanceProps {
 }
 
 export default function Balance({ currentAccount, sx }: BalanceProps) {
-  const [balance, setBalance] = useState<string>('...');
-  const { api, chainDecimal } = useSubstrateState();
-
-  React.useEffect(() => {
-    const getBalance = async () => {
-      if (api && api.query.system) {
-        const res = await api.query.system.account(currentAccount);
-
-        const getBalance = res.toPrimitive() as TypeGetBalance;
-
-        setBalance(
-          formatBalance(
-            getBalance.data.free,
-            {
-              withSi: false,
-              forceUnit: '-',
-            },
-            chainDecimal
-          )
-        );
-      }
-    };
-    getBalance();
-  }, [api?.query, currentAccount]);
+  const { balance } = useBalance({
+    account: currentAccount,
+  });
 
   return (
     <Flex justifyContent="space-between" alignItems="center" {...sx}>
@@ -53,7 +25,11 @@ export default function Balance({ currentAccount, sx }: BalanceProps) {
         Balance
       </Heading>
 
-      <GafiAmount amount={balance} />
+      {balance ? (
+        <GafiAmount amount={balance} />
+      ) : (
+        <Skeleton width={4} height={4} />
+      )}
     </Flex>
   );
 }

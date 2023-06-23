@@ -20,6 +20,7 @@ export const backgrounds = {
 export const colors = {
   primary: {
     a: {
+      100: '#D4EEFD',
       200: '#AADAFB',
       500: '#2A7AD7',
     },
@@ -92,7 +93,7 @@ const Button: ComponentStyleConfig = {
   },
 };
 
-const Table: ComponentStyleConfig = {
+export const Table: ComponentStyleConfig = {
   variants: {
     createGameSubmit: {
       td: {

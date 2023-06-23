@@ -1,7 +1,9 @@
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import SwitchAdmin, {
+  TypeSwitchAdmin,
+} from 'components/SwitchAdmin/SwitchAdmin';
 
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import AcceptCollectionsModal from './AcceptCollectionsModal';
@@ -9,8 +11,13 @@ import GameOwner from 'components/Game/GameOwner';
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 
+export interface AcceptCollectionsFieldProps extends TypeSwitchAdmin {
+  collection_id: string;
+  game_id: string;
+}
+
 export default function AcceptCollections() {
-  const { setValue, getValues } = useForm();
+  const { setValue, getValues } = useForm<AcceptCollectionsFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -19,7 +26,9 @@ export default function AcceptCollections() {
       <Flex flexDirection="column" gap={3}>
         <GameOwner />
 
-        <SwitchAdmin setValue={setValue} />
+        <SwitchAdmin
+          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        />
 
         <CardBox variant="createGames">
           <NumberInput

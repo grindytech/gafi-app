@@ -19,20 +19,12 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
-
-interface AddCollectionFieldProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-  collection_id: string;
-  game_id: string;
-}
+import { UseFormGetValues } from 'react-hook-form';
+import { AddCollectionFieldProps } from './index';
 
 interface AddCollectionsModalProps {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<AddCollectionFieldProps>;
 }
 
 export default function AddCollectionsModal({
@@ -40,8 +32,7 @@ export default function AddCollectionsModal({
   onClose,
 }: AddCollectionsModalProps) {
   const { api } = useSubstrateState();
-  const { admin, collection_id, game_id } =
-    getValues() as AddCollectionFieldProps;
+  const { admin, collection_id, game_id } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,

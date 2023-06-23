@@ -24,12 +24,20 @@ import ButtonCopy from 'components/ButtonCopy';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 
 import { shorten } from 'utils/utils';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
 
+export type TypeSwitchAdmin = Record<
+  'admin',
+  {
+    address: string;
+    name: string;
+  }
+>;
+
 interface SwitchAdmin {
-  setValue: UseFormSetValue<FieldValues>;
+  setValue: UseFormSetValue<TypeSwitchAdmin>;
   type?: 'Admin' | 'Mint to';
   sx?: BoxProps;
 }
@@ -64,26 +72,26 @@ export default function SwitchAdmin({
     if (loadAccounts) {
       setValue('admin', {
         address: loadAccounts.address,
-        name: loadAccounts.name,
+        name: loadAccounts.name || 'undefined',
       });
     }
   }, [loadAccounts]);
 
   return (
     <>
-      {allAccount && loadAccounts ? (
-        <CardBox variant="createGames" padding={0} {...sx}>
-          <Heading
-            pt={4}
-            px={4}
-            as="h4"
-            fontSize="sm"
-            fontWeight="semibold"
-            color="primary.a.500"
-          >
-            {type}
-          </Heading>
+      <CardBox variant="createGames" padding={0} {...sx}>
+        <Heading
+          pt={4}
+          px={4}
+          as="h4"
+          fontSize="sm"
+          fontWeight="semibold"
+          color="primary.a.500"
+        >
+          {type}
+        </Heading>
 
+        {allAccount && loadAccounts ? (
           <Accordion index={isOpen ? 0 : 1}>
             <AccordionItem border="unset">
               <Flex
@@ -181,14 +189,14 @@ export default function SwitchAdmin({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-        </CardBox>
-      ) : (
-        <CardBox variant="createGames" as={Stack}>
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-        </CardBox>
-      )}
+        ) : (
+          <Stack padding={4}>
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+          </Stack>
+        )}
+      </CardBox>
     </>
   );
 }

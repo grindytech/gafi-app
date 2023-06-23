@@ -1,7 +1,7 @@
 import config from 'config';
-import { GAFI_WALLET_STORAGE_KEY } from './constants';
+import { GAFI_WALLET_STORAGE_KEY, chainDecimal } from './constants';
 import { formatBalance } from '@polkadot/util';
-import { useSubstrateState } from 'contexts/substrateContext';
+import { colors } from 'theme/theme';
 
 export const convertHex = (color: string, opacity: number) => {
   /* 
@@ -37,8 +37,6 @@ export const getInjectedWeb3 = async () => {
 };
 
 export const formatGAFI = (fee: number) => {
-  const { chainDecimal } = useSubstrateState();
-
   const formatNumber = formatBalance(
     fee,
     {
@@ -49,4 +47,30 @@ export const formatGAFI = (fee: number) => {
   );
 
   return formatNumber;
+};
+
+export const ColorOfRarity = (weight: number | string) => {
+  const hard = 0;
+  const medium = 25;
+  const easy = 50;
+
+  if (Number(weight) >= easy) return colors.primary.a[500];
+  if (Number(weight) >= medium) return colors.second.orange;
+  if (Number(weight) >= hard) return colors.second.purple;
+};
+
+export const CalculatorOfRarity = (weight: number, weights: number[]) => {
+  const totalWeight = weights
+    .map(item => Number(item))
+    .reduce((prev, current) => prev + current);
+
+  const shouldNotNaN = weight >= 1;
+
+  const calculatorTotal = shouldNotNaN
+    ? String((weight / totalWeight) * 100)
+    : '0';
+
+  const [prefix, suffixed] = calculatorTotal.split('.');
+
+  return suffixed ? Number(calculatorTotal).toFixed(1) : prefix;
 };

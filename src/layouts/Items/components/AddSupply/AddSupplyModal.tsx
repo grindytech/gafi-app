@@ -19,27 +19,17 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
-
-interface AddSupplyFieldProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-  collection_id: number;
-  item_id: number;
-  amount: number;
-}
+import { UseFormGetValues } from 'react-hook-form';
+import { AddSupplyFieldProps } from './index';
 
 interface AddSupplyModal {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<AddSupplyFieldProps>;
 }
 
 export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
   const { api } = useSubstrateState();
-  const { collection_id, item_id, amount, admin } =
-    getValues() as AddSupplyFieldProps;
+  const { collection_id, item_id, amount, admin } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,

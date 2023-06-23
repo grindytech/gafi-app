@@ -19,21 +19,12 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
-
-interface CreateItemFieldProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-  collection_id: number;
-  item_id: number;
-  maybeSupply: number | null;
-}
+import { UseFormGetValues } from 'react-hook-form';
+import { CreateItemFieldProps } from './index';
 
 interface CreateItemModalProps {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<CreateItemFieldProps>;
 }
 
 export default function CreateItemModal({
@@ -41,8 +32,7 @@ export default function CreateItemModal({
   onClose,
 }: CreateItemModalProps) {
   const { api } = useSubstrateState();
-  const { collection_id, item_id, admin, maybeSupply } =
-    getValues() as CreateItemFieldProps;
+  const { collection_id, item_id, admin, maybeSupply } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,

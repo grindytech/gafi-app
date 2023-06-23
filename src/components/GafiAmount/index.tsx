@@ -6,9 +6,9 @@ interface GafiAmountProps {
   sx?: TextProps;
 }
 
-export default function GafiAmount({ amount, ...props }: GafiAmountProps) {
+export default function GafiAmount({ amount, sx }: GafiAmountProps) {
   return (
-    <Text fontSize="md" fontWeight="semibold" color="shader.a.900" {...props}>
+    <Text fontSize="md" fontWeight="semibold" color="shader.a.900" {...sx}>
       {amount}&nbsp;
       <Text as="span" color="primary.a.500" fontSize="xs" fontWeight="semibold">
         GAFI

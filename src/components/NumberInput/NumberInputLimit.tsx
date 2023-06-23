@@ -9,41 +9,51 @@ import {
 import CardBox from 'components/CardBox';
 import { NumberInputStyle } from 'components/NumberInput';
 import React from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
 
-interface MintAmountProps {
-  register: UseFormRegister<FieldValues>;
+import { TypeSetValue } from 'types';
+
+interface NumberInputLimitProps {
+  setValue: TypeSetValue;
+  title: string;
+  value: string;
+  required?: boolean;
+  min: number;
+  max: number;
 }
 
-export default function MintAmount({ register }: MintAmountProps) {
-  const maxiumLength = 10;
-  const min = 0;
-
+export default function NumberInputLimit({
+  setValue,
+  title,
+  value,
+  required,
+  min,
+  max,
+}: NumberInputLimitProps) {
   const [currentAmount, setCurrentAmount] = React.useState(min);
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
       <Heading variant="game">
-        Amount&nbsp;
-        <Text as="span" color="second.red" fontWeight="normal">
-          *
-        </Text>
+        {title}&nbsp;
+        {required && (
+          <Text as="span" color="second.red" fontWeight="normal">
+            *
+          </Text>
+        )}
       </Heading>
 
       <Center>
         <NumberInput
           min={min}
-          max={maxiumLength}
-          defaultValue={0}
+          max={max}
           onChange={e => {
             setCurrentAmount(Number(e));
+
+            setValue(value, Number(e));
           }}
         >
-          <NumberInputField
-            {...NumberInputStyle}
-            {...register('amount')}
-            placeholder="Ex: 0"
-          />
+          <NumberInputField {...NumberInputStyle} placeholder="Ex: 0" />
+
           <NumberInputStepper
             px={3}
             justifyContent="center"
@@ -52,7 +62,7 @@ export default function MintAmount({ register }: MintAmountProps) {
             borderColor="shader.a.300"
           >
             <Text as="span" color="shader.a.500" fontSize="sm">
-              {currentAmount}/{maxiumLength}
+              {currentAmount}/{max}
             </Text>
           </NumberInputStepper>
         </NumberInput>

@@ -4,19 +4,25 @@ import React from 'react';
 import GoBack from 'components/GoBack';
 
 import NewGamesAuthorize from './components/NewGamesAuthorize';
-import { useForm } from 'react-hook-form';
+import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
-import SwitchAdmin from 'components/SwitchAdmin/SwitchAdmin';
+import SwitchAdmin, {
+  TypeSwitchAdmin,
+} from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
 import GameOwner from 'components/Game/GameOwner';
 import GameID from 'components/Game/GameID';
 
+export interface NewGamesFieldProps extends TypeSwitchAdmin {
+  game_id: string;
+}
+
 export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { mounting, setMounting } = useForceMount();
-  const { setValue, getValues } = useForm();
+  const { setValue, getValues } = useForm<NewGamesFieldProps>();
 
   return (
     <Box
@@ -39,7 +45,9 @@ export default function NewGames() {
       <Flex flexDirection="column" gap={3}>
         <GameOwner />
 
-        <SwitchAdmin setValue={setValue} />
+        <SwitchAdmin
+          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        />
 
         <GameID setValue={setValue} refetch={mounting} />
 

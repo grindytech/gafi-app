@@ -17,31 +17,22 @@ import {
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 
 import { useSubstrateState } from 'contexts/substrateContext';
 
 import { useQuery } from '@tanstack/react-query';
 import { formatGAFI } from 'utils/utils';
 import useSignAndSend from 'hooks/useSignAndSend';
-
-export interface MintFieldSubmitProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-
-  amount: string;
-  pool_id: string;
-}
+import { MintFieldProps } from '../index';
 
 interface MintModalProps {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<MintFieldProps>;
 }
 
 export default function MintModal({ getValues, onClose }: MintModalProps) {
-  const { amount, pool_id, admin } = getValues() as MintFieldSubmitProps;
+  const { amount, pool_id, admin } = getValues();
 
   const { api } = useSubstrateState();
 
@@ -66,8 +57,6 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
       onClose();
     },
   });
-
-  console.log(data);
 
   console.log(getValues());
 

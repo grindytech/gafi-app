@@ -18,21 +18,14 @@ import React from 'react';
 
 import NewGamesProfile from './NewGamesProfile';
 
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import { useSubstrateState } from 'contexts/substrateContext';
 import useSignAndSend from 'hooks/useSignAndSend';
-
-interface NewGamesFieldProps {
-  admin: {
-    address: string;
-    name: string;
-  };
-  game_id: string;
-}
+import { NewGamesFieldProps } from '../index';
 
 interface NewGamesAuthorizeProps {
   onClose: () => void;
-  getValues: UseFormGetValues<FieldValues>;
+  getValues: UseFormGetValues<NewGamesFieldProps>;
   refetch: () => void;
 }
 
