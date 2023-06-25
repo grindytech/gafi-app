@@ -6,6 +6,4 @@ declare global {
     web3: Web3;
     injectedWeb3: Record<string, InjectedWindowProvider>;
   }
-
-  function gtag(...args: any);
 }

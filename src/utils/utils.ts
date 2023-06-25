@@ -1,5 +1,5 @@
 import config from 'config';
-import { GAFI_WALLET_STORAGE_KEY, chainDecimal } from './constants';
+import { chainDecimal } from './constants';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
 
@@ -24,27 +24,18 @@ export const shorten = (hash: string, length = 6) => {
   return hash.slice(0, length) + '…' + hash.slice(n - length);
 };
 
-export const getInjectedWeb3 = async () => {
-  const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
+export const getInjectedWeb3 = async (extension: string) => {
+  const result = await window.injectedWeb3[extension].enable(config.APP_NAME);
 
-  if (extensionName) {
-    const result = await window.injectedWeb3[extensionName].enable(
-      config.APP_NAME
-    );
-
-    return result;
-  }
+  return result;
 };
 
 export const formatGAFI = (fee: number) => {
-  const formatNumber = formatBalance(
-    fee,
-    {
-      withSi: false,
-      forceUnit: '-',
-    },
-    chainDecimal
-  );
+  const formatNumber = formatBalance(fee, {
+    withSi: false,
+    forceUnit: '-',
+    decimals: chainDecimal,
+  });
 
   return formatNumber;
 };

@@ -19,9 +19,10 @@ import React from 'react';
 import NewGamesProfile from './NewGamesProfile';
 
 import { UseFormGetValues } from 'react-hook-form';
-import { useSubstrateState } from 'contexts/substrateContext';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 import { NewGamesFieldProps } from '../index';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface NewGamesAuthorizeProps {
   onClose: () => void;
@@ -34,8 +35,9 @@ export default function NewGamesAuthorize({
   getValues,
   refetch,
 }: NewGamesAuthorizeProps) {
-  const { api } = useSubstrateState();
-  const { game_id, admin } = getValues() as NewGamesFieldProps;
+  const { api } = useAppSelector(state => state.substrate);
+
+  const { game_id, admin } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,

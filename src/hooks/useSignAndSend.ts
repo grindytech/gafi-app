@@ -6,6 +6,7 @@ import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 import useTxError from './useTxError';
 import { useState } from 'react';
+import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
 
 interface useSignAndSendProps {
   address: string;
@@ -18,6 +19,7 @@ export default function useSignAndSend({
   key,
   onSuccess,
 }: useSignAndSendProps) {
+  const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,11 +38,18 @@ export default function useSignAndSend({
     mutationFn: async (
       parmas: SubmittableExtrinsic<'promise', ISubmittableResult>
     ) => {
-      const injected = await getInjectedWeb3();
       setIsLoading(true);
 
+      const injected = await getInjectedWeb3(extensionName as string);
+
       if (injected) {
-        await parmas.signAndSend(address, { signer: injected.signer }, txError);
+        parmas.signAndSend(
+          address,
+          {
+            signer: injected.signer,
+          },
+          txError
+        );
       }
     },
     onError: (error: Error) => {

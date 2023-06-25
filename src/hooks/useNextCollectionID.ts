@@ -1,5 +1,5 @@
-import { useSubstrateState } from 'contexts/substrateContext';
 import React from 'react';
+import { useAppSelector } from './useRedux';
 
 interface useNextCollectionIDProps {
   refetch?: () => void;
@@ -8,7 +8,7 @@ interface useNextCollectionIDProps {
 export default function useNextCollectionID({
   refetch,
 }: useNextCollectionIDProps = {}) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
 
   const [ID, setID] = React.useState<string | undefined>();
 

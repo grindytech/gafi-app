@@ -23,7 +23,9 @@ export default ({ mode }) => {
     ],
     root: './',
     publicDir: process.env.VITE_PUBLIC_DIR,
-    define: { 'process.env': process.env },
+    define: {
+      'process.env': process.env,
+    },
     build: {
       manifest: true,
     },

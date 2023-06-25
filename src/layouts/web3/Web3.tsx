@@ -17,8 +17,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { useSubstrateState } from 'contexts/substrateContext';
-
 import Chevron02Icon from 'public/assets/line/chevron-02.svg';
 import LayoutGridIcon from 'public/assets/line/layout-grid.svg';
 import LayoutRowIcon from 'public/assets/line/layout-row.svg';
@@ -31,19 +29,23 @@ import Web3Items, { Web3ItemsDataProps } from './components/Web3Items';
 
 import Web3FirstBuild from './components/Web3FirstBuild';
 import DefaultWeb3 from 'layouts/default/DefaultWeb3';
-import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
+
+import { useAppSelector } from 'hooks/useRedux';
 
 export default function Web3() {
-  const { account } = useConnectWallet();
-  const { api } = useSubstrateState();
+  const { account } = useAppSelector(state => state.injected.polkadot);
+
+  const { api } = useAppSelector(state => state.substrate);
 
   const data = useQueries({
     queries: [
       {
-        queryKey: ['gameAccount'],
+        queryKey: ['gameAccount', account?.address],
         queryFn: async () => {
-          if (api && api.query.game && account) {
-            const res = await api.query.game.gameAccount.entries(account);
+          if (api && api.query.game && account?.address) {
+            const res = await api.query.game.gameAccount.entries(
+              account.address
+            );
 
             const getGames = await Promise.all(
               res.map(
@@ -67,14 +69,18 @@ export default function Web3() {
 
             return getGames;
           }
+
+          return []; // undefined
         },
         enabled: !!(api && api.query.game),
       },
       {
-        queryKey: ['collectionAccount'],
+        queryKey: ['collectionAccount', account?.address],
         queryFn: async () => {
-          if (api && api.query.nfts && account) {
-            const res = await api.query.nfts.collectionAccount.entries(account);
+          if (api && api.query.nfts && account?.address) {
+            const res = await api.query.nfts.collectionAccount.entries(
+              account.address
+            );
 
             const getCollections = await Promise.all(
               res.map(
@@ -98,14 +104,18 @@ export default function Web3() {
 
             return getCollections;
           }
+
+          return []; // undefined
         },
         enabled: !!(api && api.query.nfts),
       },
       {
-        queryKey: ['item'],
+        queryKey: ['item', account?.address],
         queryFn: async () => {
-          if (api && api.query.nfts && account) {
-            const res = await api.query.nfts.collectionAccount.entries(account);
+          if (api && api.query.nfts && account?.address) {
+            const res = await api.query.nfts.collectionAccount.entries(
+              account.address
+            );
 
             const getCollections = res.map(
               ([
@@ -142,6 +152,8 @@ export default function Web3() {
               (item): item is Web3ItemsDataProps[] => !!item
             );
           }
+
+          return []; // undefined
         },
         enabled: !!(api && api.query.nfts),
       },
@@ -151,6 +163,10 @@ export default function Web3() {
   const games = data[0].data;
   const collections = data[1].data;
   const items = data[2].data;
+
+  const gamesLength = games && games.length;
+  const collectionsLength = collections && collections.length;
+  const itemsLength = items && items.length;
 
   if (data[0].isLoading && data[1].isLoading && data[2].isLoading) {
     return (
@@ -165,12 +181,7 @@ export default function Web3() {
 
   return (
     <>
-      {games &&
-      games.length &&
-      collections &&
-      collections.length &&
-      items &&
-      items.length ? (
+      {gamesLength || collectionsLength || itemsLength ? (
         <DefaultWeb3>
           <Tabs variant="unstyled">
             <TabList flexWrap="wrap-reverse" gap={4}>
@@ -195,16 +206,22 @@ export default function Web3() {
                   },
                 }}
               >
-                <Tab>Games {games.length}</Tab>
+                {gamesLength ? <Tab>Games {games.length}</Tab> : null}
 
-                <Tab position="relative">Collections {collections.length}</Tab>
+                {collectionsLength ? (
+                  <Tab position="relative">
+                    Collections {collections.length}
+                  </Tab>
+                ) : null}
 
-                <Tab>
-                  Items&nbsp;
-                  {items
-                    .map(item => item.length)
-                    .reduce((prev, current) => prev + current)}
-                </Tab>
+                {itemsLength ? (
+                  <Tab>
+                    Items&nbsp;
+                    {items
+                      ?.map(item => item.length)
+                      .reduce((prev, current) => prev + current)}
+                  </Tab>
+                ) : null}
               </Flex>
 
               <Flex
@@ -262,17 +279,23 @@ export default function Web3() {
                 },
               }}
             >
-              <TabPanel>
-                <Web3Games data={games} />
-              </TabPanel>
+              {gamesLength && (
+                <TabPanel>
+                  <Web3Games data={games} />
+                </TabPanel>
+              )}
 
-              <TabPanel>
-                <Web3Collections data={collections} />
-              </TabPanel>
+              {collectionsLength && (
+                <TabPanel>
+                  <Web3Collections data={collections} />
+                </TabPanel>
+              )}
 
-              <TabPanel>
-                <Web3Items data={items} />
-              </TabPanel>
+              {itemsLength && (
+                <TabPanel>
+                  <Web3Items data={items} />
+                </TabPanel>
+              )}
             </TabPanels>
           </Tabs>
         </DefaultWeb3>
