@@ -21,13 +21,14 @@ import {
 import React from 'react';
 
 import { UseFormGetValues } from 'react-hook-form';
-import { useSubstrateState } from 'contexts/substrateContext';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 
 import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
 import { PoolsCreateFieldProps, PoolsCreateProps } from './PoolsCreate';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface PoolsModalProps extends PoolsCreateProps {
   onClose: () => void;
@@ -39,7 +40,8 @@ export default function PoolsModal({
   getValues,
   type,
 }: PoolsModalProps) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
+
   const { admin, id, fee, supply } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({

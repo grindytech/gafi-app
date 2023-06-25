@@ -18,9 +18,9 @@ import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { UseFormGetValues } from 'react-hook-form';
 
-import { useSubstrateState } from 'contexts/substrateContext';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { AcceptCollectionsFieldProps } from './index';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface AcceptCollectionsModalProps {
   onClose: () => void;
@@ -31,7 +31,8 @@ export default function AcceptCollectionsModal({
   onClose,
   getValues,
 }: AcceptCollectionsModalProps) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
+
   const { collection_id, game_id, admin } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({

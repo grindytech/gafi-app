@@ -9,7 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import CardBox from 'components/CardBox';
-import { useSubstrateState } from 'contexts/substrateContext';
+
+import { useAppSelector } from 'hooks/useRedux';
 import React from 'react';
 
 import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
@@ -24,7 +25,7 @@ interface MintWeightProps {
 }
 
 export default function MintWeight({ pool_id }: MintWeightProps) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
 
   const { data, isLoading, isError } = useQuery(
     ['getItemsOfPoolID', pool_id],

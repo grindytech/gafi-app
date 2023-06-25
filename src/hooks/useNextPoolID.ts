@@ -1,12 +1,12 @@
-import { useSubstrateState } from 'contexts/substrateContext';
 import React from 'react';
+import { useAppSelector } from './useRedux';
 
 interface useNextPoolIDProps {
   refetch?: () => void;
 }
 
 export default function useNextPoolID({ refetch }: useNextPoolIDProps = {}) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
 
   const [ID, setID] = React.useState<string | undefined>();
 

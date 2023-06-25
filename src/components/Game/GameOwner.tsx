@@ -15,28 +15,14 @@ import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
 import Balance from 'components/Balance/Balance';
-import { useConnectWallet } from 'components/ConnectWallet/ConnectWalletProvider';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface GameOwnerProps {
   sx?: BoxProps;
 }
 
 export default function GameOwner({ sx }: GameOwnerProps) {
-  const { account, allAccount } = useConnectWallet();
-  const [currentAccount, setCurrentAccount] = React.useState<{
-    address?: string;
-    name?: string;
-  }>({});
-
-  React.useEffect(() => {
-    if (account && allAccount) {
-      const [{ address, name }] = allAccount.filter(item => {
-        return item.address === account;
-      });
-
-      setCurrentAccount({ address, name });
-    }
-  }, [account, allAccount]);
+  const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
     <>
@@ -45,7 +31,7 @@ export default function GameOwner({ sx }: GameOwnerProps) {
           Owner
         </Heading>
 
-        {currentAccount.address && currentAccount.name ? (
+        {account && account.address ? (
           <>
             <Flex
               flexWrap="wrap"
@@ -54,7 +40,7 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                 md: 4,
               }}
             >
-              <AccountJazzicon address={currentAccount.address} />
+              <AccountJazzicon address={account.address} />
 
               <Box>
                 <Heading
@@ -63,7 +49,7 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                   fontWeight="semibold"
                   color="shader.a.900"
                 >
-                  {currentAccount.name}
+                  {account.name}
                 </Heading>
 
                 <Text
@@ -78,15 +64,15 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                     sm: 'center',
                   }}
                 >
-                  {shorten(currentAccount.address, 12)}
-                  <ButtonCopy value={currentAccount.address} />
+                  {shorten(account.address, 12)}
+                  <ButtonCopy value={account.address} />
                 </Text>
               </Box>
             </Flex>
 
             <Divider borderColor="shader.a.300" my={4} />
 
-            <Balance currentAccount={currentAccount.address} />
+            <Balance currentAccount={account.address} />
           </>
         ) : (
           <Stack>

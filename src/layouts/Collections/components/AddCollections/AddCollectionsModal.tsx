@@ -14,13 +14,14 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import { useSubstrateState } from 'contexts/substrateContext';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { UseFormGetValues } from 'react-hook-form';
 import { AddCollectionFieldProps } from './index';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface AddCollectionsModalProps {
   onClose: () => void;
@@ -31,7 +32,8 @@ export default function AddCollectionsModal({
   getValues,
   onClose,
 }: AddCollectionsModalProps) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
+
   const { admin, collection_id, game_id } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({

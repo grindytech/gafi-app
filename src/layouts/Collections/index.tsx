@@ -58,7 +58,7 @@ export default function Collections() {
 
           <Tab>
             <Center gap={2}>
-              <Icon as={LineAddIcon as any} width={4} height={4} />
+              <Icon as={LineAddIcon} width={4} height={4} />
               <Text>Add collection</Text>
             </Center>
           </Tab>

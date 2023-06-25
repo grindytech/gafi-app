@@ -14,13 +14,14 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import { useSubstrateState } from 'contexts/substrateContext';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
 import React from 'react';
 import { UseFormGetValues } from 'react-hook-form';
 import { AddSupplyFieldProps } from './index';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface AddSupplyModal {
   onClose: () => void;
@@ -28,7 +29,8 @@ interface AddSupplyModal {
 }
 
 export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
+
   const { collection_id, item_id, amount, admin } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({

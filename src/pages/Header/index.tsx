@@ -122,7 +122,7 @@ export default function Header() {
                     }}
                   >
                     {header.icon && (
-                      <Icon as={header.icon as any} width={4} height={4} />
+                      <Icon as={header.icon} width={4} height={4} />
                     )}
 
                     {header.title}

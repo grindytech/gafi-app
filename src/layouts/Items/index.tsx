@@ -52,7 +52,7 @@ export default function Items() {
 
           <Tab>
             <Center gap={2}>
-              <Icon as={LineAddIcon as any} width={4} height={4} />
+              <Icon as={LineAddIcon} width={4} height={4} />
               <Text>Add Supply</Text>
             </Center>
           </Tab>

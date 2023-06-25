@@ -36,7 +36,7 @@ export default function NewGamesUpload({ register }: NewGamesUploadProps) {
         py={8}
         px={14}
       >
-        <Icon as={UploadIcon as any} width={5} height={5} />
+        <Icon as={UploadIcon} width={5} height={5} />
 
         <Text fontWeight="semibold" fontSize="xs">
           Upload Image

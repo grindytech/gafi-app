@@ -1,12 +1,12 @@
-import { useSubstrateState } from 'contexts/substrateContext';
 import React from 'react';
+import { useAppSelector } from './useRedux';
 
 interface useNextGameIDProps {
   refetch?: () => void;
 }
 
 export default function useNextGameID({ refetch }: useNextGameIDProps = {}) {
-  const { api } = useSubstrateState();
+  const { api } = useAppSelector(state => state.substrate);
 
   const [ID, setID] = React.useState<string | undefined>();
 
