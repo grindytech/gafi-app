@@ -3,34 +3,54 @@ import { chainDecimal } from './constants';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
 
-export const convertHex = (color: string, opacity: number) => {
-  /* 
+/** 
+  @function convertHex(color: string, opacity: number)
+    - Ex: input = "#ffffff"
+          opacity = 0.5
     - https://stackoverflow.com/a/7018987/16151303
-    - logic summary:
+    - summary:
         get position elements necessary 
         convert to 'base 16'
         the latest adding alpha  
-  */
-  const hexColorToRGBA = `
-      ${parseInt(color.substring(1, 3), 16)},
-      ${parseInt(color.substring(3, 5), 16)},
-      ${parseInt(color.substring(5, 7), 16)}, ${opacity}`;
+*/
+export const convertHex = (color: string, opacity: number) => {
+  const hexColorToRGBA = `${parseInt(color.substring(1, 3), 16)}, ${parseInt(
+    color.substring(3, 5),
+    16
+  )}, ${parseInt(color.substring(5, 7), 16)}, ${opacity}`;
 
   return `rgba(${hexColorToRGBA})`;
 };
 
+/** 
+  @function shorten(hash: string, length: number)
+    - Ex: hash = 6 (123n to 6) 
+          length = 2
+
+    - summary:
+      get length of input (hash)
+      slice hash point start 0 that number will reviced 12 by input (hash)
+      identifying where middle it needs "..." string now we've 12...
+      step end slice at point last with recipe "123456".slice(-length) result should to be 56,
+      right now, compound we will have result equal 12..56
+*/
 export const shorten = (hash: string, length = 6) => {
-  const n = hash.length;
-  return hash.slice(0, length) + '…' + hash.slice(n - length);
+  const prefix = hash.slice(0, length);
+  const middle = '...';
+  const suffixed = hash.slice(-length);
+
+  return prefix + middle + suffixed;
 };
 
 export const getInjectedWeb3 = async (extension: string) => {
-  const result = await window.injectedWeb3[extension].enable(config.APP_NAME);
+  const result = await window.injectedWeb3[extension];
 
-  return result;
+  if (result.enable) {
+    return result.enable(config.APP_NAME);
+  }
 };
 
-export const formatGAFI = (fee: number) => {
+export const formatGAFI = (fee: number | string) => {
   const formatNumber = formatBalance(fee, {
     withSi: false,
     forceUnit: '-',
@@ -41,13 +61,13 @@ export const formatGAFI = (fee: number) => {
 };
 
 export const ColorOfRarity = (weight: number | string) => {
-  const hard = 0;
-  const medium = 25;
-  const easy = 50;
+  const easy = 100;
+  const medium = 35;
+  const hard = 10;
 
-  if (Number(weight) >= easy) return colors.primary.a[500];
-  if (Number(weight) >= medium) return colors.second.orange;
-  if (Number(weight) >= hard) return colors.second.purple;
+  if (Number(weight) <= hard) return colors.second.purple;
+  if (Number(weight) <= medium) return colors.second.orange;
+  if (Number(weight) <= easy) return colors.primary.a[500];
 };
 
 export const CalculatorOfRarity = (weight: number, weights: number[]) => {
@@ -55,11 +75,7 @@ export const CalculatorOfRarity = (weight: number, weights: number[]) => {
     .map(item => Number(item))
     .reduce((prev, current) => prev + current);
 
-  const shouldNotNaN = weight >= 1;
-
-  const calculatorTotal = shouldNotNaN
-    ? String((weight / totalWeight) * 100)
-    : '0';
+  const calculatorTotal = String((weight / totalWeight) * 100);
 
   const [prefix, suffixed] = calculatorTotal.split('.');
 

@@ -1,7 +1,6 @@
-import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
-import { chainDecimal } from 'utils/constants';
 import { useAppSelector } from './useRedux';
+import { formatGAFI } from 'utils/utils';
 
 type TypeGetBalance = {
   data: {
@@ -24,13 +23,7 @@ export default function useBalance({ account }: useBalanceProps) {
 
         const getBalance = res.toPrimitive() as TypeGetBalance;
 
-        setBalance(
-          formatBalance(getBalance.data.free, {
-            withSi: false,
-            forceUnit: '-',
-            decimals: chainDecimal,
-          })
-        );
+        setBalance(formatGAFI(getBalance.data.free));
       }
     };
     getBalance();
