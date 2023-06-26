@@ -16,7 +16,8 @@
     "mainnet:typegen": "yarn mainnet:generate:defs && yarn mainnet:generate:meta",
     "get:testnet:metadata": "rm -rf ./edgeware.json && curl -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc-test.gafi.network >> edgeware.json",
     "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package gafi-dashboard/interfaces --input ./src/interfaces --endpoint ./edgeware.json",
-    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package gafi-dashboard/interfaces --endpoint ./edgeware.json --output ./src/interfaces"
+    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package gafi-dashboard/interfaces --endpoint ./edgeware.json --output ./src/interfaces",
+    "test": "jest"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.4.5",
@@ -51,10 +52,13 @@
     "react-jazzicon": "^1.0.4",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.13.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
     "vite-tsconfig-paths": "^4.2.0",
     "web3": "^4.0.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.2",
     "@types/node": "^20.2.6",
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",
