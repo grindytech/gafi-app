@@ -58,7 +58,7 @@ const MetaData = () => {
         </Button>
         <HStack>
           <Icon as={SettingIcon} />
-          <Text color="shader.a.500">v14</Text>
+          <Text color="shader.a.500">v{metadata?.version}</Text>
         </HStack>
       </CardBox>
       <Modal
@@ -73,7 +73,6 @@ const MetaData = () => {
           <ModalCloseButton />
           <ModalBody>
             <ReactJson
-              theme="bright"
               collapsed={4}
               src={
                 metadata?.data
