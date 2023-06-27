@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Text, Image, Heading } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import GafiImg from 'public/assets/art/Gaki.svg';
+import GafiImg from 'public/assets/art/gaki.svg';
 const HeroSection = () => {
   return (
     <CardBox
@@ -50,7 +50,7 @@ const HeroSection = () => {
         >
           {/*  <Box
             background={
-              "url('public/assets/art/Gaki.svg') center center no-repeat"
+              "url('public/assets/art/gaki.svg') center center no-repeat"
             }
           /> */}
           <GafiImg />

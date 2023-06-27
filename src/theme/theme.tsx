@@ -24,6 +24,8 @@ export const colors = {
       100: '#D4EEFD',
       200: '#AADAFB',
       500: '#2A7AD7',
+      600: '#1E5EB8',
+      700: '#15469A',
     },
   },
   shader: {
@@ -70,6 +72,15 @@ const CardBox: ComponentStyleConfig = {
       borderColor: 'shader.a.300',
       padding: 4,
     },
+    baseStyle: {
+      width: 'full',
+      color: 'black',
+      bg: 'white',
+      borderRadius: 'xl',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.300',
+      padding: 6,
+    },
   },
 };
 
@@ -90,6 +101,16 @@ const Button: ComponentStyleConfig = {
       fontWeight: 'semibold',
       color: 'white',
       _focusVisible: {},
+    },
+    primary: {
+      //in using button show metadata
+      px: 4,
+      bg: 'primary.a.500',
+      color: 'white',
+      borderRadius: 'lg',
+      _hover: {
+        bg: 'primary.a.600',
+      },
     },
   },
 };
