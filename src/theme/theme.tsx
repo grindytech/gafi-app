@@ -8,6 +8,7 @@ linear-gradient(180deg, #D4EEFD 0%, #2A7AD7 100%) border-box
 export const backgrounds = {
   gradient: {
     linear: {
+      1: 'linear-gradient(180deg, #112757 0%, #010318 167.61%)',
       2: 'linear-gradient(135deg, #99CFFF 0%, #2A7AD7 100%)',
       3: 'linear-gradient(135deg, #FFC966 0%, #FF9000 100%)',
       4: 'linear-gradient(135deg, #75EA85 0%, #1FBA53 100%)',
