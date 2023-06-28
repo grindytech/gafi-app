@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
-import React from 'react';
 import { UseFormGetValues } from 'react-hook-form';
 
 import { useQuery } from '@tanstack/react-query';
