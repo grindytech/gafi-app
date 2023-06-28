@@ -4,6 +4,8 @@ import { defineConfig, loadEnv } from 'vite';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+const IfForgetEnviromentDevelopment = 3000;
+
 export default ({ mode }) => {
   process.env = {
     ...process.env,
@@ -30,7 +32,7 @@ export default ({ mode }) => {
       manifest: true,
     },
     server: {
-      port: Number(process.env.VITE_PORT),
+      port: Number(process.env.VITE_PORT) || IfForgetEnviromentDevelopment,
     },
     preview: {
       port: Number(process.env.VITE_PORT),

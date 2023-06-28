@@ -1,22 +1,21 @@
 import {
-  BoxProps,
   Center,
+  FormControl,
+  FormLabel,
   Heading,
   Input,
-  NumberInput as NumberInputChakra,
-  Text,
 } from '@chakra-ui/react';
 
 import React from 'react';
-import { TypeRegister, TypeSetValue } from 'types';
+
+import { TypeRegister } from 'types';
 
 interface NumberInputProps {
-  setValue?: TypeSetValue;
-  register?: TypeRegister;
+  register: TypeRegister;
+  isInvalid?: boolean;
+  isRequired?: boolean;
   title: string;
   value: string;
-  sx?: BoxProps;
-  required?: boolean;
 }
 
 export const NumberInputStyle = {
@@ -32,41 +31,41 @@ export const NumberInputStyle = {
 };
 
 export default function NumberInput({
-  setValue,
   register,
+  isRequired,
+  isInvalid,
   title,
   value,
-  required,
 }: NumberInputProps) {
   return (
-    <Center justifyContent="space-between">
-      <Heading variant="game">
-        {title}&nbsp;
-        {required && (
-          <Text as="span" color="second.red" fontWeight="normal">
-            *
-          </Text>
+    <FormControl
+      as={Center}
+      isRequired={isRequired}
+      isInvalid={isInvalid}
+      justifyContent="space-between"
+    >
+      <FormLabel margin={0} display="flex" alignItems="center">
+        <Heading variant="game">{title}</Heading>
+      </FormLabel>
+
+      <Input
+        {...NumberInputStyle}
+        required={false}
+        _focusVisible={{}}
+        width="auto"
+        min={0}
+        placeholder="Ex: 0"
+        type="number"
+        {...register(
+          value,
+          isRequired
+            ? {
+                required: 'Please fill out this field.',
+                min: 0,
+              }
+            : undefined
         )}
-      </Heading>
-
-      <NumberInputChakra>
-        <Input
-          {...NumberInputStyle}
-          placeholder="Ex: 0"
-          type="number"
-          min={0}
-          {...(register ? register(value) : undefined)}
-          onBlur={e => {
-            const { value: valueChange } = e.target;
-
-            if (setValue) {
-              if (!valueChange.length) return setValue(value, undefined);
-
-              setValue(value, Number(valueChange));
-            }
-          }}
-        />
-      </NumberInputChakra>
-    </Center>
+      />
+    </FormControl>
   );
 }

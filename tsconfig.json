@@ -5,6 +5,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
@@ -19,7 +20,7 @@
     },
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -32,6 +33,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    /* type */
     "typeRoots": ["./node_modules/@types"]
   },
   "include": ["src/**/*", "public/**/*", "src/env-d.ts", "src/window.d.ts"],

@@ -1,72 +1,71 @@
 import {
   Center,
+  FormControl,
+  FormLabel,
   Heading,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Text,
+  Input,
+  InputGroup,
+  InputRightAddon,
 } from '@chakra-ui/react';
-import CardBox from 'components/CardBox';
 import { NumberInputStyle } from 'components/NumberInput';
 import React from 'react';
 
-import { TypeSetValue } from 'types';
+import { TypeRegister } from 'types';
 
 interface NumberInputLimitProps {
-  setValue: TypeSetValue;
+  register: TypeRegister;
+  isRequired?: boolean;
+  isInvalid: boolean;
   title: string;
   value: string;
-  required?: boolean;
   min: number;
   max: number;
 }
 
 export default function NumberInputLimit({
-  setValue,
+  register,
+  isRequired,
+  isInvalid,
   title,
   value,
-  required,
   min,
   max,
 }: NumberInputLimitProps) {
-  const [currentAmount, setCurrentAmount] = React.useState(min);
-
   return (
-    <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading variant="game">
-        {title}&nbsp;
-        {required && (
-          <Text as="span" color="second.red" fontWeight="normal">
-            *
-          </Text>
-        )}
-      </Heading>
+    <FormControl
+      as={Center}
+      isRequired={isRequired}
+      isInvalid={isInvalid}
+      justifyContent="space-between"
+    >
+      <FormLabel margin={0} display="flex" alignItems="center">
+        <Heading variant="game">{title}</Heading>
+      </FormLabel>
 
-      <Center>
-        <NumberInput
-          min={min}
-          max={max}
-          onChange={e => {
-            setCurrentAmount(Number(e));
-
-            setValue(value, Number(e));
-          }}
-        >
-          <NumberInputField {...NumberInputStyle} placeholder="Ex: 0" />
-
-          <NumberInputStepper
-            px={3}
-            justifyContent="center"
-            width="auto"
-            borderLeft="0.0625rem solid"
-            borderColor="shader.a.300"
-          >
-            <Text as="span" color="shader.a.500" fontSize="sm">
-              {currentAmount}/{max}
-            </Text>
-          </NumberInputStepper>
-        </NumberInput>
-      </Center>
-    </CardBox>
+      <InputGroup width="auto">
+        <Input
+          {...NumberInputStyle}
+          required={false}
+          _focusVisible={{}}
+          width="auto"
+          min={0}
+          placeholder="Ex: 0"
+          type="number"
+          {...register(
+            value,
+            isRequired
+              ? {
+                  required: 'Please fill out this field.',
+                  min,
+                  max,
+                }
+              : undefined
+          )}
+        />
+        <InputRightAddon bg="transparent" borderColor="shader.a.400">
+          {max}
+        </InputRightAddon>
+      </InputGroup>
+    </FormControl>
   );
 }

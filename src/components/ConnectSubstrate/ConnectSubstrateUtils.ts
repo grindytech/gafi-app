@@ -4,7 +4,6 @@ import { getInjectedWeb3 } from 'utils/utils';
 import {
   InjectedAccountWithMeta,
   InjectedAccount,
-  Injected,
 } from '@polkadot/extension-inject/types';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { ApiPromise, WsProvider } from '@polkadot/api';
@@ -50,8 +49,9 @@ const loadAccounts = async ({ extensionName, dispatch }: loadAccountsProps) => {
   try {
     const getKeyOfGAFI = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
 
-    const accounts: Injected = await getInjectedWeb3(extensionName);
-    const getAccounts = await accounts.accounts.get();
+    const accounts = await getInjectedWeb3(extensionName);
+
+    const getAccounts = await accounts?.accounts.get();
 
     if (getAccounts) {
       if (!getAccounts.length) {
