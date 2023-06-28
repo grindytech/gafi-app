@@ -19,7 +19,7 @@ const Home = () => {
         rowGap={5}
       >
         <VStack gap={4}>
-          <HStack width="full">
+          <HStack width="full" flexWrap="wrap">
             <BlockInfo />
             <BlockInfo isFinalize={true} />
           </HStack>

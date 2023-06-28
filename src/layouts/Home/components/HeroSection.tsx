@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Text, Image, Heading } from '@chakra-ui/react';
+import { Box, Grid, Text, Image, Heading, Flex } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import GafiImg from 'public/assets/art/gaki.svg';
 const HeroSection = () => {
@@ -11,13 +11,8 @@ const HeroSection = () => {
       overflow="hidden"
       transform="translateY(-1.5rem)"
     >
-      <Grid
-        gridTemplateColumns={{
-          sm: 'repeat(1, 1fr)',
-          lg: 'repeat(2, 1fr)',
-        }}
-      >
-        <Box py={20} pl={20}>
+      <Flex flexWrap={{ base: 'wrap', md: 'nowrap' }}>
+        <Box py={{ md: 16, base: 4 }} px={{ md: 16, base: 4 }}>
           <Heading as="h4" fontSize="2xl" mb={3.5}>
             <Text display="inline-block" color="white">
               Welcome to
@@ -44,7 +39,10 @@ const HeroSection = () => {
           justifyContent="end"
           sx={{
             svg: {
-              transform: 'translate3d(0,20%,0)',
+              transform: {
+                md: 'translate3d(0,20%,0)',
+                base: 'translate3d(0,25%,0)',
+              },
             },
           }}
         >
@@ -55,7 +53,7 @@ const HeroSection = () => {
           /> */}
           <GafiImg />
         </Box>
-      </Grid>
+      </Flex>
     </CardBox>
   );
 };

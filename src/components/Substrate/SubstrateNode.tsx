@@ -14,7 +14,8 @@ import React, { useState, useEffect } from 'react';
 import SettingIcon from 'public/assets/line/setting.svg';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import config from 'config';
-import { substrateConnect } from 'redux/substrate';
+import { setConnectSocket } from 'redux/substrate';
+
 interface INodeInfo {
   chain: PolText;
   nodeName: PolText;
@@ -61,14 +62,21 @@ const SubstrateNode = () => {
     getInfo();
   }, [api?.rpc.system]);
   const dispatch = useAppDispatch();
-  /*  useEffect(() => {
-    const setConnectSocket = async () => {
-      dispatch(setConnectSocket({socket:{
-        ap
-      }}));
+
+  useEffect(() => {
+    console.log('run set connect');
+    const setConnect = async () => {
+      dispatch(
+        setConnectSocket({
+          apiState: 'READY',
+          socket: currentSocket,
+          payload: null,
+        })
+      );
+      console.log(socket);
     };
-    setConnectSocket();
-  }, [currentSocket]); */
+    setConnect();
+  }, [currentSocket]);
   return (
     <>
       <CardBox variant="baseStyle">

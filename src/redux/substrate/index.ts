@@ -48,6 +48,6 @@ export const substrate = createSlice({
   },
 });
 
-export const { substrateConnect } = substrate.actions;
+export const { substrateConnect, setConnectSocket } = substrate.actions;
 
 export default substrate.reducer;
