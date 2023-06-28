@@ -70,10 +70,14 @@ const MetaData = () => {
         <ModalOverlay />
         <ModalContent bg="white">
           <ModalHeader color="primary.a.500">Runtime Data</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton color="black" />
           <ModalBody>
             <ReactJson
               collapsed={4}
+              style={{
+                whiteSpace: 'pre',
+                overflow: 'auto',
+              }}
               src={
                 metadata?.data
                   ? JSON.parse(metadata.data.toString())
