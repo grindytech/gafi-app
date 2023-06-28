@@ -37,8 +37,11 @@ const HeroSection = () => {
           width="full"
           display="flex"
           justifyContent="end"
+          position="relative"
           sx={{
             svg: {
+              position: { md: 'absolute', base: 'block' },
+              bottom: '0',
               transform: {
                 md: 'translate3d(0,20%,0)',
                 base: 'translate3d(0,25%,0)',
@@ -46,11 +49,6 @@ const HeroSection = () => {
             },
           }}
         >
-          {/*  <Box
-            background={
-              "url('public/assets/art/gaki.svg') center center no-repeat"
-            }
-          /> */}
           <GafiImg />
         </Box>
       </Flex>
