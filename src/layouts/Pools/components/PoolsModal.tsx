@@ -42,11 +42,13 @@ export default function PoolsModal({
 }: PoolsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { admin, id, fee, supply } = getValues();
+  const { admin, fee, supply } = getValues();
+
+  const time = new Date().getTime();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
-    key: [type, String(id)],
+    key: [type, `${admin.address} ${time}`],
   });
 
   return (
@@ -89,59 +91,68 @@ export default function PoolsModal({
               <Tr>
                 <Td>
                   <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
-                    {supply.map(item => {
-                      const weight = CalculatorOfRarity(
-                        item.weight,
-                        supply.map(item => item.weight)
-                      );
+                    {React.Children.toArray(
+                      supply.map((item, index) => {
+                        const weight = CalculatorOfRarity(
+                          item.weight,
+                          supply.map(item => item.weight)
+                        );
 
-                      return (
-                        <Flex
-                          key={id}
-                          flexDirection="column"
-                          justifyContent="space-between"
-                          border="0.0625rem solid"
-                          borderColor="shader.a.400"
-                          borderRadius="xl"
-                          padding={4}
-                        >
-                          <Heading
-                            fontSize="lg"
-                            fontWeight="medium"
-                            color="shader.a.900"
+                        return (
+                          <Flex
+                            flexDirection="column"
+                            justifyContent="space-between"
+                            border="0.0625rem solid"
+                            borderColor="shader.a.400"
+                            borderRadius="xl"
+                            padding={4}
                           >
-                            Supply {id}
-                          </Heading>
+                            <Heading
+                              fontSize="lg"
+                              fontWeight="medium"
+                              color="shader.a.900"
+                            >
+                              Supply {index}
+                            </Heading>
 
-                          <Box mt={4}>
-                            <Text>
-                              Item ID:&nbsp;
-                              <Text as="span">{item.maybeNft.item}</Text>
-                            </Text>
+                            <Box mt={4}>
+                              {item.maybeNft?.item ? (
+                                <Text>
+                                  Item ID:&nbsp;
+                                  <Text as="span">{item.maybeNft.item}</Text>
+                                </Text>
+                              ) : null}
 
-                            <Text>
-                              Collection ID:&nbsp;
-                              <Text as="span">{item.maybeNft.collection}</Text>
-                            </Text>
+                              {item.maybeNft?.collection ? (
+                                <Text>
+                                  Collection ID:&nbsp;
+                                  <Text as="span">
+                                    {item.maybeNft.collection}
+                                  </Text>
+                                </Text>
+                              ) : null}
 
-                            <Text>
-                              Weight: {item.weight}&nbsp;
-                              <Text as="span" color={ColorOfRarity(weight)}>
-                                ({weight}%)
+                              <Text>
+                                Weight:&nbsp;
+                                <Text as="span" color={ColorOfRarity(weight)}>
+                                  ({weight}%)
+                                </Text>
                               </Text>
-                            </Text>
-                          </Box>
-                        </Flex>
-                      );
-                    })}
+                            </Box>
+                          </Flex>
+                        );
+                      })
+                    )}
                   </Grid>
                 </Td>
               </Tr>
 
-              <Tr>
-                <Td>Mining fee</Td>
-                <Td>{fee}</Td>
-              </Tr>
+              {fee ? (
+                <Tr>
+                  <Td>Mining fee</Td>
+                  <Td>{fee}</Td>
+                </Tr>
+              ) : null}
             </Tbody>
           </Table>
         </ModalBody>

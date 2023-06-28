@@ -17,50 +17,61 @@ export interface AcceptCollectionsFieldProps extends TypeSwitchAdmin {
 }
 
 export default function AcceptCollections() {
-  const { setValue, getValues } = useForm<AcceptCollectionsFieldProps>();
+  const {
+    setValue,
+    getValues,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AcceptCollectionsFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
-      <Flex flexDirection="column" gap={3}>
-        <GameOwner />
+    <Flex
+      as="form"
+      onSubmit={handleSubmit(onOpen)}
+      flexDirection="column"
+      gap={3}
+    >
+      <GameOwner />
 
-        <SwitchAdmin
-          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+      <SwitchAdmin
+        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+      />
+
+      <CardBox variant="createGames">
+        <NumberInput
+          value="collection_id"
+          title="Collection ID"
+          register={register}
+          isInvalid={!!errors.collection_id}
+          isRequired={true}
         />
+      </CardBox>
 
-        <CardBox variant="createGames">
-          <NumberInput
-            value="collection_id"
-            title="Collection ID"
-            setValue={setValue}
-            required={true}
-          />
-        </CardBox>
+      <CardBox variant="createGames">
+        <NumberInput
+          value="game_id"
+          title="Game ID"
+          register={register}
+          isInvalid={!!errors.game_id}
+          isRequired={true}
+        />
+      </CardBox>
 
-        <CardBox variant="createGames">
-          <NumberInput
-            value="game_id"
-            title="Game ID"
-            setValue={setValue}
-            required={true}
-          />
-        </CardBox>
-
-        <Button
-          variant="createGameSubmit"
-          isDisabled={isOpen}
-          onClick={onOpen}
-          _hover={{}}
-        >
-          Submit Transaction
-        </Button>
-      </Flex>
+      <Button
+        variant="createGameSubmit"
+        isDisabled={isOpen}
+        type="submit"
+        _hover={{}}
+      >
+        Submit Transaction
+      </Button>
 
       {isOpen && (
         <AcceptCollectionsModal onClose={onClose} getValues={getValues} />
       )}
-    </>
+    </Flex>
   );
 }

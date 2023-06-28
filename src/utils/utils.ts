@@ -75,7 +75,11 @@ export const CalculatorOfRarity = (weight: number, weights: number[]) => {
     .map(item => Number(item))
     .reduce((prev, current) => prev + current);
 
-  const calculatorTotal = String((weight / totalWeight) * 100);
+  const numberIsNotRound = weight >= 1;
+
+  const calculatorTotal = numberIsNotRound
+    ? String((weight / totalWeight) * 100)
+    : '0';
 
   const [prefix, suffixed] = calculatorTotal.split('.');
 

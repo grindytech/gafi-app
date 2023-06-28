@@ -14,16 +14,16 @@ import NumberInput from 'components/NumberInput';
 import PoolsModal from './PoolsModal';
 import useMaybeOption from 'hooks/useMaybeOption';
 import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
+import useToggleMultiple from 'hooks/useToggleMultiple';
 
 export interface PoolsCreateFieldProps extends TypeSwitchAdmin {
   fee: number;
-  id: number;
   supply: {
     weight: number;
     maybeNft: {
       collection: number; // collection_id should = collection but follow field of API
       item: number; // as the same above
-    };
+    } | null;
   }[];
 }
 
@@ -34,17 +34,32 @@ export interface PoolsCreateProps {
 export default function PoolsCreate({ type }: PoolsCreateProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { fields, setField, removeField, setIsExpanded, isExpanded } =
-    useMaybeOption();
+  const { setIsExpanded, removeIsExpanded, isExpanded } = useToggleMultiple();
+  const { fields, setField, removeField } = useMaybeOption();
 
-  const { setValue, getValues } = useForm<PoolsCreateFieldProps>();
+  const {
+    setValue,
+    getValues,
+    register,
+    handleSubmit,
+    unregister,
+    formState: { errors },
+  } = useForm<PoolsCreateFieldProps>();
 
   React.useEffect(() => {
-    setValue(
-      `id.${fields.length - 1}` as keyof PoolsCreateFieldProps,
-      fields.length - 1
-    );
-  }, [fields]);
+    fields.forEach((_, index) => {
+      if (!isExpanded[index]) {
+        unregister(`supply.${index}`);
+
+        setValue(`supply.${index}`, {
+          maybeNft: {
+            collection: null,
+            item: null,
+          },
+        } as keyof object);
+      }
+    });
+  }, [isExpanded]);
 
   return (
     <>
@@ -52,53 +67,74 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
         <Button onClick={() => setField()}>Add Supply</Button>
       </Flex>
 
-      <Flex flexDirection="column" gap={3}>
+      <Flex
+        as="form"
+        onSubmit={handleSubmit(onOpen)}
+        flexDirection="column"
+        gap={3}
+      >
         <SwitchAdmin
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
         />
 
         <CardBox variant="createGames">
-          <NumberInput
-            value="fee"
-            title="Mining fee"
-            setValue={setValue}
-            required={true}
-          />
+          <NumberInput value="fee" title="Mining fee" register={register} />
         </CardBox>
 
         {fields.map((element, index) => (
           <MaybeOptions
             title={`Supply ${index}`}
+            /* 
+              why not used an index
+              because element maybe 1 | 2 | 3 | 4 | 10 | 20
+              and index actually 0 | 1 | 2 | 3 | 4 | 5 | 6
+              that when removing params correctly is 'element'
+             */
             key={element}
-            arrow={{
-              isChecked: isExpanded[index],
-              onClick: () => setIsExpanded(index),
-            }}
-            close={
+            toggle={isExpanded[element]}
+            switchClick={() => setIsExpanded(element)}
+            closeClick={
               fields.length >= 2
-                ? {
-                    onClick: () => removeField(element),
+                ? () => {
+                    removeField(element);
+                    removeIsExpanded(element);
                   }
                 : undefined
             }
+            childrenOption={
+              <>
+                <NumberInput
+                  value={`supply.${index}.maybeNft.collection`}
+                  title="Collection ID"
+                  register={register}
+                  isInvalid={
+                    !!errors.supply?.[index]?.maybeNft?.collection || undefined
+                  }
+                  isRequired={isExpanded[index]}
+                />
+
+                <NumberInput
+                  value={`supply.${index}.maybeNft.item`}
+                  title="Item ID"
+                  register={register}
+                  isInvalid={
+                    !!errors.supply?.[index]?.maybeNft?.item || undefined
+                  }
+                  isRequired={isExpanded[index]}
+                />
+              </>
+            }
           >
-            <NumberInput
-              value={`supply.${index}.maybeNft.collection`}
-              title="Collection ID"
-              setValue={setValue}
-            />
-
-            <NumberInput
-              value={`supply.${index}.maybeNft.item`}
-              title="Item ID"
-              setValue={setValue}
-            />
-
             <NumberInput
               value={`supply.${index}.weight`}
               title="Weight"
-              setValue={setValue}
-              required={true}
+              register={register}
+              isInvalid={
+                errors.supply?.[index]?.weight
+                  ? !!String(errors.supply[index]?.weight).length
+                  : undefined
+              }
+              isRequired={true}
             />
           </MaybeOptions>
         ))}
@@ -106,16 +142,16 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
         <Button
           variant="createGameSubmit"
           isDisabled={isOpen}
-          onClick={onOpen}
+          type="submit"
           _hover={{}}
         >
           Submit Transaction
         </Button>
-      </Flex>
 
-      {isOpen && (
-        <PoolsModal type={type} onClose={onClose} getValues={getValues} />
-      )}
+        {isOpen && (
+          <PoolsModal type={type} onClose={onClose} getValues={getValues} />
+        )}
+      </Flex>
     </>
   );
 }

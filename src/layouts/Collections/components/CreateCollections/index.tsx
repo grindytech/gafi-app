@@ -23,25 +23,23 @@ export default function CollectionsCreate() {
   const { mounting, setMounting } = useForceMount();
 
   return (
-    <>
-      <Flex flexDirection="column" gap={3}>
-        <GameOwner />
+    <Flex flexDirection="column" gap={3}>
+      <GameOwner />
 
-        <SwitchAdmin
-          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
-        />
+      <SwitchAdmin
+        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+      />
 
-        <CollectionID setValue={setValue} refetch={mounting} />
+      <CollectionID setValue={setValue} refetch={mounting} />
 
-        <Button
-          variant="createGameSubmit"
-          isDisabled={isOpen}
-          onClick={onOpen}
-          _hover={{}}
-        >
-          Submit Transaction
-        </Button>
-      </Flex>
+      <Button
+        variant="createGameSubmit"
+        isDisabled={isOpen}
+        onClick={onOpen}
+        _hover={{}}
+      >
+        Submit Transaction
+      </Button>
 
       {isOpen && (
         <CreateCollectionsModal
@@ -50,6 +48,6 @@ export default function CollectionsCreate() {
           getValues={getValues}
         />
       )}
-    </>
+    </Flex>
   );
 }

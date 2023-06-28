@@ -21,62 +21,72 @@ export interface MintFieldProps extends TypeSwitchAdmin {
 }
 
 export default function Mint() {
-  const { register, setValue, getValues, watch } = useForm<MintFieldProps>();
+  const {
+    register,
+    setValue,
+    getValues,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<MintFieldProps>();
+
   const pool_id = watch('pool_id');
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
-      <Box px={{ xl: 48 }}>
-        <MintBanner />
+    <Box px={{ xl: 48 }}>
+      <MintBanner />
 
-        <Flex
-          flexDirection="column"
-          gap={3}
-          px={12}
-          transform="translateY(-2%)"
-        >
-          <GameOwner />
+      <Flex
+        onSubmit={handleSubmit(onOpen)}
+        as="form"
+        flexDirection="column"
+        gap={3}
+        px={12}
+        transform="translateY(-5%)"
+      >
+        <GameOwner />
 
-          <SwitchAdmin
-            setValue={
-              setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>
-            }
-          />
+        <SwitchAdmin
+          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        />
 
+        <CardBox variant="createGames">
           <NumberInputLimit
-            setValue={setValue}
+            register={register}
             title="Amount"
             value="amount"
             min={0}
             max={10}
-            required={true}
+            isInvalid={!!errors.amount}
+            isRequired={true}
           />
+        </CardBox>
 
-          <CardBox variant="createGames">
-            <NumberInput
-              register={register}
-              title="Pool ID"
-              value="pool_id"
-              required={true}
-            />
-          </CardBox>
+        <CardBox variant="createGames">
+          <NumberInput
+            register={register}
+            title="Pool ID"
+            value="pool_id"
+            isInvalid={!!errors.pool_id}
+            isRequired={true}
+          />
+        </CardBox>
 
-          {pool_id ? <MintWeight pool_id={pool_id} /> : null}
+        {pool_id ? <MintWeight pool_id={pool_id} /> : null}
 
-          <Button
-            variant="createGameSubmit"
-            isDisabled={isOpen}
-            onClick={onOpen}
-            _hover={{}}
-          >
-            Submit Transaction
-          </Button>
-        </Flex>
+        <Button
+          variant="createGameSubmit"
+          isDisabled={isOpen}
+          type="submit"
+          _hover={{}}
+        >
+          Submit Transaction
+        </Button>
+      </Flex>
 
-        {isOpen ? <MintModal onClose={onClose} getValues={getValues} /> : null}
-      </Box>
-    </>
+      {isOpen ? <MintModal onClose={onClose} getValues={getValues} /> : null}
+    </Box>
   );
 }

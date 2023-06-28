@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
-
 import router from 'routes/routes';
 
 export default function App() {
@@ -15,8 +14,6 @@ export default function App() {
   const { apiState, socket, jsonrpc } = useAppSelector(
     state => state.substrate
   );
-
-  const { keyringState } = useAppSelector(state => state.injected);
 
   connectAPI({ socket, jsonrpc, apiState, dispatch });
 
@@ -31,10 +28,10 @@ export default function App() {
     );
   }
 
-  if (keyringState !== 'READY') return <ConnectSubstrate />;
-
   return (
     <>
+      <ConnectSubstrate />
+
       <RouterProvider router={router} />
     </>
   );
