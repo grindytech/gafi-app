@@ -1,6 +1,5 @@
 import React from 'react';
 import HeroSection from './components/HeroSection';
-import { useAppSelector } from 'hooks/useRedux';
 import BlockInfo from './components/Block/BlockInfo';
 import { Grid, HStack, VStack } from '@chakra-ui/react';
 import RecentEvents from './components/RecentEvents';
@@ -8,8 +7,6 @@ import SubstrateNode from 'components/Substrate/SubstrateNode';
 import MetaData from './components/MetaData';
 
 const Home = () => {
-  const { api } = useAppSelector(state => state.substrate);
-
   return (
     <>
       <HeroSection />

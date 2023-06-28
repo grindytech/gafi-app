@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BoxProps, Text, TextProps } from '@chakra-ui/react';
+import { Text, TextProps } from '@chakra-ui/react';
 interface IProps {
   blockNumber: string;
   sx?: TextProps;

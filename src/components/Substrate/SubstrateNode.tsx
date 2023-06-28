@@ -1,14 +1,5 @@
-import { Metadata, Text as PolText } from '@polkadot/types';
-import {
-  Box,
-  Flex,
-  VStack,
-  Text,
-  HStack,
-  Select,
-  Icon,
-  IconProps,
-} from '@chakra-ui/react';
+import { Text as PolText } from '@polkadot/types';
+import { Flex, Text, HStack, Select, Icon, IconProps } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import React, { useState, useEffect } from 'react';
 import SettingIcon from 'public/assets/line/setting.svg';
@@ -30,9 +21,7 @@ export const CircleIcon = (props: IconProps) => (
     />
   </Icon>
 );
-interface sIProps {
-  socket: string;
-}
+
 const SubstrateNode = () => {
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
   const { api, socket } = useAppSelector(state => state.substrate);

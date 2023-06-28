@@ -18,7 +18,7 @@ import SettingIcon from 'public/assets/line/setting.svg';
 import ReactJson from 'react-json-view';
 import React, { useState, useEffect } from 'react';
 import CardBox from 'components/CardBox';
-import { useQuery } from '@tanstack/react-query';
+
 interface IMetadata {
   data: Metadata | undefined;
   version: number;
