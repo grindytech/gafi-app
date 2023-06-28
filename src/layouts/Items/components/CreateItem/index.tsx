@@ -18,17 +18,36 @@ export interface CreateItemFieldProps extends TypeSwitchAdmin {
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 
-import useMaybeOption from 'hooks/useMaybeOption';
 import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
+import useToggleMultiple from 'hooks/useToggleMultiple';
 
 export default function CreateItem() {
-  const { setValue, getValues } = useForm<CreateItemFieldProps>();
+  const {
+    setValue,
+    getValues,
+    register,
+    handleSubmit,
+    unregister,
+    formState: { errors },
+  } = useForm<CreateItemFieldProps>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setIsExpanded, isExpanded } = useMaybeOption();
+  const { setIsExpanded, isExpanded } = useToggleMultiple();
+
+  React.useEffect(() => {
+    if (!isExpanded[0]) {
+      unregister(`maybeSupply`);
+      setValue(`maybeSupply`, null);
+    }
+  }, [isExpanded]);
 
   return (
     <>
-      <Flex flexDirection="column" gap={3}>
+      <Flex
+        as="form"
+        onSubmit={handleSubmit(onOpen)}
+        flexDirection="column"
+        gap={3}
+      >
         <GameOwner />
 
         <SwitchAdmin
@@ -39,8 +58,9 @@ export default function CreateItem() {
           <NumberInput
             value="collection_id"
             title="Collection ID"
-            setValue={setValue}
-            required={true}
+            register={register}
+            isInvalid={!!errors.collection_id}
+            isRequired={true}
           />
         </CardBox>
 
@@ -48,32 +68,38 @@ export default function CreateItem() {
           <NumberInput
             value="item_id"
             title="Item ID"
-            setValue={setValue}
-            required={true}
+            register={register}
+            isInvalid={!!errors.item_id}
+            isRequired={true}
           />
         </CardBox>
 
         <MaybeOptions
-          title={`Supply`}
-          arrow={{
-            isChecked: isExpanded[0],
-            onClick: () => setIsExpanded(0),
-          }}
-        >
-          <NumberInput value="maybeSupply" title="Amount" setValue={setValue} />
-        </MaybeOptions>
+          title="Supply"
+          toggle={isExpanded[0]}
+          switchClick={() => setIsExpanded(0)}
+          childrenOption={
+            <NumberInput
+              value="maybeSupply"
+              title="Amount"
+              register={register}
+              isInvalid={!!errors.maybeSupply}
+              isRequired={isExpanded[0]}
+            />
+          }
+        />
 
         <Button
           variant="createGameSubmit"
           isDisabled={isOpen}
-          onClick={onOpen}
+          type="submit"
           _hover={{}}
         >
           Submit Transaction
         </Button>
-      </Flex>
 
-      {isOpen && <CreateItemModal onClose={onClose} getValues={getValues} />}
+        {isOpen && <CreateItemModal onClose={onClose} getValues={getValues} />}
+      </Flex>
     </>
   );
 }

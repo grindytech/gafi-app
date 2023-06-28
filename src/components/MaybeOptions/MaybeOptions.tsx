@@ -1,55 +1,47 @@
-import { Center, HStack, Heading, Icon, IconButton } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Heading,
+  Icon,
+  IconButton,
+  Switch,
+} from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React, { PropsWithChildren } from 'react';
-import CloseIcon from 'public/assets/line/close.svg';
-import Chevron01Icon from 'public/assets//line/chevron-01.svg';
+import React from 'react';
 import ChakraBox from 'components/ChakraBox';
+import CloseIcon from 'public/assets/line/close.svg';
 
-interface MaybeOptionsProps extends PropsWithChildren {
+interface MaybeOptionsProps extends React.PropsWithChildren {
   title: string;
-  arrow: {
-    isChecked: boolean;
-    onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  };
-  close?: {
-    onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  };
+  childrenOption?: React.ReactNode;
+  toggle: boolean;
+  switchClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  closeClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function MaybeOptions({
   title,
-  arrow,
-  close,
   children,
+  childrenOption,
+  toggle,
+  switchClick,
+  closeClick,
 }: MaybeOptionsProps) {
   return (
     <CardBox variant="createGames" padding={0}>
       <Center padding={4} justifyContent="space-between" gap={2}>
         <Heading variant="game">{title}</Heading>
 
-        <HStack spacing={4}>
-          <IconButton
-            onClick={arrow.onClick}
-            aria-label={`arrow-${arrow.isChecked}`}
-            icon={
-              <Icon
-                as={Chevron01Icon as any}
-                width={6}
-                height={6}
-                color="primary.a.500"
-                transitionDuration="slower"
-                transform={arrow.isChecked ? 'rotate(-180deg)' : undefined}
-              />
-            }
-          />
+        <Center gap={4}>
+          <Switch onChange={switchClick} />
 
-          {close ? (
+          {closeClick ? (
             <IconButton
-              onClick={close.onClick}
-              aria-label={`arrow-${arrow.isChecked}`}
+              onClick={closeClick}
+              aria-label="arrow-close"
               icon={
                 <Icon
-                  as={CloseIcon as any}
+                  as={CloseIcon}
                   width={6}
                   height={6}
                   color="shader.a.900"
@@ -57,13 +49,13 @@ export default function MaybeOptions({
               }
             />
           ) : null}
-        </HStack>
+        </Center>
       </Center>
 
       <ChakraBox
         overflow="hidden"
         animate={{
-          height: arrow.isChecked ? undefined : 0,
+          height: toggle ? undefined : 0,
         }}
         sx={{
           '> div': {
@@ -73,8 +65,20 @@ export default function MaybeOptions({
           },
         }}
       >
-        {children}
+        {childrenOption}
       </ChakraBox>
+
+      <Box
+        sx={{
+          '> div': {
+            borderTop: '0.0625rem solid',
+            borderColor: 'shader.a.300',
+            padding: 4,
+          },
+        }}
+      >
+        {children}
+      </Box>
     </CardBox>
   );
 }
