@@ -5,7 +5,7 @@ import Mint from 'layouts/Mint';
 import Pools from 'layouts/Pools';
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/default/DefaultRoot';
-import Web3 from 'layouts/Web3/Web3';
+import Web3 from 'layouts/web3/Web3';
 import Home from 'layouts/Home';
 
 const router = createBrowserRouter([
