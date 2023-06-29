@@ -4,7 +4,6 @@ import { connectAPI } from 'components/ConnectSubstrate/ConnectSubstrateUtils';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
-import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from 'routes/routes';
 

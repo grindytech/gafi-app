@@ -2,6 +2,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import * as ReactDOM from 'react-dom/client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+/* eslint-disable import/no-unresolved */
+import 'swiper/css';
+
 import '@fontsource-variable/lexend';
 
 import theme from 'theme/theme';
