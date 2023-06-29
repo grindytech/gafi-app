@@ -13,7 +13,6 @@ const development = {
     PUBLIC_FEATURE_GAME_CREATOR: false,
     PUBLIC_NEW_DASHBOARD_UI: true,
   },
-  haha: 'haha',
   WHITELIST_DEFAULT_URL: 'http://localhost:5000/whitelist',
   TRACKING_ID: 'G-PB9GEPCD66',
 };

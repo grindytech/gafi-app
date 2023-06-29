@@ -20,7 +20,7 @@ import React, { useState } from 'react';
 import Chevron01Icon from 'public/assets//line/chevron-01.svg';
 
 import ButtonCopy from 'components/ButtonCopy';
-import NewGamesProfile from 'layouts/NewGames/components/NewGamesProfile';
+import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
 import { shorten } from 'utils/utils';
 import { UseFormSetValue } from 'react-hook-form';

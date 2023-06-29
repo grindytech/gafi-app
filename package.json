@@ -8,7 +8,7 @@
     "polkadot-js"
   ],
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --mode staging --host",
     "lint": "eslint src --ext .ts,.tsx",
     "build": "vite build",
     "preview": "vite preview --host",

@@ -1,11 +1,12 @@
-import NewGames from 'layouts/NewGames';
-import Collections from 'layouts/Collections';
-import Items from 'layouts/Items';
-import Mint from 'layouts/Mint';
-import Pools from 'layouts/Pools';
+import NewGames from 'layouts/Web3/NewGames';
+import Collections from 'layouts/Web3/Collections';
+import Items from 'layouts/Web3/Items';
+import Mint from 'pages/Mint';
+import Pools from 'layouts/Web3/Pools';
 import { createBrowserRouter } from 'react-router-dom';
-import DefaultRoot from 'layouts/default/DefaultRoot';
-import Web3 from 'layouts/web3/Web3';
+import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
+import Web3 from 'pages/Web3';
+import MarketPlace, { ListMarketPlace } from 'pages/MarketPlace';
 import Home from 'layouts/Home';
 
 const router = createBrowserRouter([
@@ -40,6 +41,15 @@ const router = createBrowserRouter([
       {
         path: '/mint',
         element: <Mint />,
+      },
+      {
+        path: 'marketplace',
+        element: <MarketPlace />,
+
+        children: ListMarketPlace.map(market => ({
+          path: market.link,
+          element: market.element,
+        })),
       },
     ],
   },
