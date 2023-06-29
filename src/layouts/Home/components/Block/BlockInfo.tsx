@@ -39,13 +39,13 @@ const BlockInfo = ({ isFinalize }: IProps) => {
         <Image
           src={
             isFinalize
-              ? 'public/assets/art/block-finalized.svg'
-              : 'public/assets/art/block-current.svg'
+              ? 'assets/art/block-finalized.svg'
+              : 'assets/art/block-current.svg'
           }
           alt="current block"
         />
         <VStack alignItems={'start'}>
-          <Text color="shader.a.900" fontSize="16px" fontWeight="medium">
+          <Text color="shader.a.900" fontSize="md" fontWeight="medium">
             {isFinalize ? 'Finalized Block' : 'Current Block'}
           </Text>
           <Text fontWeight="bold" color="primary.a.500">
@@ -60,7 +60,7 @@ const BlockInfo = ({ isFinalize }: IProps) => {
           alignItems="center"
           sx={{
             right: '0',
-            fontsize: '14px',
+            fontsize: 'sm',
             top: '-15%',
           }}
         >

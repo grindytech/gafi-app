@@ -19,7 +19,7 @@ const CountDown = ({ blockNumber, sx }: IProps) => {
   }, [blockNumber]);
 
   return (
-    <Text color="primary.a.500" fontSize="14px" {...sx}>
+    <Text color="primary.a.500" fontSize="sm" {...sx}>
       {blockNumberTimer}
     </Text>
   );

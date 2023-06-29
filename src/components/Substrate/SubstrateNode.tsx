@@ -25,7 +25,6 @@ export const CircleIcon = (props: IconProps) => (
 const SubstrateNode = () => {
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
   const { api, socket } = useAppSelector(state => state.substrate);
-
   const [currentSocket, setCurrentSocket] = useState(socket);
   useEffect(() => {
     const getInfo = async () => {
@@ -45,7 +44,7 @@ const SubstrateNode = () => {
             peers: (health?.peers.toNumber() || 0) + 1,
           });
       } catch (e) {
-        console.error(e);
+        /*    console.error(e); */
       }
     };
     getInfo();
@@ -53,7 +52,6 @@ const SubstrateNode = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('run set connect');
     const setConnect = async () => {
       dispatch(
         setConnectSocket({
@@ -62,7 +60,6 @@ const SubstrateNode = () => {
           payload: null,
         })
       );
-      console.log(socket);
     };
     setConnect();
   }, [currentSocket]);
@@ -84,13 +81,11 @@ const SubstrateNode = () => {
             defaultValue={socket}
             onChange={event => setCurrentSocket(event.target.value)}
           >
-            {config.PROVIDER_SOCKETS.map(
-              (socketAddress: string, index: number) => (
-                <option key={index} value={socketAddress}>
-                  {socketAddress}
-                </option>
-              )
-            )}
+            {config.PROVIDER_SOCKETS.map((socketAddress: string) => (
+              <option key={socketAddress} value={socketAddress}>
+                {socketAddress}
+              </option>
+            ))}
           </Select>
 
           <HStack>

@@ -51,7 +51,7 @@ const MetaData = () => {
           variant="primary"
           mb={3}
           width="full"
-          height="44px"
+          height="2.75rem"
           onClick={() => onOpen()}
         >
           Show metadata

@@ -19,10 +19,7 @@ const RecentEvents = () => {
         </Text>
         <Text color="primary.a.500">Clear all</Text>
       </HStack>
-      <Box height="400px">
-        {/*... */}
-        <Text>dsad</Text>
-      </Box>
+      <Box height="400px"></Box>
     </Box>
   );
 };
