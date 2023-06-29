@@ -5,7 +5,7 @@ import {
   convertHex,
   formatGAFI,
   shorten,
-} from './utils';
+} from '../utils';
 
 /** 
   @function convertHex(color: string, opacity: number)

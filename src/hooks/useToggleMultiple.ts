@@ -13,7 +13,7 @@ export default function useToggleMultiple() {
     });
   };
 
-  /* 
+  /** 
     @parmas callback(n = 2)
             original = [false, false]
     - summary logic:
