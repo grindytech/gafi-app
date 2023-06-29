@@ -8,6 +8,7 @@ linear-gradient(180deg, #D4EEFD 0%, #2A7AD7 100%) border-box
 export const backgrounds = {
   gradient: {
     linear: {
+      1: 'linear-gradient(180deg, #112757 0%, #010318 167.61%)',
       2: 'linear-gradient(135deg, #99CFFF 0%, #2A7AD7 100%)',
       3: 'linear-gradient(135deg, #FFC966 0%, #FF9000 100%)',
       4: 'linear-gradient(135deg, #75EA85 0%, #1FBA53 100%)',
@@ -23,6 +24,8 @@ export const colors = {
       100: '#D4EEFD',
       200: '#AADAFB',
       500: '#2A7AD7',
+      600: '#1E5EB8',
+      700: '#15469A',
     },
   },
   shader: {
@@ -69,6 +72,15 @@ const CardBox: ComponentStyleConfig = {
       borderColor: 'shader.a.300',
       padding: 4,
     },
+    baseStyle: {
+      width: 'full',
+      color: 'black',
+      bg: 'white',
+      borderRadius: 'xl',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.300',
+      padding: 6,
+    },
   },
 };
 
@@ -89,6 +101,16 @@ const Button: ComponentStyleConfig = {
       fontWeight: 'semibold',
       color: 'white',
       _focusVisible: {},
+    },
+    primary: {
+      //in using button show metadata
+      px: 4,
+      bg: 'primary.a.500',
+      color: 'white',
+      borderRadius: 'lg',
+      _hover: {
+        bg: 'primary.a.600',
+      },
     },
   },
 };

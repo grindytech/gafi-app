@@ -6,6 +6,7 @@ import Pools from 'layouts/Pools';
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/default/DefaultRoot';
 import Web3 from 'layouts/web3/Web3';
+import Home from 'layouts/Home';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <>home</>,
+        element: <Home />,
       },
       {
         path: 'web3',
