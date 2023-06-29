@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
-import React from 'react';
 import MiningIcon from 'public/assets/art/mining.svg';
 
 export default function MintBanner() {

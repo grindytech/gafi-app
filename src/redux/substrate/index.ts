@@ -9,6 +9,7 @@ import { chainDecimal } from 'utils/constants';
 interface PayloadProps {
   apiState: reduxSubstrateProps['apiState'];
   payload: reduxSubstrateProps['api'];
+  socket: reduxSubstrateProps['socket'];
 }
 
 export interface reduxSubstrateProps {
@@ -40,9 +41,13 @@ export const substrate = createSlice({
       state.apiState = payload.apiState;
       state.api = payload.payload;
     },
+    setConnectSocket: (state, { payload }: PayloadAction<PayloadProps>) => {
+      state.apiState = payload.apiState;
+      state.socket = payload.socket;
+    },
   },
 });
 
-export const { substrateConnect } = substrate.actions;
+export const { substrateConnect, setConnectSocket } = substrate.actions;
 
 export default substrate.reducer;
