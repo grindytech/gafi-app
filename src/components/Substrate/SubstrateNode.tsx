@@ -24,8 +24,8 @@ export const CircleIcon = (props: IconProps) => (
 
 const SubstrateNode = () => {
   const [nodeInfo, setNodeInfo] = useState<INodeInfo>();
-  const { api, socket } = useAppSelector(state => state.substrate);
-  const [currentSocket, setCurrentSocket] = useState(socket);
+  const { api, socket, apiState } = useAppSelector(state => state.substrate);
+
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -51,18 +51,18 @@ const SubstrateNode = () => {
   }, [api?.rpc.system]);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const setConnect = async () => {
-      dispatch(
-        setConnectSocket({
-          apiState: 'READY',
-          socket: currentSocket,
-          payload: null,
-        })
-      );
-    };
-    setConnect();
-  }, [currentSocket]);
+  const setConnect = async (value: string) => {
+    console.log(value);
+    dispatch(
+      setConnectSocket({
+        apiState: undefined,
+        socket: value,
+        payload: null,
+      })
+    );
+    console.log(apiState);
+  };
+
   return (
     <>
       <CardBox variant="baseStyle">
@@ -79,13 +79,17 @@ const SubstrateNode = () => {
           <Select
             mb={3}
             defaultValue={socket}
-            onChange={event => setCurrentSocket(event.target.value)}
+            onChange={event => {
+              setConnect(event.target.value);
+            }}
           >
-            {config.PROVIDER_SOCKETS.map((socketAddress: string) => (
-              <option key={socketAddress} value={socketAddress}>
-                {socketAddress}
-              </option>
-            ))}
+            {config.PROVIDER_SOCKETS.map(
+              (socketAddress: string, index: number) => (
+                <option key={index} value={socketAddress}>
+                  {socketAddress}
+                </option>
+              )
+            )}
           </Select>
 
           <HStack>
