@@ -5,6 +5,8 @@ import { BlockNumber as GafiBlockNumber } from '@polkadot/types/interfaces';
 import React, { useEffect, useState } from 'react';
 import CountDown from './CountDown';
 import CardBox from 'components/CardBox';
+import CurrentBlockSVG from 'public/assets/art/block-current.svg';
+import FinalizeBlockSVG from 'public/assets/art/block-finalized.svg';
 interface IProps {
   isFinalize?: boolean;
 }
@@ -35,38 +37,20 @@ const BlockInfo = ({ isFinalize }: IProps) => {
 
   return (
     <CardBox variant="baseStyle">
-      <HStack gap={6} position="relative">
-        <Image
-          src={
-            isFinalize
-              ? 'assets/art/block-finalized.svg'
-              : 'assets/art/block-current.svg'
-          }
-          alt="current block"
-        />
-        <VStack alignItems={'start'}>
-          <Text color="shader.a.900" fontSize="md" fontWeight="medium">
-            {isFinalize ? 'Finalized Block' : 'Current Block'}
-          </Text>
+      <HStack gap={6}>
+        {isFinalize ? <FinalizeBlockSVG /> : <CurrentBlockSVG />}
+        <VStack alignItems="start" flex={1}>
+          <HStack justifyContent="space-between" width="full">
+            <Text color="shader.a.900" fontSize="md" fontWeight="medium">
+              {isFinalize ? 'Finalized Block' : 'Current Block'}
+            </Text>
+            <CountDown blockNumber={blockNumber} />
+          </HStack>
+
           <Text fontWeight="bold" color="primary.a.500">
             {blockNumber}
           </Text>
         </VStack>
-
-        <Box
-          gap={0}
-          position="absolute"
-          display="inline-flex"
-          alignItems="center"
-          sx={{
-            right: '0',
-            fontsize: 'sm',
-            top: '-15%',
-          }}
-        >
-          <CountDown blockNumber={blockNumber} />
-          <Text color="primary.a.500">s</Text>
-        </Box>
       </HStack>
     </CardBox>
   );
