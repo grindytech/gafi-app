@@ -74,7 +74,7 @@ const CardBox: ComponentStyleConfig = {
     },
     baseStyle: {
       width: 'full',
-      color: 'black',
+      color: 'shader.a.900',
       bg: 'white',
       borderRadius: 'xl',
       border: '0.063rem solid',
@@ -111,6 +111,23 @@ const Button: ComponentStyleConfig = {
       _hover: {
         bg: 'primary.a.600',
       },
+    },
+    more: {
+      py: 1.5,
+      px: 3,
+      color: 'shader.a.900',
+      borderRadius: '3xl',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.400',
+    },
+    navigation: {
+      display: 'flex',
+      padding: 0,
+      alignItems: 'center',
+      borderRadius: 'full',
+      bg: 'white',
+      color: 'shader.a.900',
+      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
     },
   },
 };
@@ -170,7 +187,28 @@ const Heading: ComponentStyleConfig = {
     },
   },
 };
-
+export const Tabs: ComponentStyleConfig = {
+  variants: {
+    unstyled: {
+      tab: {
+        fontWeight: 'medium',
+        fontSize: 'sm',
+        bg: 'white',
+        color: 'shader.a.900',
+        borderRadius: 'lg',
+        border: '0.063rem solid',
+        borderColor: 'shader.a.400',
+        px: 4,
+        py: 2,
+        _selected: {
+          border: 'unset',
+          color: 'shader.a.100',
+          bg: 'primary.a.500',
+        },
+      },
+    },
+  },
+};
 const theme = extendTheme({
   colors,
   styles,
@@ -179,6 +217,7 @@ const theme = extendTheme({
     CardBox,
     Button,
     Table,
+    Tabs,
     Heading,
   },
 });
