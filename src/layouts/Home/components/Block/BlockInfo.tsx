@@ -1,4 +1,4 @@
-import { Box, HStack, Image, VStack, Text } from '@chakra-ui/react';
+import { HStack, VStack, Text } from '@chakra-ui/react';
 import { VoidFn } from '@polkadot/api/types';
 import { useAppSelector } from 'hooks/useRedux';
 import { BlockNumber as GafiBlockNumber } from '@polkadot/types/interfaces';
