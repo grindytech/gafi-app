@@ -1,7 +1,6 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import GoBack from 'components/GoBack';
 
-import React from 'react';
 import PoolsCreate from './components/PoolsCreate';
 
 export default function Pools() {

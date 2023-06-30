@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Heading, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import GoBack from 'components/GoBack';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Text, Heading, Flex } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import GafiImg from 'public/assets/art/Gaki.svg';

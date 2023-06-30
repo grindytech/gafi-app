@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import React from 'react';
+
 import { UseFormGetValues } from 'react-hook-form';
 
 import useSignAndSend from 'hooks/useSignAndSend';

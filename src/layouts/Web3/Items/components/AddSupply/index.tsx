@@ -4,7 +4,6 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import React from 'react';
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import AddSupplyModal from './AddSupplyModal';

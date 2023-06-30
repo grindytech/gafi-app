@@ -10,7 +10,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import GoBack from 'components/GoBack';
-import React from 'react';
 
 import LineAddIcon from 'public/assets/line/add.svg';
 

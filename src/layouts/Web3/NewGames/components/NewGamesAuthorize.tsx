@@ -14,7 +14,6 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import React from 'react';
 
 import NewGamesProfile from './NewGamesProfile';
 

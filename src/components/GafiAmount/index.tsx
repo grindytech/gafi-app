@@ -1,5 +1,4 @@
 import { Text, TextProps } from '@chakra-ui/react';
-import React from 'react';
 
 interface GafiAmountProps {
   amount: number | string;

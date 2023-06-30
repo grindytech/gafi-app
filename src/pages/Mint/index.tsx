@@ -1,5 +1,4 @@
 import { Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 

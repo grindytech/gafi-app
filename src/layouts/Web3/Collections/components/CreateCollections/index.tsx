@@ -1,5 +1,4 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';

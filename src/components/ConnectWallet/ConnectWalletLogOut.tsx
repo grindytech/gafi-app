@@ -1,5 +1,3 @@
-import React from 'react';
-
 import UploadIcon from 'public/assets/line/upload.svg';
 import { Button, Icon, Text } from '@chakra-ui/react';
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';

@@ -18,7 +18,7 @@ import {
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import React from 'react';
+
 import { UseFormGetValues } from 'react-hook-form';
 import { CreateItemFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
