@@ -30,7 +30,6 @@ const ListHeader = [
   {
     title: 'Blockchain',
     link: '/blockchain',
-    disabled: true,
   },
   {
     title: 'Market place',
@@ -98,15 +97,11 @@ export default function Header() {
                   <Button
                     as={Link}
                     to={header.link}
-                    onClick={e =>
-                      header.disabled ? e.preventDefault() : undefined
-                    }
                     display="flex"
                     color={isActive ? 'primary.a.500' : 'shader.a.900'}
                     fontSize="md"
                     fontWeight={isActive ? 'bold' : 'medium'}
                     gap={1}
-                    isDisabled={header.disabled}
                     variant="unstyled"
                     height="auto"
                     minWidth="auto"

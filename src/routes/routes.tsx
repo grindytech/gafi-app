@@ -1,13 +1,11 @@
-import NewGames from 'layouts/Web3/NewGames';
-import Collections from 'layouts/Web3/Collections';
-import Items from 'layouts/Web3/Items';
 import Mint from 'pages/Mint';
-import Pools from 'layouts/Web3/Pools';
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
 import Web3 from 'pages/Web3';
 import MarketPlace, { ListMarketPlace } from 'pages/MarketPlace';
 import Home from 'layouts/Home';
+import { ListWeb3Item } from 'layouts/DefaultLayout/DefaultWeb3';
+import Blockchain, { ListBlockchain } from 'pages/Blockchain';
 
 const router = createBrowserRouter([
   {
@@ -21,26 +19,22 @@ const router = createBrowserRouter([
       {
         path: 'web3',
         element: <Web3 />,
-      },
-      {
-        path: 'web3/items',
-        element: <Items />,
-      },
-      {
-        path: 'web3/games',
-        element: <NewGames />,
-      },
-      {
-        path: 'web3/collections',
-        element: <Collections />,
-      },
-      {
-        path: 'web3/pools',
-        element: <Pools />,
+        children: ListWeb3Item.map(web3 => ({
+          path: web3.link,
+          element: web3.element,
+        })),
       },
       {
         path: '/mint',
         element: <Mint />,
+      },
+      {
+        path: 'blockchain',
+        element: <Blockchain />,
+        children: ListBlockchain.map(blockchain => ({
+          path: blockchain.link,
+          element: blockchain.element,
+        })),
       },
       {
         path: 'marketplace',

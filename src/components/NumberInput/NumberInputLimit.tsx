@@ -8,7 +8,6 @@ import {
   InputRightAddon,
 } from '@chakra-ui/react';
 import { NumberInputStyle } from 'components/NumberInput';
-import React from 'react';
 
 import { TypeRegister } from 'types';
 
