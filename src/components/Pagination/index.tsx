@@ -26,6 +26,7 @@ export default function Pagination({
     <Flex gap={2} {...sx}>
       <Button
         variant="unstyled"
+        title="previous"
         isDisabled={currentPage === 1}
         onClick={() => setCurrentPage(prev => prev - 1)}
       >
@@ -57,6 +58,7 @@ export default function Pagination({
 
       <Button
         variant="unstyled"
+        title="next"
         isDisabled={currentPage === amount}
         onClick={() => setCurrentPage(prev => prev + 1)}
       >

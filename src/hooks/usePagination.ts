@@ -12,7 +12,7 @@ import { useMemo } from 'react';
       index: [1]  start: [1] // 1+1
       index: [2]  start: [1] // 2+1
  */
-const getStartToEnd = (start: number, end: number) => {
+export const getStartToEnd = (start: number, end: number) => {
   return Array.from(
     {
       length: end - start + 1,
