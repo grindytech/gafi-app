@@ -1,8 +1,10 @@
 import {
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Icon,
+  IconButton,
   InputGroup,
   InputRightAddon,
   Modal,
@@ -13,15 +15,18 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
-  Stack,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import LineAddIcon from 'public/assets/line/add.svg';
 import { useFieldArray, useForm } from 'react-hook-form';
 import CloseIcon from 'public/assets/line/close.svg';
-import { NumberInputStyle } from 'components/NumberInput';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 import { useAppSelector } from 'hooks/useRedux';
+
+import PoolsIcon from 'public/assets/line/pools.svg';
+import FormControlWrap from 'components/FormControlWrap';
 
 interface SponsoredFieldProps {
   pool_amount: number;
@@ -32,17 +37,22 @@ interface SponsoredFieldProps {
   }[];
 }
 
+interface ListItemProps {
+  text: string;
+  fieldName: keyof SponsoredFieldProps;
+}
+
 export default function PoolsSponsoredAdd() {
   const { api } = useAppSelector(state => state.substrate);
 
   const { account } = useAppSelector(state => state.injected.polkadot);
 
-  const { isLoading, mutation } = useSignAndSend({
+  const { mutation } = useSignAndSend({
     key: ['sponsoredAdd'],
     address: account?.address as string,
   });
 
-  const { isOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const {
     control,
@@ -65,7 +75,7 @@ export default function PoolsSponsoredAdd() {
     name: 'targets',
   });
 
-  const ListItem = [
+  const ListItem: ListItemProps[] = [
     {
       text: 'Pool amount',
       fieldName: 'pool_amount',
@@ -83,20 +93,18 @@ export default function PoolsSponsoredAdd() {
   return (
     <>
       <Button
-        variant="unstyled"
-        display="flex"
-        px={6}
-        bg="primary.a.500"
-        color="white"
-        borderRadius="lg"
-        onClick={onToggle}
-        rightIcon={<LineAddIcon />}
+        variant="cancel"
+        onClick={onOpen}
+        bg="shader.a.200"
+        iconSpacing={2}
+        leftIcon={<LineAddIcon />}
       >
         Add Pool
       </Button>
 
       <Modal
         isOpen={isOpen}
+        isCentered
         onClose={() => {
           onClose();
           reset();
@@ -123,42 +131,74 @@ export default function PoolsSponsoredAdd() {
             }
           })}
         >
-          <ModalHeader color="primary.a.500" fontSize="xl" fontWeight="medium">
-            Create sponsored pool
+          <ModalHeader display="flex" alignItems="center" gap={3}>
+            <Flex
+              bg="primary.a.100"
+              color="primary.a.500"
+              borderRadius="2xl"
+              padding={1}
+            >
+              <Icon as={PoolsIcon} width={4} height={4} />
+            </Flex>
+
+            <Text color="shader.a.900" fontSize="md" fontWeight="semibold">
+              Create sponsored pool
+            </Text>
           </ModalHeader>
 
-          <ModalBody>
-            <Stack spacing={4}>
+          <ModalBody
+            sx={{
+              '> div': {
+                mb: 6,
+              },
+            }}
+          >
+            <FormControlWrap variant="transfer">
               {ListItem.map(item => (
                 <FormControl
+                  mb="inherit"
                   key={item.fieldName}
                   isRequired={true}
-                  isInvalid={
-                    !!errors[item.fieldName as keyof SponsoredFieldProps]
-                  }
+                  isInvalid={!!errors[item.fieldName]}
                 >
                   <FormLabel>{item.text}</FormLabel>
 
-                  <NumberInput min={0}>
-                    <NumberInputField
-                      {...register(
-                        item.fieldName as keyof SponsoredFieldProps,
-                        {
-                          required: 'Please fill out this field.',
-                          min: 0,
-                        }
-                      )}
-                      required={false}
-                    />
-                  </NumberInput>
+                  <InputGroup>
+                    <NumberInput width="full" min={0}>
+                      <NumberInputField
+                        pr={20}
+                        required={false}
+                        {...register(item.fieldName, {
+                          required: true,
+                        })}
+                      />
+                    </NumberInput>
+
+                    {item.fieldName === 'pool_amount' ? (
+                      <InputRightAddon
+                        position="absolute"
+                        right="0"
+                        bg="unset"
+                        border="unset"
+                        padding={1}
+                      >
+                        <Button py={2} height="auto" variant="primary">
+                          Max
+                        </Button>
+                      </InputRightAddon>
+                    ) : null}
+                  </InputGroup>
                 </FormControl>
               ))}
+            </FormControlWrap>
 
+            <FormControlWrap variant="transfer">
               {fields.map((field, index) => {
                 const shouldShowRemove = fields.length >= 2;
 
                 return (
                   <FormControl
+                    mb="inherit"
                     key={field.id}
                     isRequired={true}
                     isInvalid={!!errors.targets?.[index]}
@@ -168,57 +208,59 @@ export default function PoolsSponsoredAdd() {
                     <InputGroup key={field.id} _notFirst={{ mt: 4 }}>
                       <NumberInput width="full" min={0}>
                         <NumberInputField
-                          {...NumberInputStyle}
-                          {...register(`targets.${index}.contractAddress`, {
-                            required: 'Please fill out this field.',
-                            min: 0,
-                          })}
                           required={false}
-                          borderRightRadius={
-                            shouldShowRemove ? undefined : 'unset'
-                          }
-                          _focusVisible={{}}
+                          pr={20}
+                          {...register(`targets.${index}.contractAddress`, {
+                            required: true,
+                          })}
                         />
                       </NumberInput>
 
                       {shouldShowRemove ? (
                         <InputRightAddon
+                          position="absolute"
+                          right="0"
                           bg="unset"
-                          onClick={() => remove(Number(field.id))}
+                          border="unset"
+                          padding={1}
                         >
-                          <Icon as={CloseIcon} width={6} height={6} />
+                          <IconButton
+                            aria-label="close-icon"
+                            variant="primary"
+                            height="auto"
+                            py={1}
+                            onClick={() => remove(Number(field.id))}
+                            icon={<Icon as={CloseIcon} width={6} height={6} />}
+                          />
                         </InputRightAddon>
                       ) : null}
                     </InputGroup>
                   </FormControl>
                 );
               })}
+            </FormControlWrap>
 
-              <Button
-                variant="unstyled"
-                display="flex"
-                bg="primary.a.500"
-                color="white"
-                borderRadius="lg"
-                onClick={() =>
-                  append({
-                    contractAddress: undefined,
-                  })
-                }
-                leftIcon={<LineAddIcon />}
-              >
-                Add targets
-              </Button>
-            </Stack>
+            <Button
+              variant="cancel"
+              marginRight="auto"
+              onClick={() =>
+                append({
+                  contractAddress: undefined,
+                })
+              }
+              leftIcon={<LineAddIcon />}
+            >
+              Add targets
+            </Button>
           </ModalBody>
 
-          <ModalFooter gap={4}>
-            <Button type="submit" isLoading={isLoading}>
-              Save
+          <ModalFooter gap={2}>
+            <Button variant="cancel" onClick={onClose}>
+              Cancel
             </Button>
 
-            <Button onClick={onClose} isLoading={isLoading}>
-              Cancel
+            <Button variant="primary" type="submit">
+              Submit
             </Button>
           </ModalFooter>
         </ModalContent>

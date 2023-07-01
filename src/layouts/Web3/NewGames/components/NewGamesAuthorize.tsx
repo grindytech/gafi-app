@@ -36,7 +36,7 @@ export default function NewGamesAuthorize({
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { game_id, admin } = getValues();
+  const { game_id, admin, title } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
@@ -83,6 +83,11 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
+                <Td>Title</Td>
+                <Td>{title}</Td>
+              </Tr>
+
+              <Tr>
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
               </Tr>
@@ -92,7 +97,7 @@ export default function NewGamesAuthorize({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             isLoading={isLoading}
             _hover={{}}
             margin="unset"

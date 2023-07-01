@@ -30,6 +30,7 @@ import Web3Collections, {
 } from './components/Web3Collections';
 import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
 import { Outlet, useLocation } from 'react-router-dom';
+import theme from 'theme/theme';
 
 export default function Web3() {
   const { pathname } = useLocation();
@@ -189,21 +190,15 @@ export default function Web3() {
             <Tabs variant="unstyled">
               <TabList flexWrap="wrap-reverse" gap={4}>
                 <Flex
-                  flexWrap="wrap"
+                  overflowX="auto"
+                  whiteSpace="pre"
                   gap={3}
                   sx={{
                     button: {
-                      color: 'shader.a.900',
-                      fontSize: 'sm',
-                      fontWeight: 'medium',
-                      borderRadius: 'lg',
-                      border: '0.0625rem solid',
-                      borderColor: 'shader.a.400',
+                      ...theme.components.Button.variants.cancel,
 
                       _selected: {
-                        color: 'white',
-                        fontWeight: 'semibold',
-                        bg: 'primary.a.500',
+                        ...theme.components.Button.variants.primary,
                         borderColor: 'transparent',
                       },
                     },
@@ -221,7 +216,7 @@ export default function Web3() {
                     <Tab>
                       Items&nbsp;
                       {items
-                        ?.map(item => item.length)
+                        .map(item => item.length)
                         .reduce((prev, current) => prev + current)}
                     </Tab>
                   ) : null}

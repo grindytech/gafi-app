@@ -1,6 +1,6 @@
-import { Center, Grid, IconButton, Text } from '@chakra-ui/react';
+import { Center, IconButton, SimpleGrid, Text } from '@chakra-ui/react';
 import React, { PropsWithChildren } from 'react';
-import LineAddIcon from 'public/assets/line/add.svg';
+
 import { Link } from 'react-router-dom';
 import GameIcon from 'public/assets/fill/game.svg';
 import CollectionIcon from 'public/assets/fill/collection.svg';
@@ -15,7 +15,7 @@ import NewGames from 'layouts/Web3/NewGames';
 
 export const ListWeb3Item = [
   {
-    title: 'New Games',
+    title: 'Games',
     icon: <GameIcon />,
     element: <NewGames />,
     link: '/web3/games',
@@ -61,15 +61,13 @@ export const ListWeb3Item = [
 export default function DefaultWeb3({ children }: PropsWithChildren) {
   return (
     <>
-      <Grid
-        gridTemplateColumns={{
-          sm: 'repeat(2, 1fr)',
-          lg: 'repeat(4, 1fr)',
+      <SimpleGrid
+        columns={{
+          base: 2,
+          sm: 3,
+          md: ListWeb3Item.length,
         }}
-        gap={{
-          base: 3,
-          lg: 5,
-        }}
+        gap={4}
         mb={10}
       >
         {React.Children.toArray(
@@ -78,32 +76,34 @@ export default function DefaultWeb3({ children }: PropsWithChildren) {
               as={Link}
               to={project.link}
               padding={3}
+              gap={3}
               border="0.0625rem solid"
               borderColor="shader.a.400"
+              bg="white"
               borderRadius="xl"
-              justifyContent="space-between"
+              justifyContent="flex-start"
+              flexDirection={{
+                base: 'column',
+                lg: 'row',
+              }}
             >
-              <Center gap={3}>
-                <IconButton
-                  variant="unstyled"
-                  minWidth="auto"
-                  height="auto"
-                  aria-label={`icon-${project.title}`}
-                  borderRadius="lg"
-                  padding={1}
-                  color="white"
-                  background={project.background}
-                  icon={project.icon}
-                />
+              <IconButton
+                variant="unstyled"
+                minWidth="auto"
+                height="auto"
+                aria-label={`icon-${project.title}`}
+                borderRadius="lg"
+                padding={1}
+                color="white"
+                background={project.background}
+                icon={project.icon}
+              />
 
-                <Text fontWeight="medium">{project.title}</Text>
-              </Center>
-
-              <LineAddIcon />
+              <Text fontWeight="medium">{project.title}</Text>
             </Center>
           ))
         )}
-      </Grid>
+      </SimpleGrid>
 
       {children}
     </>

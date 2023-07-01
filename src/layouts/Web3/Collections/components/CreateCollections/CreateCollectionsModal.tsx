@@ -91,7 +91,7 @@ export default function CreateCollectionsModal({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             isLoading={isLoading}
             _hover={{}}
             margin="unset"

@@ -101,7 +101,7 @@ export default function CreateItemModal({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             margin="unset"
             isLoading={isLoading}
             _hover={{}}

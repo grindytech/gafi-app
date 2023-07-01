@@ -116,7 +116,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             margin="unset"
             _hover={{}}
             isLoading={isLoading}

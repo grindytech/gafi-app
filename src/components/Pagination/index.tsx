@@ -1,4 +1,4 @@
-import { Button, CenterProps, Flex, Icon } from '@chakra-ui/react';
+import { Button, Center, CenterProps, Flex, Icon } from '@chakra-ui/react';
 import usePagination from 'hooks/usePagination';
 import React from 'react';
 import Chevron01Icon from 'public/assets/line/chevron-01.svg';
@@ -25,9 +25,11 @@ export default function Pagination({
   return (
     <Flex gap={2} {...sx}>
       <Button
+        isDisabled={currentPage === 1}
         variant="unstyled"
         title="previous"
-        isDisabled={currentPage === 1}
+        color="primary.a.500"
+        _disabled={{ color: 'shader.a.400' }}
         onClick={() => setCurrentPage(prev => prev - 1)}
       >
         <Icon
@@ -35,31 +37,36 @@ export default function Pagination({
           width={6}
           height={6}
           transform="rotate(90deg)"
-          color="primary.light.400"
           verticalAlign="middle"
         />
       </Button>
 
-      <Flex>
+      <Center gap={3}>
         {React.Children.toArray(
           data.map(value => (
             <Button
+              variant="unstyled"
+              height={8}
+              width={8}
+              minWidth="auto"
               isDisabled={value === '...'}
-              variant="numberPagination"
               onClick={() => onClickPage(Number(value))}
-              bg={currentPage === value ? 'primary.a.500' : undefined}
-              color={currentPage === value ? 'white' : 'black'}
+              borderRadius="3xl"
+              bg={currentPage === value ? 'shader.a.900' : undefined}
+              color={currentPage === value ? 'shader.a.100' : 'shader.a.900'}
             >
               {value}
             </Button>
           ))
         )}
-      </Flex>
+      </Center>
 
       <Button
+        isDisabled={currentPage === amount}
         variant="unstyled"
         title="next"
-        isDisabled={currentPage === amount}
+        color="primary.a.500"
+        _disabled={{ color: 'shader.a.400' }}
         onClick={() => setCurrentPage(prev => prev + 1)}
       >
         <Icon
@@ -67,7 +74,6 @@ export default function Pagination({
           width={6}
           height={6}
           transform="rotate(-90deg)"
-          color="primary.light.400"
           verticalAlign="middle"
         />
       </Button>

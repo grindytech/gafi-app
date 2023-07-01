@@ -15,6 +15,7 @@ import LineAddIcon from 'public/assets/line/add.svg';
 
 import CreateItem from './components/CreateItem';
 import AddSupply from './components/AddSupply';
+import theme from 'theme/theme';
 
 export default function Items() {
   return (
@@ -32,18 +33,11 @@ export default function Items() {
           mb={4}
           sx={{
             button: {
-              fontSize: 'sm',
-              fontWeight: 'medium',
-              color: 'shader.a.900',
-              borderRadius: 'lg',
-              border: '0.0625rem solid',
-              borderColor: 'shader.a.400',
+              ...theme.components.Button.variants.cancel,
 
               _selected: {
-                color: 'white',
+                ...theme.components.Button.variants.primary,
                 borderColor: 'transparent',
-                bg: 'primary.a.500',
-                fontWeight: 'semibold',
               },
             },
           }}

@@ -60,10 +60,11 @@ export default function AcceptCollections() {
       </CardBox>
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
+        margin="auto"
+        px={6}
+        variant="primary"
         type="submit"
-        _hover={{}}
       >
         Submit Transaction
       </Button>

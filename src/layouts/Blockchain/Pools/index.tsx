@@ -3,9 +3,10 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import PoolsUpfront from './components/PoolsUpfront';
 import PoolsStaking from './components/PoolsStaking';
 import PoolsSponsored from './components/PoolsSponsored';
+import theme from 'theme/theme';
 
 export interface PoolsItemProps {
-  type: string;
+  type: 'Basic plan' | 'Medium plan' | 'Premium plan';
   discount: string;
   rate: {
     txLimit: number;
@@ -25,26 +26,20 @@ export default function Pools() {
         <TabList
           gap={4}
           sx={{
+            overflowX: 'auto',
             button: {
-              color: 'shader.a.900',
-              fontSize: 'sm',
-              fontWeight: 'medium',
-              borderRadius: 'lg',
-              border: '0.0625rem solid',
-              borderColor: 'shader.a.400',
-
+              ...theme.components.Button.variants.cancel,
+              whiteSpace: 'pre',
               _selected: {
-                color: 'white',
-                fontWeight: 'semibold',
-                bg: 'primary.a.500',
+                ...theme.components.Button.variants.primary,
                 borderColor: 'transparent',
               },
             },
           }}
         >
-          <Tab>Upfront</Tab>
-          <Tab>Staking</Tab>
-          <Tab>Sponsored</Tab>
+          <Tab>Upfront Pools</Tab>
+          <Tab>Staking Pools</Tab>
+          <Tab>Sponsored Pools</Tab>
         </TabList>
 
         <TabPanels

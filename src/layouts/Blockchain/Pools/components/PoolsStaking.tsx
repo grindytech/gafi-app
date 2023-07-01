@@ -1,11 +1,9 @@
-import { Stack } from '@chakra-ui/react';
-import PoolsBanner from './PoolsBanner';
-import PoolsCard from './PoolsCard';
 import { PoolsItemProps } from '../index';
+import PoolsPlan from './PoolsPlan';
 
-const ListUpfront: PoolsItemProps[] = [
+const ListStaking: PoolsItemProps[] = [
   {
-    type: 'Basic',
+    type: 'Basic plan',
     discount: '30',
     rate: {
       txLimit: 100,
@@ -17,7 +15,7 @@ const ListUpfront: PoolsItemProps[] = [
     },
   },
   {
-    type: 'Medium',
+    type: 'Medium plan',
     discount: '30',
     rate: {
       txLimit: 100,
@@ -29,7 +27,7 @@ const ListUpfront: PoolsItemProps[] = [
     },
   },
   {
-    type: 'Advance',
+    type: 'Premium plan',
     discount: '30',
     rate: {
       txLimit: 100,
@@ -43,17 +41,5 @@ const ListUpfront: PoolsItemProps[] = [
 ];
 
 export default function PoolsStaking() {
-  return (
-    <Stack spacing={6}>
-      <PoolsBanner
-        heading="Staking Pool"
-        body={`Staking Pool provides staking-like services to reduce transaction fees and enhance
-        network security. Basic, Medium, and Advanced are the three packs you can use when
-        you join the Staking Pool.`}
-        detail="#"
-      />
-
-      <PoolsCard item={ListUpfront} />
-    </Stack>
-  );
+  return <PoolsPlan pools={ListStaking} />;
 }

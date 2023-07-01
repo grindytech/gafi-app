@@ -93,7 +93,7 @@ export default function AcceptCollectionsModal({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             isLoading={isLoading}
             _hover={{}}
             margin="unset"

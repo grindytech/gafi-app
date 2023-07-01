@@ -178,7 +178,6 @@ export default function ConnectWallet() {
                 bg="primary.a.500"
                 color="white"
                 width="full"
-                borderRadius="lg"
                 isLoading={isLoading}
                 onClick={() => {
                   if (api) {

@@ -42,7 +42,6 @@ export default function GameOwner({ sx }: GameOwnerProps) {
 
               <Box>
                 <Heading
-                  className="account-name"
                   fontSize="md"
                   fontWeight="semibold"
                   color="shader.a.900"
@@ -51,9 +50,8 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                 </Heading>
 
                 <Text
-                  className="account-hash"
+                  wordBreak="break-all"
                   fontSize="sm"
-                  fontWeight="medium"
                   color="shader.a.600"
                   gap={1}
                   display="flex"

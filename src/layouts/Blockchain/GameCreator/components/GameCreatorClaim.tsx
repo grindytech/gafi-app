@@ -2,6 +2,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Icon,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,7 +16,6 @@ import {
 import LineAddIcon from 'public/assets/line/add.svg';
 import { useForm } from 'react-hook-form';
 
-import { NumberInputStyle } from 'components/NumberInput';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { useAppSelector } from 'hooks/useRedux';
 
@@ -28,7 +28,7 @@ export default function GameCreatorClaim() {
 
   const { account } = useAppSelector(state => state.injected.polkadot);
 
-  const { isLoading, mutation } = useSignAndSend({
+  const { mutation } = useSignAndSend({
     key: ['123'],
     address: account?.address as string,
   });
@@ -47,12 +47,15 @@ export default function GameCreatorClaim() {
       <Button
         variant="unstyled"
         display="flex"
-        px={6}
+        px={4}
+        fontSize="sm"
+        fontWeight="medium"
         bg="primary.a.500"
         color="white"
         borderRadius="lg"
         onClick={onToggle}
-        rightIcon={<LineAddIcon />}
+        iconSpacing={2}
+        leftIcon={<Icon as={LineAddIcon} width={5} height={5} />}
       >
         Claim Contract
       </Button>
@@ -87,7 +90,6 @@ export default function GameCreatorClaim() {
 
               <NumberInput width="full" min={0}>
                 <NumberInputField
-                  {...NumberInputStyle}
                   {...register(`contract_address`, {
                     required: 'Please fill out this field.',
                     min: 0,
@@ -99,13 +101,36 @@ export default function GameCreatorClaim() {
             </FormControl>
           </ModalBody>
 
-          <ModalFooter gap={4}>
-            <Button type="submit" isLoading={isLoading}>
-              Claim
+          <ModalFooter
+            gap={2}
+            sx={{
+              button: {
+                height: 'auto',
+                px: 4,
+                py: 2,
+                borderRadius: 'lg',
+                fontSize: 'sm',
+                fontWeight: 'medium',
+              },
+            }}
+          >
+            <Button
+              variant="unstyled"
+              color="shader.a.900"
+              border="0.0625rem solid"
+              borderColor="shader.a.400"
+              onClick={onClose}
+            >
+              Cancel
             </Button>
 
-            <Button onClick={onClose} isLoading={isLoading}>
-              Cancel
+            <Button
+              variant="unstyled"
+              color="white"
+              bg="primary.a.500"
+              type="submit"
+            >
+              Submit
             </Button>
           </ModalFooter>
         </ModalContent>

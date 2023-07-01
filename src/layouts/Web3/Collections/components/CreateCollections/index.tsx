@@ -32,10 +32,12 @@ export default function CollectionsCreate() {
       <CollectionID setValue={setValue} refetch={mounting} />
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
         onClick={onOpen}
-        _hover={{}}
+        margin="auto"
+        px={6}
+        variant="primary"
+        type="submit"
       >
         Submit Transaction
       </Button>

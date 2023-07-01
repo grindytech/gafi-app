@@ -96,7 +96,7 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             margin="unset"
             isLoading={isLoading}
             _hover={{}}

@@ -12,7 +12,7 @@ import MintWeight from './components/MintWeight';
 import NumberInput from 'components/NumberInput';
 import CardBox from 'components/CardBox';
 import MintBanner from './components/MintBanner';
-import NumberInputLimit from 'components/NumberInput/NumberInputLimit';
+import NumberInputMaxLength from 'components/NumberInput/NumberInputMaxLength';
 
 export interface MintFieldProps extends TypeSwitchAdmin {
   amount: string;
@@ -26,6 +26,7 @@ export default function Mint() {
     getValues,
     watch,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<MintFieldProps>();
 
@@ -52,14 +53,13 @@ export default function Mint() {
         />
 
         <CardBox variant="createGames">
-          <NumberInputLimit
-            register={register}
+          <NumberInputMaxLength
+            control={control}
             title="Amount"
             value="amount"
-            min={0}
-            max={10}
             isInvalid={!!errors.amount}
             isRequired={true}
+            max={10}
           />
         </CardBox>
 
@@ -76,10 +76,11 @@ export default function Mint() {
         {pool_id ? <MintWeight pool_id={pool_id} /> : null}
 
         <Button
-          variant="createGameSubmit"
           isDisabled={isOpen}
+          margin="auto"
+          px={6}
+          variant="primary"
           type="submit"
-          _hover={{}}
         >
           Submit Transaction
         </Button>

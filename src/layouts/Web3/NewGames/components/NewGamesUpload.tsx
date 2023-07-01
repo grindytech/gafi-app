@@ -4,24 +4,25 @@ import React from 'react';
 import UploadIcon from 'public/assets/line/upload.svg';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+
+import { TypeRegister } from 'types';
 
 interface NewGamesUploadProps {
-  register: UseFormRegister<FieldValues>;
+  register: TypeRegister;
 }
 
-const ListUpload = [
-  {
-    title: 'Size:',
-    amount: '320 x 170 px',
-  },
-  {
-    title: 'Maximum:',
-    amount: '5 MB',
-  },
-];
-
 export default function NewGamesUpload({ register }: NewGamesUploadProps) {
+  const ListUpload = [
+    {
+      title: 'Size:',
+      amount: '320 x 170 px',
+    },
+    {
+      title: 'Maximum:',
+      amount: '5 MB',
+    },
+  ];
+
   return (
     <CardBox variant="createGames" display="flex" gap={4}>
       <Box
@@ -46,6 +47,7 @@ export default function NewGamesUpload({ register }: NewGamesUploadProps) {
           {...register('upload')}
           type="file"
           position="absolute"
+          cursor="pointer"
           inset={0}
           opacity={0}
           height="full"

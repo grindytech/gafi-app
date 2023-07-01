@@ -1,27 +1,37 @@
-import { Center, Grid, Icon, Text } from '@chakra-ui/react';
-import GameIcon from 'public/assets/fill/game.svg';
+import { Center, Flex, IconButton, Text } from '@chakra-ui/react';
+
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import LineAddIcon from 'public/assets/line/add.svg';
+
 import Pools from 'layouts/Blockchain/Pools';
 import GameCreator from 'layouts/Blockchain/GameCreator';
 import DeployContract from 'layouts/Blockchain/DeployContract';
 import { useEffect } from 'react';
 
+import PoolsIcon from 'public/assets/line/pools.svg';
+import CreatorIcon from 'public/assets/fill/creator.svg';
+import RocketIcon from 'public/assets/fill/rocket.svg';
+
 export const ListBlockchain = [
   {
-    text: 'Pools',
-    link: 'pools',
+    title: 'Gafi Pools',
+    icon: <PoolsIcon />,
     element: <Pools />,
+    link: 'pools',
+    background: 'gradient.linear.9',
   },
   {
-    text: 'Game Creator',
-    link: 'games',
+    title: 'Game Creator',
+    icon: <CreatorIcon />,
     element: <GameCreator />,
+    link: 'games',
+    background: 'linear-gradient(135deg, #26E8C1 0%, #049A95 100%)',
   },
   {
-    text: 'Deploy Contract',
-    link: 'contract',
+    title: 'Deploy Contract',
+    icon: <RocketIcon />,
     element: <DeployContract />,
+    link: 'contract',
+    background: 'gradient.linear.8',
   },
 ];
 
@@ -37,33 +47,59 @@ export default function Blockchain() {
 
   return (
     <>
-      <Grid gridTemplateColumns="repeat(4, 1fr)" gap={4} mb={10}>
+      <Flex
+        gap={4}
+        mb={4}
+        pb={6}
+        borderBottom="0.0625rem solid"
+        borderColor="shader.a.300"
+        flexWrap="wrap"
+      >
         {ListBlockchain.map(blockchain => {
           const isActive = pathname.includes(blockchain.link);
 
           return (
             <Center
               as={Link}
+              key={blockchain.title}
               to={blockchain.link}
-              key={blockchain.text}
-              padding={3}
-              color={isActive ? 'white' : 'shader.a.900'}
-              bg={isActive ? 'primary.a.500' : 'transparent'}
-              border="0.0625rem solid"
-              borderColor={isActive ? 'transparent' : 'shader.a.400'}
+              whiteSpace="pre"
+              justifyContent="flex-start"
+              textAlign="center"
+              py={2}
+              px={4}
+              gap={3}
+              color="shader.a.900"
+              fontWeight="medium"
+              border={`${isActive ? '0.09375rem' : '0.0625rem'} solid`}
+              borderColor={isActive ? 'primary.a.500' : 'shader.a.400'}
               borderRadius="xl"
-              justifyContent="space-between"
+              flex={{
+                base: 1,
+                lg: 'unset',
+              }}
+              flexDirection={{
+                base: 'column',
+                md: 'row',
+              }}
             >
-              <Center gap={4}>
-                <Icon as={GameIcon} width={6} height={6} />
+              <IconButton
+                variant="unstyled"
+                minWidth="auto"
+                height="auto"
+                aria-label={`icon-${blockchain.title}`}
+                borderRadius="lg"
+                padding={1.5}
+                color="white"
+                background={blockchain.background}
+                icon={blockchain.icon}
+              />
 
-                <Text fontWeight="medium">{blockchain.text}</Text>
-              </Center>
-              <LineAddIcon />
+              <Text fontWeight="medium">{blockchain.title}</Text>
             </Center>
           );
         })}
-      </Grid>
+      </Flex>
 
       <Outlet />
     </>
