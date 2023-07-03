@@ -8,27 +8,35 @@ interface IProps {
 const CardTypeOne = ({ item }: IProps) => {
   return (
     <>
-      <CardBox padding={0} variant="baseStyle">
-        <VStack alignItems="flex-start">
-          <Box width="full">
+      <CardBox
+        padding={0}
+        variant="baseStyle"
+        boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+      >
+        <VStack alignItems="flex-start" gap={0}>
+          <Box width="full" padding={2}>
             <Image
               objectFit="cover"
               src={item.image}
               alt={`Image ${item.name}`}
               width="full"
-              maxH="200px"
-              borderTopRadius="xl"
-              borderTopLeftRadius="xl"
+              h="12.5rem"
+              borderRadius="xl"
             />
           </Box>
 
-          <Box p={'16px'} width="full">
-            <HStack gap={1.5}>
+          <Box
+            p={4}
+            width="full"
+            borderTop="0.063rem solid "
+            borderColor="shader.a.200"
+          >
+            <HStack gap={1.5} mb={3.5}>
               <Text fontWeight="medium" fontSize="lg">
                 {item.name}
               </Text>
               {item.isVerified && (
-                <Icon as={VerifyIcon} height="20px" width="20px" />
+                <Icon as={VerifyIcon} h={5} w={5} aria-label="Verifiled Icon" />
               )}
             </HStack>
 

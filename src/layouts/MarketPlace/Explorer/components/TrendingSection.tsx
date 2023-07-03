@@ -13,11 +13,9 @@ import {
 
 import CardTypeOne from 'components/ProductCard/CardTypeOne';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
-import NextIcon from 'public/assets/line/chevron-01.svg';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { SwiperSlide } from 'swiper/react';
 
-import { useRef } from 'react';
+import Carousel from 'components/Carousel/Carousel';
 export interface TestPropsType1 {
   image: string;
   name: string;
@@ -44,7 +42,7 @@ const TestData: TestPropsType1[] = [
   }, */
   {
     image:
-      'https://i.seadn.io/gcs/files/bbaf43ee4a02d5affb7e8fc186d0bdb5.png?auto=format&dpr=1&w=256',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRibpCPA7GQED-pJueP6IzIEUAp-nmwg033g&usqp=CAU',
     name: 'Bigwhale52',
     floor: '0.05',
     volume: '1,930',
@@ -52,7 +50,7 @@ const TestData: TestPropsType1[] = [
   },
   {
     image:
-      'https://i.seadn.io/gcs/files/bbaf43ee4a02d5affb7e8fc186d0bdb5.png?auto=format&dpr=1&w=256',
+      'https://cdn.dribbble.com/users/383277/screenshots/18055765/media/e5fc935b60035305099554810357012a.png',
     name: 'Bigwhale52',
     floor: '0.05',
     volume: '1,930',
@@ -108,8 +106,6 @@ const TestData: TestPropsType1[] = [
   },
 ];
 const TrendingSection = () => {
-  const prevRef = useRef<HTMLButtonElement>(null);
-  const nextRef = useRef<HTMLButtonElement>(null);
   return (
     <>
       <Box py={4} borderTop="0.063rem solid" borderColor="shader.a.300" mt={4}>
@@ -141,107 +137,13 @@ const TrendingSection = () => {
 
           <TabPanels>
             <TabPanel px={0}>
-              <Box position="relative">
-                <Swiper
-                  // install Swiper modules
-                  spaceBetween={20}
-                  slidesPerView={4}
-                  modules={[Navigation]}
-                  navigation={{
-                    prevEl: prevRef.current!,
-                    nextEl: nextRef.current!,
-                  }}
-                  onInit={swiper => {
-                    //  @typescript-eslint/ban-ts-comment
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    // eslint-disable-next-line no-param-reassign
-                    setTimeout(() => {
-                      // Override prevEl & nextEl now that refs are defined
-                      //  @typescript-eslint/ban-ts-comment
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore
-                      // eslint-disable-next-line no-param-reassign
-                      swiper.params.navigation.prevEl = prevRef.current;
-                      //  @typescript-eslint/ban-ts-comment
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore
-                      // eslint-disable-next-line no-param-reassign
-                      swiper.params.navigation.nextEl = nextRef.current;
-
-                      // Re-init navigation
-                      swiper.navigation.destroy();
-                      swiper.navigation.init();
-                      swiper.navigation.update();
-                    });
-                  }}
-                  breakpoints={{
-                    450: {
-                      slidesPerView: 1,
-                    },
-                    630: {
-                      slidesPerView: 2,
-                    },
-                    920: {
-                      slidesPerView: 3,
-                    },
-                    1232: {
-                      slidesPerView: 4,
-                    },
-                    1520: {
-                      slidesPerView: 4,
-                    },
-                  }}
-                  style={{
-                    position: 'relative',
-                  }}
-                >
-                  {TestData.map(item => (
-                    <SwiperSlide key={item.name}>
-                      <CardTypeOne item={item} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  width="100%"
-                  position="absolute"
-                  sx={{
-                    top: '50%',
-                    zIndex: 10,
-                  }}
-                >
-                  <Button
-                    ref={prevRef}
-                    variant="navigation"
-                    sx={{
-                      left: '-20px',
-                    }}
-                  >
-                    <Icon
-                      as={NextIcon}
-                      height={6}
-                      w={6}
-                      transform="rotate(90deg)"
-                    />
-                  </Button>
-                  <Button
-                    ref={nextRef}
-                    variant="navigation"
-                    sx={{
-                      right: '-20px',
-                    }}
-                  >
-                    <Icon
-                      as={NextIcon}
-                      height={6}
-                      w={6}
-                      transform="rotate(-90deg)"
-                    />
-                  </Button>
-                </Box>
-              </Box>
+              <Carousel>
+                {TestData.map(item => (
+                  <SwiperSlide key={item.name}>
+                    <CardTypeOne item={item} />
+                  </SwiperSlide>
+                ))}
+              </Carousel>
             </TabPanel>
             <TabPanel>Hot Games</TabPanel>
             <TabPanel>Hots NFTS</TabPanel>

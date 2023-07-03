@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Navigation } from 'swiper';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -126,6 +126,7 @@ const TestData: TestProps[] = [
 ];
 
 const HotCollection = () => {
+  console.log(TestData[3]);
   return (
     <>
       <HStack
@@ -166,6 +167,26 @@ const HotCollection = () => {
           modules={[Navigation]}
           spaceBetween={50}
           slidesPerView={3}
+          breakpoints={{
+            390: {
+              slidesPerView: 1,
+            },
+            450: {
+              slidesPerView: 1,
+            },
+            630: {
+              slidesPerView: 2,
+            },
+            920: {
+              slidesPerView: 2,
+            },
+            1232: {
+              slidesPerView: 3,
+            },
+            1520: {
+              slidesPerView: 3,
+            },
+          }}
         >
           {TestData.map((item, index) => (
             <SwiperSlide key={index}>
@@ -173,9 +194,9 @@ const HotCollection = () => {
                 <Text fontWeight="bold">{index}</Text>
                 <Image
                   src={item.image}
-                  height="52px"
-                  width="52px"
-                  borderRadius="full"
+                  height={14}
+                  width={14}
+                  borderRadius="xl"
                 />
                 <VStack alignItems="flex-start">
                   <Text fontWeight="bold">{item.name}</Text>
@@ -196,44 +217,6 @@ const HotCollection = () => {
           ))}
         </Swiper>
       </Box>
-
-      <Swiper
-        // install Swiper modules
-        modules={[Navigation]}
-        spaceBetween={50}
-        slidesPerView={3}
-        /*           scrollbar={{ draggable: true }} */
-        onSwiper={swiper => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
-      >
-        {TestData.map((item, index) => (
-          <SwiperSlide key={index}>
-            <HStack color="shader.a.900" spacing={3}>
-              <Text fontWeight="bold">{index}</Text>
-              <Image
-                src={item.image}
-                height="52px"
-                width="52px"
-                borderRadius="full"
-              />
-              <VStack alignItems="flex-start">
-                <Text fontWeight="bold">{item.name}</Text>
-                <HStack>
-                  <Flex>
-                    <Text>Floor Price:</Text>
-                    <Text fontWeight="bold">{item.floor}</Text>
-                  </Flex>
-                  <CircleIcon height="8px" />
-                  <Flex>
-                    <Text>Vol:</Text>
-                    <Text fontWeight="bold">{item.floor}</Text>
-                  </Flex>
-                </HStack>
-              </VStack>
-            </HStack>
-          </SwiperSlide>
-        ))}
-      </Swiper>
     </>
   );
 };

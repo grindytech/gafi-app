@@ -57,7 +57,7 @@ export default function MarketPlace() {
 
   return (
     <>
-      <List display="flex" gap={3} mb={6}>
+      <List display="flex" gap={3} mb={6} flexWrap="wrap">
         {ListMarketPlace.map(market => {
           const isActive = pathname.includes(market.link);
 

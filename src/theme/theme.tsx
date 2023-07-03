@@ -170,6 +170,24 @@ export const Table: ComponentStyleConfig = {
         },
       },
     },
+    listTable: {
+      /*   tbody: {
+        padding: 4,
+      }, */
+      tr: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        verticalAlign: 'top',
+        padding: { md: 4, base: 2 },
+        _notLast: {
+          border: '1px solid',
+          borderColor: 'shader.a.200',
+        },
+        td: {
+          padding: 0,
+        },
+      },
+    },
   },
 };
 
