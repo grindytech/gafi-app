@@ -50,10 +50,7 @@ const Carousel = ({ children }: IProps) => {
             });
           }}
           breakpoints={{
-            390: {
-              slidesPerView: 1,
-            },
-            450: {
+            360: {
               slidesPerView: 1,
             },
             630: {

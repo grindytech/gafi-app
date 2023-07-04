@@ -141,10 +141,12 @@ const RecentSold = () => {
                           <Text color="shader.a.500">#{item.id}</Text>
                         </Box>
 
-                        {/*   <CustomRow
-                          fieldName="timestamp"
-                          label={item.timestamp}
-                        /> */}
+                        <Box display={{ base: 'none', md: 'block' }}>
+                          <CustomRow
+                            fieldName="timestamp"
+                            label={item.timestamp}
+                          />
+                        </Box>
                       </VStack>
                     </HStack>
                   </Td>
@@ -182,7 +184,14 @@ const RecentSold = () => {
                           <Text>GAKI</Text>
                         </HStack>
                       </HStack>
-                      <CustomRow fieldName="timestamp" label={item.timestamp} />
+
+                      <CustomRow
+                        fieldName="timestamp"
+                        label={item.timestamp}
+                        sx={{
+                          display: { md: 'none', base: 'block' },
+                        }}
+                      />
                     </VStack>
                   </Td>
                 </Tr>
