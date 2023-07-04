@@ -115,7 +115,7 @@ const LiveAuction = () => {
           </Button>
         </Link>
       </HStack>
-      <Box mt={4}>
+      <Box mt={5}>
         <Carousel>
           {dataTest.map(item => (
             <SwiperSlide key={item.id}>

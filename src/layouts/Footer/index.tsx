@@ -3,13 +3,11 @@ import {
   Button,
   Center,
   Divider,
+  Flex,
   Grid,
   HStack,
   Icon,
   Input,
-  InputGroup,
-  InputRightElement,
-  ListItem,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -153,51 +151,68 @@ export default function Footer() {
           </HStack>
         </VStack>
       </Grid>
-      <Divider height="0.063rem" bg="shader.a.200" my={6} />
-      <Box width={{ lg: '50%', base: 'full' }}>
-        <Grid
-          gridTemplateColumns={{
-            base: 'repeat(2, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          }}
-          gap={{ base: 4, lg: 8 }}
-        >
-          {NavLinkData.map(item => (
-            <>
-              <VStack alignItems="flex-start" gap={2} color="shader.a.600">
-                <Text
-                  color="shader.a.900"
-                  fontWeight="medium"
-                  lineHeight="1.5rem"
-                >
-                  {item.title}
-                </Text>
-                {item.subLink.map(subItem => (
-                  <>
-                    <Text fontSize="sm" as={Link} to={subItem.link}>
-                      {subItem.title}
-                    </Text>
-                  </>
-                ))}
-              </VStack>
-            </>
-          ))}
-        </Grid>
-      </Box>
-
-      <Text
-        py={4}
-        as={Center}
-        fontSize="sm"
-        gap={1}
-        color="shader.a.900"
-        fontWeight="350"
+      {/*  <Divider height="0.063rem" bg="shader.a.200" my={6} /> */}
+      <Box
+        borderTopWidth="0.063rem"
+        borderBottomWidth="0.063rem"
+        borderColor="shader.a.200"
+        py={6}
       >
-        © 2023 Powered by
-        <Text as="span" color="primary.a.500" fontWeight="medium">
-          Grindy Technologies
+        {' '}
+        <Box width={{ lg: '50%', base: 'full' }}>
+          <Grid
+            gridTemplateColumns={{
+              base: 'repeat(2, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            }}
+            gap={{ base: 4, lg: 8 }}
+          >
+            {NavLinkData.map(item => (
+              <>
+                <VStack alignItems="flex-start" gap={2} color="shader.a.600">
+                  <Text
+                    color="shader.a.900"
+                    fontWeight="medium"
+                    lineHeight="1.5rem"
+                  >
+                    {item.title}
+                  </Text>
+                  {item.subLink.map(subItem => (
+                    <>
+                      <Text fontSize="sm" as={Link} to={subItem.link}>
+                        {subItem.title}
+                      </Text>
+                    </>
+                  ))}
+                </VStack>
+              </>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
+      <HStack justifyContent="space-between" flexWrap="wrap">
+        <Text
+          py={4}
+          as={Center}
+          fontSize="sm"
+          gap={1}
+          color="shader.a.900"
+          fontWeight="350"
+        >
+          © 2023 Powered by
+          <Text as="span" color="primary.a.500" fontWeight="medium">
+            Grindy Technologies
+          </Text>
         </Text>
-      </Text>
+        <Flex gap={4} color="shader.a.600" fontSize="sm">
+          <Text as={Link} to="#">
+            Privacy Policy
+          </Text>
+          <Text as={Link} to="#">
+            Term of Services
+          </Text>
+        </Flex>
+      </HStack>
     </>
   );
 }

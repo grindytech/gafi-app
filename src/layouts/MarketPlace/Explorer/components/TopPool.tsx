@@ -102,9 +102,8 @@ const TestData: TestDataProps2[] = [
 const TopPool = () => {
   return (
     <>
-      <Box mt={4}>
+      <Box>
         <HStack
-          mt={10} //test
           justifyContent="space-between"
           spacing={0}
           position="sticky"

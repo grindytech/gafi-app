@@ -10,7 +10,7 @@ import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 import { Center, Icon, List, ListItem, Text } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
 import Explorer from 'layouts/MarketPlace/Explorer';
-
+import Games from 'layouts/MarketPlace/Games';
 export const ListMarketPlace = [
   {
     icon: ExplorerIcon,
@@ -22,6 +22,7 @@ export const ListMarketPlace = [
     icon: GameIcon,
     text: 'Games',
     link: 'games',
+    element: <Games />,
   },
   {
     icon: Collection02Icon,
@@ -70,9 +71,9 @@ export default function MarketPlace() {
                 py={2.5}
                 gap={2}
                 color={isActive ? 'white' : 'shader.a.900'}
-                bg={isActive ? 'shader.a.900' : 'transparent'}
+                bg={isActive ? 'primary.a.500' : 'transparent'}
                 border="0.0625rem solid"
-                borderColor={isActive ? 'shader.a.400' : 'transparent'}
+                borderColor={isActive ? 'transparent' : 'shader.a.400'}
                 borderRadius="lg"
               >
                 <Icon as={market.icon} width={5} height={5} />

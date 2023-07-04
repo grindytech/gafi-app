@@ -129,7 +129,100 @@ const RecentMint = () => {
         </HStack>
 
         <Table variant="listTable">
-          <Tbody></Tbody>
+          <Tbody>
+            {dataTest.map(item => (
+              <>
+                <Tr>
+                  <Td>
+                    <HStack flexWrap={{ md: 'nowrap', base: 'wrap' }}>
+                      <Image
+                        src={item.image}
+                        width="4.5rem"
+                        height="4.5rem"
+                        borderRadius="lg"
+                      />
+                      <VStack alignItems="flex-start">
+                        <Box>
+                          <Text
+                            color="shader.a.900"
+                            fontWeight="medium"
+                            fontSize="md"
+                          >
+                            {item.name} #{item.id}
+                          </Text>
+                          <Text
+                            color="second.purple"
+                            fontSize="sm"
+                            fontWeight="medium"
+                          >
+                            Rarity:{item.rarity}%
+                          </Text>
+                        </Box>
+
+                        <Box display={{ base: 'none', md: 'block' }}>
+                          <CustomRow
+                            fieldName="timestamp"
+                            label={item.timestamp}
+                            sx={{
+                              fontSize: 'sm',
+                            }}
+                          />
+                        </Box>
+                      </VStack>
+                    </HStack>
+                  </Td>
+                  <Td display={{ md: 'table-cell', base: 'none' }}>
+                    <HStack mb={2}>
+                      <Text color="shader.a.600">Amount:</Text>
+                      <Text color="shader.a.900" fontWeight="medium">
+                        {item.amount}
+                      </Text>
+                    </HStack>
+                    <HStack flexWrap="wrap">
+                      <Text color="shader.a.600">Pool ID:</Text>
+                      <Text color="primary.a.500" fontWeight="medium">
+                        {item.poolID}
+                      </Text>
+                    </HStack>
+                  </Td>
+                  <Td>
+                    <VStack alignItems="flex-end">
+                      <HStack mb={2}>
+                        <Text color="shader.a.600">Miner:</Text>
+                        <CustomRow
+                          fieldName="address"
+                          label={item.miner}
+                          sx={{ width: '9rem' }}
+                        />
+                      </HStack>
+                      <HStack flexWrap="wrap">
+                        <Text color="shader.a.600">Miner hash:</Text>
+                        <CustomRow
+                          fieldName="address"
+                          label={item.minerHash}
+                          sx={{ width: '9rem' }}
+                        />
+                      </HStack>
+                      <Box display={{ md: 'none', base: 'block' }}>
+                        <HStack mb={2}>
+                          <Text color="shader.a.600">Amount:</Text>
+                          <Text color="shader.a.900" fontWeight="medium">
+                            {item.amount}
+                          </Text>
+                        </HStack>
+                        <HStack flexWrap="wrap">
+                          <Text color="shader.a.600">Pool ID:</Text>
+                          <Text color="primary.a.500" fontWeight="medium">
+                            {item.poolID}
+                          </Text>
+                        </HStack>
+                      </Box>
+                    </VStack>
+                  </Td>
+                </Tr>
+              </>
+            ))}
+          </Tbody>
         </Table>
       </Box>
     </>

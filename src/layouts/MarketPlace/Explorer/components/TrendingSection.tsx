@@ -22,24 +22,9 @@ export interface TestPropsType1 {
   floor: string;
   volume: string;
   isVerified?: boolean;
+  id: string;
 }
 const TestData: TestPropsType1[] = [
-  /*   {
-    image:
-      'https://i.seadn.io/s/production/c0f1c70c-d930-47f3-8d4f-0513d9aa288b.png?w=500&auto=format',
-    name: 'Bigwhale52',
-    floor: '0.05',
-    volume: '1,930',
-    isVerified: true,
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/f0613a60a26a9241b85456ad2b68673b.jpg?auto=format&dpr=1&h=500',
-    name: 'Bigwhale52',
-    floor: '0.05',
-    volume: '1,930',
-    isVerified: true,
-  }, */
   {
     image:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRibpCPA7GQED-pJueP6IzIEUAp-nmwg033g&usqp=CAU',
@@ -47,6 +32,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '18',
   },
   {
     image:
@@ -55,6 +41,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '17',
   },
   {
     image:
@@ -63,6 +50,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '16',
   },
   {
     image:
@@ -71,6 +59,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '15',
   },
   {
     image:
@@ -79,6 +68,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '14',
   },
   {
     image:
@@ -87,6 +77,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '13',
   },
   {
     image:
@@ -95,6 +86,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '12',
   },
   {
     image:
@@ -103,6 +95,7 @@ const TestData: TestPropsType1[] = [
     floor: '0.05',
     volume: '1,930',
     isVerified: true,
+    id: '3',
   },
 ];
 const TrendingSection = () => {
@@ -139,7 +132,7 @@ const TrendingSection = () => {
             <TabPanel px={0}>
               <Carousel>
                 {TestData.map(item => (
-                  <SwiperSlide key={item.name}>
+                  <SwiperSlide key={item.id}>
                     <CardTypeOne item={item} />
                   </SwiperSlide>
                 ))}

@@ -126,7 +126,6 @@ const TestData: TestProps[] = [
 ];
 
 const HotCollection = () => {
-  console.log(TestData[3]);
   return (
     <>
       <HStack
@@ -188,33 +187,43 @@ const HotCollection = () => {
             },
           }}
         >
-          {TestData.map((item, index) => (
-            <SwiperSlide key={index}>
-              <HStack color="shader.a.900" spacing={3}>
-                <Text fontWeight="bold">{index}</Text>
-                <Image
-                  src={item.image}
-                  height={14}
-                  width={14}
-                  borderRadius="xl"
-                />
-                <VStack alignItems="flex-start">
-                  <Text fontWeight="bold">{item.name}</Text>
-                  <HStack>
-                    <Flex>
-                      <Text>Floor Price:</Text>
-                      <Text fontWeight="bold">{item.floor}</Text>
-                    </Flex>
-                    <CircleIcon height="8px" />
-                    <Flex>
-                      <Text>Vol:</Text>
-                      <Text fontWeight="bold">{item.floor}</Text>
-                    </Flex>
-                  </HStack>
-                </VStack>
-              </HStack>
-            </SwiperSlide>
-          ))}
+          {TestData.map((item, index) => {
+            return (
+              <SwiperSlide key={index}>
+                {() => {
+                  const contain: React.ReactElement[] = [];
+                  for (let i = 0; i < 3; i++) {
+                    contain.push(
+                      <HStack color="shader.a.900" spacing={3}>
+                        <Text fontWeight="bold">{index}</Text>
+                        <Image
+                          src={item.image}
+                          height={14}
+                          width={14}
+                          borderRadius="xl"
+                        />
+                        <VStack alignItems="flex-start">
+                          <Text fontWeight="bold">{item.name}</Text>
+                          <HStack>
+                            <Flex>
+                              <Text>Floor Price:</Text>
+                              <Text fontWeight="bold">{item.floor}</Text>
+                            </Flex>
+                            <CircleIcon height="8px" />
+                            <Flex>
+                              <Text>Vol:</Text>
+                              <Text fontWeight="bold">{item.floor}</Text>
+                            </Flex>
+                          </HStack>
+                        </VStack>
+                      </HStack>
+                    );
+                  }
+                  return contain;
+                }}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </Box>
     </>

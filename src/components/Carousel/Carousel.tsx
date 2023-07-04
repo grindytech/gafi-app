@@ -3,14 +3,19 @@ import NextIcon from 'public/assets/line/chevron-01.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { Box, Button, Icon } from '@chakra-ui/react';
+/* import { SwiperOptions } from 'swiper/types/swiper-options.d.ts'; */
 // eslint-disable-next-line import/no-unresolved
+import { SwiperOptions } from 'swiper/types';
+/* // eslint-disable-next-line import/no-unresolved
 import 'swiper/css';
 // eslint-disable-next-line import/no-unresolved
-import 'swiper/css/navigation';
+import 'swiper/css/navigation'; */
+
 interface IProps {
   children: React.ReactNode;
+  breakPointCustom?: SwiperOptions['breakpoints'];
 }
-const Carousel = ({ children }: IProps) => {
+const Carousel = ({ children, breakPointCustom }: IProps) => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   return (
@@ -49,23 +54,25 @@ const Carousel = ({ children }: IProps) => {
               swiper.navigation.update();
             });
           }}
-          breakpoints={{
-            360: {
-              slidesPerView: 1,
-            },
-            630: {
-              slidesPerView: 2,
-            },
-            920: {
-              slidesPerView: 3,
-            },
-            1232: {
-              slidesPerView: 4,
-            },
-            1520: {
-              slidesPerView: 4,
-            },
-          }}
+          breakpoints={
+            breakPointCustom
+              ? breakPointCustom
+              : {
+                  360: {
+                    slidesPerView: 1,
+                  },
+                  630: {
+                    slidesPerView: 2,
+                  },
+                  920: {
+                    slidesPerView: 3,
+                  },
+
+                  1440: {
+                    slidesPerView: 4,
+                  },
+                }
+          }
           style={{
             position: 'relative',
           }}
@@ -89,7 +96,13 @@ const Carousel = ({ children }: IProps) => {
               left: '-20px',
             }}
           >
-            <Icon as={NextIcon} height={6} w={6} transform="rotate(90deg)" />
+            <Icon
+              as={NextIcon}
+              height={6}
+              w={6}
+              transform="rotate(90deg)"
+              color="primary.a.500"
+            />
           </Button>
           <Button
             ref={nextRef}
@@ -98,7 +111,13 @@ const Carousel = ({ children }: IProps) => {
               right: '-20px',
             }}
           >
-            <Icon as={NextIcon} height={6} w={6} transform="rotate(-90deg)" />
+            <Icon
+              as={NextIcon}
+              height={6}
+              w={6}
+              transform="rotate(-90deg)"
+              color="primary.a.500"
+            />
           </Button>
         </Box>
       </Box>

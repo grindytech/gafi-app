@@ -150,7 +150,7 @@ const RecentSold = () => {
                       </VStack>
                     </HStack>
                   </Td>
-                  <Td display={{ lg: 'table-cell', base: 'none' }}>
+                  <Td display={{ md: 'table-cell', base: 'none' }}>
                     <HStack mb={2}>
                       <Text color="shader.a.600">From:</Text>
                       <CustomRow fieldName="address" label={item.from} />
@@ -164,15 +164,14 @@ const RecentSold = () => {
                     <VStack alignItems="flex-end">
                       <HStack
                         spacing={1}
-                        /*    flexWrap={{ base: 'wrap', lg: 'nowrap' }} */
-                        display={{ base: 'flex', lg: 'none' }}
+                        display={{ base: 'flex', md: 'none' }}
                       >
                         <Text color="shader.a.600">From:</Text>
                         <CustomRow fieldName="address" label={item.from} />
                       </HStack>
                       <HStack
                         textAlign="right"
-                        display={{ base: 'flex', lg: 'none' }}
+                        display={{ base: 'flex', md: 'none' }}
                       >
                         <Text color="shader.a.600">To:</Text>
                         <CustomRow fieldName="address" label={item.to} />

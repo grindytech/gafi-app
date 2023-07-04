@@ -20,7 +20,7 @@ const CardTypeOne = ({ item }: IProps) => {
               src={item.image}
               alt={`Image ${item.name}`}
               width="full"
-              h="12.5rem"
+              h="10.5rem"
               borderRadius="xl"
             />
           </Box>

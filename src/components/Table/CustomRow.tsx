@@ -18,6 +18,7 @@ const CustomRow = ({ fieldName, label, sx }: IProps) => {
         color="primary.a.500"
         width="10.5rem"
         overflow="hidden"
+        {...sx}
       >
         {label}
       </Text>

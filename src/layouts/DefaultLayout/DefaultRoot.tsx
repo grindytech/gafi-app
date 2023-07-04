@@ -16,7 +16,7 @@ export default function DefaultMain() {
             <Outlet />
           </Box>
         </Container>
-        <Box bg="white" mt={8}>
+        <Box bg="white" mt="30px">
           <Container maxWidth={breakpointsContainer}>
             <Footer />
           </Container>
