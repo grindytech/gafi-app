@@ -59,7 +59,14 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
+
+    // (allow using type any) Unexpected any. Specify a different type
     '@typescript-eslint/no-explicit-any': 'off',
+
+    // (disabled) Unexpected empty arrow function
     '@typescript-eslint/no-empty-function': 'off',
+
+    // (declare) is defined but never used.
+    '@typescript-eslint/no-unused-vars': 'error',
   },
 };
