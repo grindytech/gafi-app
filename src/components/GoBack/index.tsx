@@ -1,5 +1,5 @@
 import { Button, Icon } from '@chakra-ui/react';
-import React from 'react';
+
 import Chevron02Icon from 'public/assets/line/chevron-02.svg';
 import { Link } from 'react-router-dom';
 

@@ -9,6 +9,7 @@ export default function MintBanner() {
       borderColor="shader.a.300"
       bg="shader.a.200"
       borderRadius="xl"
+      flexWrap="wrap"
     >
       <Box padding={6}>
         <Heading fontSize="xl" fontWeight="bold" color="shader.a.900">
@@ -17,7 +18,7 @@ export default function MintBanner() {
 
         <Text fontSize="sm" color="shader.a.600" whiteSpace="pre-line">
           {`Lorem ipsum dolor sit amet consectetur. 
-        Neque velit commodo convallis`}
+          Neque velit commodo convallis`}
         </Text>
       </Box>
 

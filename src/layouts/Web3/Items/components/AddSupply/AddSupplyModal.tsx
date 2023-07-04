@@ -18,7 +18,7 @@ import {
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import React from 'react';
+
 import { UseFormGetValues } from 'react-hook-form';
 import { AddSupplyFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
@@ -96,7 +96,7 @@ export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             margin="unset"
             isLoading={isLoading}
             _hover={{}}

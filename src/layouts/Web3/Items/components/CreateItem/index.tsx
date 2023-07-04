@@ -90,10 +90,11 @@ export default function CreateItem() {
         />
 
         <Button
-          variant="createGameSubmit"
           isDisabled={isOpen}
+          margin="auto"
+          px={6}
+          variant="primary"
           type="submit"
-          _hover={{}}
         >
           Submit Transaction
         </Button>

@@ -3,8 +3,8 @@ import {
   Center,
   CircularProgress,
   Flex,
-  Grid,
   Heading,
+  SimpleGrid,
   Text,
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
@@ -94,7 +94,13 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
     <>
       {data && data.length ? (
         <CardBox variant="createGames">
-          <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
+          <SimpleGrid
+            columns={{
+              sm: 2,
+              md: 3,
+            }}
+            gap={3}
+          >
             {React.Children.toArray(
               data.map(item => {
                 const { collection_id, item_id, rarity } = item;
@@ -140,7 +146,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                 );
               })
             )}
-          </Grid>
+          </SimpleGrid>
         </CardBox>
       ) : null}
     </>

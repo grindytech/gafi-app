@@ -47,15 +47,11 @@ const MetaData = () => {
         <Heading fontSize="lg" color="shader.a.900" mb={6}>
           Metadata
         </Heading>
-        <Button
-          variant="primary"
-          mb={3}
-          width="full"
-          height="2.75rem"
-          onClick={() => onOpen()}
-        >
+
+        <Button variant="primary" mb={3} width="full" onClick={onOpen}>
           Show metadata
         </Button>
+
         <HStack>
           <Icon as={SettingIcon} />
           <Text color="shader.a.500">v{metadata?.version}</Text>

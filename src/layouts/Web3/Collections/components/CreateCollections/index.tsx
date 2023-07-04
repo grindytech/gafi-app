@@ -1,5 +1,4 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
@@ -33,10 +32,12 @@ export default function CollectionsCreate() {
       <CollectionID setValue={setValue} refetch={mounting} />
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
         onClick={onOpen}
-        _hover={{}}
+        margin="auto"
+        px={6}
+        variant="primary"
+        type="submit"
       >
         Submit Transaction
       </Button>

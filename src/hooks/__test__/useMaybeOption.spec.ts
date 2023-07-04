@@ -1,6 +1,15 @@
 import { act, renderHook } from '@testing-library/react';
 import useMaybeOption from 'hooks/useMaybeOption';
 
+/**
+   @parmas n = [1, 2, 3, 4]
+    - summary logic: 
+      we've got an array included [n] and using the index to 
+      get the last element of fields so expecting 
+        - fields.length = (3) that's means fields[3] result = (4)
+      step end will plus of number to up 1 (4 + 1)
+      result equal: [n, 5]
+ */
 describe('setField', () => {
   it('should return [0, 1]', () => {
     const { result } = renderHook(() => useMaybeOption());

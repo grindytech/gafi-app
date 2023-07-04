@@ -1,5 +1,5 @@
 import { BoxProps } from '@chakra-ui/react';
-import React from 'react';
+
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 

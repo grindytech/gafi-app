@@ -28,6 +28,7 @@
     "jsx": "react-jsx",
 
     /* Linting */
+    "alwaysStrict": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

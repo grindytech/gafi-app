@@ -2,8 +2,6 @@ import { Flex, FlexProps, Heading, Skeleton } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import useBalance from 'hooks/useBalance';
 
-import React from 'react';
-
 interface BalanceProps {
   currentAccount: string;
   sx?: FlexProps;

@@ -1,7 +1,5 @@
 import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 
-import React from 'react';
-
 export interface Web3CollectionsDataProps {
   owner: string;
   game_id: number[];

@@ -15,7 +15,7 @@ import {
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
-import React from 'react';
+
 import Swap02Icon from 'public/assets/line/swap-02.svg';
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
 
@@ -178,7 +178,6 @@ export default function ConnectWallet() {
                 bg="primary.a.500"
                 color="white"
                 width="full"
-                borderRadius="lg"
                 isLoading={isLoading}
                 onClick={() => {
                   if (api) {

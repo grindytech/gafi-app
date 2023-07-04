@@ -4,7 +4,6 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import React from 'react';
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import AddSupplyModal from './AddSupplyModal';
@@ -73,10 +72,11 @@ export default function AddSupply() {
       </CardBox>
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
+        margin="auto"
+        px={6}
+        variant="primary"
         type="submit"
-        _hover={{}}
       >
         Submit Transaction
       </Button>
