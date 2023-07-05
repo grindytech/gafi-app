@@ -1,6 +1,5 @@
-import React from 'react';
-import OverviewCollection from './Collections';
-import OverviewGames from './Games';
+import OverviewCollection from 'layouts/MarketPlace/Home/Collections';
+import OverviewGames from 'layouts/MarketPlace/Home/Games';
 import { Flex } from '@chakra-ui/react';
 
 const HomeMarketPlace = () => {

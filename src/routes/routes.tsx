@@ -8,6 +8,7 @@ import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
 import Web3 from 'pages/Web3';
 import MarketPlace, { ListMarketPlace } from 'pages/MarketPlace';
 import Home from 'layouts/Home';
+import { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,6 @@ const router = createBrowserRouter([
       {
         path: 'marketplace',
         element: <MarketPlace />,
-
         children: ListMarketPlace.map(market => ({
           path: market.link,
           element: market.element,

@@ -9,7 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestDataProps2 } from 'layouts/MarketPlace/Explorer/components/TopPool';
+import { TestDataProps2 } from 'layouts/MarketPlace/Home/Collections/components/TopPool';
 
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {

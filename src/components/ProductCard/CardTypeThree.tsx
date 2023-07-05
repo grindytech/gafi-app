@@ -9,10 +9,11 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestDataProps3 } from 'layouts/MarketPlace/Explorer/components/LiveAuction';
+
 import GafiIcon from 'public/assets/token/gafi-token.svg';
 import TimeIcon from 'public/assets/line/time.svg';
 import VerifyIcon from 'public/assets/fill/verified.svg';
+import { TestDataProps3 } from 'layouts/MarketPlace/Home/Collections/components/LiveAuction';
 interface IProps {
   item: TestDataProps3;
 }

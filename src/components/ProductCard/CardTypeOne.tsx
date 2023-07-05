@@ -1,6 +1,7 @@
 import { Image, VStack, Text, HStack, Box, Icon } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/components/TrendingSection';
+import { TestPropsType1 } from 'layouts/MarketPlace/Home/Collections/components/TrendingSection';
+
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {
   item: TestPropsType1;
