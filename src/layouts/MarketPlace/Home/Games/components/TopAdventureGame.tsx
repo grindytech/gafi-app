@@ -1,9 +1,8 @@
-import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/components/TrendingSection';
-import React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import CardTypeOne from 'components/ProductCard/CardTypeOne';
+import { TestPropsType1 } from '../../Collections/components/TrendingSection';
 
 export const TestData: TestPropsType1[] = [
   {

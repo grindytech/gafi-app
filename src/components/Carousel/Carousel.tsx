@@ -13,9 +13,10 @@ import 'swiper/css/navigation'; */
 
 interface IProps {
   children: React.ReactNode;
-  breakPointCustom?: SwiperOptions['breakpoints'];
+
+  options?: SwiperOptions;
 }
-const Carousel = ({ children, breakPointCustom }: IProps) => {
+const Carousel = ({ children, options }: IProps) => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   return (
@@ -54,28 +55,25 @@ const Carousel = ({ children, breakPointCustom }: IProps) => {
               swiper.navigation.update();
             });
           }}
-          breakpoints={
-            breakPointCustom
-              ? breakPointCustom
-              : {
-                  360: {
-                    slidesPerView: 1,
-                  },
-                  630: {
-                    slidesPerView: 2,
-                  },
-                  920: {
-                    slidesPerView: 3,
-                  },
+          breakpoints={{
+            360: {
+              slidesPerView: 1,
+            },
+            630: {
+              slidesPerView: 2,
+            },
+            920: {
+              slidesPerView: 3,
+            },
 
-                  1280: {
-                    slidesPerView: 4,
-                  },
-                }
-          }
+            1280: {
+              slidesPerView: 4,
+            },
+          }}
           style={{
             position: 'relative',
           }}
+          {...options}
         >
           {children}
         </Swiper>

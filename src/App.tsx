@@ -8,7 +8,7 @@ import { RouterProvider } from 'react-router-dom';
 import router from 'routes/routes';
 
 export default function App() {
-  const dispatch = useAppDispatch();
+  /* const dispatch = useAppDispatch();
 
   const { apiState, socket, jsonrpc } = useAppSelector(
     state => state.substrate
@@ -25,7 +25,7 @@ export default function App() {
         </Heading>
       </Center>
     );
-  }
+  } */
 
   return (
     <>

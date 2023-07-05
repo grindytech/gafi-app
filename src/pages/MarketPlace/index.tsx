@@ -2,46 +2,31 @@ import React from 'react';
 
 import ExplorerIcon from 'public/assets/line/compass.svg';
 import GameIcon from 'public/assets/line/game.svg';
-import Collection02Icon from 'public/assets/line/collection-02.svg';
-import NFTSIcon from 'public/assets/line/nfts.svg';
-import PoolsIcon from 'public/assets/line/pools.svg';
+import GridIcon from 'public/assets/line/layout-grid.svg';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import { Center, Icon, List, ListItem, Text } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
 import Explorer from 'layouts/MarketPlace/Explorer';
-import Games from 'layouts/MarketPlace/Games';
+import HomeMarketPlace from 'layouts/MarketPlace/Home';
+
 export const ListMarketPlace = [
+  {
+    icon: GridIcon,
+    text: 'Home',
+    link: 'home',
+    element: <HomeMarketPlace />,
+  },
   {
     icon: ExplorerIcon,
     text: 'Explorer',
     link: 'explorer',
     element: <Explorer />,
   },
-  {
-    icon: GameIcon,
-    text: 'Games',
-    link: 'games',
-    element: <Games />,
-  },
-  {
-    icon: Collection02Icon,
-    text: 'Collections',
-    link: 'collections',
-  },
-  {
-    icon: NFTSIcon,
-    text: 'NFTs',
-    link: 'nfts',
-  },
-  {
-    icon: PoolsIcon,
-    text: 'Pools',
-    link: 'pools',
-  },
+
   {
     icon: PickaxeIcon,
-    text: 'Minting',
+    text: 'Minting pools',
     link: 'mining',
   },
 ];

@@ -2,7 +2,7 @@ import { Box, Text, Image, HStack, Icon, Heading } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
-import TimeIcon from 'public/assets/line/time.svg';
+
 import TimeReminder from 'components/Time/TimeReminder';
 export const DataTestArticle = [
   {
@@ -61,19 +61,21 @@ const GameArticles = () => {
         <Heading variant="sub01">Game Article</Heading>
         <Box mt={4}>
           <Carousel
-            breakPointCustom={{
-              360: {
-                slidesPerView: 1,
-              },
-              630: {
-                slidesPerView: 2,
-              },
-              920: {
-                slidesPerView: 2,
-              },
+            options={{
+              breakpoints: {
+                360: {
+                  slidesPerView: 1,
+                },
+                630: {
+                  slidesPerView: 2,
+                },
+                920: {
+                  slidesPerView: 2,
+                },
 
-              1440: {
-                slidesPerView: 3,
+                1440: {
+                  slidesPerView: 3,
+                },
               },
             }}
           >

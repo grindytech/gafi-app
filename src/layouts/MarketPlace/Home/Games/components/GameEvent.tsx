@@ -39,19 +39,21 @@ const GameEvent = () => {
 
       <Box mt={4}>
         <Carousel
-          breakPointCustom={{
-            360: {
-              slidesPerView: 1,
-            },
-            630: {
-              slidesPerView: 2,
-            },
-            920: {
-              slidesPerView: 2,
-            },
+          options={{
+            breakpoints: {
+              360: {
+                slidesPerView: 1,
+              },
+              630: {
+                slidesPerView: 2,
+              },
+              920: {
+                slidesPerView: 2,
+              },
 
-            1440: {
-              slidesPerView: 3,
+              1440: {
+                slidesPerView: 3,
+              },
             },
           }}
         >

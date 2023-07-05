@@ -136,8 +136,11 @@ const slidePerPage = (objectArray: TestProps[]) => {
               .slice(slideIndex * itemsPerPage, (slideIndex + 1) * itemsPerPage)
               .map((item, index) => (
                 <>
-                  {console.log((slideIndex + 1) * itemsPerPage)}
-                  <HStack color="shader.a.900" spacing={3}>
+                  <HStack
+                    color="shader.a.900"
+                    spacing={3}
+                    key={` ${slideIndex * itemsPerPage + index + 1}`}
+                  >
                     <Text fontWeight="bold">{` ${
                       slideIndex * itemsPerPage + index + 1
                     }`}</Text>
@@ -175,66 +178,68 @@ const slidePerPage = (objectArray: TestProps[]) => {
 const HotCollection = () => {
   return (
     <>
-      <HStack
-        justifyContent="space-between"
-        spacing={0}
-        position="sticky"
-        left={0}
-      >
-        <Flex gap={3}>
-          <Icon as={CollectionIcon} height="1.5rem" width="1.5rem" />
-          <Text color="shader.a.900" fontWeight="semibold" fontSize="xl">
-            Hot Collections
-          </Text>
-        </Flex>
-
-        <Link href="#">
-          <Button
-            variant="more"
-            fontSize="sm"
-            rightIcon={
-              <Icon
-                as={ArrowIcon}
-                transform="rotate(180deg)"
-                color="primary.a.500"
-                height="1.25rem"
-                width="1.25rem"
-              />
-            }
-          >
-            more
-          </Button>
-        </Link>
-      </HStack>
-      <Box my={4}>
-        <Swiper
-          // install Swiper modules
-          modules={[Navigation]}
-          spaceBetween={50}
-          slidesPerView={3}
-          breakpoints={{
-            390: {
-              slidesPerView: 1,
-            },
-            450: {
-              slidesPerView: 1,
-            },
-            630: {
-              slidesPerView: 2,
-            },
-            920: {
-              slidesPerView: 2,
-            },
-            1232: {
-              slidesPerView: 3,
-            },
-            1520: {
-              slidesPerView: 3,
-            },
-          }}
+      <Box color="shader.a.900">
+        <HStack
+          justifyContent="space-between"
+          spacing={0}
+          position="sticky"
+          left={0}
         >
-          {slidePerPage(TestData)}
-        </Swiper>
+          <Flex gap={3}>
+            <Icon as={CollectionIcon} height="1.5rem" width="1.5rem" />
+            <Text fontWeight="semibold" fontSize="xl">
+              Hot Collections
+            </Text>
+          </Flex>
+
+          <Link href="#">
+            <Button
+              variant="more"
+              fontSize="sm"
+              rightIcon={
+                <Icon
+                  as={ArrowIcon}
+                  transform="rotate(180deg)"
+                  color="primary.a.500"
+                  height="1.25rem"
+                  width="1.25rem"
+                />
+              }
+            >
+              more
+            </Button>
+          </Link>
+        </HStack>
+        <Box my={4}>
+          <Swiper
+            // install Swiper modules
+            modules={[Navigation]}
+            spaceBetween={20}
+            slidesPerView={3.5}
+            breakpoints={{
+              390: {
+                slidesPerView: 1,
+              },
+              450: {
+                slidesPerView: 1,
+              },
+              630: {
+                slidesPerView: 2.5,
+              },
+              920: {
+                slidesPerView: 2.5,
+              },
+              1232: {
+                slidesPerView: 3.5,
+              },
+              1520: {
+                slidesPerView: 3.5,
+              },
+            }}
+          >
+            {slidePerPage(TestData)}
+          </Swiper>
+        </Box>
       </Box>
     </>
   );

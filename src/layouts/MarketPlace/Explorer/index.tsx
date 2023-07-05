@@ -1,31 +1,5 @@
-import ExplorerBanner from './components/ExplorerBanner';
-import HotCollection from './components/HotCollection';
+const Explorer = () => {
+  return <div>Explorer</div>;
+};
 
-import TrendingSection from './components/TrendingSection';
-import TopPool from './components/TopPool';
-import { Flex, Grid } from '@chakra-ui/react';
-import RecentSold from './components/RecentSold';
-import RecentMint from './components/RecentMint';
-import LiveAuction from './components/LiveAuction';
-export default function Explorer() {
-  return (
-    <>
-      <Flex flexDirection="column" gap={10}>
-        <ExplorerBanner />
-        <HotCollection />
-        <Grid
-          my={5}
-          gridTemplateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
-          columnGap={5}
-          rowGap={5}
-        >
-          <RecentSold />
-          <RecentMint />
-        </Grid>
-        <TrendingSection />
-        <TopPool />
-        <LiveAuction />
-      </Flex>
-    </>
-  );
-}
+export default Explorer;

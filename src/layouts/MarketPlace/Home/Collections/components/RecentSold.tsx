@@ -42,7 +42,7 @@ const RecentSold = () => {
       from: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       to: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       timestamp: '1688350614',
-      id: '5478',
+      id: '54278',
       price: '200',
     },
     {
@@ -52,7 +52,7 @@ const RecentSold = () => {
       from: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       to: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       timestamp: '1688350614',
-      id: '5478',
+      id: '54738',
       price: '200',
     },
     {
@@ -62,7 +62,7 @@ const RecentSold = () => {
       from: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       to: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       timestamp: '1688350614',
-      id: '5478',
+      id: '54748',
       price: '200',
     },
     {
@@ -72,7 +72,7 @@ const RecentSold = () => {
       from: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       to: '0x01683bd6a2e285aa24fb1e022f2eb1d4e083053f',
       timestamp: '1688350614',
-      id: '5478',
+      id: '55478',
       price: '200',
     },
   ];
@@ -120,7 +120,7 @@ const RecentSold = () => {
           <Tbody>
             {dataTest.map(item => (
               <>
-                <Tr>
+                <Tr key={item.id}>
                   <Td>
                     <HStack flexWrap={{ md: 'nowrap', base: 'wrap' }}>
                       <Image
