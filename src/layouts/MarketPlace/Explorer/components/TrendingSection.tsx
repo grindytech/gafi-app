@@ -101,10 +101,10 @@ const TestData: TestPropsType1[] = [
 const TrendingSection = () => {
   return (
     <>
-      <Box py={4} borderTop="0.063rem solid" borderColor="shader.a.300" mt={4}>
+      <Box pt={6} borderTop="0.063rem solid" borderColor="shader.a.300">
         <Tabs variant="unstyled">
           <HStack justifyContent="space-between">
-            <TabList gap={4}>
+            <TabList gap={4} flexWrap="wrap">
               <Tab>Hot Games</Tab>
               <Tab>Hot Collections</Tab>
               <Tab>Hot NFTs</Tab>

@@ -3,7 +3,7 @@ import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import { DataTestArticle } from './GameArticles';
 import NextIcon from 'public/assets/line/chevron-01.svg';
-import TimeIcon from 'public/assets/line/time.svg';
+import TimeReminder from 'components/Time/TimeReminder';
 const GameEvent = () => {
   return (
     <Box
@@ -14,7 +14,29 @@ const GameEvent = () => {
       pt={8}
       pb={20}
     >
-      <Text>Game Events</Text>
+      <HStack justifyContent="space-between">
+        <Text
+          color="shader.a.100"
+          fontSize="2xl"
+          fontWeight="bold"
+          lineHeight="2"
+        >
+          Game Event
+        </Text>
+        <HStack
+          border="0.063rem solid"
+          borderColor="shader.a.700"
+          borderRadius="lg"
+          py={2}
+          px={3}
+        >
+          <Text fontSize="sm" fontWeight="medium">
+            View all
+          </Text>
+          <Icon as={NextIcon} transform="rotate(-90deg)" />
+        </HStack>
+      </HStack>
+
       <Box mt={4}>
         <Carousel
           breakPointCustom={{
@@ -50,26 +72,7 @@ const GameEvent = () => {
                     h="242px"
                     borderRadius="xl"
                   />
-                  <Box
-                    position="absolute"
-                    background="rgba(0, 0, 0, 0.70)"
-                    borderRadius="1.125rem"
-                    backdropFilter="blur(5px)"
-                    bottom={3}
-                    left={3}
-                  >
-                    <HStack
-                      py={1.5}
-                      px={2}
-                      color="white"
-                      gap={0.5}
-                      fontSize="sm"
-                    >
-                      <Icon as={TimeIcon} h={5} w={5} />
-                      <Text>End in </Text>
-                      <Text fontWeight="medium">0h 32m 13s</Text>
-                    </HStack>
-                  </Box>
+                  <TimeReminder sx={{ position: 'absolute' }} />
                 </Box>
                 <Box padding={6} color="shader.a.100">
                   <Text lineHeight="1.5rem" fontWeight="medium">

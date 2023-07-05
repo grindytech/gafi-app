@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Flex,
   Grid,
   HStack,
@@ -151,14 +150,13 @@ export default function Footer() {
           </HStack>
         </VStack>
       </Grid>
-      {/*  <Divider height="0.063rem" bg="shader.a.200" my={6} /> */}
+
       <Box
         borderTopWidth="0.063rem"
         borderBottomWidth="0.063rem"
         borderColor="shader.a.200"
         py={6}
       >
-        {' '}
         <Box width={{ lg: '50%', base: 'full' }}>
           <Grid
             gridTemplateColumns={{
@@ -169,7 +167,12 @@ export default function Footer() {
           >
             {NavLinkData.map(item => (
               <>
-                <VStack alignItems="flex-start" gap={2} color="shader.a.600">
+                <VStack
+                  alignItems="flex-start"
+                  gap={2}
+                  color="shader.a.600"
+                  key={item.title}
+                >
                   <Text
                     color="shader.a.900"
                     fontWeight="medium"
@@ -179,7 +182,12 @@ export default function Footer() {
                   </Text>
                   {item.subLink.map(subItem => (
                     <>
-                      <Text fontSize="sm" as={Link} to={subItem.link}>
+                      <Text
+                        key={subItem.title}
+                        fontSize="sm"
+                        as={Link}
+                        to={subItem.link}
+                      >
                         {subItem.title}
                       </Text>
                     </>

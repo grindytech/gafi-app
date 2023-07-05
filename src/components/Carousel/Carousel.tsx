@@ -68,7 +68,7 @@ const Carousel = ({ children, breakPointCustom }: IProps) => {
                     slidesPerView: 3,
                   },
 
-                  1440: {
+                  1280: {
                     slidesPerView: 4,
                   },
                 }

@@ -204,7 +204,25 @@ const Heading: ComponentStyleConfig = {
       fontWeight: 'medium',
       color: 'shader.a.600',
     },
+    sub01: {
+      color: 'shader.a.900',
+      fontSize: 'xl',
+      fontWeight: 'semibold',
+      lineHeight: '1.5rem',
+    },
+    sub02: {
+      color: 'shader.a.900',
+      fontWeight: 'medium',
+      lineHeight: '1.5rem',
+      fontsize: 'xl',
+    },
   },
+};
+export const Text: ComponentStyleConfig = {
+  baseStyle: {
+    color: 'shader.a.900',
+  },
+  variants: {},
 };
 export const Tabs: ComponentStyleConfig = {
   variants: {
@@ -228,6 +246,7 @@ export const Tabs: ComponentStyleConfig = {
     },
   },
 };
+
 const theme = extendTheme({
   colors,
   styles,

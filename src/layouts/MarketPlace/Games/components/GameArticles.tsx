@@ -1,8 +1,9 @@
-import { Box, Text, Image, HStack, Icon } from '@chakra-ui/react';
+import { Box, Text, Image, HStack, Icon, Heading } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import TimeIcon from 'public/assets/line/time.svg';
+import TimeReminder from 'components/Time/TimeReminder';
 export const DataTestArticle = [
   {
     image:
@@ -57,14 +58,7 @@ const GameArticles = () => {
   return (
     <>
       <Box>
-        <Text
-          color="shader.a.900"
-          fontSize="xl"
-          fontWeight="semibold"
-          lineHeight="1.5rem"
-        >
-          Game Article
-        </Text>
+        <Heading variant="sub01">Game Article</Heading>
         <Box mt={4}>
           <Carousel
             breakPointCustom={{
@@ -99,26 +93,7 @@ const GameArticles = () => {
                       h="242px"
                       borderRadius="xl"
                     />
-                    <Box
-                      position="absolute"
-                      background="rgba(0, 0, 0, 0.70)"
-                      borderRadius="1.125rem"
-                      backdropFilter="blur(5px)"
-                      bottom={3}
-                      left={3}
-                    >
-                      <HStack
-                        py={1.5}
-                        px={2}
-                        color="white"
-                        gap={0.5}
-                        fontSize="sm"
-                      >
-                        <Icon as={TimeIcon} h={5} w={5} />
-                        <Text>End in </Text>
-                        <Text fontWeight="medium">0h 32m 13s</Text>
-                      </HStack>
-                    </Box>
+                    <TimeReminder sx={{ position: 'absolute' }} />
                   </Box>
                   <Box padding={6} color="shader.a.900">
                     <Text lineHeight="1.5rem" fontWeight="medium">

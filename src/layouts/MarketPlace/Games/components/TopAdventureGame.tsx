@@ -1,6 +1,6 @@
 import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/components/TrendingSection';
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import CardTypeOne from 'components/ProductCard/CardTypeOne';
@@ -81,23 +81,17 @@ const TopAdventureGame = () => {
   return (
     <>
       <Box>
-        <Text
-          color="shader.a.900"
-          fontSize="xl"
-          fontWeight="semibold"
-          lineHeight="1.5rem"
-        >
+        <Heading variant="sub01" mb={4}>
           Top Adventure Games
-        </Text>
-        <Box mt={4}>
-          <Carousel>
-            {TestData.map(item => (
-              <SwiperSlide key={item.id}>
-                <CardTypeOne item={item} />
-              </SwiperSlide>
-            ))}
-          </Carousel>
-        </Box>
+        </Heading>
+
+        <Carousel>
+          {TestData.map(item => (
+            <SwiperSlide key={item.id}>
+              <CardTypeOne item={item} />
+            </SwiperSlide>
+          ))}
+        </Carousel>
       </Box>
     </>
   );
