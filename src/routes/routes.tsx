@@ -6,9 +6,10 @@ import Pools from 'layouts/Web3/Pools';
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
 import Web3 from 'pages/Web3';
-import MarketPlace, { ListMarketPlace } from 'pages/MarketPlace';
+import MarketPlace from 'pages/MarketPlace';
 import Home from 'layouts/Home';
-import { ListExplorerTab } from 'pages/MarketPlace/Explorer';
+import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
+import HomeMarketPlace from 'pages/MarketPlace/Home';
 
 const router = createBrowserRouter([
   {
@@ -46,10 +47,20 @@ const router = createBrowserRouter([
       {
         path: 'marketplace',
         element: <MarketPlace />,
-        children: ListMarketPlace.map(market => ({
-          path: market.link,
-          element: market.element,
-        })),
+        children: [
+          { path: 'home', element: <HomeMarketPlace /> },
+          {
+            path: 'explorer',
+            element: <Explorer />,
+            children: ListExplorerTab.map(tabLink => ({
+              path: tabLink.link,
+              element: tabLink.element,
+            })),
+          },
+        ],
+      },
+      {
+        path: 'minting',
       },
     ],
   },

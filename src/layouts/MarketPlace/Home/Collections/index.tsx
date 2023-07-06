@@ -3,7 +3,7 @@ import HotCollection from './components/HotCollection';
 
 import TrendingSection from './components/TrendingSection';
 import TopPool from './components/TopPool';
-import { Flex, Grid } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import RecentSold from './components/RecentSold';
 import RecentMint from './components/RecentMint';
 import LiveAuction from './components/LiveAuction';

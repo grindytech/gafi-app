@@ -246,6 +246,26 @@ export const Tabs: ComponentStyleConfig = {
     },
   },
 };
+export const Select: ComponentStyleConfig = {
+  variants: {
+    formFilter: {
+      field: {
+        color: 'shader.a.900',
+        fontsize: 'sm',
+        fontWeight: 'medium',
+        borderRadius: 'lg',
+        bg: 'white',
+        border: '0.063rem solid',
+        borderColor: 'shader.a.400',
+        px: 4,
+      },
+
+      icon: {
+        color: 'primary.a.500',
+      },
+    },
+  },
+};
 
 const theme = extendTheme({
   colors,
@@ -254,6 +274,7 @@ const theme = extendTheme({
   components: {
     CardBox,
     Button,
+    Select,
     Table,
     Tabs,
     Heading,

@@ -13,10 +13,16 @@ const CardTypeOne = ({ item }: IProps) => {
         padding={0}
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+        cursor="pointer"
+        transition="all linear 0.6s"
       >
         <VStack alignItems="flex-start" gap={0}>
           <Box width="full" padding={2}>
             <Image
+              _hover={{
+                objectFit: 'contain',
+              }}
+              transition="all linear 0.6s"
               objectFit="cover"
               src={item.image}
               alt={`Image ${item.name}`}

@@ -3,6 +3,7 @@ import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import { DataTestArticle } from './GameArticles';
 import NextIcon from 'public/assets/line/chevron-01.svg';
+import BgGrid from 'public/assets/background/bg-grid.svg';
 import TimeReminder from 'components/Time/TimeReminder';
 const GameEvent = () => {
   return (
@@ -10,9 +11,10 @@ const GameEvent = () => {
       borderRadius="16px"
       background="shader.a.900"
       color="shader.a.100"
-      px={'32px'}
+      px={8}
       pt={8}
       pb={20}
+      position="relative"
     >
       <HStack justifyContent="space-between">
         <Text
@@ -56,6 +58,10 @@ const GameEvent = () => {
               },
             },
           }}
+          styleButton={{
+            color: 'white',
+            bg: 'shader.a.600',
+          }}
         >
           {DataTestArticle.map((item, index) => (
             <SwiperSlide key={index}>
@@ -93,6 +99,16 @@ const GameEvent = () => {
             </SwiperSlide>
           ))}
         </Carousel>
+      </Box>
+      <Box
+        sx={{
+          svg: {
+            position: 'absolute',
+            bottom: 0,
+          },
+        }}
+      >
+        <BgGrid />
       </Box>
     </Box>
   );

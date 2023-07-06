@@ -14,73 +14,73 @@ export interface TestDataProps3 {
   currentAuction: string;
   isVerified?: boolean;
 }
+export const dataTest: TestDataProps3[] = [
+  {
+    id: '1230',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1231',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/users/383277/screenshots/18055765/media/e5fc935b60035305099554810357012a.png',
+    isVerified: true,
+  },
+  {
+    id: '1232',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1233',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1234',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1235',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1236',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+  {
+    id: '1237',
+    name: 'Karas',
+    currentAuction: '110000000000',
+    image:
+      'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
+    isVerified: true,
+  },
+];
 const LiveAuction = () => {
-  const dataTest: TestDataProps3[] = [
-    {
-      id: '1230',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1231',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/users/383277/screenshots/18055765/media/e5fc935b60035305099554810357012a.png',
-      isVerified: true,
-    },
-    {
-      id: '1232',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1233',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1234',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1235',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1236',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-    {
-      id: '1237',
-      name: 'Karas',
-      currentAuction: '110000000000',
-      image:
-        'https://cdn.dribbble.com/userupload/2777908/file/original-314c68bc24d518d315fff80d848cf737.png',
-      isVerified: true,
-    },
-  ];
   return (
     <Box mt={4}>
       <HStack justifyContent="space-between" spacing={0} position="sticky">

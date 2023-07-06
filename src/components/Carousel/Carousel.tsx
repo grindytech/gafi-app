@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper } from 'swiper/react';
 import { Navigation } from 'swiper';
-import { Box, Button, Icon } from '@chakra-ui/react';
+import { Box, Button, ButtonProps, Icon } from '@chakra-ui/react';
 /* import { SwiperOptions } from 'swiper/types/swiper-options.d.ts'; */
 // eslint-disable-next-line import/no-unresolved
 import { SwiperOptions } from 'swiper/types';
@@ -13,10 +13,10 @@ import 'swiper/css/navigation'; */
 
 interface IProps {
   children: React.ReactNode;
-
   options?: SwiperOptions;
+  styleButton?: ButtonProps;
 }
-const Carousel = ({ children, options }: IProps) => {
+const Carousel = ({ children, options, styleButton }: IProps) => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   return (
@@ -28,7 +28,9 @@ const Carousel = ({ children, options }: IProps) => {
           slidesPerView={4}
           modules={[Navigation]}
           navigation={{
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             prevEl: prevRef.current!,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             nextEl: nextRef.current!,
           }}
           onInit={swiper => {
@@ -93,14 +95,10 @@ const Carousel = ({ children, options }: IProps) => {
             sx={{
               left: '-20px',
             }}
+            {...styleButton}
+            color="primary.a.500"
           >
-            <Icon
-              as={NextIcon}
-              height={6}
-              w={6}
-              transform="rotate(90deg)"
-              color="primary.a.500"
-            />
+            <Icon as={NextIcon} height={6} w={6} transform="rotate(90deg)" />
           </Button>
           <Button
             ref={nextRef}
@@ -108,14 +106,10 @@ const Carousel = ({ children, options }: IProps) => {
             sx={{
               right: '-20px',
             }}
+            color="primary.a.500"
+            {...styleButton}
           >
-            <Icon
-              as={NextIcon}
-              height={6}
-              w={6}
-              transform="rotate(-90deg)"
-              color="primary.a.500"
-            />
+            <Icon as={NextIcon} height={6} w={6} transform="rotate(-90deg)" />
           </Button>
         </Box>
       </Box>
