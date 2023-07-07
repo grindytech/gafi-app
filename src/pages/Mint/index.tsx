@@ -7,7 +7,7 @@ import MintModal from './components/MintModal';
 import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
-import GameOwner from 'components/Game/GameOwner';
+
 import MintWeight from './components/MintWeight';
 import NumberInput from 'components/NumberInput';
 import CardBox from 'components/CardBox';
@@ -46,9 +46,8 @@ export default function Mint() {
         px={12}
         transform="translateY(-5%)"
       >
-        <GameOwner />
-
         <SwitchAdmin
+          type="Owner"
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
         />
 

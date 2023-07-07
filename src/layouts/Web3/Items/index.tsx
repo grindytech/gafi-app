@@ -13,9 +13,10 @@ import GoBack from 'components/GoBack';
 
 import LineAddIcon from 'public/assets/line/add.svg';
 
-import CreateItem from './components/CreateItem';
-import AddSupply from './components/AddSupply';
+import CreateItem from './CreateItem';
+import AddSupply from './AddSupply';
 import theme from 'theme/theme';
+import AddMetadataItem from './AddMetadataItem';
 
 export default function Items() {
   return (
@@ -50,6 +51,8 @@ export default function Items() {
               <Text>Add Supply</Text>
             </Center>
           </Tab>
+
+          <Tab>Add Metadata</Tab>
         </TabList>
 
         <TabPanels
@@ -65,6 +68,10 @@ export default function Items() {
 
           <TabPanel>
             <AddSupply />
+          </TabPanel>
+
+          <TabPanel>
+            <AddMetadataItem />
           </TabPanel>
         </TabPanels>
       </Tabs>

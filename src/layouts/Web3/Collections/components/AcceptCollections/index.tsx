@@ -6,7 +6,7 @@ import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import AcceptCollectionsModal from './AcceptCollectionsModal';
-import GameOwner from 'components/Game/GameOwner';
+
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 
@@ -33,8 +33,6 @@ export default function AcceptCollections() {
       flexDirection="column"
       gap={3}
     >
-      <GameOwner />
-
       <SwitchAdmin
         setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
       />

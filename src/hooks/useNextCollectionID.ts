@@ -18,7 +18,7 @@ export default function useNextCollectionID({
         const res = await api.query.nfts.nextCollectionId();
         const id = res.toString();
 
-        setID(id);
+        setID(id || '0');
       }
     };
 

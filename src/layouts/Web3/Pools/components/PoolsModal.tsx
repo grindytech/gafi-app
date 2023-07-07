@@ -49,6 +49,9 @@ export default function PoolsModal({
   const { isLoading, mutation } = useSignAndSend({
     address: admin.address,
     key: [type, `${admin.address} ${time}`],
+    onSuccess() {
+      onClose();
+    },
   });
 
   return (
@@ -167,12 +170,18 @@ export default function PoolsModal({
               if (api) {
                 if (type === 'createDynamicPool') {
                   return mutation(
-                    api.tx.game.createDynamicPool(supply, fee, admin.address)
+                    api.tx.game.createDynamicPool(supply, admin.address, {
+                      minType: 'Public',
+                      price: fee,
+                    })
                   );
                 }
                 if (type === 'createStablePool') {
                   return mutation(
-                    api.tx.game.createDynamicPool(supply, fee, admin.address)
+                    api.tx.game.createStablePool(supply, admin.address, {
+                      minType: 'Public',
+                      price: fee,
+                    })
                   );
                 }
               }

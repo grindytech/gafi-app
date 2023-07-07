@@ -1,23 +1,25 @@
 import {
+  Box,
   Center,
   FormControl,
   FormLabel,
   Heading,
   Input,
-  NumberInput as NumberInputChakra,
-  NumberInputField,
 } from '@chakra-ui/react';
-import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
 
 import { TypeNumberInput } from 'types';
+import { TextInputMaxLengthStyle } from './TextInputMaxLength';
 
-export default function NumberInput({
+type TextInputProps = Omit<TypeNumberInput, 'control' | 'setValue'>;
+
+export default function TextInput({
   register,
   isRequired,
   isInvalid,
   title,
   value,
-}: Omit<TypeNumberInput, 'control' | 'setValue'>) {
+  placeholder,
+}: TextInputProps) {
   return (
     <FormControl
       {...TextInputMaxLengthStyle}
@@ -29,15 +31,15 @@ export default function NumberInput({
         <Heading variant="game">{title}</Heading>
       </FormLabel>
 
-      <NumberInputChakra min={0}>
+      <Box position="relative">
         <Input
-          as={NumberInputField}
-          required={false}
           variant="control"
-          placeholder="Ex: 0"
+          required={false}
+          placeholder={placeholder || 'Ex: 0'}
+          pr={16}
           {...register(value, { required: isRequired })}
         />
-      </NumberInputChakra>
+      </Box>
     </FormControl>
   );
 }
