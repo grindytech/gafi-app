@@ -43,7 +43,7 @@ export default function useSignAndSend({
       const injected = await getInjectedWeb3(extensionName as string);
 
       if (injected) {
-        parmas.signAndSend(
+        await parmas.signAndSend(
           address,
           {
             signer: injected.signer,

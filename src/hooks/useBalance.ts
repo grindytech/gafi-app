@@ -10,9 +10,10 @@ type TypeGetBalance = {
 
 interface useBalanceProps {
   account: string | null | undefined;
+  refetch?: () => void;
 }
 
-export default function useBalance({ account }: useBalanceProps) {
+export default function useBalance({ account, refetch }: useBalanceProps) {
   const [balance, setBalance] = useState<string | undefined>();
   const { api } = useAppSelector(state => state.substrate);
 
@@ -27,7 +28,7 @@ export default function useBalance({ account }: useBalanceProps) {
       }
     };
     getBalance();
-  }, [api?.query, account]);
+  }, [api?.query, account, refetch]);
 
   return {
     balance,
