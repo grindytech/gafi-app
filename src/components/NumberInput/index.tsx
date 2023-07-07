@@ -7,9 +7,9 @@ import {
   NumberInput as NumberInputChakra,
   NumberInputField,
 } from '@chakra-ui/react';
+import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
 
 import { TypeNumberInput } from 'types';
-import { NumberInputMaxTextStyle } from './NumberInputMaxText';
 
 export default function NumberInput({
   register,
@@ -20,7 +20,7 @@ export default function NumberInput({
 }: Omit<TypeNumberInput, 'control' | 'setValue'>) {
   return (
     <FormControl
-      {...NumberInputMaxTextStyle}
+      {...TextInputMaxLengthStyle}
       isRequired={isRequired}
       isInvalid={isInvalid}
       as={Center}

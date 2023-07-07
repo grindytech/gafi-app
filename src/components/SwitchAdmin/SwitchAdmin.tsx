@@ -37,7 +37,7 @@ export type TypeSwitchAdmin = Record<
 
 interface SwitchAdmin {
   setValue: UseFormSetValue<TypeSwitchAdmin>;
-  type?: 'Admin' | 'Mint to';
+  type?: 'Admin' | 'Owner';
   sx?: BoxProps;
 }
 

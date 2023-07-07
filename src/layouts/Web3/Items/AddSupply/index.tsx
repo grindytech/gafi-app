@@ -1,28 +1,30 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
-
 import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import AddCollectionsModal from './AddCollectionsModal';
-import NumberInput from 'components/NumberInput';
-import CardBox from 'components/CardBox';
+import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
-export interface AddCollectionFieldProps extends TypeSwitchAdmin {
-  collection_id: string;
-  game_id: string;
+import AddSupplyModal from './AddSupplyModal';
+
+import CardBox from 'components/CardBox';
+import NumberInput from 'components/NumberInput';
+
+export interface AddSupplyFieldProps extends TypeSwitchAdmin {
+  collection_id: number;
+  item_id: number;
+  amount: number;
 }
 
-export default function AddCollections() {
+export default function AddSupply() {
   const {
-    setValue,
     getValues,
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AddCollectionFieldProps>();
+  } = useForm<AddSupplyFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -49,10 +51,20 @@ export default function AddCollections() {
 
       <CardBox variant="createGames">
         <NumberInput
-          value="game_id"
-          title="Game ID"
+          value="item_id"
+          title="Item ID"
           register={register}
-          isInvalid={!!errors.game_id}
+          isInvalid={!!errors.item_id}
+          isRequired={true}
+        />
+      </CardBox>
+
+      <CardBox variant="createGames">
+        <NumberInput
+          value="amount"
+          title="Amount"
+          isInvalid={!!errors.amount}
+          register={register}
           isRequired={true}
         />
       </CardBox>
@@ -67,9 +79,7 @@ export default function AddCollections() {
         Submit Transaction
       </Button>
 
-      {isOpen && (
-        <AddCollectionsModal onClose={onClose} getValues={getValues} />
-      )}
+      {isOpen && <AddSupplyModal onClose={onClose} getValues={getValues} />}
     </Flex>
   );
 }

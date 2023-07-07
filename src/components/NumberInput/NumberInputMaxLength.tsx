@@ -9,8 +9,9 @@ import {
 } from '@chakra-ui/react';
 
 import { TypeNumberInput } from 'types';
-import { NumberInputMaxTextStyle } from './NumberInputMaxText';
+
 import { Controller } from 'react-hook-form';
+import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
 
 interface NumberInputMaxLengthProps
   extends Omit<TypeNumberInput, 'register' | 'setValue'> {
@@ -27,7 +28,7 @@ export default function NumberInputMaxLength({
 }: NumberInputMaxLengthProps) {
   return (
     <FormControl
-      {...NumberInputMaxTextStyle}
+      {...TextInputMaxLengthStyle}
       isRequired={isRequired}
       isInvalid={isInvalid}
       as={Center}

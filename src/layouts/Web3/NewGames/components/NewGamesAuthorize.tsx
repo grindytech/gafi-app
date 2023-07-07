@@ -36,10 +36,10 @@ export default function NewGamesAuthorize({
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { game_id, admin, title } = getValues();
+  const { game_id, admin, title, owner } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: owner.address,
     key: ['createGame', game_id],
     onSuccess() {
       refetch();
@@ -72,7 +72,7 @@ export default function NewGamesAuthorize({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={owner.name} hash={owner.address} />
         </ModalHeader>
 
         <ModalBody
