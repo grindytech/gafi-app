@@ -224,13 +224,10 @@ const HotCollection = () => {
                 slidesPerView: 1,
               },
               630: {
-                slidesPerView: 2.5,
+                slidesPerView: 2,
               },
               920: {
                 slidesPerView: 2.5,
-              },
-              1232: {
-                slidesPerView: 3.5,
               },
               1520: {
                 slidesPerView: 3.5,

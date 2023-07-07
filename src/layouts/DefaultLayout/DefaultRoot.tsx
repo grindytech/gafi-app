@@ -12,12 +12,13 @@ export default function DefaultMain() {
       <Flex flexDirection="column" height="100vh">
         <Container maxWidth={breakpointsContainer} as="article">
           <Header />
+
           <Box as="main" flex={1}>
             <Outlet />
           </Box>
         </Container>
-        <Box bg="white" mt="30px">
-          <Container maxWidth={breakpointsContainer}>
+        <Box bg="white" mt={4}>
+          <Container maxWidth={breakpointsContainer} as="article">
             <Footer />
           </Container>
         </Box>

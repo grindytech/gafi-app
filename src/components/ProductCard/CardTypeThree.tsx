@@ -26,13 +26,13 @@ const CardTypeThree = ({ item }: IProps) => {
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
       >
         <VStack color="shader.a.900" gap={0}>
-          <Box position="relative" padding={2}>
+          <Box position="relative" padding={2} width="full">
             <Image
               objectFit="cover"
               src={item.image}
               alt={`Image ${item.name}`}
               /*       h="12.5rem"
-              width="full" */
+               */
               borderRadius="xl"
             />
             <Box

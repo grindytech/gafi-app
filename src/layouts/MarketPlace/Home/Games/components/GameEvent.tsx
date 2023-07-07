@@ -15,6 +15,12 @@ const GameEvent = () => {
       pt={8}
       pb={20}
       position="relative"
+      overflow="hidden"
+      /*   bgImage={"url('/assets/background/bg-grid.svg')"}
+      bgRepeat="no-repeat"
+      backgroundPosition="center"
+      bgClip="border-box"
+      backgroundSize="cover" */
     >
       <HStack justifyContent="space-between">
         <Text
@@ -101,9 +107,15 @@ const GameEvent = () => {
         </Carousel>
       </Box>
       <Box
+        overflow="hidden"
+        width="full"
+        height="full"
         sx={{
           svg: {
+            /*    width: 'full',
+            height: 'full', */
             position: 'absolute',
+            left: 0,
             bottom: 0,
           },
         }}

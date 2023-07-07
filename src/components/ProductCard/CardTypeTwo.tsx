@@ -22,14 +22,15 @@ const CardTypeTwo = ({ item }: IProps) => {
         padding={0}
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+        height="full"
       >
         <VStack color="shader.a.900" gap={0}>
-          <Box padding={2}>
+          <Box padding={2} width="full">
             <Image
               objectFit="cover"
               src={item.image}
               alt={`Image ${item.name}`}
-              /*   h="12.5rem" */
+              h="12.5rem"
               borderRadius="xl"
             />
           </Box>

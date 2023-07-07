@@ -11,16 +11,22 @@ import {
 import { testOption1 } from 'pages/MarketPlace/Explorer';
 import CloseIcon from 'public/assets/line/close.svg';
 import SearchIcon from 'public/assets/line/search.svg';
-const Filter = () => {
+interface IProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+const Filter = ({ isOpen, onToggle }: IProps) => {
   return (
     <>
       <Box
-        width="360px"
+        display={isOpen ? 'block' : 'none'}
+        opacity={isOpen ? 1 : 0}
         borderRadius="xl"
+        width="280px"
         border="0.063rem solid"
         borderColor="shader.a.400"
         color="shader.a.900"
-        top={'120px'}
+        top="7.5rem"
         position="sticky"
         height="fit-content"
       >

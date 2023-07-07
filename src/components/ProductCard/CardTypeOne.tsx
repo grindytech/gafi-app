@@ -1,4 +1,12 @@
-import { Image, VStack, Text, HStack, Box, Icon } from '@chakra-ui/react';
+import {
+  Image,
+  VStack,
+  Text,
+  HStack,
+  Box,
+  Icon,
+  Skeleton,
+} from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import { TestPropsType1 } from 'layouts/MarketPlace/Home/Collections/components/TrendingSection';
 
@@ -68,4 +76,61 @@ const CardTypeOne = ({ item }: IProps) => {
   );
 };
 
+export const CardTypeOneSkeleton = () => {
+  const bgSkeleton =
+    'linear-gradient(90deg, #E4E4E7 0%, rgba(228, 228, 231, 0.15) 62.77%, #E4E4E7 100%)';
+  return (
+    <CardBox
+      padding={0}
+      variant="baseStyle"
+      boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+      cursor="pointer"
+      transition="all linear 0.6s"
+    >
+      <Box w="full" padding={2}>
+        <Skeleton width="full" h="10.5rem" borderRadius="xl" bg={bgSkeleton} />
+      </Box>
+
+      <Box
+        p={4}
+        width="full"
+        borderTop="0.063rem solid "
+        borderColor="shader.a.200"
+      >
+        <HStack gap={1.5} mb={3.5} justifyContent="space-between">
+          <Box>
+            <Skeleton
+              bg={bgSkeleton}
+              w="2.5rem"
+              height="1rem"
+              borderRadius="16px"
+              mb={1}
+            />
+            <Skeleton
+              bg={bgSkeleton}
+              w="4rem"
+              height="1rem"
+              borderRadius="16px"
+            />
+          </Box>
+          <VStack alignItems="flex-end" gap={0}>
+            <Skeleton
+              bg={bgSkeleton}
+              w="2.5rem"
+              height="1rem"
+              borderRadius="16px"
+              mb={1}
+            />
+            <Skeleton
+              bg={bgSkeleton}
+              w="4rem"
+              height="1rem"
+              borderRadius="16px"
+            />
+          </VStack>
+        </HStack>
+      </Box>
+    </CardBox>
+  );
+};
 export default CardTypeOne;

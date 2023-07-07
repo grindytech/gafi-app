@@ -10,6 +10,7 @@ import {
   ListItem,
   Select,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -43,12 +44,14 @@ export const ListExplorerTab = [
 const Explorer = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { isOpen, onToggle } = useDisclosure();
 
   React.useEffect(() => {
     if (pathname === '/marketplace/explorer') {
       navigate('/marketplace/explorer/activities');
     }
   }, [pathname]);
+
   return (
     <>
       <CardBox
@@ -89,8 +92,12 @@ const Explorer = () => {
           })}
         </List>
         <Box p={4}>
-          <HStack gap={4} mb={4}>
-            <Button variant="primary" leftIcon={<Icon as={FilterIcon} />}>
+          <HStack gap={4} mb={4} flexWrap="wrap">
+            <Button
+              variant="primary"
+              leftIcon={<Icon as={FilterIcon} />}
+              onClick={onToggle}
+            >
               Filter
             </Button>
             <Select variant="formFilter" width="fit-content">
@@ -115,10 +122,14 @@ const Explorer = () => {
               ))}
             </Select>
           </HStack>
-          <Flex width="full" gap={5}>
-            <Filter />
-            <Outlet />
-          </Flex>
+          <HStack gap={0} alignItems="flex-start">
+            <Box flexGrow={1}>
+              <Filter isOpen={isOpen} onToggle={onToggle} />
+            </Box>
+            <Box width="full">
+              <Outlet />
+            </Box>
+          </HStack>
         </Box>
       </CardBox>
     </>
