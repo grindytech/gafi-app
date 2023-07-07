@@ -14,13 +14,32 @@ import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
 import Balance from 'components/Balance/Balance';
 import { useAppSelector } from 'hooks/useRedux';
+import React from 'react';
+import { UseFormSetValue } from 'react-hook-form';
+
+export type TypeGameOwner = {
+  owner: {
+    address: string;
+    name: string;
+  };
+};
 
 interface GameOwnerProps {
   sx?: BoxProps;
+  setValue: UseFormSetValue<TypeGameOwner>;
 }
 
-export default function GameOwner({ sx }: GameOwnerProps) {
+export default function GameOwner({ setValue, sx }: GameOwnerProps) {
   const { account } = useAppSelector(state => state.injected.polkadot);
+
+  React.useEffect(() => {
+    if (account && account.address && account.name) {
+      setValue('owner', {
+        address: account.address,
+        name: account.name,
+      });
+    }
+  }, [account]);
 
   return (
     <>

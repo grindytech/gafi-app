@@ -7,8 +7,7 @@ import '@polkadot/api-base/types/errors';
 
 import type { ApiTypes, AugmentedError } from '@polkadot/api-base/types';
 
-export type __AugmentedError<ApiType extends ApiTypes> =
-  AugmentedError<ApiType>;
+export type __AugmentedError<ApiType extends ApiTypes> = AugmentedError<ApiType>;
 
 declare module '@polkadot/api-base/types/errors' {
   interface AugmentedErrors<ApiType extends ApiTypes> {
@@ -127,7 +126,9 @@ declare module '@polkadot/api-base/types/errors' {
        * Transfer is locked for any trade
        **/
       ItemLocked: AugmentedError<ApiType>;
+      MintEnded: AugmentedError<ApiType>;
       MintFailed: AugmentedError<ApiType>;
+      MintNotStarted: AugmentedError<ApiType>;
       NoPermission: AugmentedError<ApiType>;
       NotAuction: AugmentedError<ApiType>;
       NotBundle: AugmentedError<ApiType>;
@@ -135,10 +136,13 @@ declare module '@polkadot/api-base/types/errors' {
       NotSetBuy: AugmentedError<ApiType>;
       NotSetPrice: AugmentedError<ApiType>;
       NotSwap: AugmentedError<ApiType>;
+      NotWhitelisted: AugmentedError<ApiType>;
       NotWishlist: AugmentedError<ApiType>;
       PoolIdInUse: AugmentedError<ApiType>;
       SoldOut: AugmentedError<ApiType>;
+      TradeEnded: AugmentedError<ApiType>;
       TradeIdInUse: AugmentedError<ApiType>;
+      TradeNotStarted: AugmentedError<ApiType>;
       UnknowMiningPool: AugmentedError<ApiType>;
       UnknownAcceptance: AugmentedError<ApiType>;
       UnknownAuction: AugmentedError<ApiType>;
@@ -399,7 +403,7 @@ declare module '@polkadot/api-base/types/errors' {
       CallFiltered: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
-       *
+       * 
        * Either calling `Core_version` or decoding `RuntimeVersion` failed.
        **/
       FailedToExtractRuntimeVersion: AugmentedError<ApiType>;

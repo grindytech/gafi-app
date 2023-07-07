@@ -7,9 +7,9 @@ import polkadotJsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { chainDecimal } from 'utils/constants';
 
 interface PayloadProps {
-  apiState: reduxSubstrateProps['apiState'];
+  apiState?: reduxSubstrateProps['apiState'];
   payload: reduxSubstrateProps['api'];
-  socket: reduxSubstrateProps['socket'];
+  socket?: reduxSubstrateProps['socket'];
 }
 
 export interface reduxSubstrateProps {
@@ -22,7 +22,7 @@ export interface reduxSubstrateProps {
 }
 
 const initialState: reduxSubstrateProps = {
-  socket: (config.PROVIDER_SOCKETS as string[])[0],
+  socket: config.PROVIDER_SOCKETS?.[0] as string,
   jsonrpc: {
     ...polkadotJsonrpc,
     ...config.CUSTOM_RPC_METHODS,
@@ -38,12 +38,16 @@ export const substrate = createSlice({
   initialState,
   reducers: {
     substrateConnect: (state, { payload }: PayloadAction<PayloadProps>) => {
-      state.apiState = payload.apiState;
-      state.api = payload.payload;
+      if (payload.apiState) {
+        state.apiState = payload.apiState;
+        state.api = payload.payload;
+      }
     },
     setConnectSocket: (state, { payload }: PayloadAction<PayloadProps>) => {
-      state.apiState = payload.apiState;
-      state.socket = payload.socket;
+      if (payload.socket) {
+        state.apiState = payload.apiState;
+        state.socket = payload.socket;
+      }
     },
   },
 });

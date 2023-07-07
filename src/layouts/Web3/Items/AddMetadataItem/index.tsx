@@ -6,25 +6,28 @@ import SwitchAdmin, {
 
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
-import AddSupplyModal from './AddSupplyModal';
-import GameOwner from 'components/Game/GameOwner';
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
+import TextInputMaxLength from 'components/TextInput/TextInputMaxLength';
 
-export interface AddSupplyFieldProps extends TypeSwitchAdmin {
+import AddMetadataItemModal from './components/AddMetadataItemModal';
+import UploadPicture from 'components/UploadPicture';
+
+export interface AddMetadataItemFieldProps extends TypeSwitchAdmin {
   collection_id: number;
   item_id: number;
-  amount: number;
+  title: string;
+  image: File[];
 }
 
-export default function AddSupply() {
+export default function AddMetadataItem() {
   const {
     getValues,
     setValue,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AddSupplyFieldProps>();
+  } = useForm<AddMetadataItemFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -35,11 +38,18 @@ export default function AddSupply() {
       flexDirection="column"
       gap={3}
     >
-      <GameOwner />
-
       <SwitchAdmin
         setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
       />
+
+      <CardBox variant="createGames">
+        <UploadPicture
+          register={register}
+          value="image"
+          isInvalid={!!errors.image}
+          isRequired={true}
+        />
+      </CardBox>
 
       <CardBox variant="createGames">
         <NumberInput
@@ -62,12 +72,14 @@ export default function AddSupply() {
       </CardBox>
 
       <CardBox variant="createGames">
-        <NumberInput
-          value="amount"
-          title="Amount"
-          isInvalid={!!errors.amount}
+        <TextInputMaxLength
           register={register}
+          value="title"
+          title="Title"
+          placeholder="Heroes & Empires"
+          isInvalid={!!errors.title}
           isRequired={true}
+          max={28}
         />
       </CardBox>
 
@@ -81,7 +93,9 @@ export default function AddSupply() {
         Submit Transaction
       </Button>
 
-      {isOpen && <AddSupplyModal onClose={onClose} getValues={getValues} />}
+      {isOpen && (
+        <AddMetadataItemModal onClose={onClose} getValues={getValues} />
+      )}
     </Flex>
   );
 }

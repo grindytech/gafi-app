@@ -11,11 +11,12 @@ import React from 'react';
 
 import { TypeNumberInput } from 'types';
 
-interface NumberInputMaxTextProps extends Omit<TypeNumberInput, 'setValue'> {
+interface TextInputMaxLengthProps
+  extends Omit<TypeNumberInput, 'control' | 'setValue'> {
   max: number;
 }
 
-export const NumberInputMaxTextStyle: FormControlProps = {
+export const TextInputMaxLengthStyle: FormControlProps = {
   gap: 4,
   justifyContent: 'space-between',
   alignItems: {
@@ -44,19 +45,20 @@ export const NumberInputMaxTextStyle: FormControlProps = {
   },
 };
 
-export default function NumberInputMaxText({
+export default function TextInputMaxLength({
   register,
   isRequired,
   isInvalid,
   title,
   value,
   max,
-}: NumberInputMaxTextProps) {
+  placeholder,
+}: TextInputMaxLengthProps) {
   const [text, setText] = React.useState('');
 
   return (
     <FormControl
-      {...NumberInputMaxTextStyle}
+      {...TextInputMaxLengthStyle}
       isRequired={isRequired}
       isInvalid={isInvalid}
       as={Center}
@@ -69,7 +71,7 @@ export default function NumberInputMaxText({
         <Input
           variant="control"
           required={false}
-          placeholder="Ex: 0"
+          placeholder={placeholder || 'Ex: 0'}
           pr={16}
           maxLength={max}
           {...register(value, { required: isRequired })}

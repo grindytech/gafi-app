@@ -10,13 +10,10 @@ import SwitchAdmin, {
 } from 'components/SwitchAdmin/SwitchAdmin';
 
 import useForceMount from 'hooks/useForceMount';
-import GameOwner from 'components/Game/GameOwner';
+import GameOwner, { TypeGameOwner } from 'components/Game/GameOwner';
 import GameID from 'components/Game/GameID';
-import NewGamesUpload from './components/NewGamesUpload';
-import CardBox from 'components/CardBox';
-import NumberInputMaxText from 'components/NumberInput/NumberInputMaxText';
 
-export interface NewGamesFieldProps extends TypeSwitchAdmin {
+export interface NewGamesFieldProps extends TypeSwitchAdmin, TypeGameOwner {
   game_id: string;
   title: string;
 }
@@ -25,13 +22,7 @@ export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { mounting, setMounting } = useForceMount();
-  const {
-    setValue,
-    getValues,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<NewGamesFieldProps>();
+  const { setValue, getValues, handleSubmit } = useForm<NewGamesFieldProps>();
 
   return (
     <Box
@@ -48,24 +39,13 @@ export default function NewGames() {
         gap={3}
         mt={8}
       >
-        <GameOwner />
+        <GameOwner
+          setValue={setValue as FieldValues as UseFormSetValue<TypeGameOwner>}
+        />
 
         <SwitchAdmin
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
         />
-
-        <NewGamesUpload register={register} />
-
-        <CardBox variant="createGames">
-          <NumberInputMaxText
-            register={register}
-            title="Title"
-            value="title"
-            isInvalid={!!errors.title}
-            isRequired={true}
-            max={28}
-          />
-        </CardBox>
 
         <GameID setValue={setValue} refetch={mounting} />
 
