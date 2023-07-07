@@ -6,35 +6,11 @@
 import '@polkadot/api-base/types/events';
 
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
-import type {
-  Bytes,
-  Null,
-  Option,
-  Result,
-  Vec,
-  bool,
-  u128,
-  u32,
-  u64,
-} from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
-import type {
-  FrameSupportDispatchDispatchInfo,
-  FrameSupportTokensMiscBalanceStatus,
-  GafiSupportGameTypesLoot,
-  GafiSupportGameTypesNft,
-  GafiSupportGameTypesPackage,
-  PalletGamePoolType,
-  PalletNftsAttributeNamespace,
-  PalletNftsPalletAttributes,
-  PalletNftsPriceWithDirection,
-  SpConsensusGrandpaAppPublic,
-  SpRuntimeDispatchError,
-} from '@polkadot/types/lookup';
 
-export type __AugmentedEvent<ApiType extends ApiTypes> =
-  AugmentedEvent<ApiType>;
+export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
 declare module '@polkadot/api-base/types/events' {
   interface AugmentedEvents<ApiType extends ApiTypes> {
@@ -42,52 +18,28 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A balance was set by root.
        **/
-      BalanceSet: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, free: u128],
-        { who: AccountId32; free: u128 }
-      >;
+      BalanceSet: AugmentedEvent<ApiType, [who: AccountId32, free: u128], { who: AccountId32, free: u128 }>;
       /**
        * Some amount was burned from an account.
        **/
-      Burned: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Burned: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some amount was deposited (e.g. for transaction fees).
        **/
-      Deposit: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Deposit: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * An account was removed whose balance was non-zero but below ExistentialDeposit,
        * resulting in an outright loss.
        **/
-      DustLost: AugmentedEvent<
-        ApiType,
-        [account: AccountId32, amount: u128],
-        { account: AccountId32; amount: u128 }
-      >;
+      DustLost: AugmentedEvent<ApiType, [account: AccountId32, amount: u128], { account: AccountId32, amount: u128 }>;
       /**
        * An account was created with some free balance.
        **/
-      Endowed: AugmentedEvent<
-        ApiType,
-        [account: AccountId32, freeBalance: u128],
-        { account: AccountId32; freeBalance: u128 }
-      >;
+      Endowed: AugmentedEvent<ApiType, [account: AccountId32, freeBalance: u128], { account: AccountId32, freeBalance: u128 }>;
       /**
        * Some balance was frozen.
        **/
-      Frozen: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Frozen: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Total issuance was increased by `amount`, creating a credit to be balanced.
        **/
@@ -95,19 +47,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Some balance was locked.
        **/
-      Locked: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Locked: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some amount was minted into an account.
        **/
-      Minted: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Minted: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Total issuance was decreased by `amount`, creating a debt to be balanced.
        **/
@@ -115,102 +59,48 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Some balance was reserved (moved from free to reserved).
        **/
-      Reserved: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Reserved: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some balance was moved from the reserve of the first account to the second account.
        * Final argument indicates the destination balance type.
        **/
-      ReserveRepatriated: AugmentedEvent<
-        ApiType,
-        [
-          from: AccountId32,
-          to: AccountId32,
-          amount: u128,
-          destinationStatus: FrameSupportTokensMiscBalanceStatus
-        ],
-        {
-          from: AccountId32;
-          to: AccountId32;
-          amount: u128;
-          destinationStatus: FrameSupportTokensMiscBalanceStatus;
-        }
-      >;
+      ReserveRepatriated: AugmentedEvent<ApiType, [from: AccountId32, to: AccountId32, amount: u128, destinationStatus: FrameSupportTokensMiscBalanceStatus], { from: AccountId32, to: AccountId32, amount: u128, destinationStatus: FrameSupportTokensMiscBalanceStatus }>;
       /**
        * Some amount was restored into an account.
        **/
-      Restored: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Restored: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some amount was removed from the account (e.g. for misbehavior).
        **/
-      Slashed: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Slashed: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some amount was suspended from an account (it can be restored later).
        **/
-      Suspended: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Suspended: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some balance was thawed.
        **/
-      Thawed: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Thawed: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Transfer succeeded.
        **/
-      Transfer: AugmentedEvent<
-        ApiType,
-        [from: AccountId32, to: AccountId32, amount: u128],
-        { from: AccountId32; to: AccountId32; amount: u128 }
-      >;
+      Transfer: AugmentedEvent<ApiType, [from: AccountId32, to: AccountId32, amount: u128], { from: AccountId32, to: AccountId32, amount: u128 }>;
       /**
        * Some balance was unlocked.
        **/
-      Unlocked: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Unlocked: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Some balance was unreserved (moved from reserved to free).
        **/
-      Unreserved: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Unreserved: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * An account was upgraded.
        **/
-      Upgraded: AugmentedEvent<
-        ApiType,
-        [who: AccountId32],
-        { who: AccountId32 }
-      >;
+      Upgraded: AugmentedEvent<ApiType, [who: AccountId32], { who: AccountId32 }>;
       /**
        * Some amount was withdrawn from the account (e.g. for transaction fees).
        **/
-      Withdraw: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, amount: u128],
-        { who: AccountId32; amount: u128 }
-      >;
+      Withdraw: AugmentedEvent<ApiType, [who: AccountId32, amount: u128], { who: AccountId32, amount: u128 }>;
       /**
        * Generic event
        **/
@@ -224,281 +114,33 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     game: {
-      AddingAcceptanceSet: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, game: u32, collection: u32],
-        { who: AccountId32; game: u32; collection: u32 }
-      >;
-      AuctionClaimed: AugmentedEvent<
-        ApiType,
-        [trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>>],
-        { trade: u32; maybeBid: Option<ITuple<[AccountId32, u128]>> }
-      >;
-      AuctionSet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          source: Vec<GafiSupportGameTypesPackage>,
-          maybePrice: Option<u128>,
-          startBlock: u32,
-          duration: u32
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          source: Vec<GafiSupportGameTypesPackage>;
-          maybePrice: Option<u128>;
-          startBlock: u32;
-          duration: u32;
-        }
-      >;
-      Bid: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, bid: u128],
-        { trade: u32; who: AccountId32; bid: u128 }
-      >;
-      BundleBought: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, bidPrice: u128],
-        { trade: u32; who: AccountId32; bidPrice: u128 }
-      >;
-      BundleSet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          bundle: Vec<GafiSupportGameTypesPackage>,
-          price: u128
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          bundle: Vec<GafiSupportGameTypesPackage>;
-          price: u128;
-        }
-      >;
-      Burned: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, collection: u32, item: u32, amount: u32],
-        { who: AccountId32; collection: u32; item: u32; amount: u32 }
-      >;
-      BuySet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          collection: u32,
-          item: u32,
-          amount: u32,
-          unitPrice: u128
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          collection: u32;
-          item: u32;
-          amount: u32;
-          unitPrice: u128;
-        }
-      >;
-      CollectionAdded: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, game: u32, collection: u32],
-        { who: AccountId32; game: u32; collection: u32 }
-      >;
-      CollectionCreated: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, collection: u32],
-        { who: AccountId32; collection: u32 }
-      >;
-      CollectionRemoved: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, game: u32, collection: u32],
-        { who: AccountId32; game: u32; collection: u32 }
-      >;
-      GameCreated: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, game: u32],
-        { who: AccountId32; game: u32 }
-      >;
-      ItemAdded: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, collection: u32, item: u32, amount: u32],
-        { who: AccountId32; collection: u32; item: u32; amount: u32 }
-      >;
-      ItemBought: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128],
-        { trade: u32; who: AccountId32; amount: u32; bidUnitPrice: u128 }
-      >;
-      ItemCreated: AugmentedEvent<
-        ApiType,
-        [
-          who: AccountId32,
-          collection: u32,
-          item: u32,
-          maybeSupply: Option<u32>
-        ],
-        {
-          who: AccountId32;
-          collection: u32;
-          item: u32;
-          maybeSupply: Option<u32>;
-        }
-      >;
-      MiningPoolCreated: AugmentedEvent<
-        ApiType,
-        [
-          pool: u32,
-          who: AccountId32,
-          poolType: PalletGamePoolType,
-          table: Vec<GafiSupportGameTypesLoot>
-        ],
-        {
-          pool: u32;
-          who: AccountId32;
-          poolType: PalletGamePoolType;
-          table: Vec<GafiSupportGameTypesLoot>;
-        }
-      >;
-      Minted: AugmentedEvent<
-        ApiType,
-        [
-          pool: u32,
-          who: AccountId32,
-          target: AccountId32,
-          nfts: Vec<GafiSupportGameTypesNft>
-        ],
-        {
-          pool: u32;
-          who: AccountId32;
-          target: AccountId32;
-          nfts: Vec<GafiSupportGameTypesNft>;
-        }
-      >;
-      PriceSet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          collection: u32,
-          item: u32,
-          amount: u32,
-          unitPrice: u128
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          collection: u32;
-          item: u32;
-          amount: u32;
-          unitPrice: u128;
-        }
-      >;
-      SetBuyClaimed: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128],
-        { trade: u32; who: AccountId32; amount: u32; askUnitPrice: u128 }
-      >;
-      SwapClaimed: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, maybeBidPrice: Option<u128>],
-        { trade: u32; who: AccountId32; maybeBidPrice: Option<u128> }
-      >;
-      SwapSet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          source: Vec<GafiSupportGameTypesPackage>,
-          required: Vec<GafiSupportGameTypesPackage>,
-          maybePrice: Option<u128>
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          source: Vec<GafiSupportGameTypesPackage>;
-          required: Vec<GafiSupportGameTypesPackage>;
-          maybePrice: Option<u128>;
-        }
-      >;
-      TradeCanceled: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32],
-        { trade: u32; who: AccountId32 }
-      >;
-      Transferred: AugmentedEvent<
-        ApiType,
-        [
-          from: AccountId32,
-          collection: u32,
-          item: u32,
-          dest: AccountId32,
-          amount: u32
-        ],
-        {
-          from: AccountId32;
-          collection: u32;
-          item: u32;
-          dest: AccountId32;
-          amount: u32;
-        }
-      >;
-      Upgraded: AugmentedEvent<
-        ApiType,
-        [
-          who: AccountId32,
-          collection: u32,
-          item: u32,
-          newItem: u32,
-          amount: u32
-        ],
-        {
-          who: AccountId32;
-          collection: u32;
-          item: u32;
-          newItem: u32;
-          amount: u32;
-        }
-      >;
-      UpgradeSet: AugmentedEvent<
-        ApiType,
-        [
-          who: AccountId32,
-          collection: u32,
-          item: u32,
-          newItem: u32,
-          level: u32
-        ],
-        {
-          who: AccountId32;
-          collection: u32;
-          item: u32;
-          newItem: u32;
-          level: u32;
-        }
-      >;
-      WishlistFilled: AugmentedEvent<
-        ApiType,
-        [trade: u32, who: AccountId32, askPrice: u128],
-        { trade: u32; who: AccountId32; askPrice: u128 }
-      >;
-      WishlistSet: AugmentedEvent<
-        ApiType,
-        [
-          trade: u32,
-          who: AccountId32,
-          wishlist: Vec<GafiSupportGameTypesPackage>,
-          price: u128
-        ],
-        {
-          trade: u32;
-          who: AccountId32;
-          wishlist: Vec<GafiSupportGameTypesPackage>;
-          price: u128;
-        }
-      >;
+      AddingAcceptanceSet: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
+      AuctionClaimed: AugmentedEvent<ApiType, [trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>>], { trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>> }>;
+      AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32 }>;
+      Bid: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bid: u128], { trade: u32, who: AccountId32, bid: u128 }>;
+      BundleBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bidPrice: u128], { trade: u32, who: AccountId32, bidPrice: u128 }>;
+      BundleSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
+      Burned: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
+      BuySet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
+      CollectionAdded: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
+      CollectionCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32], { who: AccountId32, collection: u32 }>;
+      CollectionRemoved: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
+      GameCreated: AugmentedEvent<ApiType, [who: AccountId32, game: u32], { who: AccountId32, game: u32 }>;
+      ItemAdded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
+      ItemBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128 }>;
+      ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32>], { who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32> }>;
+      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot> }>;
+      Minted: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>], { pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft> }>;
+      PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
+      SetBuyClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128 }>;
+      SwapClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, maybeBidPrice: Option<u128>], { trade: u32, who: AccountId32, maybeBidPrice: Option<u128> }>;
+      SwapSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128> }>;
+      TradeCanceled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32], { trade: u32, who: AccountId32 }>;
+      Transferred: AugmentedEvent<ApiType, [from: AccountId32, collection: u32, item: u32, dest: AccountId32, amount: u32], { from: AccountId32, collection: u32, item: u32, dest: AccountId32, amount: u32 }>;
+      Upgraded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, amount: u32 }>;
+      UpgradeSet: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32 }>;
+      WishlistFilled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, askPrice: u128], { trade: u32, who: AccountId32, askPrice: u128 }>;
+      WishlistSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
       /**
        * Generic event
        **/
@@ -508,11 +150,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * New authority set has been applied.
        **/
-      NewAuthorities: AugmentedEvent<
-        ApiType,
-        [authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>>],
-        { authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>> }
-      >;
+      NewAuthorities: AugmentedEvent<ApiType, [authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>>], { authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>> }>;
       /**
        * Current authority set has been paused.
        **/
@@ -530,449 +168,158 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * All approvals of an item got cancelled.
        **/
-      AllApprovalsCancelled: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, owner: AccountId32],
-        { collection: u32; item: u32; owner: AccountId32 }
-      >;
+      AllApprovalsCancelled: AugmentedEvent<ApiType, [collection: u32, item: u32, owner: AccountId32], { collection: u32, item: u32, owner: AccountId32 }>;
       /**
        * An approval for a `delegate` account to transfer the `item` of an item
        * `collection` was cancelled by its `owner`.
        **/
-      ApprovalCancelled: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, owner: AccountId32, delegate: AccountId32],
-        {
-          collection: u32;
-          item: u32;
-          owner: AccountId32;
-          delegate: AccountId32;
-        }
-      >;
+      ApprovalCancelled: AugmentedEvent<ApiType, [collection: u32, item: u32, owner: AccountId32, delegate: AccountId32], { collection: u32, item: u32, owner: AccountId32, delegate: AccountId32 }>;
       /**
        * Attribute metadata has been cleared for a `collection` or `item`.
        **/
-      AttributeCleared: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          maybeItem: Option<u32>,
-          key: Bytes,
-          namespace: PalletNftsAttributeNamespace
-        ],
-        {
-          collection: u32;
-          maybeItem: Option<u32>;
-          key: Bytes;
-          namespace: PalletNftsAttributeNamespace;
-        }
-      >;
+      AttributeCleared: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: PalletNftsAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, namespace: PalletNftsAttributeNamespace }>;
       /**
        * New attribute metadata has been set for a `collection` or `item`.
        **/
-      AttributeSet: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          maybeItem: Option<u32>,
-          key: Bytes,
-          value: Bytes,
-          namespace: PalletNftsAttributeNamespace
-        ],
-        {
-          collection: u32;
-          maybeItem: Option<u32>;
-          key: Bytes;
-          value: Bytes;
-          namespace: PalletNftsAttributeNamespace;
-        }
-      >;
+      AttributeSet: AugmentedEvent<ApiType, [collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: PalletNftsAttributeNamespace], { collection: u32, maybeItem: Option<u32>, key: Bytes, value: Bytes, namespace: PalletNftsAttributeNamespace }>;
       /**
        * An `item` was destroyed.
        **/
-      Burned: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, owner: AccountId32],
-        { collection: u32; item: u32; owner: AccountId32 }
-      >;
+      Burned: AugmentedEvent<ApiType, [collection: u32, item: u32, owner: AccountId32], { collection: u32, item: u32, owner: AccountId32 }>;
       /**
        * A `collection` has had its config changed by the `Force` origin.
        **/
-      CollectionConfigChanged: AugmentedEvent<
-        ApiType,
-        [collection: u32],
-        { collection: u32 }
-      >;
+      CollectionConfigChanged: AugmentedEvent<ApiType, [collection: u32], { collection: u32 }>;
       /**
        * Some `collection` was locked.
        **/
-      CollectionLocked: AugmentedEvent<
-        ApiType,
-        [collection: u32],
-        { collection: u32 }
-      >;
+      CollectionLocked: AugmentedEvent<ApiType, [collection: u32], { collection: u32 }>;
       /**
        * Max supply has been set for a collection.
        **/
-      CollectionMaxSupplySet: AugmentedEvent<
-        ApiType,
-        [collection: u32, maxSupply: u32],
-        { collection: u32; maxSupply: u32 }
-      >;
+      CollectionMaxSupplySet: AugmentedEvent<ApiType, [collection: u32, maxSupply: u32], { collection: u32, maxSupply: u32 }>;
       /**
        * Metadata has been cleared for a `collection`.
        **/
-      CollectionMetadataCleared: AugmentedEvent<
-        ApiType,
-        [collection: u32],
-        { collection: u32 }
-      >;
+      CollectionMetadataCleared: AugmentedEvent<ApiType, [collection: u32], { collection: u32 }>;
       /**
        * New metadata has been set for a `collection`.
        **/
-      CollectionMetadataSet: AugmentedEvent<
-        ApiType,
-        [collection: u32, data: Bytes],
-        { collection: u32; data: Bytes }
-      >;
+      CollectionMetadataSet: AugmentedEvent<ApiType, [collection: u32, data: Bytes], { collection: u32, data: Bytes }>;
       /**
        * Mint settings for a collection had changed.
        **/
-      CollectionMintSettingsUpdated: AugmentedEvent<
-        ApiType,
-        [collection: u32],
-        { collection: u32 }
-      >;
+      CollectionMintSettingsUpdated: AugmentedEvent<ApiType, [collection: u32], { collection: u32 }>;
       /**
        * A `collection` was created.
        **/
-      Created: AugmentedEvent<
-        ApiType,
-        [collection: u32, creator: AccountId32, owner: AccountId32],
-        { collection: u32; creator: AccountId32; owner: AccountId32 }
-      >;
+      Created: AugmentedEvent<ApiType, [collection: u32, creator: AccountId32, owner: AccountId32], { collection: u32, creator: AccountId32, owner: AccountId32 }>;
       /**
        * A `collection` was destroyed.
        **/
-      Destroyed: AugmentedEvent<
-        ApiType,
-        [collection: u32],
-        { collection: u32 }
-      >;
+      Destroyed: AugmentedEvent<ApiType, [collection: u32], { collection: u32 }>;
       /**
        * A `collection` was force-created.
        **/
-      ForceCreated: AugmentedEvent<
-        ApiType,
-        [collection: u32, owner: AccountId32],
-        { collection: u32; owner: AccountId32 }
-      >;
+      ForceCreated: AugmentedEvent<ApiType, [collection: u32, owner: AccountId32], { collection: u32, owner: AccountId32 }>;
       /**
        * An `item` was issued.
        **/
-      Issued: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, owner: AccountId32],
-        { collection: u32; item: u32; owner: AccountId32 }
-      >;
+      Issued: AugmentedEvent<ApiType, [collection: u32, item: u32, owner: AccountId32], { collection: u32, item: u32, owner: AccountId32 }>;
       /**
        * A new approval to modify item attributes was added.
        **/
-      ItemAttributesApprovalAdded: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, delegate: AccountId32],
-        { collection: u32; item: u32; delegate: AccountId32 }
-      >;
+      ItemAttributesApprovalAdded: AugmentedEvent<ApiType, [collection: u32, item: u32, delegate: AccountId32], { collection: u32, item: u32, delegate: AccountId32 }>;
       /**
        * A new approval to modify item attributes was removed.
        **/
-      ItemAttributesApprovalRemoved: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, delegate: AccountId32],
-        { collection: u32; item: u32; delegate: AccountId32 }
-      >;
+      ItemAttributesApprovalRemoved: AugmentedEvent<ApiType, [collection: u32, item: u32, delegate: AccountId32], { collection: u32, item: u32, delegate: AccountId32 }>;
       /**
        * An item was bought.
        **/
-      ItemBought: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          item: u32,
-          price: u128,
-          seller: AccountId32,
-          buyer: AccountId32
-        ],
-        {
-          collection: u32;
-          item: u32;
-          price: u128;
-          seller: AccountId32;
-          buyer: AccountId32;
-        }
-      >;
+      ItemBought: AugmentedEvent<ApiType, [collection: u32, item: u32, price: u128, seller: AccountId32, buyer: AccountId32], { collection: u32, item: u32, price: u128, seller: AccountId32, buyer: AccountId32 }>;
       /**
        * Metadata has been cleared for an item.
        **/
-      ItemMetadataCleared: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32],
-        { collection: u32; item: u32 }
-      >;
+      ItemMetadataCleared: AugmentedEvent<ApiType, [collection: u32, item: u32], { collection: u32, item: u32 }>;
       /**
        * New metadata has been set for an item.
        **/
-      ItemMetadataSet: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, data: Bytes],
-        { collection: u32; item: u32; data: Bytes }
-      >;
+      ItemMetadataSet: AugmentedEvent<ApiType, [collection: u32, item: u32, data: Bytes], { collection: u32, item: u32, data: Bytes }>;
       /**
        * The price for the item was removed.
        **/
-      ItemPriceRemoved: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32],
-        { collection: u32; item: u32 }
-      >;
+      ItemPriceRemoved: AugmentedEvent<ApiType, [collection: u32, item: u32], { collection: u32, item: u32 }>;
       /**
        * The price was set for the item.
        **/
-      ItemPriceSet: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          item: u32,
-          price: u128,
-          whitelistedBuyer: Option<AccountId32>
-        ],
-        {
-          collection: u32;
-          item: u32;
-          price: u128;
-          whitelistedBuyer: Option<AccountId32>;
-        }
-      >;
+      ItemPriceSet: AugmentedEvent<ApiType, [collection: u32, item: u32, price: u128, whitelistedBuyer: Option<AccountId32>], { collection: u32, item: u32, price: u128, whitelistedBuyer: Option<AccountId32> }>;
       /**
        * `item` metadata or attributes were locked.
        **/
-      ItemPropertiesLocked: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, lockMetadata: bool, lockAttributes: bool],
-        { collection: u32; item: u32; lockMetadata: bool; lockAttributes: bool }
-      >;
+      ItemPropertiesLocked: AugmentedEvent<ApiType, [collection: u32, item: u32, lockMetadata: bool, lockAttributes: bool], { collection: u32, item: u32, lockMetadata: bool, lockAttributes: bool }>;
       /**
        * An `item` became non-transferable.
        **/
-      ItemTransferLocked: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32],
-        { collection: u32; item: u32 }
-      >;
+      ItemTransferLocked: AugmentedEvent<ApiType, [collection: u32, item: u32], { collection: u32, item: u32 }>;
       /**
        * An `item` became transferable.
        **/
-      ItemTransferUnlocked: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32],
-        { collection: u32; item: u32 }
-      >;
+      ItemTransferUnlocked: AugmentedEvent<ApiType, [collection: u32, item: u32], { collection: u32, item: u32 }>;
       /**
        * Event gets emitted when the `NextCollectionId` gets incremented.
        **/
-      NextCollectionIdIncremented: AugmentedEvent<
-        ApiType,
-        [nextId: u32],
-        { nextId: u32 }
-      >;
+      NextCollectionIdIncremented: AugmentedEvent<ApiType, [nextId: u32], { nextId: u32 }>;
       /**
        * The owner changed.
        **/
-      OwnerChanged: AugmentedEvent<
-        ApiType,
-        [collection: u32, newOwner: AccountId32],
-        { collection: u32; newOwner: AccountId32 }
-      >;
+      OwnerChanged: AugmentedEvent<ApiType, [collection: u32, newOwner: AccountId32], { collection: u32, newOwner: AccountId32 }>;
       /**
        * Ownership acceptance has changed for an account.
        **/
-      OwnershipAcceptanceChanged: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, maybeCollection: Option<u32>],
-        { who: AccountId32; maybeCollection: Option<u32> }
-      >;
+      OwnershipAcceptanceChanged: AugmentedEvent<ApiType, [who: AccountId32, maybeCollection: Option<u32>], { who: AccountId32, maybeCollection: Option<u32> }>;
       /**
        * A new attribute in the `Pallet` namespace was set for the `collection` or an `item`
        * within that `collection`.
        **/
-      PalletAttributeSet: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          item: Option<u32>,
-          attribute: PalletNftsPalletAttributes,
-          value: Bytes
-        ],
-        {
-          collection: u32;
-          item: Option<u32>;
-          attribute: PalletNftsPalletAttributes;
-          value: Bytes;
-        }
-      >;
+      PalletAttributeSet: AugmentedEvent<ApiType, [collection: u32, item: Option<u32>, attribute: PalletNftsPalletAttributes, value: Bytes], { collection: u32, item: Option<u32>, attribute: PalletNftsPalletAttributes, value: Bytes }>;
       /**
        * New attributes have been set for an `item` of the `collection`.
        **/
-      PreSignedAttributesSet: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, namespace: PalletNftsAttributeNamespace],
-        { collection: u32; item: u32; namespace: PalletNftsAttributeNamespace }
-      >;
+      PreSignedAttributesSet: AugmentedEvent<ApiType, [collection: u32, item: u32, namespace: PalletNftsAttributeNamespace], { collection: u32, item: u32, namespace: PalletNftsAttributeNamespace }>;
       /**
        * The deposit for a set of `item`s within a `collection` has been updated.
        **/
-      Redeposited: AugmentedEvent<
-        ApiType,
-        [collection: u32, successfulItems: Vec<u32>],
-        { collection: u32; successfulItems: Vec<u32> }
-      >;
+      Redeposited: AugmentedEvent<ApiType, [collection: u32, successfulItems: Vec<u32>], { collection: u32, successfulItems: Vec<u32> }>;
       /**
        * The swap was cancelled.
        **/
-      SwapCancelled: AugmentedEvent<
-        ApiType,
-        [
-          offeredCollection: u32,
-          offeredItem: u32,
-          desiredCollection: u32,
-          desiredItem: Option<u32>,
-          price: Option<PalletNftsPriceWithDirection>,
-          deadline: u32
-        ],
-        {
-          offeredCollection: u32;
-          offeredItem: u32;
-          desiredCollection: u32;
-          desiredItem: Option<u32>;
-          price: Option<PalletNftsPriceWithDirection>;
-          deadline: u32;
-        }
-      >;
+      SwapCancelled: AugmentedEvent<ApiType, [offeredCollection: u32, offeredItem: u32, desiredCollection: u32, desiredItem: Option<u32>, price: Option<PalletNftsPriceWithDirection>, deadline: u32], { offeredCollection: u32, offeredItem: u32, desiredCollection: u32, desiredItem: Option<u32>, price: Option<PalletNftsPriceWithDirection>, deadline: u32 }>;
       /**
        * The swap has been claimed.
        **/
-      SwapClaimed: AugmentedEvent<
-        ApiType,
-        [
-          sentCollection: u32,
-          sentItem: u32,
-          sentItemOwner: AccountId32,
-          receivedCollection: u32,
-          receivedItem: u32,
-          receivedItemOwner: AccountId32,
-          price: Option<PalletNftsPriceWithDirection>,
-          deadline: u32
-        ],
-        {
-          sentCollection: u32;
-          sentItem: u32;
-          sentItemOwner: AccountId32;
-          receivedCollection: u32;
-          receivedItem: u32;
-          receivedItemOwner: AccountId32;
-          price: Option<PalletNftsPriceWithDirection>;
-          deadline: u32;
-        }
-      >;
+      SwapClaimed: AugmentedEvent<ApiType, [sentCollection: u32, sentItem: u32, sentItemOwner: AccountId32, receivedCollection: u32, receivedItem: u32, receivedItemOwner: AccountId32, price: Option<PalletNftsPriceWithDirection>, deadline: u32], { sentCollection: u32, sentItem: u32, sentItemOwner: AccountId32, receivedCollection: u32, receivedItem: u32, receivedItemOwner: AccountId32, price: Option<PalletNftsPriceWithDirection>, deadline: u32 }>;
       /**
        * An `item` swap intent was created.
        **/
-      SwapCreated: AugmentedEvent<
-        ApiType,
-        [
-          offeredCollection: u32,
-          offeredItem: u32,
-          desiredCollection: u32,
-          desiredItem: Option<u32>,
-          price: Option<PalletNftsPriceWithDirection>,
-          deadline: u32
-        ],
-        {
-          offeredCollection: u32;
-          offeredItem: u32;
-          desiredCollection: u32;
-          desiredItem: Option<u32>;
-          price: Option<PalletNftsPriceWithDirection>;
-          deadline: u32;
-        }
-      >;
+      SwapCreated: AugmentedEvent<ApiType, [offeredCollection: u32, offeredItem: u32, desiredCollection: u32, desiredItem: Option<u32>, price: Option<PalletNftsPriceWithDirection>, deadline: u32], { offeredCollection: u32, offeredItem: u32, desiredCollection: u32, desiredItem: Option<u32>, price: Option<PalletNftsPriceWithDirection>, deadline: u32 }>;
       /**
        * The management team changed.
        **/
-      TeamChanged: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          issuer: Option<AccountId32>,
-          admin: Option<AccountId32>,
-          freezer: Option<AccountId32>
-        ],
-        {
-          collection: u32;
-          issuer: Option<AccountId32>;
-          admin: Option<AccountId32>;
-          freezer: Option<AccountId32>;
-        }
-      >;
+      TeamChanged: AugmentedEvent<ApiType, [collection: u32, issuer: Option<AccountId32>, admin: Option<AccountId32>, freezer: Option<AccountId32>], { collection: u32, issuer: Option<AccountId32>, admin: Option<AccountId32>, freezer: Option<AccountId32> }>;
       /**
        * A tip was sent.
        **/
-      TipSent: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          item: u32,
-          sender: AccountId32,
-          receiver: AccountId32,
-          amount: u128
-        ],
-        {
-          collection: u32;
-          item: u32;
-          sender: AccountId32;
-          receiver: AccountId32;
-          amount: u128;
-        }
-      >;
+      TipSent: AugmentedEvent<ApiType, [collection: u32, item: u32, sender: AccountId32, receiver: AccountId32, amount: u128], { collection: u32, item: u32, sender: AccountId32, receiver: AccountId32, amount: u128 }>;
       /**
        * An `item` of a `collection` has been approved by the `owner` for transfer by
        * a `delegate`.
        **/
-      TransferApproved: AugmentedEvent<
-        ApiType,
-        [
-          collection: u32,
-          item: u32,
-          owner: AccountId32,
-          delegate: AccountId32,
-          deadline: Option<u32>
-        ],
-        {
-          collection: u32;
-          item: u32;
-          owner: AccountId32;
-          delegate: AccountId32;
-          deadline: Option<u32>;
-        }
-      >;
+      TransferApproved: AugmentedEvent<ApiType, [collection: u32, item: u32, owner: AccountId32, delegate: AccountId32, deadline: Option<u32>], { collection: u32, item: u32, owner: AccountId32, delegate: AccountId32, deadline: Option<u32> }>;
       /**
        * An `item` was transferred.
        **/
-      Transferred: AugmentedEvent<
-        ApiType,
-        [collection: u32, item: u32, from: AccountId32, to: AccountId32],
-        { collection: u32; item: u32; from: AccountId32; to: AccountId32 }
-      >;
+      Transferred: AugmentedEvent<ApiType, [collection: u32, item: u32, from: AccountId32, to: AccountId32], { collection: u32, item: u32, from: AccountId32, to: AccountId32 }>;
       /**
        * Generic event
        **/
@@ -988,27 +335,15 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * The \[sudoer\] just switched identity; the old key is supplied if one existed.
        **/
-      KeyChanged: AugmentedEvent<
-        ApiType,
-        [oldSudoer: Option<AccountId32>],
-        { oldSudoer: Option<AccountId32> }
-      >;
+      KeyChanged: AugmentedEvent<ApiType, [oldSudoer: Option<AccountId32>], { oldSudoer: Option<AccountId32> }>;
       /**
        * A sudo just took place. \[result\]
        **/
-      Sudid: AugmentedEvent<
-        ApiType,
-        [sudoResult: Result<Null, SpRuntimeDispatchError>],
-        { sudoResult: Result<Null, SpRuntimeDispatchError> }
-      >;
+      Sudid: AugmentedEvent<ApiType, [sudoResult: Result<Null, SpRuntimeDispatchError>], { sudoResult: Result<Null, SpRuntimeDispatchError> }>;
       /**
        * A sudo just took place. \[result\]
        **/
-      SudoAsDone: AugmentedEvent<
-        ApiType,
-        [sudoResult: Result<Null, SpRuntimeDispatchError>],
-        { sudoResult: Result<Null, SpRuntimeDispatchError> }
-      >;
+      SudoAsDone: AugmentedEvent<ApiType, [sudoResult: Result<Null, SpRuntimeDispatchError>], { sudoResult: Result<Null, SpRuntimeDispatchError> }>;
       /**
        * Generic event
        **/
@@ -1022,49 +357,23 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * An extrinsic failed.
        **/
-      ExtrinsicFailed: AugmentedEvent<
-        ApiType,
-        [
-          dispatchError: SpRuntimeDispatchError,
-          dispatchInfo: FrameSupportDispatchDispatchInfo
-        ],
-        {
-          dispatchError: SpRuntimeDispatchError;
-          dispatchInfo: FrameSupportDispatchDispatchInfo;
-        }
-      >;
+      ExtrinsicFailed: AugmentedEvent<ApiType, [dispatchError: SpRuntimeDispatchError, dispatchInfo: FrameSupportDispatchDispatchInfo], { dispatchError: SpRuntimeDispatchError, dispatchInfo: FrameSupportDispatchDispatchInfo }>;
       /**
        * An extrinsic completed successfully.
        **/
-      ExtrinsicSuccess: AugmentedEvent<
-        ApiType,
-        [dispatchInfo: FrameSupportDispatchDispatchInfo],
-        { dispatchInfo: FrameSupportDispatchDispatchInfo }
-      >;
+      ExtrinsicSuccess: AugmentedEvent<ApiType, [dispatchInfo: FrameSupportDispatchDispatchInfo], { dispatchInfo: FrameSupportDispatchDispatchInfo }>;
       /**
        * An account was reaped.
        **/
-      KilledAccount: AugmentedEvent<
-        ApiType,
-        [account: AccountId32],
-        { account: AccountId32 }
-      >;
+      KilledAccount: AugmentedEvent<ApiType, [account: AccountId32], { account: AccountId32 }>;
       /**
        * A new account was created.
        **/
-      NewAccount: AugmentedEvent<
-        ApiType,
-        [account: AccountId32],
-        { account: AccountId32 }
-      >;
+      NewAccount: AugmentedEvent<ApiType, [account: AccountId32], { account: AccountId32 }>;
       /**
        * On on-chain remark happened.
        **/
-      Remarked: AugmentedEvent<
-        ApiType,
-        [sender: AccountId32, hash_: H256],
-        { sender: AccountId32; hash_: H256 }
-      >;
+      Remarked: AugmentedEvent<ApiType, [sender: AccountId32, hash_: H256], { sender: AccountId32, hash_: H256 }>;
       /**
        * Generic event
        **/
@@ -1075,11 +384,7 @@ declare module '@polkadot/api-base/types/events' {
        * A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,
        * has been paid by `who`.
        **/
-      TransactionFeePaid: AugmentedEvent<
-        ApiType,
-        [who: AccountId32, actualFee: u128, tip: u128],
-        { who: AccountId32; actualFee: u128; tip: u128 }
-      >;
+      TransactionFeePaid: AugmentedEvent<ApiType, [who: AccountId32, actualFee: u128, tip: u128], { who: AccountId32, actualFee: u128, tip: u128 }>;
       /**
        * Generic event
        **/

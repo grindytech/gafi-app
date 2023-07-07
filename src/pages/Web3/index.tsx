@@ -166,7 +166,7 @@ export default function Web3() {
                       },
                     ]) => {
                       const metadataOfItem = (await api.query.nfts
-                        .itemMetadataOf(collection, collection)
+                        .itemMetadataOf(collection, item.toNumber())
                         .then(item => {
                           const data = item.value.toHuman();
 

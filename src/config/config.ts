@@ -1,6 +1,6 @@
 interface commonProps {
   APP_NAME: string;
-  CUSTOM_RPC_METHODS: {};
+  CUSTOM_RPC_METHODS: Record<string, any>;
   PROVIDER_SOCKETS?: string[];
 }
 
