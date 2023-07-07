@@ -1,8 +1,11 @@
-import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Image, List, ListItem, Text } from '@chakra-ui/react';
+import { cloundinary_link } from 'axios/cloudinary_axios';
+import { TypeMetadataOfItem } from 'types';
 
 export interface Web3ItemsDataProps {
   collection_id: number;
   item_id: number;
+  metadataOfItem: TypeMetadataOfItem;
 }
 
 interface Web3ItemsProps {
@@ -37,24 +40,42 @@ export default function Web3Items({ data }: Web3ItemsProps) {
                 padding={4}
                 wordBreak="break-word"
               >
-                <Flex gap="inherit">
-                  <Heading
-                    flex={1}
-                    as="h3"
-                    color="primary.a.500"
-                    fontSize="md"
-                    fontWeight="inherit"
-                  >
-                    collection {child.collection_id}
-                  </Heading>
+                <Image
+                  margin="auto"
+                  width={40}
+                  height={40}
+                  objectFit="contain"
+                  src={
+                    child.metadataOfItem && child.metadataOfItem.image
+                      ? `${cloundinary_link}/${child.metadataOfItem.image}`
+                      : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+                  }
+                />
 
-                  <Text color="shader.a.500" fontSize="sm">
-                    ID:&nbsp;
-                    <Text color="primary.a.500" as="span">
-                      {child.item_id}
+                <List
+                  display="flex"
+                  flexDirection="column"
+                  sx={{
+                    li: {
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    },
+                  }}
+                >
+                  <ListItem>
+                    <Text>
+                      {child.metadataOfItem
+                        ? child.metadataOfItem.title
+                        : 'none'}
                     </Text>
-                  </Text>
-                </Flex>
+                    <Text as="span">ID: {child.item_id}</Text>
+                  </ListItem>
+
+                  <ListItem>
+                    <Text>collection:</Text>
+                    <Text as="span">ID: {child.item_id}</Text>
+                  </ListItem>
+                </List>
               </Flex>
             </Box>
           ))

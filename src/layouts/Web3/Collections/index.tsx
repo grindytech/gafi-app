@@ -17,6 +17,7 @@ import CollectionsCreate from './components/CreateCollections';
 import AcceptCollections from './components/AcceptCollections';
 import AddCollections from './components/AddCollections';
 import theme from 'theme/theme';
+import AddMetadataCollection from './components/AddMetadataCollection';
 
 export default function Collections() {
   return (
@@ -57,6 +58,8 @@ export default function Collections() {
           </Tab>
 
           <Tab>Add Accept Adding</Tab>
+
+          <Tab>Add Metadata</Tab>
         </TabList>
 
         <TabPanels
@@ -76,6 +79,10 @@ export default function Collections() {
 
           <TabPanel>
             <AcceptCollections />
+          </TabPanel>
+
+          <TabPanel>
+            <AddMetadataCollection />
           </TabPanel>
         </TabPanels>
       </Tabs>

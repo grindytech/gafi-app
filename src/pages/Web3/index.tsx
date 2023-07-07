@@ -23,7 +23,7 @@ import { useQueries } from '@tanstack/react-query';
 
 import { useAppSelector } from 'hooks/useRedux';
 import Web3Games, { Web3GamesDataProps } from './components/Web3Games';
-import Web3Items, { Web3ItemsDataProps } from './components/Web3Items';
+import Web3Items from './components/Web3Items';
 import Web3FirstBuild from './components/Web3FirstBuild';
 import Web3Collections, {
   Web3CollectionsDataProps,
@@ -31,6 +31,7 @@ import Web3Collections, {
 import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
 import { Outlet, useLocation } from 'react-router-dom';
 import theme from 'theme/theme';
+import { TypeMetadataOfCollection } from 'types';
 
 export default function Web3() {
   const { pathname } = useLocation();
@@ -78,53 +79,78 @@ export default function Web3() {
       {
         queryKey: ['collectionAccount', account?.address],
         queryFn: async () => {
-          if (api && api.query.nfts && account?.address) {
+          if (api && api.query.game && account && account.address) {
             const res = await api.query.nfts.collectionAccount.entries(
               account.address
             );
 
-            const getCollections = await Promise.all(
+            return Promise.all(
               res.map(
                 async ([
                   {
                     args: [owner, collection_id],
                   },
-                ]): Promise<Web3CollectionsDataProps> => {
-                  const collectionsOfGame = await api.query.game.gamesOf(
-                    collection_id.toPrimitive()
-                  );
+                ]) => {
+                  const metadataOfCollection = (await api.query.nfts
+                    .collectionMetadataOf(collection_id.toNumber())
+                    .then(item => {
+                      const data = item.value.toHuman();
+
+                      if (data) {
+                        return JSON.parse(String(data.data));
+                      }
+                    })) as TypeMetadataOfCollection;
+
+                  const gamesOfCollection = await api.query.game
+                    .gamesOf(collection_id.toNumber())
+                    .then(data => {
+                      const collection = data.toHuman() as number[];
+
+                      return collection;
+                    });
+
+                  const adminOfCollection =
+                    await api.query.nfts.collectionRoleOf
+                      .entries(collection_id.toNumber())
+                      .then(item => {
+                        const data = item[0][0].toHuman() as string[];
+
+                        return data[1];
+                      });
 
                   return {
+                    admin: adminOfCollection,
                     owner: owner.toHuman(),
-                    game_id: collectionsOfGame.toPrimitive(),
-                    collection_id: collection_id.toPrimitive(),
+                    collection_id: collection_id.toNumber(),
+                    metadataOfCollection,
+                    game_id: gamesOfCollection,
                   } as Web3CollectionsDataProps;
                 }
               )
             );
-
-            return getCollections;
           }
 
           return []; // undefined
         },
-        enabled: !!(api && api.query.nfts),
+        enabled: !!api && !!(api.query.game || api.query.nfts),
       },
       {
         queryKey: ['item', account?.address],
         queryFn: async () => {
           if (api && api.query.nfts && account?.address) {
-            const res = await api.query.nfts.collectionAccount.entries(
-              account.address
-            );
-
-            const getCollections = res.map(
-              ([
-                {
-                  args: [, collection_id],
-                },
-              ]) => collection_id.toPrimitive()
-            );
+            const getCollections = await api.query.nfts.collectionAccount
+              .entries(account.address)
+              .then(item =>
+                item.map(
+                  ([
+                    {
+                      args: [, collection],
+                    },
+                  ]) => ({
+                    collection_id: collection.toNumber(),
+                  })
+                )
+              );
 
             const getItems = await Promise.all(
               getCollections.map(async item => {
@@ -132,26 +158,35 @@ export default function Web3() {
                   item
                 );
 
-                if (itemsOfCollection.length) {
-                  return itemsOfCollection.map(
-                    ([
+                return Promise.all(
+                  itemsOfCollection.map(
+                    async ([
                       {
                         args: [collection, item],
                       },
                     ]) => {
+                      const metadataOfItem = (await api.query.nfts
+                        .itemMetadataOf(collection, collection)
+                        .then(item => {
+                          const data = item.value.toHuman();
+
+                          if (data) {
+                            return JSON.parse(String(data.data));
+                          }
+                        })) as TypeMetadataOfCollection;
+
                       return {
-                        collection_id: collection.toPrimitive(),
-                        item_id: item.toPrimitive(),
-                      } as Web3ItemsDataProps;
+                        collection_id: collection.toNumber(),
+                        item_id: item.toNumber(),
+                        metadataOfItem,
+                      };
                     }
-                  );
-                }
+                  )
+                );
               })
             );
 
-            return getItems.filter(
-              (item): item is Web3ItemsDataProps[] => !!item
-            );
+            return getItems;
           }
 
           return []; // undefined
@@ -171,7 +206,7 @@ export default function Web3() {
 
   const index = pathname === '/web3';
 
-  if (index && data[0].isLoading && data[1].isLoading && data[2].isLoading) {
+  if (index && data[0].isLoading) {
     return (
       <Center height="full" gap={4}>
         <Spinner color="primary.a.500" size="md" />
@@ -255,14 +290,14 @@ export default function Web3() {
                   </Center>
 
                   <Icon
-                    as={LayoutGridIcon as any}
+                    as={LayoutGridIcon}
                     color="primary.a.500"
                     width={6}
                     height={6}
                   />
 
                   <Icon
-                    as={LayoutRowIcon as any}
+                    as={LayoutRowIcon}
                     color="shader.a.900"
                     width={6}
                     height={6}

@@ -1,5 +1,6 @@
 import { Control, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
+// react-hook-form
 export type TypeSetValue = UseFormSetValue<
   Record<string, string | number | undefined>
 >;
@@ -14,6 +15,26 @@ export type TypeNumberInput = {
   control: TypeControl;
   isInvalid?: boolean;
   isRequired?: boolean;
+  placeholder?: string;
   title: string; // Title of Label
   value: string; // Value of Register
 };
+
+// substrate
+export type TypeMetadataOfCollection =
+  | {
+      description: string;
+      external_url: string;
+      image: string;
+      title: string;
+    }
+  | undefined;
+
+export type TypeMetadataOfItem =
+  | {
+      description: string;
+      external_url: string;
+      image: string;
+      title: string;
+    }
+  | undefined;
