@@ -1,4 +1,7 @@
 import { Control, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+export type TypeReturnJSXElement = {
+  [key: string]: () => JSX.Element;
+};
 
 // react-hook-form
 export type TypeSetValue = UseFormSetValue<

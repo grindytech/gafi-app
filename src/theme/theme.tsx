@@ -20,7 +20,6 @@ export const colors = {
     a: {
       100: '#D4EEFD',
       200: '#AADAFB',
-      400: '#5BA2E7',
       500: '#2A7AD7',
       600: '#1E5EB8',
       700: '#15469A',
@@ -63,7 +62,7 @@ export const fonts = {
   },
 };
 
-export const CardBox: ComponentStyleConfig = {
+const CardBox: ComponentStyleConfig = {
   variants: {
     createGames: {
       bg: 'white',
@@ -74,7 +73,7 @@ export const CardBox: ComponentStyleConfig = {
     },
     baseStyle: {
       width: 'full',
-      color: 'black',
+      color: 'shader.a.900',
       bg: 'white',
       borderRadius: 'xl',
       border: '0.063rem solid',
@@ -84,20 +83,40 @@ export const CardBox: ComponentStyleConfig = {
   },
 };
 
-export const Button: ComponentStyleConfig = {
+const Button: ComponentStyleConfig = {
   variants: {
     primary: {
-      fontSize: 'sm',
-      fontWeight: 'medium',
-      color: 'white',
-      bg: 'primary.a.500',
-      borderRadius: 'lg',
-      height: 10,
       px: 4,
-
+      bg: 'primary.a.500',
+      color: 'white',
+      borderRadius: 'lg',
       _hover: {
         bg: 'primary.a.600',
       },
+    },
+    more: {
+      py: 1.5,
+      px: 3,
+      color: 'shader.a.900',
+      borderRadius: '3xl',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.400',
+    },
+    navigation: {
+      display: 'flex',
+      padding: 0,
+      alignItems: 'center',
+      borderRadius: 'full',
+      bg: 'white',
+      color: 'shader.a.900',
+      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+    },
+    baseStyle: {
+      px: 4,
+      color: 'shader.a.900',
+      borderRadius: 'lg',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.400',
     },
     cancel: {
       fontSize: 'sm',
@@ -108,36 +127,6 @@ export const Button: ComponentStyleConfig = {
       borderRadius: 'lg',
       height: 10,
       px: 4,
-    },
-  },
-};
-
-export const Input: ComponentStyleConfig = {
-  variants: {
-    control: {
-      field: {
-        fontSize: 'md',
-        fontWeight: 'normal',
-        color: 'shader.a.900',
-        border: '0.0625rem solid',
-        borderColor: 'shader.a.400',
-        borderRadius: 'lg',
-        height: 'auto',
-        px: 4,
-        py: 2,
-
-        _placeholder: {
-          color: 'shader.a.400',
-        },
-        _focusVisible: {
-          borderColor: 'blue.500',
-          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-blue-500)',
-        },
-        _invalid: {
-          borderColor: 'red.500',
-          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-red-500)',
-        },
-      },
     },
   },
 };
@@ -214,10 +203,28 @@ export const Table: ComponentStyleConfig = {
         },
       },
     },
+    listTable: {
+      /*   tbody: {
+        padding: 4,
+      }, */
+      tr: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        verticalAlign: 'top',
+        padding: { md: 4, base: 2 },
+        _notLast: {
+          border: '1px solid',
+          borderColor: 'shader.a.200',
+        },
+        td: {
+          padding: 0,
+        },
+      },
+    },
   },
 };
 
-export const Heading: ComponentStyleConfig = {
+const Heading: ComponentStyleConfig = {
   variants: {
     switch: {
       fontSize: 'sm',
@@ -229,9 +236,97 @@ export const Heading: ComponentStyleConfig = {
       fontWeight: 'medium',
       color: 'shader.a.600',
     },
+    sub01: {
+      color: 'shader.a.900',
+      fontSize: 'xl',
+      fontWeight: 'semibold',
+      lineHeight: '1.5rem',
+    },
+    sub02: {
+      color: 'shader.a.900',
+      fontWeight: 'medium',
+      lineHeight: '1.5rem',
+      fontsize: 'xl',
+    },
   },
 };
+export const Text: ComponentStyleConfig = {
+  baseStyle: {
+    color: 'shader.a.900',
+  },
+  variants: {},
+};
+export const Tabs: ComponentStyleConfig = {
+  variants: {
+    unstyled: {
+      tab: {
+        fontWeight: 'medium',
+        fontSize: 'sm',
+        bg: 'white',
+        color: 'shader.a.900',
+        borderRadius: 'lg',
+        border: '0.063rem solid',
+        borderColor: 'shader.a.400',
+        px: 4,
+        py: 2,
+        _selected: {
+          border: 'unset',
+          color: 'shader.a.100',
+          bg: 'primary.a.500',
+        },
+      },
+    },
+  },
+};
+export const Input: ComponentStyleConfig = {
+  variants: {
+    control: {
+      field: {
+        fontSize: 'md',
+        fontWeight: 'normal',
+        color: 'shader.a.900',
+        border: '0.0625rem solid',
+        borderColor: 'shader.a.400',
+        borderRadius: 'lg',
+        height: 'auto',
+        px: 4,
+        py: 2,
 
+        _placeholder: {
+          color: 'shader.a.400',
+        },
+        _focusVisible: {
+          borderColor: 'blue.500',
+          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-blue-500)',
+        },
+        _invalid: {
+          borderColor: 'red.500',
+          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-red-500)',
+        },
+      },
+    },
+  },
+};
+export const Select: ComponentStyleConfig = {
+  variants: {
+    formFilter: {
+      field: {
+        color: 'shader.a.900',
+        fontsize: 'sm',
+        fontWeight: 'medium',
+        borderRadius: 'lg',
+        bg: 'white',
+        border: '0.063rem solid',
+        borderColor: 'shader.a.400',
+        px: 4,
+      },
+
+      icon: {
+        color: 'primary.a.500',
+      },
+    },
+  },
+};
 export const FormControl: ComponentStyleConfig = {
   variants: {
     transfer: {
@@ -250,17 +345,20 @@ export const FormControl: ComponentStyleConfig = {
     },
   },
 };
-
-export default extendTheme({
+const theme = extendTheme({
   colors,
   styles,
   fonts,
   components: {
     CardBox,
     Button,
+    Select,
     Table,
+    Tabs,
     Heading,
-    Input,
     FormControl,
+    Input,
   },
 });
+
+export default theme;

@@ -8,16 +8,21 @@ import { breakpointsContainer } from 'utils/constants';
 
 export default function DefaultMain() {
   return (
-    <Container maxWidth={breakpointsContainer} as="article">
+    <>
       <Flex flexDirection="column" height="100vh">
-        <Header />
+        <Container maxWidth={breakpointsContainer} as="article">
+          <Header />
 
-        <Box as="main" flex={1}>
-          <Outlet />
+          <Box as="main" flex={1}>
+            <Outlet />
+          </Box>
+        </Container>
+        <Box bg="white" mt={4}>
+          <Container maxWidth={breakpointsContainer} as="article">
+            <Footer />
+          </Container>
         </Box>
-
-        <Footer />
       </Flex>
-    </Container>
+    </>
   );
 }
