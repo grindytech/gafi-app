@@ -20,7 +20,6 @@ export const colors = {
     a: {
       100: '#D4EEFD',
       200: '#AADAFB',
-      400: '#5BA2E7',
       500: '#2A7AD7',
       600: '#1E5EB8',
       700: '#15469A',
@@ -34,7 +33,6 @@ export const colors = {
       400: '#D4D4D8',
       500: '#71717A',
       600: '#52525B',
-
       700: '#3F3F46',
       800: '#27272A',
       900: '#18181B',
@@ -64,7 +62,7 @@ export const fonts = {
   },
 };
 
-export const CardBox: ComponentStyleConfig = {
+const CardBox: ComponentStyleConfig = {
   variants: {
     createGames: {
       bg: 'white',
@@ -85,59 +83,15 @@ export const CardBox: ComponentStyleConfig = {
   },
 };
 
-export const Button: ComponentStyleConfig = {
+const Button: ComponentStyleConfig = {
   variants: {
     primary: {
-      fontSize: 'sm',
-      fontWeight: 'medium',
-      color: 'white',
-      bg: 'primary.a.500',
-      borderRadius: 'lg',
-      height: 10,
       px: 4,
-
+      bg: 'primary.a.500',
+      color: 'white',
+      borderRadius: 'lg',
       _hover: {
         bg: 'primary.a.600',
-      },
-    },
-    cancel: {
-      fontSize: 'sm',
-      fontWeight: 'medium',
-      color: 'shader.a.900',
-      border: '0.0625rem solid',
-      borderColor: 'shader.a.400',
-      borderRadius: 'lg',
-      height: 10,
-      px: 4,
-    },
-  },
-};
-
-export const Input: ComponentStyleConfig = {
-  variants: {
-    control: {
-      field: {
-        fontSize: 'md',
-        fontWeight: 'normal',
-        color: 'shader.a.900',
-        border: '0.0625rem solid',
-        borderColor: 'shader.a.400',
-        borderRadius: 'lg',
-        height: 'auto',
-        px: 4,
-        py: 2,
-
-        _placeholder: {
-          color: 'shader.a.400',
-        },
-        _focusVisible: {
-          borderColor: 'blue.500',
-          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-blue-500)',
-        },
-        _invalid: {
-          borderColor: 'red.500',
-          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-red-500)',
-        },
       },
     },
     more: {
@@ -163,6 +117,16 @@ export const Input: ComponentStyleConfig = {
       borderRadius: 'lg',
       border: '0.063rem solid',
       borderColor: 'shader.a.400',
+    },
+    cancel: {
+      fontSize: 'sm',
+      fontWeight: 'medium',
+      color: 'shader.a.900',
+      border: '0.0625rem solid',
+      borderColor: 'shader.a.400',
+      borderRadius: 'lg',
+      height: 10,
+      px: 4,
     },
   },
 };
@@ -260,7 +224,7 @@ export const Table: ComponentStyleConfig = {
   },
 };
 
-export const Heading: ComponentStyleConfig = {
+const Heading: ComponentStyleConfig = {
   variants: {
     switch: {
       fontSize: 'sm',
@@ -314,6 +278,35 @@ export const Tabs: ComponentStyleConfig = {
     },
   },
 };
+export const Input: ComponentStyleConfig = {
+  variants: {
+    control: {
+      field: {
+        fontSize: 'md',
+        fontWeight: 'normal',
+        color: 'shader.a.900',
+        border: '0.0625rem solid',
+        borderColor: 'shader.a.400',
+        borderRadius: 'lg',
+        height: 'auto',
+        px: 4,
+        py: 2,
+
+        _placeholder: {
+          color: 'shader.a.400',
+        },
+        _focusVisible: {
+          borderColor: 'blue.500',
+          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-blue-500)',
+        },
+        _invalid: {
+          borderColor: 'red.500',
+          boxShadow: '0 0 0 0.0625rem var(--chakra-colors-red-500)',
+        },
+      },
+    },
+  },
+};
 export const Select: ComponentStyleConfig = {
   variants: {
     formFilter: {
@@ -334,7 +327,6 @@ export const Select: ComponentStyleConfig = {
     },
   },
 };
-
 export const FormControl: ComponentStyleConfig = {
   variants: {
     transfer: {
@@ -353,8 +345,7 @@ export const FormControl: ComponentStyleConfig = {
     },
   },
 };
-
-export default extendTheme({
+const theme = extendTheme({
   colors,
   styles,
   fonts,
@@ -365,7 +356,9 @@ export default extendTheme({
     Table,
     Tabs,
     Heading,
-    Input,
     FormControl,
+    Input,
   },
 });
+
+export default theme;
