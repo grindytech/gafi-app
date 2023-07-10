@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   HStack,
   Icon,
   List,
@@ -94,7 +93,7 @@ const Explorer = () => {
         <Box p={4}>
           <HStack gap={4} mb={4} flexWrap="wrap">
             <Button
-              variant="primary"
+              variant={isOpen ? 'primary' : 'baseStyle'}
               leftIcon={<Icon as={FilterIcon} />}
               onClick={onToggle}
             >
@@ -122,9 +121,9 @@ const Explorer = () => {
               ))}
             </Select>
           </HStack>
-          <HStack gap={0} alignItems="flex-start">
+          <HStack gap={isOpen ? 5 : 0} alignItems="flex-start">
             <Box flexGrow={1}>
-              <Filter isOpen={isOpen} onToggle={onToggle} />
+              <Filter isOpen={isOpen} />
             </Box>
             <Box width="full">
               <Outlet />

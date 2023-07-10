@@ -7,6 +7,7 @@ import {
   Button,
   Icon,
   Flex,
+  ImageProps,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 
@@ -16,8 +17,9 @@ import VerifyIcon from 'public/assets/fill/verified.svg';
 import { TestDataProps3 } from 'layouts/MarketPlace/Home/Collections/components/LiveAuction';
 interface IProps {
   item: TestDataProps3;
+  imageStyle?: ImageProps;
 }
-const CardTypeThree = ({ item }: IProps) => {
+const CardTypeThree = ({ item, imageStyle }: IProps) => {
   return (
     <>
       <CardBox
@@ -34,6 +36,8 @@ const CardTypeThree = ({ item }: IProps) => {
               /*       h="12.5rem"
                */
               borderRadius="xl"
+              width="full"
+              {...imageStyle}
             />
             <Box
               position="absolute"

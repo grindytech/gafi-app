@@ -104,7 +104,6 @@ const Button: ComponentStyleConfig = {
       _focusVisible: {},
     },
     primary: {
-      //in using button show metadata
       px: 4,
       bg: 'primary.a.500',
       color: 'white',
@@ -129,6 +128,13 @@ const Button: ComponentStyleConfig = {
       bg: 'white',
       color: 'shader.a.900',
       boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+    },
+    baseStyle: {
+      px: 4,
+      color: 'shader.a.900',
+      borderRadius: 'lg',
+      border: '0.063rem solid',
+      borderColor: 'shader.a.400',
     },
   },
 };

@@ -6,6 +6,7 @@ import {
   Box,
   Icon,
   Skeleton,
+  ImageProps,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import { TestPropsType1 } from 'layouts/MarketPlace/Home/Collections/components/TrendingSection';
@@ -13,8 +14,9 @@ import { TestPropsType1 } from 'layouts/MarketPlace/Home/Collections/components/
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {
   item: TestPropsType1;
+  imageStyle?: ImageProps;
 }
-const CardTypeOne = ({ item }: IProps) => {
+const CardTypeOne = ({ item, imageStyle }: IProps) => {
   return (
     <>
       <CardBox
@@ -22,21 +24,21 @@ const CardTypeOne = ({ item }: IProps) => {
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
         cursor="pointer"
+        _hover={{
+          transform: 'scale(0.95)',
+        }}
         transition="all linear 0.6s"
       >
         <VStack alignItems="flex-start" gap={0}>
           <Box width="full" padding={2}>
             <Image
-              _hover={{
-                objectFit: 'contain',
-              }}
-              transition="all linear 0.6s"
               objectFit="cover"
               src={item.image}
               alt={`Image ${item.name}`}
               width="full"
               h="10.5rem"
               borderRadius="xl"
+              {...imageStyle}
             />
           </Box>
 

@@ -13,9 +13,8 @@ import CloseIcon from 'public/assets/line/close.svg';
 import SearchIcon from 'public/assets/line/search.svg';
 interface IProps {
   isOpen: boolean;
-  onToggle: () => void;
 }
-const Filter = ({ isOpen, onToggle }: IProps) => {
+const Filter = ({ isOpen }: IProps) => {
   return (
     <>
       <Box
