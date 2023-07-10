@@ -1,5 +1,5 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+
 import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import SwitchAdmin, {
@@ -7,7 +7,6 @@ import SwitchAdmin, {
 } from 'components/SwitchAdmin/SwitchAdmin';
 
 import AddCollectionsModal from './AddCollectionsModal';
-import GameOwner from 'components/Game/GameOwner';
 import NumberInput from 'components/NumberInput';
 import CardBox from 'components/CardBox';
 
@@ -34,8 +33,6 @@ export default function AddCollections() {
       flexDirection="column"
       gap={3}
     >
-      <GameOwner />
-
       <SwitchAdmin
         setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
       />
@@ -61,10 +58,11 @@ export default function AddCollections() {
       </CardBox>
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
+        margin="auto"
+        px={6}
+        variant="primary"
         type="submit"
-        _hover={{}}
       >
         Submit Transaction
       </Button>

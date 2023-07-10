@@ -1,7 +1,7 @@
 import { Box, Flex, FlexProps, Text } from '@chakra-ui/react';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
-import React from 'react';
+
 import { shorten } from 'utils/utils';
 
 interface ConnectWalletProfileProps {

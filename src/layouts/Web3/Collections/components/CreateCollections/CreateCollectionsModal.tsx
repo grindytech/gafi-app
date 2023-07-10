@@ -15,7 +15,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import React from 'react';
+
 import { UseFormGetValues } from 'react-hook-form';
 
 import useSignAndSend from 'hooks/useSignAndSend';
@@ -91,7 +91,7 @@ export default function CreateCollectionsModal({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             isLoading={isLoading}
             _hover={{}}
             margin="unset"

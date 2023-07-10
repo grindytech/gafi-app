@@ -7,7 +7,6 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 import CreateItemModal from './CreateItemModal';
-import GameOwner from 'components/Game/GameOwner';
 
 export interface CreateItemFieldProps extends TypeSwitchAdmin {
   collection_id: number;
@@ -48,8 +47,6 @@ export default function CreateItem() {
         flexDirection="column"
         gap={3}
       >
-        <GameOwner />
-
         <SwitchAdmin
           setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
         />
@@ -90,10 +87,11 @@ export default function CreateItem() {
         />
 
         <Button
-          variant="createGameSubmit"
           isDisabled={isOpen}
+          margin="auto"
+          px={6}
+          variant="primary"
           type="submit"
-          _hover={{}}
         >
           Submit Transaction
         </Button>

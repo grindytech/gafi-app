@@ -10,11 +10,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import GoBack from 'components/GoBack';
-import React from 'react';
+
 import LineAddIcon from 'public/assets/line/add.svg';
 
-import CreateItem from './components/CreateItem';
-import AddSupply from './components/AddSupply';
+import CreateItem from './CreateItem';
+import AddSupply from './AddSupply';
+import theme from 'theme/theme';
+import AddMetadataItem from './AddMetadataItem';
 
 export default function Items() {
   return (
@@ -32,18 +34,11 @@ export default function Items() {
           mb={4}
           sx={{
             button: {
-              fontSize: 'sm',
-              fontWeight: 'medium',
-              color: 'shader.a.900',
-              borderRadius: 'lg',
-              border: '0.0625rem solid',
-              borderColor: 'shader.a.400',
+              ...theme.components.Button.variants.cancel,
 
               _selected: {
-                color: 'white',
+                ...theme.components.Button.variants.primary,
                 borderColor: 'transparent',
-                bg: 'primary.a.500',
-                fontWeight: 'semibold',
               },
             },
           }}
@@ -56,6 +51,8 @@ export default function Items() {
               <Text>Add Supply</Text>
             </Center>
           </Tab>
+
+          <Tab>Add Metadata</Tab>
         </TabList>
 
         <TabPanels
@@ -71,6 +68,10 @@ export default function Items() {
 
           <TabPanel>
             <AddSupply />
+          </TabPanel>
+
+          <TabPanel>
+            <AddMetadataItem />
           </TabPanel>
         </TabPanels>
       </Tabs>

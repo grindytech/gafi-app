@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CardBox from 'components/CardBox';
 import {
   Box,
@@ -16,13 +14,32 @@ import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
 import Balance from 'components/Balance/Balance';
 import { useAppSelector } from 'hooks/useRedux';
+import React from 'react';
+import { UseFormSetValue } from 'react-hook-form';
+
+export type TypeGameOwner = {
+  owner: {
+    address: string;
+    name: string;
+  };
+};
 
 interface GameOwnerProps {
   sx?: BoxProps;
+  setValue: UseFormSetValue<TypeGameOwner>;
 }
 
-export default function GameOwner({ sx }: GameOwnerProps) {
+export default function GameOwner({ setValue, sx }: GameOwnerProps) {
   const { account } = useAppSelector(state => state.injected.polkadot);
+
+  React.useEffect(() => {
+    if (account && account.address && account.name) {
+      setValue('owner', {
+        address: account.address,
+        name: account.name,
+      });
+    }
+  }, [account]);
 
   return (
     <>
@@ -44,7 +61,6 @@ export default function GameOwner({ sx }: GameOwnerProps) {
 
               <Box>
                 <Heading
-                  className="account-name"
                   fontSize="md"
                   fontWeight="semibold"
                   color="shader.a.900"
@@ -53,9 +69,8 @@ export default function GameOwner({ sx }: GameOwnerProps) {
                 </Heading>
 
                 <Text
-                  className="account-hash"
+                  wordBreak="break-all"
                   fontSize="sm"
-                  fontWeight="medium"
                   color="shader.a.600"
                   gap={1}
                   display="flex"

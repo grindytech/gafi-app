@@ -1,11 +1,15 @@
-import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Image, List, ListItem, Text } from '@chakra-ui/react';
+import { cloundinary_link } from 'axios/cloudinary_axios';
+import { TypeMetadataOfCollection } from 'types';
 
-import React from 'react';
+import { shorten } from 'utils/utils';
 
 export interface Web3CollectionsDataProps {
+  admin: string;
   owner: string;
-  game_id: number[];
   collection_id: number;
+  metadataOfCollection: TypeMetadataOfCollection;
+  game_id: number[];
 }
 
 export interface Web3CollectionsProps {
@@ -39,24 +43,50 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
               padding={4}
               wordBreak="break-word"
             >
-              <Flex gap="inherit">
-                <Heading
-                  flex={1}
-                  as="h3"
-                  color="primary.a.500"
-                  fontSize="md"
-                  fontWeight="inherit"
-                >
-                  {collection.game_id.length} games
-                </Heading>
+              <Image
+                margin="auto"
+                width={40}
+                height={40}
+                objectFit="contain"
+                src={
+                  collection.metadataOfCollection &&
+                  collection.metadataOfCollection.image
+                    ? `${cloundinary_link}/${collection.metadataOfCollection.image}`
+                    : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+                }
+              />
 
-                <Text color="shader.a.500" fontSize="sm">
-                  ID:&nbsp;
-                  <Text color="primary.a.500" as="span">
-                    {collection.collection_id}
+              <List
+                display="flex"
+                flexDirection="column"
+                sx={{
+                  li: {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  },
+                }}
+              >
+                <ListItem>
+                  <Text>
+                    {collection.metadataOfCollection?.title || 'none'}
                   </Text>
-                </Text>
-              </Flex>
+                  <Text>ID: {collection.collection_id}</Text>
+                </ListItem>
+
+                <ListItem>
+                  <Text>Owner</Text>
+                  <Text>{shorten(collection.owner)}</Text>
+                </ListItem>
+
+                <ListItem>
+                  <Text>Admin</Text>
+                  <Text>{shorten(collection.admin)}</Text>
+                </ListItem>
+
+                <ListItem color="primary.a.500">
+                  <Text>{collection.game_id.length} games</Text>
+                </ListItem>
+              </List>
             </Flex>
           </Box>
         ))}

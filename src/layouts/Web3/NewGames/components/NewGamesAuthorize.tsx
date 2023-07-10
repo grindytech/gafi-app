@@ -14,7 +14,6 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react';
-import React from 'react';
 
 import NewGamesProfile from './NewGamesProfile';
 
@@ -37,10 +36,10 @@ export default function NewGamesAuthorize({
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { game_id, admin } = getValues();
+  const { game_id, admin, title, owner } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: owner.address,
     key: ['createGame', game_id],
     onSuccess() {
       refetch();
@@ -73,7 +72,7 @@ export default function NewGamesAuthorize({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={owner.name} hash={owner.address} />
         </ModalHeader>
 
         <ModalBody
@@ -84,6 +83,11 @@ export default function NewGamesAuthorize({
           <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
+                <Td>Title</Td>
+                <Td>{title}</Td>
+              </Tr>
+
+              <Tr>
                 <Td>Game ID</Td>
                 <Td>{game_id}</Td>
               </Tr>
@@ -93,7 +97,7 @@ export default function NewGamesAuthorize({
 
         <ModalFooter px={0} pb={0}>
           <Button
-            variant="createGameSubmit"
+            variant="primary"
             isLoading={isLoading}
             _hover={{}}
             margin="unset"

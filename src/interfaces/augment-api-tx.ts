@@ -28,16 +28,6 @@ import type {
   Call,
   MultiAddress,
 } from '@polkadot/types/interfaces/runtime';
-import type {
-  GafiSupportGameTypesLoot,
-  GafiSupportGameTypesPackage,
-  GafiSupportGameTypesTradeType,
-  PalletNftsAttributeNamespace,
-  PalletNftsItemConfig,
-  SpConsensusGrandpaEquivocationProof,
-  SpCoreVoid,
-  SpWeightsWeightV2Weight,
-} from '@polkadot/types/lookup';
 
 export type __AugmentedSubmittable = AugmentedSubmittable<() => unknown>;
 export type __SubmittableExtrinsic<ApiType extends ApiTypes> =
@@ -382,6 +372,13 @@ declare module '@polkadot/api-base/types/submittable' {
         ) => SubmittableExtrinsic<ApiType>,
         [u32, Option<u128>]
       >;
+      claimWishlist: AugmentedSubmittable<
+        (
+          trade: u32 | AnyNumber | Uint8Array,
+          askPrice: u128 | AnyNumber | Uint8Array
+        ) => SubmittableExtrinsic<ApiType>,
+        [u32, u128]
+      >;
       clearAttribute: AugmentedSubmittable<
         (
           collection: u32 | AnyNumber | Uint8Array,
@@ -435,7 +432,6 @@ declare module '@polkadot/api-base/types/submittable' {
                 | string
                 | Uint8Array
               )[],
-          fee: u128 | AnyNumber | Uint8Array,
           admin:
             | MultiAddress
             | { Id: any }
@@ -444,9 +440,18 @@ declare module '@polkadot/api-base/types/submittable' {
             | { Address32: any }
             | { Address20: any }
             | string
+            | Uint8Array,
+          mintSettings:
+            | GafiSupportGameTypesMintSettings
+            | { mintType?: any; price?: any; startBlock?: any; endBlock?: any }
+            | string
             | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [Vec<GafiSupportGameTypesLoot>, u128, MultiAddress]
+        [
+          Vec<GafiSupportGameTypesLoot>,
+          MultiAddress,
+          GafiSupportGameTypesMintSettings
+        ]
       >;
       createGame: AugmentedSubmittable<
         (
@@ -489,7 +494,6 @@ declare module '@polkadot/api-base/types/submittable' {
                 | string
                 | Uint8Array
               )[],
-          fee: u128 | AnyNumber | Uint8Array,
           admin:
             | MultiAddress
             | { Id: any }
@@ -498,16 +502,18 @@ declare module '@polkadot/api-base/types/submittable' {
             | { Address32: any }
             | { Address20: any }
             | string
+            | Uint8Array,
+          mintSettings:
+            | GafiSupportGameTypesMintSettings
+            | { mintType?: any; price?: any; startBlock?: any; endBlock?: any }
+            | string
             | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [Vec<GafiSupportGameTypesLoot>, u128, MultiAddress]
-      >;
-      fillWishlist: AugmentedSubmittable<
-        (
-          trade: u32 | AnyNumber | Uint8Array,
-          askPrice: u128 | AnyNumber | Uint8Array
-        ) => SubmittableExtrinsic<ApiType>,
-        [u32, u128]
+        [
+          Vec<GafiSupportGameTypesLoot>,
+          MultiAddress,
+          GafiSupportGameTypesMintSettings
+        ]
       >;
       lockItemTransfer: AugmentedSubmittable<
         (
@@ -589,9 +595,11 @@ declare module '@polkadot/api-base/types/submittable' {
                 | string
                 | Uint8Array
               )[],
-          price: u128 | AnyNumber | Uint8Array
+          price: u128 | AnyNumber | Uint8Array,
+          startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+          endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber
         ) => SubmittableExtrinsic<ApiType>,
-        [Vec<GafiSupportGameTypesPackage>, u128]
+        [Vec<GafiSupportGameTypesPackage>, u128, Option<u32>, Option<u32>]
       >;
       setBuy: AugmentedSubmittable<
         (
@@ -600,9 +608,11 @@ declare module '@polkadot/api-base/types/submittable' {
             | { collection?: any; item?: any; amount?: any }
             | string
             | Uint8Array,
-          unitPrice: u128 | AnyNumber | Uint8Array
+          unitPrice: u128 | AnyNumber | Uint8Array,
+          startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+          endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber
         ) => SubmittableExtrinsic<ApiType>,
-        [GafiSupportGameTypesPackage, u128]
+        [GafiSupportGameTypesPackage, u128, Option<u32>, Option<u32>]
       >;
       setCollectionMetadata: AugmentedSubmittable<
         (
@@ -626,9 +636,11 @@ declare module '@polkadot/api-base/types/submittable' {
             | { collection?: any; item?: any; amount?: any }
             | string
             | Uint8Array,
-          unitPrice: u128 | AnyNumber | Uint8Array
+          unitPrice: u128 | AnyNumber | Uint8Array,
+          startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+          endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber
         ) => SubmittableExtrinsic<ApiType>,
-        [GafiSupportGameTypesPackage, u128]
+        [GafiSupportGameTypesPackage, u128, Option<u32>, Option<u32>]
       >;
       setSwap: AugmentedSubmittable<
         (
@@ -648,12 +660,16 @@ declare module '@polkadot/api-base/types/submittable' {
                 | string
                 | Uint8Array
               )[],
-          maybePrice: Option<u128> | null | Uint8Array | u128 | AnyNumber
+          maybePrice: Option<u128> | null | Uint8Array | u128 | AnyNumber,
+          startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+          endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber
         ) => SubmittableExtrinsic<ApiType>,
         [
           Vec<GafiSupportGameTypesPackage>,
           Vec<GafiSupportGameTypesPackage>,
-          Option<u128>
+          Option<u128>,
+          Option<u32>,
+          Option<u32>
         ]
       >;
       setTeam: AugmentedSubmittable<
@@ -721,9 +737,11 @@ declare module '@polkadot/api-base/types/submittable' {
                 | string
                 | Uint8Array
               )[],
-          price: u128 | AnyNumber | Uint8Array
+          price: u128 | AnyNumber | Uint8Array,
+          startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+          endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber
         ) => SubmittableExtrinsic<ApiType>,
-        [Vec<GafiSupportGameTypesPackage>, u128]
+        [Vec<GafiSupportGameTypesPackage>, u128, Option<u32>, Option<u32>]
       >;
       submitRandomSeedUnsigned: AugmentedSubmittable<
         (seed: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>,

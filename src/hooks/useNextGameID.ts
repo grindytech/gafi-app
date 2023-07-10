@@ -16,7 +16,7 @@ export default function useNextGameID({ refetch }: useNextGameIDProps = {}) {
         const res = await api.query.game.nextGameId();
         const id = res.toString();
 
-        setID(id);
+        setID(id || '0');
       }
     };
 

@@ -1,42 +1,45 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
+import useForceMount from 'hooks/useForceMount';
+import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
-
-import useForceMount from 'hooks/useForceMount';
-import GameOwner from 'components/Game/GameOwner';
-import CollectionID from 'components/Collection/CollectionID';
 
 export interface CreateCollectionFieldProps extends TypeSwitchAdmin {
   collection_id: string;
 }
 
 export default function CollectionsCreate() {
-  const { setValue, getValues } = useForm<CreateCollectionFieldProps>();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { setValue, getValues, handleSubmit } =
+    useForm<CreateCollectionFieldProps>();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { mounting, setMounting } = useForceMount();
 
   return (
-    <Flex flexDirection="column" gap={3}>
-      <GameOwner />
-
+    <Flex
+      onSubmit={handleSubmit(onOpen)}
+      as="form"
+      flexDirection="column"
+      gap={3}
+    >
       <SwitchAdmin
-        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
+        type="Owner"
       />
 
       <CollectionID setValue={setValue} refetch={mounting} />
 
       <Button
-        variant="createGameSubmit"
         isDisabled={isOpen}
-        onClick={onOpen}
-        _hover={{}}
+        margin="auto"
+        px={6}
+        variant="primary"
+        type="submit"
       >
         Submit Transaction
       </Button>

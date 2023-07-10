@@ -4,31 +4,12 @@ import {
   FormLabel,
   Heading,
   Input,
+  NumberInput as NumberInputChakra,
+  NumberInputField,
 } from '@chakra-ui/react';
+import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
 
-import React from 'react';
-
-import { TypeRegister } from 'types';
-
-interface NumberInputProps {
-  register: TypeRegister;
-  isInvalid?: boolean;
-  isRequired?: boolean;
-  title: string;
-  value: string;
-}
-
-export const NumberInputStyle = {
-  border: '0.0625rem solid',
-  borderColor: 'shader.a.400',
-  borderRadius: 'lg',
-  color: 'shader.a.900',
-  fontWeight: 'medium',
-  _placeholder: {
-    color: 'shader.a.500',
-    fontWeight: 'normal',
-  },
-};
+import { TypeNumberInput } from 'types';
 
 export default function NumberInput({
   register,
@@ -36,36 +17,27 @@ export default function NumberInput({
   isInvalid,
   title,
   value,
-}: NumberInputProps) {
+}: Omit<TypeNumberInput, 'control' | 'setValue'>) {
   return (
     <FormControl
-      as={Center}
+      {...TextInputMaxLengthStyle}
       isRequired={isRequired}
       isInvalid={isInvalid}
-      justifyContent="space-between"
+      as={Center}
     >
-      <FormLabel margin={0} display="flex" alignItems="center">
+      <FormLabel>
         <Heading variant="game">{title}</Heading>
       </FormLabel>
 
-      <Input
-        {...NumberInputStyle}
-        required={false}
-        _focusVisible={{}}
-        width="auto"
-        min={0}
-        placeholder="Ex: 0"
-        type="number"
-        {...register(
-          value,
-          isRequired
-            ? {
-                required: 'Please fill out this field.',
-                min: 0,
-              }
-            : undefined
-        )}
-      />
+      <NumberInputChakra min={0}>
+        <Input
+          as={NumberInputField}
+          required={false}
+          variant="control"
+          placeholder="Ex: 0"
+          {...register(value, { required: isRequired })}
+        />
+      </NumberInputChakra>
     </FormControl>
   );
 }

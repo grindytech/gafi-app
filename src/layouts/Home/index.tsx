@@ -1,4 +1,3 @@
-import React from 'react';
 import HeroSection from './components/HeroSection';
 import BlockInfo from './components/Block/BlockInfo';
 import { Grid, HStack, VStack } from '@chakra-ui/react';

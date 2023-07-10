@@ -3,15 +3,18 @@ import {
   Center,
   CircularProgress,
   Flex,
-  Grid,
   Heading,
+  Image,
+  SimpleGrid,
   Text,
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { cloundinary_link } from 'axios/cloudinary_axios';
 import CardBox from 'components/CardBox';
 
 import { useAppSelector } from 'hooks/useRedux';
 import React from 'react';
+import { TypeMetadataOfCollection } from 'types';
 
 import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
 
@@ -45,16 +48,27 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
 
             const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
 
+            const metadataOfCollection = (await api.query.nfts
+              .collectionMetadataOf(collection)
+              .then(item => {
+                const data = item.value.toHuman();
+
+                if (data) {
+                  return JSON.parse(String(data.data));
+                }
+              })) as TypeMetadataOfCollection;
+
             return {
               item_id: item,
               collection_id: collection,
               rarity: getWeight,
+              metadataOfCollection,
             };
           })
         );
 
         return getSupplyOfItems.map(item => {
-          const { collection_id, item_id, rarity } = item;
+          const { collection_id, item_id, rarity, metadataOfCollection } = item;
 
           const weight = CalculatorOfRarity(
             rarity,
@@ -65,6 +79,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
             collection_id,
             item_id,
             rarity: weight,
+            metadataOfCollection,
           };
         });
       }
@@ -76,7 +91,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
 
   if (!pool_id) return undefined;
 
-  if (isError)
+  if (isError || !data?.length)
     return (
       <CardBox variant="createGames" as={Center} py={4}>
         Not Found
@@ -94,10 +109,17 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
     <>
       {data && data.length ? (
         <CardBox variant="createGames">
-          <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
+          <SimpleGrid
+            columns={{
+              sm: 2,
+              md: 3,
+            }}
+            gap={3}
+          >
             {React.Children.toArray(
               data.map(item => {
-                const { collection_id, item_id, rarity } = item;
+                const { collection_id, item_id, rarity, metadataOfCollection } =
+                  item;
 
                 return (
                   <Flex
@@ -108,6 +130,16 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                     borderRadius="xl"
                     padding={4}
                   >
+                    <Image
+                      margin="auto"
+                      height={20}
+                      objectFit="contain"
+                      src={
+                        metadataOfCollection?.image
+                          ? `${cloundinary_link}/${metadataOfCollection.image}`
+                          : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+                      }
+                    />
                     <Heading
                       fontSize="lg"
                       fontWeight="medium"
@@ -119,10 +151,30 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                     </Heading>
 
                     <Box mt={4}>
+                      {metadataOfCollection?.title ? (
+                        <Text>
+                          Name:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {metadataOfCollection.title}
+                          </Text>
+                        </Text>
+                      ) : null}
+
+                      {metadataOfCollection?.external_url ? (
+                        <Text>
+                          Link:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {metadataOfCollection.external_url}
+                          </Text>
+                        </Text>
+                      ) : null}
+
                       {typeof collection_id === 'number' ? (
                         <Text>
                           Collection ID:&nbsp;
-                          <Text as="span">{collection_id}</Text>
+                          <Text as="span" color="primary.a.500">
+                            {collection_id}
+                          </Text>
                         </Text>
                       ) : null}
                       <Text>
@@ -140,7 +192,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                 );
               })
             )}
-          </Grid>
+          </SimpleGrid>
         </CardBox>
       ) : null}
     </>
