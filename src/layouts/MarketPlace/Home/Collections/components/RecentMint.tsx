@@ -113,7 +113,12 @@ const RecentMint = () => {
               height={6}
               w={6}
               transform="rotate(90deg)"
-              aria-label="Money Icon"
+              aria-label="Pickaxe Icon"
+              sx={{
+                path: {
+                  fill: 'url(#PickAxeDefaultColor)',
+                },
+              }}
             />
             <Text fontSize="lg">Recently Mint</Text>
           </HStack>

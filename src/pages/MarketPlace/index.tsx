@@ -25,7 +25,7 @@ export const ListMarketPlace = [
   {
     icon: PickaxeIcon,
     text: 'Minting pools',
-    link: 'mining',
+    link: 'minting',
   },
 ];
 

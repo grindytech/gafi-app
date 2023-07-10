@@ -1,21 +1,13 @@
 import CardBox from 'components/CardBox';
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Icon,
-  List,
-  ListItem,
-  Select,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Center, List, ListItem, Text } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
 import React from 'react';
-import FilterIcon from 'public/assets/line/filter.svg';
+
 import Activities from './Activities';
-import Filter from 'layouts/MarketPlace/Explorer/Filter';
+import Games from './Games';
+import Collections from './Collections';
+import NFTs from './NFTs';
+
 export const ListExplorerTab = [
   {
     title: 'Activities',
@@ -25,25 +17,27 @@ export const ListExplorerTab = [
   {
     title: 'Games',
     link: 'games',
-    element: <Activities />,
+    element: <Games />,
   },
   {
     title: 'Collections',
     link: 'collections',
+    element: <Collections />,
   },
   {
     title: 'NFTs',
     link: 'nfts',
+    element: <NFTs />,
   },
   {
     title: 'Creators',
     link: 'creators',
+    element: <NFTs />,
   },
 ];
 const Explorer = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isOpen, onToggle } = useDisclosure();
 
   React.useEffect(() => {
     if (pathname === '/marketplace/explorer') {
@@ -91,44 +85,7 @@ const Explorer = () => {
           })}
         </List>
         <Box p={4}>
-          <HStack gap={4} mb={4} flexWrap="wrap">
-            <Button
-              variant={isOpen ? 'primary' : 'baseStyle'}
-              leftIcon={<Icon as={FilterIcon} />}
-              onClick={onToggle}
-            >
-              Filter
-            </Button>
-            <Select variant="formFilter" width="fit-content">
-              {testOption1.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.title}
-                </option>
-              ))}
-            </Select>
-            <Select variant="formFilter" width="fit-content">
-              {testOption2.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.title}
-                </option>
-              ))}
-            </Select>
-            <Select variant="formFilter" width="fit-content">
-              {testOption3.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.title}
-                </option>
-              ))}
-            </Select>
-          </HStack>
-          <HStack gap={isOpen ? 5 : 0} alignItems="flex-start">
-            <Box flexGrow={1}>
-              <Filter isOpen={isOpen} />
-            </Box>
-            <Box width="full">
-              <Outlet />
-            </Box>
-          </HStack>
+          <Outlet />
         </Box>
       </CardBox>
     </>

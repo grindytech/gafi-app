@@ -100,6 +100,11 @@ const RecentSold = () => {
               as={MoneyIcon}
               height={6}
               w={6}
+              sx={{
+                path: {
+                  fill: 'url(#MoneySucessColor)',
+                },
+              }}
               aria-label="Money Icon"
               color="#2E4FF4"
             />

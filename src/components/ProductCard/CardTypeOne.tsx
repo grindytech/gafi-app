@@ -20,14 +20,16 @@ const CardTypeOne = ({ item, imageStyle }: IProps) => {
   return (
     <>
       <CardBox
+        mt={2}
         padding={0}
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
         cursor="pointer"
         _hover={{
-          transform: 'scale(0.95)',
+          transform: 'translateY(-5px)',
+          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 4px 16px',
         }}
-        transition="all linear 0.6s"
+        transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
       >
         <VStack alignItems="flex-start" gap={0}>
           <Box width="full" padding={2}>

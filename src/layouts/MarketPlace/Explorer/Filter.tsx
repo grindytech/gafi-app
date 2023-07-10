@@ -21,7 +21,7 @@ const Filter = ({ isOpen }: IProps) => {
         display={isOpen ? 'block' : 'none'}
         opacity={isOpen ? 1 : 0}
         borderRadius="xl"
-        width="280px"
+        /*   width="280px" */
         border="0.063rem solid"
         borderColor="shader.a.400"
         color="shader.a.900"
