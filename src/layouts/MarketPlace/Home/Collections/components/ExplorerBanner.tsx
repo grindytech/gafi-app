@@ -16,7 +16,7 @@ export default function ExplorerBanner() {
 
   return (
     <Box
-      backgroundImage='url("/assets/background/bg-01.png")'
+      backgroundImage="url('/public/assets/background/bg-01.png')"
       borderRadius="lg"
       padding={10}
       whiteSpace="pre-line"

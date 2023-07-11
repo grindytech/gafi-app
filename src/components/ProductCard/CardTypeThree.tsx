@@ -26,19 +26,30 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
         padding={0}
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+        role="group"
+        _hover={{
+          transform: 'translateY(-5px)',
+          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
+        }}
+        transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
       >
         <VStack color="shader.a.900" gap={0}>
           <Box position="relative" padding={2} width="full">
-            <Image
-              objectFit="cover"
-              src={item.image}
-              alt={`Image ${item.name}`}
-              /*       h="12.5rem"
-               */
-              borderRadius="xl"
-              width="full"
-              {...imageStyle}
-            />
+            <Box overflow="hidden" borderRadius="xl">
+              <Image
+                objectFit="cover"
+                src={item.image}
+                _groupHover={{
+                  transform: 'scale(1.2)',
+                  transition: ' 0.25s ease-in-out',
+                }}
+                alt={`Image ${item.name}`}
+                h="12.5rem"
+                width="full"
+                {...imageStyle}
+              />
+            </Box>
+
             <Box
               position="absolute"
               background="rgba(0, 0, 0, 0.70)"
@@ -63,7 +74,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
             <VStack alignItems="start" w="full">
               <HStack justifyContent="space-between" w="full">
                 <Flex alignItems="center" gap={1}>
-                  <Text fontWeight="medium">{item.name}</Text>
+                  <Text fontWeight="medium" noOfLines={1}>
+                    {item.name}
+                  </Text>
                   {item.isVerified && (
                     <Icon
                       as={VerifyIcon}
@@ -74,17 +87,22 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                   )}
                 </Flex>
 
-                <Flex>
+                {/*  <Flex>
                   <Text color="shader.a.600">ID:</Text>
                   <Text>{item.id}</Text>
-                </Flex>
+                </Flex> */}
               </HStack>
               <Text color="shader.a.600" fontSize="sm" fontWeight="medium">
                 Current Auction:
               </Text>
-              <HStack justifyContent="space-between" width="full">
-                <Flex gap={2}>
+              <HStack
+                justifyContent="space-between"
+                width="full"
+                flexWrap="wrap"
+              >
+                <Flex gap={2} flexGrow={1} alignItems="center">
                   <Icon as={GafiIcon} h={5} w={5} />
+
                   <Box>
                     <Text fontWeight="medium">{item.currentAuction}</Text>
                     <Text fontSize="xs" color="shader.a.500">
@@ -93,7 +111,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                   </Box>
                 </Flex>
 
-                <Button variant="primary">Auction</Button>
+                <Button variant="primary" flexGrow={1}>
+                  Auction
+                </Button>
               </HStack>
             </VStack>
           </Box>

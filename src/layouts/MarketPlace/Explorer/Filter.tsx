@@ -8,7 +8,7 @@ import {
   Select,
   VStack,
 } from '@chakra-ui/react';
-import { testOption1 } from 'pages/MarketPlace/Explorer';
+import { testOption1 } from 'layouts/MarketPlace/Explorer/DataTest';
 import CloseIcon from 'public/assets/line/close.svg';
 import SearchIcon from 'public/assets/line/search.svg';
 interface IProps {
@@ -21,12 +21,11 @@ const Filter = ({ isOpen }: IProps) => {
         display={isOpen ? 'block' : 'none'}
         opacity={isOpen ? 1 : 0}
         borderRadius="xl"
-        /*   width="280px" */
+        width="full!important"
+        minWidth="17.5rem"
         border="0.063rem solid"
         borderColor="shader.a.400"
         color="shader.a.900"
-        top="7.5rem"
-        position="sticky"
         height="fit-content"
       >
         <Box
