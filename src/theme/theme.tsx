@@ -55,17 +55,15 @@ export const styles = {
     '*': {
       scrollBehavior: 'smooth',
 
-      _hover: {
-        '::-webkit-scrollbar-thumb': {
-          bg: 'shader.a.500',
-          borderRadius: '2rem',
-        },
+      '::-webkit-scrollbar-thumb': {
+        bg: 'shader.a.400',
+        borderRadius: '2rem',
       },
-      '::-webkit-scrollbar': {
-        bg: 'transparent',
-        width: 2,
-        height: 2,
-      },
+    },
+    '::-webkit-scrollbar': {
+      bg: 'transparent',
+      width: 2,
+      height: 2,
     },
   }),
 };

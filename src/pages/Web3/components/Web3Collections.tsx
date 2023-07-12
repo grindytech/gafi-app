@@ -77,7 +77,7 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
                 src={`${cloundinary_link}/${collection.metadataOfCollection.image}`}
               />
             ) : (
-              <Image src={'public/assets/fill/item.png'} />
+              <Image src={'assets/fill/item.png'} />
             )}
           </Center>
 

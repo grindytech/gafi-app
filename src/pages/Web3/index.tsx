@@ -44,7 +44,7 @@ export default function Web3() {
 
   const { api } = useAppSelector(state => state.substrate);
 
-  const data = useQueries({
+  const [game, collection, item] = useQueries({
     queries: [
       {
         queryKey: ['gameAccount', account?.address],
@@ -213,19 +213,9 @@ export default function Web3() {
     ],
   });
 
-  const games = data[0].data;
-  const collections = data[1].data;
-  const items = data[2].data;
-
-  const gamesLength = games && games.length;
-  const collectionsLength = collections && collections.length;
-  const itemsLength = items && items.length;
-
-  const index = pathname === '/web3';
-
-  if (index && data[0].isLoading && data[1].isLoading) {
+  if (game.isLoading || collection.isLoading) {
     return (
-      <Center height="full" gap={4}>
+      <Center height="100vh" gap={4}>
         <Spinner color="primary.a.500" size="md" />
         <Heading fontSize="lg" color="shader.a.600" fontWeight="medium">
           Loading
@@ -236,8 +226,8 @@ export default function Web3() {
 
   return (
     <>
-      {index ? (
-        gamesLength || collectionsLength || itemsLength ? (
+      {pathname === '/web3' ? (
+        game.data?.length || collection.data?.length || item.data?.length ? (
           <DefaultWeb3>
             <Tabs variant="unstyled">
               <TabList flexWrap="wrap-reverse" gap={4}>
@@ -256,22 +246,18 @@ export default function Web3() {
                     },
                   }}
                 >
-                  {gamesLength ? <Tab>Games {games.length}</Tab> : null}
+                  <Tab>Games {game.data?.length}</Tab>
 
-                  {collectionsLength ? (
-                    <Tab position="relative">
-                      Collections {collections.length}
-                    </Tab>
-                  ) : null}
+                  <Tab>Collections {collection.data?.length}</Tab>
 
-                  {itemsLength ? (
-                    <Tab>
-                      Items&nbsp;
-                      {items
-                        .map(item => item.length)
-                        .reduce((prev, current) => prev + current)}
-                    </Tab>
-                  ) : null}
+                  <Tab>
+                    Items&nbsp;
+                    {item.data && item.data.length
+                      ? item.data
+                          .map(item => item.length)
+                          .reduce((prev, current) => prev + current)
+                      : 0}
+                  </Tab>
                 </Flex>
 
                 <Flex
@@ -329,21 +315,21 @@ export default function Web3() {
                   },
                 }}
               >
-                {gamesLength && (
+                {game.data && (
                   <TabPanel>
-                    <Web3Games data={games} />
+                    <Web3Games data={game.data} />
                   </TabPanel>
                 )}
 
-                {collectionsLength && (
+                {collection.data && (
                   <TabPanel>
-                    <Web3Collections data={collections} />
+                    <Web3Collections data={collection.data} />
                   </TabPanel>
                 )}
 
-                {itemsLength && (
+                {item.data && (
                   <TabPanel>
-                    <Web3Items data={items} />
+                    <Web3Items data={item.data} />
                   </TabPanel>
                 )}
               </TabPanels>
@@ -355,8 +341,8 @@ export default function Web3() {
       ) : (
         <Outlet
           context={{
-            collection: data[1].refetch,
-            items: data[2].refetch,
+            collection: collection.refetch,
+            items: item.refetch,
           }}
         />
       )}

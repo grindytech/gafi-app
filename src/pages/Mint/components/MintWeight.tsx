@@ -144,7 +144,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                           src={`${cloundinary_link}/${item.metadataOfCollection.image}`}
                         />
                       ) : (
-                        <Image src={'public/assets/fill/item.png'} />
+                        <Image src={'assets/fill/item.png'} />
                       )}
                     </Center>
 

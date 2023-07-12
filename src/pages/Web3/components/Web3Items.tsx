@@ -57,7 +57,7 @@ export default function Web3Items({ data }: Web3ItemsProps) {
                   src={`${cloundinary_link}/${child.metadataOfItem.image}`}
                 />
               ) : (
-                <Image src={'public/assets/fill/item.png'} />
+                <Image src={'assets/fill/item.png'} />
               )}
             </Center>
 
