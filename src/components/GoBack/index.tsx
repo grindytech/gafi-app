@@ -17,13 +17,7 @@ export default function GoBack() {
       fontWeight="semibold"
       iconSpacing={1}
       leftIcon={
-        <Icon
-          as={Chevron02Icon as any}
-          transform="rotate(90deg)"
-          width={5}
-          height={5}
-          color="primary.a.500"
-        />
+        <Icon as={Chevron02Icon} width={5} height={5} color="primary.a.500" />
       }
     >
       Go back
