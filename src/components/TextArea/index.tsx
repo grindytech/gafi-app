@@ -12,7 +12,7 @@ interface TextAreaProps {
   register: UseFormRegister<any>;
   isInvalid?: boolean;
   isRequired?: boolean;
-  isReset?: boolean;
+  placeholder?: string;
 }
 
 export default function TextArea({
@@ -20,6 +20,7 @@ export default function TextArea({
   value,
   isInvalid,
   isRequired,
+  placeholder,
 }: TextAreaProps) {
   return (
     <>
@@ -37,7 +38,7 @@ export default function TextArea({
           mt={4}
           required={false}
           resize="none"
-          placeholder="Write about your project."
+          placeholder={placeholder || 'Write about your project.'}
         />
       </FormControl>
     </>

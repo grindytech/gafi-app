@@ -19,6 +19,7 @@ interface NumberInputProps {
   isInvalid?: boolean;
   isRequired?: boolean;
   isReset?: boolean;
+  placeholder?: string;
 }
 
 export default function NumberInput({
@@ -29,6 +30,7 @@ export default function NumberInput({
   title,
   value,
   isReset,
+  placeholder,
 }: NumberInputProps) {
   const [text, setText] = React.useState<string>('');
 
@@ -60,7 +62,7 @@ export default function NumberInput({
           as={NumberInputField}
           isRequired={false}
           variant="control"
-          placeholder="Ex: 0"
+          placeholder={placeholder || 'Ex: 0'}
           {...register(value, {
             required: isRequired,
             onChange(event) {

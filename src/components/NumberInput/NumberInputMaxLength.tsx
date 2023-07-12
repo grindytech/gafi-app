@@ -18,6 +18,7 @@ interface NumberInputMaxLengthProps {
   isInvalid?: boolean;
   isRequired?: boolean;
   max: number;
+  placeholder?: string;
 }
 
 export default function NumberInputMaxLength({
@@ -27,6 +28,7 @@ export default function NumberInputMaxLength({
   title,
   value,
   max,
+  placeholder,
 }: NumberInputMaxLengthProps) {
   return (
     <FormControl
@@ -53,7 +55,7 @@ export default function NumberInputMaxLength({
               as={NumberInputField}
               variant="control"
               required={false}
-              placeholder="Ex: 0"
+              placeholder={placeholder || 'Ex: 0'}
               pr={16}
               maxLength={max}
             />
