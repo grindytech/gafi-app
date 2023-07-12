@@ -2,16 +2,14 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
+    jest: true, // using jest .ts
+    node: true, // using process
   },
   extends: [
-    // By extending from a plugin config, we can get recommended rules without having to add them manually.
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:@typescript-eslint/recommended',
-    // This disables the formatting rules in ESLint that Prettier is going to be responsible for handling.
-    // Make sure it's always the last config, so it gets the chance to override other configs.
     'eslint-config-prettier',
   ],
   settings: {
@@ -56,9 +54,20 @@ module.exports = {
   plugins: ['react-refresh', '@typescript-eslint', 'jsx-a11y', 'prettier'],
   rules: {
     'react-refresh/only-export-components': 'off',
-    'prettier/prettier': 'error',
+
+    'prettier/prettier': [
+      'error',
+      {
+        arrowParens: 'avoid',
+        endOfLine: 'lf',
+        tabWidth: 2,
+        semi: true,
+        singleQuote: true,
+        trailingComma: 'es5',
+      },
+    ],
+    // (allow using as <Carousel />) 'React' must be in scope when using JSX
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-uses-react': 'off',
 
     // (allow using type any) Unexpected any. Specify a different type
     '@typescript-eslint/no-explicit-any': 'off',
