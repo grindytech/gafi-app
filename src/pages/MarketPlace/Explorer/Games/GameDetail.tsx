@@ -29,6 +29,7 @@ const GameDetail = () => {
   const refDescription = useRef<HTMLParagraphElement>(null);
   const [isOverflown, setIsOverflown] = useState(false);
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const element = refDescription.current!;
     const compare = element
       ? element.offsetWidth < element.scrollWidth ||

@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 
 /***
  * @param targetDate(1689411360303) // timestamp
+ * Logic:
+ *  - Get the time type from the target date
+ *  - Set the interval 1000ms for counting time
  *
  * Expected: Time Reminder include day . hours,minutes and seconds
  */

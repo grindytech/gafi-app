@@ -9,7 +9,6 @@ interface TimeProps {
 
 const TimeReminder = ({ targetDate, sx }: TimeProps) => {
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
-  console.log('Day', days, hours, minutes, seconds);
   return (
     <>
       <Box

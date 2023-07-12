@@ -234,12 +234,16 @@ export const testCollectionDetail = {
 };
 
 /**------------- Data Test Article*/
+//1 day: 24 * 60 * 60 * 1000;
+const NOW_TIME = new Date().getTime();
+
 export const DataTestArticle = [
   {
     image:
       'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
     link: '#',
     title: 'Fornite Zero Build Give Away',
+    targetDate: 24 * 60 * 60 * 1000 + NOW_TIME,
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
@@ -248,6 +252,7 @@ export const DataTestArticle = [
       'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
     link: '#',
     title: 'Lego 2K Driver Season 1',
+    targetDate: 15 * 60 * 1000 + NOW_TIME,
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
@@ -255,6 +260,7 @@ export const DataTestArticle = [
     image:
       'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
     link: '#',
+    targetDate: 30 * 60 * 1000 + NOW_TIME,
     title: 'Fornite Zero Build Give Away',
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
@@ -264,6 +270,7 @@ export const DataTestArticle = [
       'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
     link: '#',
     title: 'Lego 2K Driver Season 1',
+    targetDate: 45 * 60 * 1000 + NOW_TIME,
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
@@ -272,6 +279,7 @@ export const DataTestArticle = [
       'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
     link: '#',
     title: 'Fornite Zero Build Give Away',
+    targetDate: 1 * 60 * 60 * 1000 + NOW_TIME,
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
@@ -280,6 +288,7 @@ export const DataTestArticle = [
       'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
     link: '#',
     title: 'Lego 2K Driver Season 1',
+    targetDate: 15 * 60 * 1000 + NOW_TIME,
     description:
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
