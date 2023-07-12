@@ -7,17 +7,24 @@ import {
   Input,
 } from '@chakra-ui/react';
 
-import { TypeNumberInput } from 'types';
 import { TextInputMaxLengthStyle } from './TextInputMaxLength';
+import { UseFormRegister } from 'react-hook-form';
 
-type TextInputProps = Omit<TypeNumberInput, 'control' | 'setValue'>;
+interface TextInputProps {
+  title: string;
+  value: string;
+  register: UseFormRegister<any>;
+  isInvalid?: boolean;
+  isRequired?: boolean;
+  placeholder?: string;
+}
 
 export default function TextInput({
+  title,
+  value,
   register,
   isRequired,
   isInvalid,
-  title,
-  value,
   placeholder,
 }: TextInputProps) {
   return (

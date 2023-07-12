@@ -1,10 +1,11 @@
-import { Box, Flex, Grid, Image, List, ListItem, Text } from '@chakra-ui/react';
+import { Box, Center, Grid, Heading, Image, Text } from '@chakra-ui/react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { TypeMetadataOfItem } from 'types';
 
 export interface Web3ItemsDataProps {
   collection_id: number;
   item_id: number;
+  supply: string | null;
   metadataOfItem: TypeMetadataOfItem;
 }
 
@@ -22,6 +23,18 @@ export default function Web3Items({ data }: Web3ItemsProps) {
       }}
       gap={5}
       fontWeight="medium"
+      sx={{
+        '.card-heading': {
+          fontSize: 'sm',
+          fontWeight: 'normal',
+          color: 'shader.a.600',
+        },
+        '.card-value': {
+          fontSize: 'sm',
+          fontWeight: 'medium',
+          color: 'shader.a.900',
+        },
+      }}
     >
       {data.map(item =>
         item.map(child => (
@@ -30,50 +43,50 @@ export default function Web3Items({ data }: Web3ItemsProps) {
             border="0.0625rem solid"
             borderColor="shader.a.300"
             borderRadius="xl"
+            overflow="hidden"
+            display="flex"
+            flexDirection="column"
           >
-            <Flex
-              bg="white"
-              borderRadius="inherit"
-              flexDirection="column"
-              gap={3}
-              padding={4}
-              wordBreak="break-word"
-            >
-              <Image
-                margin="auto"
-                width={40}
-                height={40}
-                objectFit="contain"
-                src={
-                  child.metadataOfItem && child.metadataOfItem.image
-                    ? `${cloundinary_link}/${child.metadataOfItem.image}`
-                    : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
-                }
-              />
+            <Center height={48} bg="shader.a.300" position="relative">
+              {child.metadataOfItem?.image ? (
+                <Image
+                  width="full"
+                  height="full"
+                  objectFit="cover"
+                  alt="image is outdated"
+                  src={`${cloundinary_link}/${child.metadataOfItem.image}`}
+                />
+              ) : (
+                <Image src={'assets/fill/item.png'} />
+              )}
+            </Center>
 
-              <List
-                display="flex"
-                flexDirection="column"
-                sx={{
-                  li: {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  },
-                }}
-              >
-                <ListItem>
-                  <Text>
-                    {child.metadataOfItem ? child.metadataOfItem.title : 'none'}
+            <Box padding={4} bg="white">
+              <Center justifyContent="space-between" mb={1}>
+                <Heading className="card-value" fontSize="md!">
+                  {child.metadataOfItem?.title || '-'}
+                </Heading>
+
+                <Text className="card-value" color="shader.a.500!">
+                  ID:&nbsp;
+                  <Text as="span" color="primary.a.500">
+                    {child.item_id}
                   </Text>
-                  <Text as="span">ID: {child.item_id}</Text>
-                </ListItem>
+                </Text>
+              </Center>
 
-                <ListItem>
-                  <Text>collection:</Text>
-                  <Text as="span">ID: {child.item_id}</Text>
-                </ListItem>
-              </List>
-            </Flex>
+              <Center justifyContent="space-between">
+                <Heading className="card-heading">Supply</Heading>
+
+                <Text className="card-value">{child.supply || 'Infinity'}</Text>
+              </Center>
+
+              <Center justifyContent="space-between">
+                <Heading className="card-heading">Collection ID</Heading>
+
+                <Text className="card-value">{child.collection_id}</Text>
+              </Center>
+            </Box>
           </Box>
         ))
       )}

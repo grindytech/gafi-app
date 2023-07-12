@@ -8,16 +8,44 @@ import {
   NumberInputField,
 } from '@chakra-ui/react';
 import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
+import React from 'react';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
-import { TypeNumberInput } from 'types';
+interface NumberInputProps {
+  title: string;
+  value: string;
+  register: UseFormRegister<any>;
+  setValue?: UseFormSetValue<any>;
+  isInvalid?: boolean;
+  isRequired?: boolean;
+  isReset?: boolean;
+  placeholder?: string;
+}
 
 export default function NumberInput({
   register,
-  isRequired,
+  setValue,
   isInvalid,
+  isRequired,
   title,
   value,
-}: Omit<TypeNumberInput, 'control' | 'setValue'>) {
+  isReset,
+  placeholder,
+}: NumberInputProps) {
+  const [text, setText] = React.useState<string>('');
+
+  React.useEffect(() => {
+    if (isReset) {
+      setText('');
+    }
+  }, [isReset]);
+
+  React.useEffect(() => {
+    if (setValue && !text.length) {
+      setValue(value, undefined);
+    }
+  }, [text]);
+
   return (
     <FormControl
       {...TextInputMaxLengthStyle}
@@ -29,13 +57,23 @@ export default function NumberInput({
         <Heading variant="game">{title}</Heading>
       </FormLabel>
 
-      <NumberInputChakra min={0}>
+      <NumberInputChakra min={0} value={text}>
         <Input
           as={NumberInputField}
-          required={false}
+          isRequired={false}
           variant="control"
-          placeholder="Ex: 0"
-          {...register(value, { required: isRequired })}
+          placeholder={placeholder || 'Ex: 0'}
+          {...register(value, {
+            required: isRequired,
+            onChange(event) {
+              setText(event.target.value);
+            },
+            onBlur(event) {
+              if (!event.target.value.length && setValue) {
+                setValue(value, undefined);
+              }
+            },
+          })}
         />
       </NumberInputChakra>
     </FormControl>

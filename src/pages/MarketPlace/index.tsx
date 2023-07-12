@@ -1,47 +1,31 @@
 import React from 'react';
-
 import ExplorerIcon from 'public/assets/line/compass.svg';
-import GameIcon from 'public/assets/line/game.svg';
-import Collection02Icon from 'public/assets/line/collection-02.svg';
-import NFTSIcon from 'public/assets/line/nfts.svg';
-import PoolsIcon from 'public/assets/line/pools.svg';
+import GridIcon from 'public/assets/line/layout-grid.svg';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import { Center, Icon, List, ListItem, Text } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
-import Explorer from 'layouts/MarketPlace/Explorer';
+import Explorer from './Explorer';
+import HomeMarketPlace from './Home';
 
 export const ListMarketPlace = [
+  {
+    icon: GridIcon,
+    text: 'Home',
+    link: 'home',
+    element: <HomeMarketPlace />,
+  },
   {
     icon: ExplorerIcon,
     text: 'Explorer',
     link: 'explorer',
     element: <Explorer />,
   },
-  {
-    icon: GameIcon,
-    text: 'Games',
-    link: 'games',
-  },
-  {
-    icon: Collection02Icon,
-    text: 'Collections',
-    link: 'collections',
-  },
-  {
-    icon: NFTSIcon,
-    text: 'NFTs',
-    link: 'nfts',
-  },
-  {
-    icon: PoolsIcon,
-    text: 'Pools',
-    link: 'pools',
-  },
+
   {
     icon: PickaxeIcon,
-    text: 'Minting',
-    link: 'mining',
+    text: 'Minting pools',
+    link: 'minting',
   },
 ];
 
@@ -51,13 +35,13 @@ export default function MarketPlace() {
 
   React.useEffect(() => {
     if (pathname === '/marketplace') {
-      navigate('/marketplace/explorer');
+      navigate('/marketplace/home');
     }
   }, [pathname]);
 
   return (
     <>
-      <List display="flex" gap={3} mb={6}>
+      <List display="flex" gap={3} mb={6} flexWrap="wrap">
         {ListMarketPlace.map(market => {
           const isActive = pathname.includes(market.link);
 
@@ -70,9 +54,9 @@ export default function MarketPlace() {
                 py={2.5}
                 gap={2}
                 color={isActive ? 'white' : 'shader.a.900'}
-                bg={isActive ? 'shader.a.900' : 'transparent'}
+                bg={isActive ? 'primary.a.500' : 'transparent'}
                 border="0.0625rem solid"
-                borderColor={isActive ? 'shader.a.400' : 'transparent'}
+                borderColor={isActive ? 'transparent' : 'shader.a.400'}
                 borderRadius="lg"
               >
                 <Icon as={market.icon} width={5} height={5} />
