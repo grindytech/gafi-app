@@ -216,7 +216,7 @@ const HotCollection = () => {
             spaceBetween={20}
             slidesPerView={3.5}
             breakpoints={{
-              390: {
+              370: {
                 slidesPerView: 1,
               },
               450: {

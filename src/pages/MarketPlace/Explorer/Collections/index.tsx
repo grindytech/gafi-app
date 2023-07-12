@@ -18,9 +18,11 @@ import FilterIcon from 'public/assets/line/filter.svg';
 
 import { useEffect, useRef, useState } from 'react';
 import Filter from 'layouts/MarketPlace/Explorer/Filter';
-import { CardTypeOneSkeleton } from 'components/ProductCard/CardTypeOne';
-import CardTypeThree from 'components/ProductCard/CardTypeThree';
-const Activities = () => {
+import CardTypeOne, {
+  CardTypeOneSkeleton,
+} from 'components/ProductCard/CardTypeOne';
+
+const Collections = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [products, setProducts] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -61,7 +63,7 @@ const Activities = () => {
   }, products);
   return (
     <>
-      <HStack gap={4} mb={4} flexWrap="wrap" py={4} bg="white">
+      <HStack gap={4} mb={4} flexWrap="wrap">
         <Button
           variant={isOpen ? 'primary' : 'baseStyle'}
           leftIcon={<Icon as={FilterIcon} />}
@@ -91,7 +93,7 @@ const Activities = () => {
           ))}
         </Select>
       </HStack>
-      <HStack gap={{ lg: isOpen ? 5 : 0, md: 0 }} alignItems={'flex-start'}>
+      <HStack gap={isOpen ? 5 : 0} alignItems={'flex-start'}>
         <Box
           width={isOpen ? '17.5rem' : '0px'}
           flex={1}
@@ -102,26 +104,27 @@ const Activities = () => {
         </Box>
         <Flex direction="column" gap={4} color="shader.a.900" width="full">
           <Text fontWeight="medium" lineHeight="1.5rem">
-            Total 150 Projects
+            Total 5,400 Collections
           </Text>
           <Box>
             <Grid
               justifyContent="center"
               gridTemplateColumns={{
                 lg: `repeat(${isOpen ? 4 : 5},1fr)`,
-                md: 'repeat(2,1fr)',
+                md: 'repeat(3,1fr)',
                 base: 'repeat(1,1fr)',
               }}
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
             >
               {products.map((item: any) => (
-                <CardTypeThree
+                <CardTypeOne
                   key={item.id}
                   item={{
                     image:
-                      'https://i.seadn.io/gcs/files/7eb724aadba564601666b4371241a2b5.png?auto=format&dpr=1&w=282',
+                      'https://i.seadn.io/gcs/files/eac65894c85449e8db4eaedc597097e1.png?auto=format&dpr=1&w=1920',
                     name: item.title,
-                    currentAuction: '100000',
+                    floor: item.id,
+                    volume: item.id,
                     id: item.id,
                     isVerified: true,
                   }}
@@ -134,7 +137,7 @@ const Activities = () => {
                   ref={ref}
                   gridTemplateColumns={{
                     lg: `repeat(${isOpen ? 4 : 5},1fr)`,
-                    md: 'repeat(2,1fr)',
+                    md: 'repeat(3,1fr)',
                     base: 'repeat(1,1fr)',
                   }}
                   gap={5}
@@ -152,4 +155,4 @@ const Activities = () => {
   );
 };
 
-export default Activities;
+export default Collections;

@@ -7,6 +7,7 @@ import {
   Button,
   Icon,
   Flex,
+  ImageProps,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import { TestDataProps2 } from 'layouts/MarketPlace/Home/Collections/components/TopPool';
@@ -14,8 +15,9 @@ import { TestDataProps2 } from 'layouts/MarketPlace/Home/Collections/components/
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {
   item: TestDataProps2;
+  imageStyle?: ImageProps;
 }
-const CardTypeTwo = ({ item }: IProps) => {
+const CardTypeTwo = ({ item, imageStyle }: IProps) => {
   return (
     <>
       <CardBox
@@ -31,6 +33,7 @@ const CardTypeTwo = ({ item }: IProps) => {
               src={item.image}
               alt={`Image ${item.name}`}
               h="12.5rem"
+              {...imageStyle}
               borderRadius="xl"
               width="full"
             />

@@ -1,14 +1,15 @@
 import { Box, Text, Image, HStack, Icon } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
-import { DataTestArticle } from './GameArticles';
+
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import BgGrid from 'public/assets/background/bg-grid.svg';
 import TimeReminder from 'components/Time/TimeReminder';
+import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
 const GameEvent = () => {
   return (
     <Box
-      borderRadius="16px"
+      borderRadius="2xl"
       background="shader.a.900"
       color="shader.a.100"
       px={8}
@@ -16,11 +17,6 @@ const GameEvent = () => {
       pb={20}
       position="relative"
       overflow="hidden"
-      /*   bgImage={"url('/assets/background/bg-grid.svg')"}
-      bgRepeat="no-repeat"
-      backgroundPosition="center"
-      bgClip="border-box"
-      backgroundSize="cover" */
     >
       <HStack justifyContent="space-between">
         <Text
@@ -86,7 +82,10 @@ const GameEvent = () => {
                     h="242px"
                     borderRadius="xl"
                   />
-                  <TimeReminder sx={{ position: 'absolute' }} />
+                  <TimeReminder
+                    sx={{ position: 'absolute' }}
+                    targetDate={item.targetDate}
+                  />
                 </Box>
                 <Box padding={6} color="shader.a.100">
                   <Text lineHeight="1.5rem" fontWeight="medium">

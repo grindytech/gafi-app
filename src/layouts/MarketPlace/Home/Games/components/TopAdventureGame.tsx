@@ -2,7 +2,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import CardTypeOne from 'components/ProductCard/CardTypeOne';
-import { TestPropsType1 } from '../../Collections/components/TrendingSection';
+import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
 
 export const TestData: TestPropsType1[] = [
   {
@@ -87,7 +87,7 @@ const TopAdventureGame = () => {
         <Carousel>
           {TestData.map(item => (
             <SwiperSlide key={item.id}>
-              <CardTypeOne item={item} />
+              <CardTypeOne item={item} link={`/game/${item.id}`} />
             </SwiperSlide>
           ))}
         </Carousel>
