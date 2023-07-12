@@ -95,9 +95,9 @@ const Collections = () => {
       </HStack>
       <HStack gap={isOpen ? 5 : 0} alignItems={'flex-start'}>
         <Box
-          width={isOpen ? '280px' : '0px'}
+          width={isOpen ? '17.5rem' : '0px'}
           flex={1}
-          top="120px"
+          top="7.5rem"
           position="sticky"
         >
           <Filter isOpen={isOpen} />
@@ -112,7 +112,7 @@ const Collections = () => {
               gridTemplateColumns={{
                 lg: `repeat(${isOpen ? 4 : 5},1fr)`,
                 md: 'repeat(3,1fr)',
-                base: 'repeat(2,1fr)',
+                base: 'repeat(1,1fr)',
               }}
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
             >
@@ -138,7 +138,7 @@ const Collections = () => {
                   gridTemplateColumns={{
                     lg: `repeat(${isOpen ? 4 : 5},1fr)`,
                     md: 'repeat(3,1fr)',
-                    base: 'repeat(2,1fr)',
+                    base: 'repeat(1,1fr)',
                   }}
                   gap={5}
                 >

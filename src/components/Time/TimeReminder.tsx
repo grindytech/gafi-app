@@ -1,7 +1,15 @@
 import TimeIcon from 'public/assets/line/time.svg';
 import { Box, Text, HStack, Icon, BoxProps } from '@chakra-ui/react';
+import { useCountdown } from 'hooks/useCountDown';
 
-const TimeReminder = (sx: BoxProps) => {
+interface TimeProps {
+  targetDate: number;
+  sx?: BoxProps;
+}
+
+const TimeReminder = ({ targetDate, sx }: TimeProps) => {
+  const [days, hours, minutes, seconds] = useCountdown(targetDate);
+  console.log('Day', days, hours, minutes, seconds);
   return (
     <>
       <Box
@@ -15,7 +23,12 @@ const TimeReminder = (sx: BoxProps) => {
         <HStack py={1.5} px={2} color="white" gap={0.5} fontSize="sm">
           <Icon as={TimeIcon} h={5} w={5} />
           <Text>End in </Text>
-          <Text fontWeight="medium">0h 32m 13s</Text>
+          <HStack fontWeight="medium" gap={1} ml={1}>
+            {days != 0 && <Text>{days}d</Text>}
+            <Text>{hours}h</Text>
+            <Text>{minutes}m</Text>
+            <Text>{seconds}s</Text>
+          </HStack>
         </HStack>
       </Box>
     </>

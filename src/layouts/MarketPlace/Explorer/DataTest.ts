@@ -284,3 +284,63 @@ export const DataTestArticle = [
       "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
   },
 ];
+
+export const TestDataRelease = [
+  {
+    id: '20',
+    image: 'https://cdn.nkstatic.com/videos-screenshots/BTD6/6.jpg',
+    name: 'Bloons TD 6',
+    isVerified: true,
+    creator: 'Ninja Kiwi',
+    collection: '35',
+    items: '9999',
+    floor: '0.045',
+    currency: 'GAFI',
+  },
+  {
+    id: '20',
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/349040/ss_1167f11ce3f8a6a6a333856052d109d1ae3deb26.600x338.jpg?t=1683624653',
+    name: 'Bloons TD 6',
+    isVerified: true,
+    creator: 'Ninja Kiwi',
+    collection: '35',
+    items: '9999',
+    floor: '0.045',
+    currency: 'GAFI',
+  },
+  {
+    id: '20',
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/292030/ss_b74d60ee215337d765e4d20c8ca6710ae2362cc2.600x338.jpg?t=1687959506',
+    name: 'The Witcher 3',
+    isVerified: true,
+    creator: 'Ninja Kiwi',
+    collection: '35',
+    items: '9999',
+    floor: '0.045',
+    currency: 'GAFI',
+  },
+  {
+    id: '20',
+    image: 'https://cdn.nkstatic.com/videos-screenshots/BTD6/6.jpg',
+    name: 'Bloons TD 6',
+    isVerified: true,
+    creator: 'Ninja Kiwi',
+    collection: '35',
+    items: '9999',
+    floor: '0.045',
+    currency: 'GAFI',
+  },
+  {
+    id: '20',
+    image: 'https://cdn.nkstatic.com/videos-screenshots/BTD6/6.jpg',
+    name: 'Bloons TD 6',
+    isVerified: true,
+    creator: 'Ninja Kiwi',
+    collection: '35',
+    items: '9999',
+    floor: '0.045',
+    currency: 'GAFI',
+  },
+];

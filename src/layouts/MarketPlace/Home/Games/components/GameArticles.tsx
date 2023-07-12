@@ -3,7 +3,6 @@ import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 
-import TimeReminder from 'components/Time/TimeReminder';
 import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
 
 const GameArticles = () => {
@@ -44,13 +43,12 @@ const GameArticles = () => {
                       src={item.image}
                       alt={`Image ${item.title}`}
                       width="full"
-                      h="242px"
+                      h="15.125rem"
                       borderRadius="xl"
                     />
-                    <TimeReminder sx={{ position: 'absolute' }} />
                   </Box>
                   <Box padding={6} color="shader.a.900">
-                    <Text lineHeight="1.5rem" fontWeight="medium">
+                    <Text lineHeight={6} fontWeight="medium">
                       {item.title}
                     </Text>
                     <Text

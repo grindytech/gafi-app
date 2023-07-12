@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import VerfyIcon from 'public/assets/fill/verified.svg';
 import {
   Box,
@@ -8,7 +8,6 @@ import {
   Image,
   Text,
   VStack,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { testCollectionDetail } from 'layouts/MarketPlace/Explorer/DataTest';
 import Collections from '.';
@@ -18,16 +17,6 @@ const CollectionDetail = () => {
    */
   const refDescription = useRef<HTMLParagraphElement>(null);
 
-  const getLine = Number(
-    String(
-      Math.round(
-        Number(
-          refDescription.current && refDescription.current.offsetHeight / 2
-        )
-      )
-    )[0] // first digits
-  );
-  const { isOpen, onToggle } = useDisclosure();
   return (
     <>
       <Box
@@ -41,22 +30,22 @@ const CollectionDetail = () => {
           <Box
             background="linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)"
             position="absolute"
-            height="100px"
+            height="6.25rem"
             width="full"
-            marginTop="-100px"
+            marginTop="-6.25rem"
           />
-          <Center flexDirection="column" gap={0} py={8}>
+          <Center flexDirection="column" gap={0} py={8} px={4}>
             <Box
-              height={{ md: '136px', base: '90px' }}
-              width={{ md: '136px', base: '90px' }}
+              height={{ md: '8.5rem', base: '5.625rem' }}
+              width={{ md: '8.5rem', base: '5.625rem' }}
               borderRadius="xl"
               border="0.625rem solid"
               borderColor="white"
               overflow="hidden"
               zIndex={2}
               inset={0}
-              marginTop={{ md: '-140px', base: '-90px' }}
-              mb="24px"
+              marginTop={{ md: '-8.75rem', base: '-5.625rem' }}
+              mb={6}
             >
               <Image
                 src={testCollectionDetail.avatar}
@@ -87,13 +76,13 @@ const CollectionDetail = () => {
               alignItems="flex-end"
             >
               <Text
-                width="618px"
-                noOfLines={getLine >= 2 && !isOpen ? 2 : undefined}
+                width={{ md: '618px', base: 'full' }}
+                noOfLines={2}
                 ref={refDescription}
               >
                 {testCollectionDetail.description}
               </Text>
-              {getLine >= 2 && (
+              {/*   {getLine >= 2 && (
                 <Text
                   cursor="pointer"
                   onClick={onToggle}
@@ -103,13 +92,14 @@ const CollectionDetail = () => {
                 >
                   {isOpen ? 'Show Less' : 'Readmore'}
                 </Text>
-              )}
+              )} */}
             </Box>
             <HStack
               px={6}
               py={4}
-              gap={'64px'}
+              gap={{ md: '64px', base: 46 }}
               borderRadius="xl"
+              flexWrap="wrap"
               border="0.063rem solid"
               borderColor="shader.a.300"
             >

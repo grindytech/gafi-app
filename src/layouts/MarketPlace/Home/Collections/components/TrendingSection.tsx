@@ -52,7 +52,7 @@ const TrendingSection = () => {
               <Carousel>
                 {TestDataCollections.map(item => (
                   <SwiperSlide key={item.id}>
-                    <CardTypeOne item={item} />
+                    <CardTypeOne item={item} link={`/game/${item.id}`} />
                   </SwiperSlide>
                 ))}
               </Carousel>

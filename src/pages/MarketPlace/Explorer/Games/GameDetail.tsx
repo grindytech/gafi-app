@@ -2,12 +2,12 @@ import InternetIcon from 'public/assets/line/internet.svg';
 import {
   testGameDetail,
   testOptionSort,
+  TestDataRelease,
 } from 'layouts/MarketPlace/Explorer/DataTest';
 import VerfyIcon from 'public/assets/fill/verified.svg';
 import {
   Box,
   Center,
-  Grid,
   HStack,
   Heading,
   Icon,
@@ -15,27 +15,28 @@ import {
   Link,
   Select,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
-import CardTypeOne from 'components/ProductCard/CardTypeOne';
+import { useEffect, useRef, useState } from 'react';
+
 import Collections from '../Collections';
+import { SwiperSlide } from 'swiper/react';
+import Carousel from 'components/Carousel/Carousel';
+import { CircleIcon } from 'components/Substrate/SubstrateNode';
 const GameDetail = () => {
   /**
    * The way to define and chek current view base on nodeOfLine setting
    */
   const refDescription = useRef<HTMLParagraphElement>(null);
+  const [isOverflown, setIsOverflown] = useState(false);
+  useEffect(() => {
+    const element = refDescription.current!;
+    const compare = element
+      ? element.offsetWidth < element.scrollWidth ||
+        element.offsetHeight < element.scrollHeight
+      : false;
 
-  const getLine = Number(
-    String(
-      Math.round(
-        Number(
-          refDescription.current && refDescription.current.offsetHeight / 2
-        )
-      )
-    )[0] // first digits
-  );
-  const { isOpen, onToggle } = useDisclosure();
+    setIsOverflown(compare);
+  }, []);
   return (
     <>
       <Box
@@ -106,23 +107,19 @@ const GameDetail = () => {
               display="inline-flex"
               alignContent="flex-end"
               alignItems="flex-end"
+              gap={0}
             >
-              <Text
-                width="618px"
-                noOfLines={getLine >= 2 && !isOpen ? 2 : undefined}
-                ref={refDescription}
-              >
+              <Text width="618px" noOfLines={2} ref={refDescription}>
                 {testGameDetail.description}
               </Text>
-              {getLine >= 2 && (
+              {isOverflown && (
                 <Text
                   cursor="pointer"
-                  onClick={onToggle}
                   fontSize="md"
                   color="primary.a.500"
                   zIndex={3}
                 >
-                  {isOpen ? 'Show Less' : 'Readmore'}
+                  Read More
                 </Text>
               )}
             </Box>
@@ -143,7 +140,7 @@ const GameDetail = () => {
             ))}
           </Select>
         </HStack>
-        <Grid
+        {/*   <Grid
           gap={5}
           gridTemplateColumns={{
             lg: 'repeat(5,1fr)',
@@ -154,7 +151,99 @@ const GameDetail = () => {
           {testGameDetail.collections.map(item => (
             <CardTypeOne item={item} key={item.id} />
           ))}
-        </Grid>
+        </Grid> */}
+        <Box mt={4}>
+          <Carousel
+            options={{
+              breakpoints: {
+                360: {
+                  slidesPerView: 1,
+                },
+                630: {
+                  slidesPerView: 1.2,
+                },
+                920: {
+                  slidesPerView: 1.2,
+                },
+
+                1440: {
+                  slidesPerView: 2.2,
+                },
+              },
+            }}
+          >
+            {TestDataRelease.map((item, index) => (
+              <SwiperSlide key={index}>
+                <Box
+                  width="full"
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="xl"
+                >
+                  <Image
+                    objectFit="cover"
+                    src={item.image}
+                    alt={`Image ${item.name}`}
+                    width="full"
+                    h="328px"
+                  />
+                  <Box
+                    position="absolute"
+                    width="full"
+                    bottom="20%"
+                    height="40%"
+                    background="linear-gradient(180deg, rgba(24, 24, 27, 0.00) 0%, #18181B 100%)"
+                  />
+                  <Box
+                    position="absolute"
+                    width="full"
+                    bottom="0"
+                    height="20%"
+                    background="#18181B"
+                  />
+
+                  <Box px="26px" position="absolute" bottom={5}>
+                    <HStack gap={2}>
+                      <Text
+                        fontSize="2xl"
+                        fontWeight="bold"
+                        color="shader.a.100"
+                        lineHeight="2rem"
+                      >
+                        {item.name}
+                      </Text>
+                      {/*  {item.isVerified && <Icon as={VerifyIcon} h={6} w={6} />} */}
+
+                      <Text
+                        borderLeft="0.063rem solid"
+                        pl={2}
+                        color="rgba(255, 255, 255, 0.80)"
+                        fontWeight="medium"
+                        lineHeight="1.5rem"
+                      >
+                        ID: {item.id}
+                      </Text>
+                    </HStack>
+                    <Text
+                      fontSize="sm"
+                      color="rgba(255, 255, 255, 0.80)"
+                      mb={6}
+                    >
+                      By {item.creator}
+                    </Text>
+                    <HStack fontSize="sm" fontWeight="medium" gap={2}>
+                      <Text>Collections: {item.collection}</Text>
+                      <CircleIcon width="0.25rem" height="0.25rem" />
+                      <Text>Items: {item.items}</Text>
+                      <CircleIcon width="0.25rem" height="0.25rem" />
+                      <Text>Floor: {item.floor} GAFI</Text>
+                    </HStack>
+                  </Box>
+                </Box>
+              </SwiperSlide>
+            ))}
+          </Carousel>
+        </Box>
       </Box>
 
       <Box padding={6} bg="white" borderRadius="xl" width="full">

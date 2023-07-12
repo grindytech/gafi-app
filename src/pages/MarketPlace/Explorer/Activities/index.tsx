@@ -61,16 +61,7 @@ const Activities = () => {
   }, products);
   return (
     <>
-      <HStack
-        gap={4}
-        mb={4}
-        flexWrap="wrap"
-        top="70px"
-        py={4}
-        position="sticky"
-        bg="white"
-        zIndex={6}
-      >
+      <HStack gap={4} mb={4} flexWrap="wrap" py={4} bg="white">
         <Button
           variant={isOpen ? 'primary' : 'baseStyle'}
           leftIcon={<Icon as={FilterIcon} />}
@@ -102,9 +93,9 @@ const Activities = () => {
       </HStack>
       <HStack gap={{ lg: isOpen ? 5 : 0, md: 0 }} alignItems={'flex-start'}>
         <Box
-          width={isOpen ? '280px' : '0px'}
+          width={isOpen ? '17.5rem' : '0px'}
           flex={1}
-          top="150px"
+          top="7.5rem"
           position="sticky"
         >
           <Filter isOpen={isOpen} />

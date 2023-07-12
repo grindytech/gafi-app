@@ -7,9 +7,14 @@ import BgGrid from 'public/assets/background/bg-grid.svg';
 import TimeReminder from 'components/Time/TimeReminder';
 import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
 const GameEvent = () => {
+  const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+  const NOW_IN_MS = new Date().getTime();
+
+  const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
+  console.log('Date time ', dateTimeAfterThreeDays);
   return (
     <Box
-      borderRadius="16px"
+      borderRadius="2xl"
       background="shader.a.900"
       color="shader.a.100"
       px={8}
@@ -17,11 +22,6 @@ const GameEvent = () => {
       pb={20}
       position="relative"
       overflow="hidden"
-      /*   bgImage={"url('/assets/background/bg-grid.svg')"}
-      bgRepeat="no-repeat"
-      backgroundPosition="center"
-      bgClip="border-box"
-      backgroundSize="cover" */
     >
       <HStack justifyContent="space-between">
         <Text
@@ -87,19 +87,16 @@ const GameEvent = () => {
                     h="242px"
                     borderRadius="xl"
                   />
-                  <TimeReminder sx={{ position: 'absolute' }} />
+                  <TimeReminder
+                    sx={{ position: 'absolute' }}
+                    targetDate={dateTimeAfterThreeDays}
+                  />
                 </Box>
                 <Box padding={6} color="shader.a.100">
                   <Text lineHeight="1.5rem" fontWeight="medium">
                     {item.title}
                   </Text>
-                  <Text
-                    width="618px"
-                    color="shader.a.400"
-                    fontSize="sm"
-                    noOfLines={2}
-                    mb={4}
-                  >
+                  <Text color="shader.a.400" fontSize="sm" noOfLines={2} mb={4}>
                     {item.description}
                   </Text>
                   <HStack gap={0.5}>
