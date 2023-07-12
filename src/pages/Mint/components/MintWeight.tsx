@@ -14,9 +14,9 @@ import CardBox from 'components/CardBox';
 
 import { useAppSelector } from 'hooks/useRedux';
 import React from 'react';
-import { TypeMetadataOfCollection } from 'types';
+import { TypeMetadataOfItem } from 'types';
 
-import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
+import { CalculatorOfRarity, ColorOfRarity, formatGAFI } from 'utils/utils';
 
 type TypeMaybeNFT = {
   collection: number;
@@ -36,58 +36,60 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
       if (api && api.query.game) {
         const res = await api.query.game.lootTableOf(pool_id);
 
-        const getSupplyOfItems = await Promise.all(
+        return Promise.all(
           res.map(async ([maybeNft, weight]) => {
             const getWeight = weight[1].toPrimitive() as number;
+            const poolOf = (await api.query.game.poolOf(pool_id)).toHuman() as {
+              mintSettings: {
+                startBlock: number;
+                endBlock: number;
+                price: string;
+                mintType: string;
+              };
+            };
 
             if (maybeNft[1].isEmpty) {
               return {
                 rarity: getWeight,
+                metadataOfPool: poolOf.mintSettings,
               };
             }
 
             const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
 
+            const supplyOfItem = await api.query.game.supplyOf(
+              collection,
+              item
+            );
+
             const metadataOfCollection = (await api.query.nfts
-              .collectionMetadataOf(collection)
+              .itemMetadataOf(collection, item)
               .then(item => {
                 const data = item.value.toHuman();
 
                 if (data) {
                   return JSON.parse(String(data.data));
                 }
-              })) as TypeMetadataOfCollection;
+              })) as TypeMetadataOfItem;
 
             return {
               item_id: item,
               collection_id: collection,
               rarity: getWeight,
+              supply: supplyOfItem.toHuman(),
               metadataOfCollection,
+              metadataOfPool: poolOf.mintSettings,
             };
           })
         );
-
-        return getSupplyOfItems.map(item => {
-          const { collection_id, item_id, rarity, metadataOfCollection } = item;
-
-          const weight = CalculatorOfRarity(
-            rarity,
-            getSupplyOfItems.map(item => item.rarity)
-          );
-
-          return {
-            collection_id,
-            item_id,
-            rarity: weight,
-            metadataOfCollection,
-          };
-        });
       }
     },
     {
       enabled: !!(api && api.query.game),
     }
   );
+
+  console.log(data);
 
   if (!pool_id) return undefined;
 
@@ -114,12 +116,15 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
               sm: 2,
               md: 3,
             }}
+            mt={3}
             gap={3}
           >
             {React.Children.toArray(
               data.map(item => {
-                const { collection_id, item_id, rarity, metadataOfCollection } =
-                  item;
+                const rarity = CalculatorOfRarity(
+                  item.rarity,
+                  data.map(item => item.rarity)
+                );
 
                 return (
                   <Flex
@@ -128,65 +133,101 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                     border="0.0625rem solid"
                     borderColor="shader.a.400"
                     borderRadius="xl"
-                    padding={4}
                   >
-                    <Image
-                      margin="auto"
-                      height={20}
-                      objectFit="contain"
-                      src={
-                        metadataOfCollection?.image
-                          ? `${cloundinary_link}/${metadataOfCollection.image}`
-                          : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
-                      }
-                    />
-                    <Heading
-                      fontSize="lg"
-                      fontWeight="medium"
-                      color="shader.a.900"
-                    >
-                      {typeof item_id === 'number'
-                        ? `Item: ${item_id}`
-                        : 'Empty'}
-                    </Heading>
+                    <Center height={32} bg="shader.a.300" position="relative">
+                      {item.metadataOfCollection?.image ? (
+                        <Image
+                          width="full"
+                          height="full"
+                          objectFit="cover"
+                          alt="image is outdated"
+                          src={`${cloundinary_link}/${item.metadataOfCollection.image}`}
+                        />
+                      ) : (
+                        <Image src={'public/assets/fill/item.png'} />
+                      )}
+                    </Center>
 
-                    <Box mt={4}>
-                      {metadataOfCollection?.title ? (
-                        <Text>
-                          Name:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {metadataOfCollection.title}
-                          </Text>
-                        </Text>
-                      ) : null}
-
-                      {metadataOfCollection?.external_url ? (
-                        <Text>
-                          Link:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {metadataOfCollection.external_url}
-                          </Text>
-                        </Text>
-                      ) : null}
-
-                      {typeof collection_id === 'number' ? (
-                        <Text>
-                          Collection ID:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {collection_id}
-                          </Text>
-                        </Text>
-                      ) : null}
-                      <Text>
-                        Rarity:&nbsp;
-                        <Text
-                          as="span"
-                          color={ColorOfRarity(rarity)}
-                          fontWeight="semibold"
+                    <Box padding={4}>
+                      <Center justifyContent="space-between">
+                        <Heading
+                          fontSize="lg"
+                          fontWeight="medium"
+                          color="shader.a.900"
                         >
-                          {rarity}%
+                          {item.metadataOfCollection?.title || '-'}
+                        </Heading>
+
+                        {typeof item.item_id === 'number' ? (
+                          <Text>
+                            ID:&nbsp;
+                            <Text as="span" color="primary.a.500">
+                              {item.item_id}
+                            </Text>
+                          </Text>
+                        ) : null}
+                      </Center>
+
+                      <Box mt={4}>
+                        {item.supply ? (
+                          <Text>
+                            Supply:&nbsp;
+                            <Text as="span" color="primary.a.500">
+                              {String(item.supply)}
+                            </Text>
+                          </Text>
+                        ) : null}
+
+                        {typeof item.collection_id === 'number' ? (
+                          <Text>
+                            Collection ID:&nbsp;
+                            <Text as="span" color="primary.a.500">
+                              {item.collection_id}
+                            </Text>
+                          </Text>
+                        ) : null}
+
+                        <Text>
+                          Rarity:&nbsp;
+                          <Text
+                            as="span"
+                            color={ColorOfRarity(rarity)}
+                            fontWeight="semibold"
+                          >
+                            {rarity}%
+                          </Text>
                         </Text>
-                      </Text>
+
+                        <Text>
+                          Price:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {formatGAFI(
+                              item.metadataOfPool.price.replaceAll(',', '')
+                            )}
+                          </Text>
+                        </Text>
+
+                        <Text>
+                          Type:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {item.metadataOfPool.mintType}
+                          </Text>
+                        </Text>
+
+                        <Text>
+                          Start Block:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {item.metadataOfPool.startBlock || 'Infinity'}
+                          </Text>
+                        </Text>
+
+                        <Text>
+                          End Block:&nbsp;
+                          <Text as="span" color="primary.a.500">
+                            {item.metadataOfPool.endBlock || 'Infinity'}
+                          </Text>
+                        </Text>
+                      </Box>
                     </Box>
                   </Flex>
                 );
