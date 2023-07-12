@@ -3,13 +3,8 @@ import NextIcon from 'public/assets/line/chevron-01.svg';
 import { Swiper } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { Box, Button, ButtonProps, Icon } from '@chakra-ui/react';
-/* import { SwiperOptions } from 'swiper/types/swiper-options.d.ts'; */
-// eslint-disable-next-line import/no-unresolved
+
 import { SwiperOptions } from 'swiper/types';
-/* // eslint-disable-next-line import/no-unresolved
-import 'swiper/css';
-// eslint-disable-next-line import/no-unresolved
-import 'swiper/css/navigation'; */
 
 interface IProps {
   children: React.ReactNode;

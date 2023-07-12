@@ -5,6 +5,7 @@ import {
   convertHex,
   formatGAFI,
   shorten,
+  unitGAFI,
 } from '../utils';
 
 /** 
@@ -57,17 +58,44 @@ import {
   });
 }
 
-/** 
+/**
   @function formatGAFI(fee: number)
     - summary:
       using polkadot/utils to format  
 */
 {
-  const input = '1500000000000000000000',
-    result = '1,500.0000';
+  it(`formatGAFI(fee) should return 1,500.0000`, () => {
+    expect(formatGAFI('1500000000000000000000')).toEqual('1,500.0000');
+  });
+}
 
-  it(`formatGAFI(fee) should to equal ${result}`, () => {
-    expect(formatGAFI(input)).toEqual(result);
+/** 
+  @function unitGAFI(fee: string)
+    - expect:
+        length [15, 16, 17, 18, 19]
+        result: [0.1, 0.10, 0.100, 0.1000, 1.0000]
+    - summary:
+        the unit included [0.0001, 0.0010, 0.00xx] so we need to check start with '0.'
+        if correct will repeat 14 times 0 which means '0.0001' and the next increase
+        and else repeat 18 (this decimal) meaning '1.0000' if start with is not '0.'
+*/
+{
+  describe(`unitGAFI(fee) should format correctly`, () => {
+    it('should return repeat 14 times number 0', () => {
+      expect(unitGAFI('0.1')).toEqual('0100000000000000');
+    });
+
+    it('should return repeat 18 times number 0', () => {
+      expect(unitGAFI('1')).toBe('1000000000000000000');
+    });
+
+    it('should combine formatGAFI to return correctly unit (1)', () => {
+      expect(formatGAFI(unitGAFI('1'))).toBe('1.0000');
+    });
+
+    it('should combine formatGAFI to return correctly unit (0.1)', () => {
+      expect(formatGAFI(unitGAFI('0.1'))).toBe('0.0001');
+    });
   });
 }
 

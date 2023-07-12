@@ -35,7 +35,7 @@ export type TypeSwitchAdmin = Record<
   }
 >;
 
-interface SwitchAdmin {
+interface SwitchAdminProps {
   setValue: UseFormSetValue<TypeSwitchAdmin>;
   type?: 'Admin' | 'Owner';
   sx?: BoxProps;
@@ -45,7 +45,7 @@ export default function SwitchAdmin({
   setValue,
   type = 'Admin',
   sx,
-}: SwitchAdmin) {
+}: SwitchAdminProps) {
   const { account, allAccount } = useAppSelector(
     state => state.injected.polkadot
   );

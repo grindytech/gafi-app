@@ -26,7 +26,12 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
-import { CalculatorOfRarity, ColorOfRarity } from 'utils/utils';
+import {
+  CalculatorOfRarity,
+  ColorOfRarity,
+  formatGAFI,
+  unitGAFI,
+} from 'utils/utils';
 import { PoolsCreateFieldProps, PoolsCreateProps } from './PoolsCreate';
 import { useAppSelector } from 'hooks/useRedux';
 
@@ -42,7 +47,7 @@ export default function PoolsModal({
 }: PoolsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { admin, fee, supply } = getValues();
+  const { admin, fee, supply, start_block, end_block } = getValues();
 
   const time = new Date().getTime();
 
@@ -150,10 +155,22 @@ export default function PoolsModal({
                 </Td>
               </Tr>
 
-              {fee ? (
+              <Tr>
+                <Td>Mining fee</Td>
+                <Td>{formatGAFI(unitGAFI(fee))}</Td>
+              </Tr>
+
+              {start_block ? (
                 <Tr>
-                  <Td>Mining fee</Td>
-                  <Td>{fee}</Td>
+                  <Td>Start Block</Td>
+                  <Td>{start_block}</Td>
+                </Tr>
+              ) : null}
+
+              {end_block ? (
+                <Tr>
+                  <Td>End Block</Td>
+                  <Td>{end_block}</Td>
                 </Tr>
               ) : null}
             </Tbody>
@@ -172,7 +189,9 @@ export default function PoolsModal({
                   return mutation(
                     api.tx.game.createDynamicPool(supply, admin.address, {
                       minType: 'Public',
-                      price: fee,
+                      price: unitGAFI(fee),
+                      startBlock: start_block,
+                      endBlock: end_block,
                     })
                   );
                 }
@@ -180,7 +199,9 @@ export default function PoolsModal({
                   return mutation(
                     api.tx.game.createStablePool(supply, admin.address, {
                       minType: 'Public',
-                      price: fee,
+                      price: unitGAFI(fee),
+                      startBlock: start_block,
+                      endBlock: end_block,
                     })
                   );
                 }

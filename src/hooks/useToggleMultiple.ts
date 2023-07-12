@@ -23,6 +23,12 @@ export default function useToggleMultiple() {
       is below example will for me to understand
         params: [n]
           [index]: !orignal[index] // false equal true
+
+    - summary index:
+        why not used an index
+        because element maybe 1 | 2 | 4 | 10 | 20
+        and index actually 0 | 1 | 2 | 3 | 4
+        that when removing params correctly is 'element'
   */
   const setIsExpanded = (index: number) => {
     setStatus(prev => {

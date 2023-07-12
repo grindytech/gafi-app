@@ -60,6 +60,14 @@ export const formatGAFI = (fee: number | string) => {
   return formatNumber;
 };
 
+export const unitGAFI = (fee: string) => {
+  const shouldZeroFirst = fee.startsWith('0.');
+
+  return shouldZeroFirst
+    ? fee.replace('.', '') + '0'.repeat(14)
+    : fee.replace('.', '') + '0'.repeat(chainDecimal);
+};
+
 export const ColorOfRarity = (weight: number | string) => {
   const easy = 100;
   const medium = 35;

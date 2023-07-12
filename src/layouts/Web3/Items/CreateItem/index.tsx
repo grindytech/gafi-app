@@ -1,5 +1,4 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 
 import { UseFormSetValue, useForm } from 'react-hook-form';
 
@@ -17,27 +16,15 @@ export interface CreateItemFieldProps extends TypeSwitchAdmin {
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 
-import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
-import useToggleMultiple from 'hooks/useToggleMultiple';
-
 export default function CreateItem() {
   const {
     setValue,
     getValues,
     register,
     handleSubmit,
-    unregister,
     formState: { errors },
   } = useForm<CreateItemFieldProps>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setIsExpanded, isExpanded } = useToggleMultiple();
-
-  React.useEffect(() => {
-    if (!isExpanded[0]) {
-      unregister(`maybeSupply`);
-      setValue(`maybeSupply`, null);
-    }
-  }, [isExpanded]);
 
   return (
     <>
@@ -71,20 +58,14 @@ export default function CreateItem() {
           />
         </CardBox>
 
-        <MaybeOptions
-          title="Supply"
-          toggle={isExpanded[0]}
-          switchClick={() => setIsExpanded(0)}
-          childrenOption={
-            <NumberInput
-              value="maybeSupply"
-              title="Amount"
-              register={register}
-              isInvalid={!!errors.maybeSupply}
-              isRequired={isExpanded[0]}
-            />
-          }
-        />
+        <CardBox variant="createGames">
+          <NumberInput
+            value="maybeSupply"
+            title="Supply"
+            register={register}
+            setValue={setValue}
+          />
+        </CardBox>
 
         <Button
           isDisabled={isOpen}

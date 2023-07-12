@@ -35,7 +35,7 @@ export default function Mint() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box px={{ xl: 48 }}>
+    <Box px={{ xl: 32 }}>
       <MintBanner />
 
       <Flex
@@ -43,7 +43,7 @@ export default function Mint() {
         as="form"
         flexDirection="column"
         gap={3}
-        px={12}
+        px={5}
         transform="translateY(-5%)"
       >
         <SwitchAdmin

@@ -26,6 +26,8 @@ import cloudinary_axios, {
 } from 'axios/cloudinary_axios';
 import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { useAppSelector } from 'hooks/useRedux';
+import { useOutletContext } from 'react-router-dom';
+import { Web3OutletContextProps } from 'pages/Web3';
 
 interface AddMetadataCollectionModalProps {
   onClose: () => void;
@@ -37,6 +39,7 @@ export default function AddMetadataCollectionModal({
   onClose,
 }: AddMetadataCollectionModalProps) {
   const { api } = useAppSelector(state => state.substrate);
+  const { collection } = useOutletContext<Web3OutletContextProps>();
 
   const { collection_id, admin, image, external_url, title } = getValues();
 
@@ -45,6 +48,7 @@ export default function AddMetadataCollectionModal({
     key: ['CollectionMetadataSet', collection_id],
     onSuccess() {
       onClose();
+      collection();
     },
   });
 
