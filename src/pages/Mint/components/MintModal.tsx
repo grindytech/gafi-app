@@ -41,7 +41,9 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
         const res = await api.query.game.poolOf(pool_id);
 
         return res.toPrimitive() as {
-          fee: number;
+          mintSettings: {
+            price: string;
+          };
         };
       }
     },
@@ -106,7 +108,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
                 <Tr>
                   <Td>Fee</Td>
                   <Td>
-                    <GafiAmount amount={formatGAFI(data.fee)} />
+                    <GafiAmount amount={formatGAFI(data.mintSettings.price)} />
                   </Td>
                 </Tr>
               ) : null}

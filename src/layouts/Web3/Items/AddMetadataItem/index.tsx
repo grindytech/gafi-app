@@ -10,7 +10,7 @@ import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
 import TextInputMaxLength from 'components/TextInput/TextInputMaxLength';
 
-import AddMetadataItemModal from './components/AddMetadataItemModal';
+import AddMetadataItemModal from './AddMetadataItemModal';
 import UploadPicture from 'components/UploadPicture';
 
 export interface AddMetadataItemFieldProps extends TypeSwitchAdmin {

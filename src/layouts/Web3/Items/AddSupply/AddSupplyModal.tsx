@@ -23,12 +23,15 @@ import { UseFormGetValues } from 'react-hook-form';
 import { AddSupplyFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
-interface AddSupplyModal {
+interface AddSupplyModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<AddSupplyFieldProps>;
 }
 
-export default function AddSupplyModal({ getValues, onClose }: AddSupplyModal) {
+export default function AddSupplyModal({
+  getValues,
+  onClose,
+}: AddSupplyModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
   const { collection_id, item_id, amount, admin } = getValues();

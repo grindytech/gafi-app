@@ -8,12 +8,16 @@ import {
   Input,
 } from '@chakra-ui/react';
 import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
-import { TypeNumberInput } from 'types';
-
-interface TextInputMaxLengthProps
-  extends Omit<TypeNumberInput, 'control' | 'setValue'> {
+interface TextInputMaxLengthProps {
+  title: string;
+  value: string;
+  register: UseFormRegister<any>;
+  isInvalid?: boolean;
+  isRequired?: boolean;
   max: number;
+  placeholder?: string;
 }
 
 export const TextInputMaxLengthStyle: FormControlProps = {

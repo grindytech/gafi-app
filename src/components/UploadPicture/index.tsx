@@ -13,10 +13,10 @@ import React from 'react';
 import UploadIcon from 'public/assets/line/upload.svg';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
-import { TypeRegister } from 'types';
+import { UseFormRegister } from 'react-hook-form';
 
 interface UploadPictureProps {
-  register: TypeRegister;
+  register: UseFormRegister<any>;
   isInvalid?: boolean;
   isRequired?: boolean;
   value: string;
@@ -45,7 +45,7 @@ export default function UploadPicture({
         height={48}
       >
         {preview ? (
-          <Image width="full" height="full" objectFit="contain" src={preview} />
+          <Image width="full" height="full" objectFit="cover" src={preview} />
         ) : (
           <>
             <Icon as={UploadIcon} width={5} height={5} />
@@ -69,6 +69,7 @@ export default function UploadPicture({
           }}
           required={false}
           type="file"
+          accept="image/png,image/jpeg,image/gif,image/svg+xml"
           position="absolute"
           cursor="pointer"
           inset={0}
