@@ -33,6 +33,11 @@ import { Outlet, useLocation } from 'react-router-dom';
 import theme from 'theme/theme';
 import { TypeMetadataOfCollection, TypeMetadataOfItem } from 'types';
 
+export interface Web3OutletContextProps {
+  collection: () => void;
+  items: () => void;
+}
+
 export default function Web3() {
   const { pathname } = useLocation();
   const { account } = useAppSelector(state => state.injected.polkadot);
@@ -348,7 +353,12 @@ export default function Web3() {
           <Web3FirstBuild />
         )
       ) : (
-        <Outlet />
+        <Outlet
+          context={{
+            collection: data[1].refetch,
+            items: data[2].refetch,
+          }}
+        />
       )}
     </>
   );
