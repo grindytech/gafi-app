@@ -1,5 +1,5 @@
 import { UseFormGetValues } from 'react-hook-form';
-import { AddMetadataItemFieldProps } from '../index';
+import { AddMetadataItemFieldProps } from './index';
 import {
   Button,
   Center,
