@@ -17,6 +17,7 @@ interface TextInputMaxLengthProps {
   isInvalid?: boolean;
   isRequired?: boolean;
   max: number;
+  placeholder?: string;
 }
 
 export const TextInputMaxLengthStyle: FormControlProps = {
@@ -55,6 +56,7 @@ export default function TextInputMaxLength({
   title,
   value,
   max,
+  placeholder,
 }: TextInputMaxLengthProps) {
   const [text, setText] = React.useState('');
 
@@ -73,7 +75,7 @@ export default function TextInputMaxLength({
         <Input
           variant="control"
           required={false}
-          placeholder="Ex: 0"
+          placeholder={placeholder || 'Ex: 0'}
           pr={16}
           maxLength={max}
           {...register(value, { required: isRequired })}

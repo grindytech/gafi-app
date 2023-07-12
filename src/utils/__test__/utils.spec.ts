@@ -65,7 +65,7 @@ import {
 */
 {
   it(`formatGAFI(fee) should return 1,500.0000`, () => {
-    expect(formatGAFI('1500000000000000000000')).toEqual('1,500.000');
+    expect(formatGAFI('1500000000000000000000')).toEqual('1,500.0000');
   });
 }
 

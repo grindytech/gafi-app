@@ -16,6 +16,7 @@ interface TextInputProps {
   register: UseFormRegister<any>;
   isInvalid?: boolean;
   isRequired?: boolean;
+  placeholder?: string;
 }
 
 export default function TextInput({
@@ -24,6 +25,7 @@ export default function TextInput({
   register,
   isRequired,
   isInvalid,
+  placeholder,
 }: TextInputProps) {
   return (
     <FormControl
@@ -40,7 +42,7 @@ export default function TextInput({
         <Input
           variant="control"
           required={false}
-          placeholder="Ex: 0"
+          placeholder={placeholder || 'Ex: 0'}
           pr={16}
           {...register(value, { required: isRequired })}
         />
