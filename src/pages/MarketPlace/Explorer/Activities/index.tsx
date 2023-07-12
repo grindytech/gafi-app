@@ -12,7 +12,7 @@ import {
 import {
   testOption1,
   testOption2,
-  testOption3,
+  testOptionSort,
 } from 'layouts/MarketPlace/Explorer/DataTest';
 import FilterIcon from 'public/assets/line/filter.svg';
 
@@ -93,14 +93,14 @@ const Activities = () => {
           ))}
         </Select>
         <Select variant="formFilter" width="fit-content">
-          {testOption3.map(item => (
+          {testOptionSort.map(item => (
             <option key={item.value} value={item.value}>
               {item.title}
             </option>
           ))}
         </Select>
       </HStack>
-      <HStack gap={isOpen ? 5 : 0} alignItems={'flex-start'}>
+      <HStack gap={{ lg: isOpen ? 5 : 0, md: 0 }} alignItems={'flex-start'}>
         <Box
           width={isOpen ? '280px' : '0px'}
           flex={1}
@@ -118,7 +118,7 @@ const Activities = () => {
               justifyContent="center"
               gridTemplateColumns={{
                 lg: `repeat(${isOpen ? 4 : 5},1fr)`,
-                md: 'repeat(3,1fr)',
+                md: 'repeat(2,1fr)',
                 base: 'repeat(1,1fr)',
               }}
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
@@ -143,8 +143,8 @@ const Activities = () => {
                   ref={ref}
                   gridTemplateColumns={{
                     lg: `repeat(${isOpen ? 4 : 5},1fr)`,
-                    md: 'repeat(3,1fr)',
-                    base: 'repeat(2,1fr)',
+                    md: 'repeat(2,1fr)',
+                    base: 'repeat(1,1fr)',
                   }}
                   gap={5}
                 >

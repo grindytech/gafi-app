@@ -4,85 +4,88 @@ import {
   Text,
   HStack,
   Box,
-  Icon,
   Skeleton,
   ImageProps,
   Flex,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestPropsType1 } from 'layouts/MarketPlace/Home/Collections/components/TrendingSection';
+import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
+import { Link } from 'react-router-dom';
 
 interface IProps {
   item: TestPropsType1;
+  link?: string;
   imageStyle?: ImageProps;
 }
-const CardTypeOne = ({ item, imageStyle }: IProps) => {
+const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
   return (
     <>
-      <CardBox
-        mt={2}
-        padding={0}
-        variant="baseStyle"
-        boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
-        cursor="pointer"
-        role="group"
-        _hover={{
-          transform: 'translateY(-5px)',
-          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
-        }}
-        transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
-      >
-        <VStack alignItems="flex-start" gap={0}>
-          <Box width="full" padding={2}>
-            <Box overflow="hidden" borderRadius="xl">
-              <Image
-                objectFit="cover"
-                _groupHover={{
-                  transform: 'scale(1.2)',
-                  transition: ' 0.25s ease-in-out',
-                }}
-                src={item.image}
-                alt={`Image ${item.name}`}
-                width="full"
-                h="10.5rem"
-                {...imageStyle}
-              />
+      <Link to={link || `/collection/${item.id}`}>
+        <CardBox
+          mt={2}
+          padding={0}
+          variant="baseStyle"
+          boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+          cursor="pointer"
+          role="group"
+          _hover={{
+            transform: 'translateY(-5px)',
+            boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
+          }}
+          transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
+        >
+          <VStack alignItems="flex-start" gap={0}>
+            <Box width="full" padding={2}>
+              <Box overflow="hidden" borderRadius="xl">
+                <Image
+                  objectFit="cover"
+                  _groupHover={{
+                    transform: 'scale(1.2)',
+                    transition: ' 0.25s ease-in-out',
+                  }}
+                  src={item.image}
+                  alt={`Image ${item.name}`}
+                  width="full"
+                  h="10.5rem"
+                  {...imageStyle}
+                />
+              </Box>
             </Box>
-          </Box>
 
-          <Box
-            p={4}
-            width="full"
-            borderTop="0.063rem solid "
-            borderColor="shader.a.200"
-          >
-            <HStack gap={1.5} mb={3.5} justifyContent="space-between">
-              <Text fontWeight="medium" fontSize="lg" noOfLines={1}>
-                {item.name}
-              </Text>
-              <Flex>
-                <Text color="shader.a.600">ID:</Text>
-                <Text>{item.id}</Text>
-              </Flex>
-            </HStack>
+            <Box
+              p={4}
+              width="full"
+              borderTop="0.063rem solid "
+              borderColor="shader.a.200"
+            >
+              <HStack gap={1.5} mb={3.5} justifyContent="space-between">
+                <Text fontWeight="medium" fontSize="lg" noOfLines={1}>
+                  {item.name}
+                </Text>
+                <Flex>
+                  <Text color="shader.a.600">ID:</Text>
+                  <Text>{item.id}</Text>
+                </Flex>
+              </HStack>
 
-            <HStack justifyContent="space-between" width="full">
-              <Box>
-                <Text color="shader.a.600" fontSize="sm">
-                  Floor:
-                </Text>
-                <Text fontWeight="medium">{item.floor} GAFI</Text>
-              </Box>
-              <Box>
-                <Text color="shader.a.600" fontSize="sm">
-                  Volume:
-                </Text>
-                <Text fontWeight="medium">{item.volume} GAFI</Text>
-              </Box>
-            </HStack>
-          </Box>
-        </VStack>
-      </CardBox>
+              <HStack justifyContent="space-between" width="full">
+                <Box>
+                  <Text color="shader.a.600" fontSize="sm">
+                    Floor:
+                  </Text>
+                  <Text fontWeight="medium">{item.floor} GAFI</Text>
+                </Box>
+                <Box>
+                  <Text color="shader.a.600" fontSize="sm">
+                    Volume:
+                  </Text>
+                  <Text fontWeight="medium">{item.volume} GAFI</Text>
+                </Box>
+              </HStack>
+            </Box>
+          </VStack>
+        </CardBox>
+      </Link>
     </>
   );
 };

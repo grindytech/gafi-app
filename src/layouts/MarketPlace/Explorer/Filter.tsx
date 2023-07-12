@@ -1,14 +1,23 @@
 import {
   Box,
+  Flex,
   FormControl,
   FormLabel,
   HStack,
   Icon,
   Input,
+  Radio,
+  RadioGroup,
   Select,
   VStack,
 } from '@chakra-ui/react';
-import { testOption1 } from 'layouts/MarketPlace/Explorer/DataTest';
+
+import WrapperSelectFilter from 'components/CustomSelect/WrapperSelectFilter';
+import {
+  testOption1,
+  testOption2,
+  testOptionSort,
+} from 'layouts/MarketPlace/Explorer/DataTest';
 import CloseIcon from 'public/assets/line/close.svg';
 import SearchIcon from 'public/assets/line/search.svg';
 interface IProps {
@@ -58,7 +67,9 @@ const Filter = ({ isOpen }: IProps) => {
         </Box>
         <VStack padding={4} gap={5}>
           <FormControl gap={2}>
-            <FormLabel color="shader.a.500">Chains</FormLabel>
+            <FormLabel color="shader.a.500" fontSize="sm">
+              Chains
+            </FormLabel>
             <Select variant="formFilter">
               {testOption1.map(item => (
                 <option key={item.value} value={item.value}>
@@ -68,29 +79,43 @@ const Filter = ({ isOpen }: IProps) => {
             </Select>
           </FormControl>
           <FormControl gap={2}>
-            <FormLabel color="shader.a.500">Bundles & Items</FormLabel>
-            <Select variant="formFilter">
-              {testOption1.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.title}
-                </option>
-              ))}
-            </Select>
+            <FormLabel color="shader.a.500" fontSize="sm">
+              Bundles & Items
+            </FormLabel>
+            <WrapperSelectFilter>
+              <RadioGroup defaultValue="all">
+                <Flex flexDirection="column" gap={2.5} px={4} py={2.5}>
+                  {testOption1.map(item => (
+                    <Radio key={item.value} value={item.value}>
+                      {item.title}
+                    </Radio>
+                  ))}
+                </Flex>
+              </RadioGroup>
+            </WrapperSelectFilter>
           </FormControl>
           <FormControl gap={2}>
-            <FormLabel color="shader.a.500">Type</FormLabel>
-            <Select variant="formFilter">
-              {testOption1.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.title}
-                </option>
-              ))}
-            </Select>
+            <FormLabel color="shader.a.500" fontSize="sm">
+              Type
+            </FormLabel>
+            <WrapperSelectFilter defaultTitle="Auction">
+              <RadioGroup defaultValue="auction">
+                <Flex flexDirection="column" gap={2.5} px={4} py={2.5}>
+                  {testOption2.map(item => (
+                    <Radio key={item.value} value={item.value}>
+                      {item.title}
+                    </Radio>
+                  ))}
+                </Flex>
+              </RadioGroup>
+            </WrapperSelectFilter>
           </FormControl>
           <FormControl gap={2}>
-            <FormLabel color="shader.a.500">Sort</FormLabel>
-            <Select variant="formFilter">
-              {testOption1.map(item => (
+            <FormLabel color="shader.a.500" fontSize="sm">
+              Sort
+            </FormLabel>
+            <Select variant="formFilter" width="full">
+              {testOptionSort.map(item => (
                 <option key={item.value} value={item.value}>
                   {item.title}
                 </option>
@@ -99,7 +124,9 @@ const Filter = ({ isOpen }: IProps) => {
           </FormControl>
 
           <FormControl gap={2}>
-            <FormLabel color="shader.a.500">Price</FormLabel>
+            <FormLabel color="shader.a.500" fontSize="sm">
+              Price
+            </FormLabel>
             <HStack>
               <Input
                 px={4}

@@ -14,7 +14,7 @@ import {
 import {
   testOption1,
   testOption2,
-  testOption3,
+  testOptionSort,
 } from 'layouts/MarketPlace/Explorer/DataTest';
 import FilterIcon from 'public/assets/line/filter.svg';
 
@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from 'react';
 import Filter from 'layouts/MarketPlace/Explorer/Filter';
 import { CardTypeOneSkeleton } from 'components/ProductCard/CardTypeOne';
 import CardBox from 'components/CardBox';
+import { Link } from 'react-router-dom';
 
 const Games = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -87,7 +88,7 @@ const Games = () => {
           ))}
         </Select>
         <Select variant="formFilter" width="fit-content">
-          {testOption3.map(item => (
+          {testOptionSort.map(item => (
             <option key={item.value} value={item.value}>
               {item.title}
             </option>
@@ -95,7 +96,12 @@ const Games = () => {
         </Select>
       </HStack>
       <HStack gap={isOpen ? 5 : 0} alignItems={'flex-start'}>
-        <Box width={isOpen ? '280px' : '0px'} flex={1} position="relative">
+        <Box
+          width={isOpen ? '280px' : '0px'}
+          flex={1}
+          top="120px"
+          position="sticky"
+        >
           <Filter isOpen={isOpen} />
         </Box>
         <Flex direction="column" gap={4} color="shader.a.900" width="full">
@@ -127,76 +133,82 @@ const Games = () => {
                 /> */}
               {products.map((item: any) => (
                 <>
-                  <CardBox
-                    key={item.id}
-                    mt={2}
-                    padding={0}
-                    variant="baseStyle"
-                    boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
-                    cursor="pointer"
-                    role="group"
-                    _hover={{
-                      transform: 'translateY(-5px)',
-                      boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
-                    }}
-                    transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
-                  >
-                    <VStack alignItems="flex-start" gap={0}>
-                      <Box width="full" padding={2}>
-                        <Box overflow="hidden" borderRadius="xl">
-                          <Image
-                            objectFit="cover"
-                            _groupHover={{
-                              transform: 'scale(1.2)',
-                              transition: ' 0.25s ease-in-out',
-                            }}
-                            src={
-                              'https://i.seadn.io/gcs/files/1deeafe9cb7d2eeb2e2116804e06dc88.gif?auto=format&dpr=1&w=282'
-                            }
-                            alt={`Image ${item.name}`}
-                            width="full"
-                            h="10.5rem"
-                          />
+                  <Link to={'/game/213'}>
+                    <CardBox
+                      key={item.id}
+                      mt={2}
+                      padding={0}
+                      variant="baseStyle"
+                      boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+                      cursor="pointer"
+                      role="group"
+                      _hover={{
+                        transform: 'translateY(-5px)',
+                        boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
+                      }}
+                      transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
+                    >
+                      <VStack alignItems="flex-start" gap={0}>
+                        <Box width="full" padding={2}>
+                          <Box overflow="hidden" borderRadius="xl">
+                            <Image
+                              objectFit="cover"
+                              _groupHover={{
+                                transform: 'scale(1.2)',
+                                transition: ' 0.25s ease-in-out',
+                              }}
+                              src={
+                                'https://i.seadn.io/gcs/files/1deeafe9cb7d2eeb2e2116804e06dc88.gif?auto=format&dpr=1&w=282'
+                              }
+                              alt={`Image ${item.name}`}
+                              width="full"
+                              h="10.5rem"
+                            />
+                          </Box>
                         </Box>
-                      </Box>
 
-                      <Box
-                        p={4}
-                        width="full"
-                        borderTop="0.063rem solid "
-                        borderColor="shader.a.200"
-                      >
-                        <HStack
-                          gap={1.5}
-                          mb={3.5}
-                          justifyContent="space-between"
+                        <Box
+                          p={4}
+                          width="full"
+                          borderTop="0.063rem solid "
+                          borderColor="shader.a.200"
                         >
-                          <Text fontWeight="medium" fontSize="lg" noOfLines={1}>
-                            {item.title}
-                          </Text>
-                          <Flex>
-                            <Text color="shader.a.600">ID:</Text>
-                            <Text>{item.id}</Text>
-                          </Flex>
-                        </HStack>
+                          <HStack
+                            gap={1.5}
+                            mb={3.5}
+                            justifyContent="space-between"
+                          >
+                            <Text
+                              fontWeight="medium"
+                              fontSize="lg"
+                              noOfLines={1}
+                            >
+                              {item.title}
+                            </Text>
+                            <Flex>
+                              <Text color="shader.a.600">ID:</Text>
+                              <Text>{item.id}</Text>
+                            </Flex>
+                          </HStack>
 
-                        <HStack justifyContent="space-between" width="full">
-                          <Box>
-                            <Text color="shader.a.600" fontSize="sm">
-                              Floor:
-                            </Text>
-                            <Text fontWeight="medium">{item.stock} GAFI</Text>
-                          </Box>
-                          <Box>
-                            <Text color="shader.a.600" fontSize="sm">
-                              Volume:
-                            </Text>
-                            <Text fontWeight="medium">{item.price} GAFI</Text>
-                          </Box>
-                        </HStack>
-                      </Box>
-                    </VStack>
-                  </CardBox>
+                          <HStack justifyContent="space-between" width="full">
+                            <Box>
+                              <Text color="shader.a.600" fontSize="sm">
+                                Floor:
+                              </Text>
+                              <Text fontWeight="medium">{item.stock} GAFI</Text>
+                            </Box>
+                            <Box>
+                              <Text color="shader.a.600" fontSize="sm">
+                                Volume:
+                              </Text>
+                              <Text fontWeight="medium">{item.price} GAFI</Text>
+                            </Box>
+                          </HStack>
+                        </Box>
+                      </VStack>
+                    </CardBox>
+                  </Link>
                 </>
               ))}
             </Grid>

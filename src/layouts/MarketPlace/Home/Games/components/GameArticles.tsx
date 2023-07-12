@@ -4,56 +4,8 @@ import { SwiperSlide } from 'swiper/react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 
 import TimeReminder from 'components/Time/TimeReminder';
-export const DataTestArticle = [
-  {
-    image:
-      'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
-    link: '#',
-    title: 'Fornite Zero Build Give Away',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-  {
-    image:
-      'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
-    link: '#',
-    title: 'Lego 2K Driver Season 1',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-  {
-    image:
-      'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
-    link: '#',
-    title: 'Fornite Zero Build Give Away',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-  {
-    image:
-      'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
-    link: '#',
-    title: 'Lego 2K Driver Season 1',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-  {
-    image:
-      'https://cdn1.epicgames.com/offer/fn/EN_25BR_ZeroBuild_EGS_2560x1440_2560x1440-ce5c18ffe40b92cb6e3c8dac19dfd001',
-    link: '#',
-    title: 'Fornite Zero Build Give Away',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-  {
-    image:
-      'https://bfs3bucket.s3.amazonaws.com/wp-content/uploads/2023/06/LEGO-2K-Drive-Season-1-key-art-featured-800x445.jpg',
-    link: '#',
-    title: 'Lego 2K Driver Season 1',
-    description:
-      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...",
-  },
-];
+import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
+
 const GameArticles = () => {
   return (
     <>

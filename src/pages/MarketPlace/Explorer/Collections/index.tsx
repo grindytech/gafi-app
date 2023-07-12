@@ -12,7 +12,7 @@ import {
 import {
   testOption1,
   testOption2,
-  testOption3,
+  testOptionSort,
 } from 'layouts/MarketPlace/Explorer/DataTest';
 import FilterIcon from 'public/assets/line/filter.svg';
 
@@ -86,7 +86,7 @@ const Collections = () => {
           ))}
         </Select>
         <Select variant="formFilter" width="fit-content">
-          {testOption3.map(item => (
+          {testOptionSort.map(item => (
             <option key={item.value} value={item.value}>
               {item.title}
             </option>
@@ -97,7 +97,7 @@ const Collections = () => {
         <Box
           width={isOpen ? '280px' : '0px'}
           flex={1}
-          top="100px"
+          top="120px"
           position="sticky"
         >
           <Filter isOpen={isOpen} />

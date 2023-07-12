@@ -7,6 +7,7 @@ import Activities from './Activities';
 import Games from './Games';
 import Collections from './Collections';
 import NFTs from './NFTs';
+import GameDetail from './Games/GameDetail';
 
 export const ListExplorerTab = [
   {
@@ -32,7 +33,13 @@ export const ListExplorerTab = [
   {
     title: 'Creators',
     link: 'creators',
-    element: <NFTs />,
+    element: <Collections />,
+  },
+];
+export const ListExplorerChild = [
+  {
+    link: 'game/:id',
+    element: <GameDetail />,
   },
 ];
 const Explorer = () => {

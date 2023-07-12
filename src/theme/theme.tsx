@@ -246,7 +246,7 @@ const Heading: ComponentStyleConfig = {
       color: 'shader.a.900',
       fontWeight: 'medium',
       lineHeight: '1.5rem',
-      fontsize: 'xl',
+      fontSize: 'xl',
     },
   },
 };

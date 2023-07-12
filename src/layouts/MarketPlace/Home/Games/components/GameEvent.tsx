@@ -1,10 +1,11 @@
 import { Box, Text, Image, HStack, Icon } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
-import { DataTestArticle } from './GameArticles';
+
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import BgGrid from 'public/assets/background/bg-grid.svg';
 import TimeReminder from 'components/Time/TimeReminder';
+import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
 const GameEvent = () => {
   return (
     <Box
@@ -92,7 +93,13 @@ const GameEvent = () => {
                   <Text lineHeight="1.5rem" fontWeight="medium">
                     {item.title}
                   </Text>
-                  <Text color="shader.a.400" fontSize="sm" noOfLines={2} mb={4}>
+                  <Text
+                    width="618px"
+                    color="shader.a.400"
+                    fontSize="sm"
+                    noOfLines={2}
+                    mb={4}
+                  >
                     {item.description}
                   </Text>
                   <HStack gap={0.5}>
