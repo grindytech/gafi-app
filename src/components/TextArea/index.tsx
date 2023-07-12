@@ -5,16 +5,22 @@ import {
   Textarea as TextareaChakra,
 } from '@chakra-ui/react';
 import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
+import { UseFormRegister } from 'react-hook-form';
 
-import { TypeNumberInput } from 'types';
+interface TextAreaProps {
+  value: string;
+  register: UseFormRegister<any>;
+  isInvalid?: boolean;
+  isRequired?: boolean;
+  isReset?: boolean;
+}
 
 export default function TextArea({
   register,
   value,
   isInvalid,
   isRequired,
-  placeholder,
-}: Omit<TypeNumberInput, 'setValue' | 'title' | 'control'>) {
+}: TextAreaProps) {
   return (
     <>
       <FormControl
@@ -31,7 +37,7 @@ export default function TextArea({
           mt={4}
           required={false}
           resize="none"
-          placeholder={placeholder || 'Write about your project.'}
+          placeholder="Write about your project."
         />
       </FormControl>
     </>

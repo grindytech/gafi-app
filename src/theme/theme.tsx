@@ -52,6 +52,21 @@ export const styles = {
       bg: 'shader.a.100',
       overflowX: 'hidden',
     },
+    '*': {
+      scrollBehavior: 'smooth',
+
+      _hover: {
+        '::-webkit-scrollbar-thumb': {
+          bg: 'shader.a.500',
+          borderRadius: '2rem',
+        },
+      },
+      '::-webkit-scrollbar': {
+        bg: 'transparent',
+        width: 2,
+        height: 2,
+      },
+    },
   }),
 };
 
