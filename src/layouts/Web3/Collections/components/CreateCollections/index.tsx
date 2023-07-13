@@ -32,7 +32,7 @@ export default function CollectionsCreate() {
     >
       <SwitchAdmin
         setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
-        type="Owner"
+        type="Admin"
       />
 
       <CollectionID setValue={setValue} refetch={collection} />

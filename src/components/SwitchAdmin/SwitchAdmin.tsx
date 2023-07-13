@@ -1,31 +1,25 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   Box,
   BoxProps,
-  Flex,
+  Center,
   Heading,
   Icon,
+  IconButton,
   List,
   ListItem,
   Skeleton,
   Stack,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import React, { useState } from 'react';
 import Chevron01Icon from 'public/assets//line/chevron-01.svg';
 
-import ButtonCopy from 'components/ButtonCopy';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-
-import { shorten } from 'utils/utils';
 import { UseFormSetValue } from 'react-hook-form';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import { useAppSelector } from 'hooks/useRedux';
+import { convertHex } from 'utils/utils';
+import { colors } from 'theme/theme';
 
 export type TypeSwitchAdmin = Record<
   'admin',
@@ -75,122 +69,96 @@ export default function SwitchAdmin({
 
   return (
     <CardBox variant="createGames" padding={0} {...sx}>
-      <Heading
-        pt={4}
-        px={4}
-        as="h4"
-        fontSize="sm"
-        fontWeight="semibold"
-        color="primary.a.500"
-      >
-        {type}
-      </Heading>
+      <Box position="relative">
+        <Heading
+          fontSize="sm"
+          px={4}
+          pt={4}
+          fontWeight="semibold"
+          color="primary.a.500"
+        >
+          {type}
+        </Heading>
 
-      {allAccount && currentAccount && currentAccount.address ? (
-        <Accordion index={isOpen ? 0 : 1}>
-          <AccordionItem border="unset">
-            <Flex
-              padding={4}
-              flexWrap="wrap"
-              wordBreak="break-all"
-              gap={{
-                base: 2,
-                md: 4,
-              }}
-            >
-              <Box
-                display={{
-                  sm: 'flex',
+        {allAccount && currentAccount && currentAccount.address ? (
+          <>
+            <Center justifyContent="space-between" padding={4} pb={6}>
+              <NewGamesProfile
+                hash={currentAccount.address}
+                account={String(currentAccount.name)}
+              />
+
+              <IconButton
+                aria-label="arrow-chevron"
+                onClick={onToggle}
+                transitionDuration="ultra-slow"
+                _hover={{
+                  bg: convertHex(colors.primary.a[500], 0.1),
                 }}
-                gap={4}
-                flex={1}
-              >
-                <AccountJazzicon address={currentAccount.address} />
-
-                <Box>
-                  <Heading
-                    as="h6"
-                    fontSize="md"
-                    fontWeight="semibold"
-                    color="shader.a.900"
-                  >
-                    {currentAccount.name}
-                  </Heading>
-
-                  <Text
-                    fontSize="sm"
-                    fontWeight="medium"
-                    color="shader.a.600"
-                    display="flex"
-                    gap={1}
-                    alignItems={{
-                      base: 'flex-start',
-                      sm: 'center',
-                    }}
-                  >
-                    {shorten(currentAccount.address, 12)}
-
-                    <ButtonCopy value={currentAccount.address} />
-                  </Text>
-                </Box>
-              </Box>
-
-              <Box>
-                <AccordionButton padding={0} _hover={{}} onClick={onToggle}>
+                icon={
                   <Icon
-                    as={Chevron01Icon as any}
+                    as={Chevron01Icon}
                     width={6}
                     height={6}
                     color="primary.a.500"
-                    transitionDuration="slower"
+                    transitionDuration="inherit"
                     transform={isOpen ? 'rotate(-180deg)' : undefined}
                   />
-                </AccordionButton>
-              </Box>
-            </Flex>
+                }
+              />
+            </Center>
 
-            <AccordionPanel padding={0}>
-              <List>
-                {allAccount
-                  .filter(item => item.address !== currentAccount.address)
-                  .map(account => (
-                    <ListItem
-                      key={account.address}
-                      padding={4}
-                      onClick={() => {
-                        onClose();
-                        setCurrentAccount(account);
-                      }}
-                      cursor="pointer"
-                      _hover={{
-                        transitionDuration: 'ultra-slow',
-                        bg: 'shader.a.200',
-                      }}
-                    >
-                      <NewGamesProfile
-                        hash={account.address}
-                        account={String(account.name)}
-                        sx={{
-                          sx: {
-                            button: {
-                              display: 'none',
-                            },
-                          },
-                        }}
-                      />
-                    </ListItem>
-                  ))}
-              </List>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      ) : (
-        <Stack padding={4}>
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-          <Skeleton height={4} />
-        </Stack>
-      )}
+            <List
+              transform="translateY(-2%)"
+              borderBottomLeftRadius="xl"
+              borderBottomRightRadius="xl"
+              border="0.0625rem solid"
+              borderColor="shader.a.300"
+              bg="white"
+              transitionDuration="ultra-slow"
+              position="absolute"
+              zIndex="dropdown"
+              width="full"
+              opacity={isOpen ? 1 : 0}
+            >
+              {allAccount
+                .filter(item => item.address !== currentAccount.address)
+                .map(account => (
+                  <ListItem
+                    key={account.address}
+                    padding={4}
+                    transitionDuration="ultra-slow"
+                    cursor="pointer"
+                    sx={{
+                      button: {
+                        display: 'none',
+                      },
+                    }}
+                    _hover={{
+                      transitionDuration: 'inherit',
+                      bg: 'shader.a.200',
+                    }}
+                    onClick={() => {
+                      onClose();
+                      setCurrentAccount(account);
+                    }}
+                  >
+                    <NewGamesProfile
+                      hash={account.address}
+                      account={String(account.name)}
+                    />
+                  </ListItem>
+                ))}
+            </List>
+          </>
+        ) : (
+          <Stack padding={4}>
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+            <Skeleton height={4} />
+          </Stack>
+        )}
+      </Box>
     </CardBox>
   );
 }
