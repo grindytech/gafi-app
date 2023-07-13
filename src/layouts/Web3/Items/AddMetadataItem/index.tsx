@@ -17,7 +17,7 @@ export interface AddMetadataItemFieldProps extends TypeSwitchAdmin {
   collection_id: number;
   item_id: number;
   title: string;
-  image: File[];
+  image: File;
 }
 
 export default function AddMetadataItem() {
@@ -43,12 +43,7 @@ export default function AddMetadataItem() {
       />
 
       <CardBox variant="createGames">
-        <UploadPicture
-          register={register}
-          value="image"
-          isInvalid={!!errors.image}
-          isRequired={true}
-        />
+        <UploadPicture setValue={setValue} value="image" />
       </CardBox>
 
       <CardBox variant="createGames">

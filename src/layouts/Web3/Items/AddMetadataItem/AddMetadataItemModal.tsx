@@ -89,7 +89,7 @@ export default function AddMetadataItemModal({
                 <Td>Image</Td>
                 <Td>
                   <Image
-                    src={URL.createObjectURL(image[0])}
+                    src={URL.createObjectURL(image)}
                     height={20}
                     width={32}
                     objectFit="contain"
@@ -125,7 +125,7 @@ export default function AddMetadataItemModal({
             onClick={() => {
               if (api) {
                 const formData = new FormData();
-                formData.append('file', image[0]);
+                formData.append('file', image);
                 formData.append(
                   'upload_preset',
                   String(cloudinary_config.preset_key)
