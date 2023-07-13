@@ -289,6 +289,19 @@ export const Tabs: ComponentStyleConfig = {
         },
       },
     },
+    baseStyled: {
+      tab: {
+        fontWeight: 'medium',
+        color: 'shader.a.400',
+        px: 6,
+        py: 5,
+        borderBottom: '0.063rem solid',
+        borderBottomColor: 'shader.a.200',
+        _selected: {
+          color: 'shader.a.900',
+        },
+      },
+    },
   },
 };
 export const Input: ComponentStyleConfig = {

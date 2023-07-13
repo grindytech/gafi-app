@@ -31,7 +31,7 @@ const SocialData = [
   { link: '#', icon: InternetIcon, alt: 'Host Website' },
   { link: '#', icon: TelegramIcon, alt: 'Telegram icon' },
   {
-    link: 'https://twitter.com/SpaceIDProtocol',
+    link: '#',
     icon: TwiterIcon,
     alt: 'Twitter icon',
   },
