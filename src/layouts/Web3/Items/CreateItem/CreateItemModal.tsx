@@ -24,6 +24,7 @@ import { CreateItemFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
 interface CreateItemModalProps {
+  refetch: () => void;
   onClose: () => void;
   getValues: UseFormGetValues<CreateItemFieldProps>;
 }
@@ -31,6 +32,7 @@ interface CreateItemModalProps {
 export default function CreateItemModal({
   getValues,
   onClose,
+  refetch,
 }: CreateItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -41,6 +43,7 @@ export default function CreateItemModal({
     key: ['createItem', String(item_id)],
     onSuccess() {
       onClose();
+      refetch();
     },
   });
 
