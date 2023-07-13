@@ -30,6 +30,18 @@ export default function UploadPicture({
 }: UploadPictureProps) {
   const [preview, setPreview] = React.useState('');
 
+  const handleUpload = (file: FileList | null) => {
+    // delete memory
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    // update blob
+    if (file && file[0]) {
+      setPreview(URL.createObjectURL(file[0]));
+    }
+  };
+
   return (
     <Flex gap={4}>
       <Center
@@ -43,6 +55,13 @@ export default function UploadPicture({
         color="primary.a.500"
         width={80}
         height={48}
+        onDrop={event => {
+          // prevent open new tab by image on local
+          event.preventDefault();
+
+          handleUpload(event.dataTransfer.files);
+        }}
+        onDragOver={event => event.preventDefault()}
       >
         {preview ? (
           <Image width="full" height="full" objectFit="cover" src={preview} />
@@ -50,8 +69,8 @@ export default function UploadPicture({
           <>
             <Icon as={UploadIcon} width={5} height={5} />
 
-            <Text fontWeight="semibold" fontSize="xs">
-              Upload Image
+            <Text fontWeight="semibold" fontSize="xs" mt={2}>
+              Drag & Drop files here, or click to select
             </Text>
           </>
         )}
@@ -60,13 +79,7 @@ export default function UploadPicture({
           {...register(value, {
             required: isRequired,
           })}
-          onChange={async e => {
-            const file = e.target.files;
-
-            if (file) {
-              setPreview(URL.createObjectURL(file[0]));
-            }
-          }}
+          onChange={event => handleUpload(event.target.files)}
           required={false}
           type="file"
           accept="image/png,image/jpeg,image/gif,image/svg+xml"
