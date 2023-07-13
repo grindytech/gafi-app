@@ -67,17 +67,29 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
           display="flex"
           flexDirection="column"
         >
-          <Center height={48} bg="shader.a.300" position="relative">
+          <Center
+            bg="shader.a.300"
+            position="relative"
+            width="full"
+            pt={(9 / 16) * 100 + '%'} // 16:9 Aspect Ratio
+            overflow="hidden"
+            sx={{
+              img: {
+                position: 'absolute',
+                inset: 0,
+                width: 'full',
+                height: 'full',
+              },
+            }}
+          >
             {collection.metadataOfCollection?.image ? (
               <Image
-                width="full"
-                height="full"
                 objectFit="cover"
                 alt="image is outdated"
                 src={`${cloundinary_link}/${collection.metadataOfCollection.image}`}
               />
             ) : (
-              <Image src={'assets/fill/item.png'} />
+              <Image src="/assets/fill/item.png" objectFit="none" />
             )}
           </Center>
 

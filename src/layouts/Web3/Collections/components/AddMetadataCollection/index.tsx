@@ -15,7 +15,7 @@ import AddMetadataCollectionModal from './AddMetadataCollectionModal';
 
 export interface AddMetadataCollectionFieldProps extends TypeSwitchAdmin {
   collection_id: string;
-  image: File[];
+  image: File;
   title: string;
   external_url: string;
 }
@@ -44,12 +44,7 @@ export default function AddMetadataCollection() {
       />
 
       <CardBox variant="createGames">
-        <UploadPicture
-          register={register}
-          value="image"
-          isInvalid={!!errors.image}
-          isRequired={true}
-        />
+        <UploadPicture setValue={setValue} value="image" />
       </CardBox>
 
       <CardBox variant="createGames">
