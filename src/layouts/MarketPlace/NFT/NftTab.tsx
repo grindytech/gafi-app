@@ -10,12 +10,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React from 'react';
 
 const NftTab = () => {
   return (
     <CardBox variant="baseStyle" padding={0}>
-      <Tabs variant="baseStyled">
+      <Tabs variant="baseStyle">
         <TabList>
           <Tab>Overview</Tab>
           <Tab>Atributes</Tab>

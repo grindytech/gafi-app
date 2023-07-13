@@ -7,6 +7,11 @@ import {
   Icon,
   IconButton,
   Image,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -15,9 +20,11 @@ import EyesIcon from 'public/assets/line/eye.svg';
 import ShareIcon from 'public/assets/line/share.svg';
 import VerifyIcon from 'public/assets/fill/verified.svg';
 import Cart02Icon from 'public/assets/line/cart-02.svg';
+import HistoryIcon from 'public/assets/line/history.svg';
 import CardBox from 'components/CardBox';
 import NftTab from 'layouts/MarketPlace/NFT/NftTab';
 import TopFightGames from 'layouts/MarketPlace/Home/Games/components/TopFightGames';
+import NftActivityTable from 'layouts/MarketPlace/NFT/NftActivityTable';
 
 const NFTDetail = () => {
   return (
@@ -115,7 +122,34 @@ const NFTDetail = () => {
             <NftTab />
           </VStack>
         </Grid>
-
+        <CardBox variant="baseStyle" padding={0}>
+          <Tabs variant="baseStyle">
+            <TabList>
+              <Tab
+                display="flex"
+                gap={2}
+                sx={{
+                  _selected: {
+                    color: 'shader.a.900',
+                    svg: {
+                      color: 'primary.a.500',
+                    },
+                  },
+                }}
+              >
+                <Icon as={HistoryIcon} h={5} w={5} />
+                <Text> Activitys</Text>
+              </Tab>
+              <Tab>Statics</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel padding={6}>
+                <NftActivityTable />
+              </TabPanel>
+              <TabPanel padding={0}>Static</TabPanel>
+            </TabPanels>
+          </Tabs>
+        </CardBox>
         <TopFightGames />
       </Box>
     </>
