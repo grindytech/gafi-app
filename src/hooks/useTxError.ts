@@ -48,14 +48,14 @@ export default function useTxError({ onSuccess }: useTxErrorProps) {
       }
     });
 
-    if (status.isFinalized && isError === false) {
-      toast({
-        position: 'top-right',
-        status: 'success',
-        title: status.type,
-        description: status.type,
-      });
+    toast({
+      position: 'top-right',
+      status: 'success',
+      title: status.type,
+      description: status.type,
+    });
 
+    if (status.isFinalized && isError === false) {
       if (onSuccess) {
         onSuccess();
       }
