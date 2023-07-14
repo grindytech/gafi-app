@@ -15,6 +15,7 @@ import GafiIcon from 'public/assets/token/gafi-token.svg';
 import TimeIcon from 'public/assets/line/time.svg';
 import VerifyIcon from 'public/assets/fill/verified.svg';
 import { TestDataProps3 } from 'layouts/MarketPlace/Home/Collections/components/LiveAuction';
+import { formatGAFI } from 'utils/utils';
 interface IProps {
   item: TestDataProps3;
   imageStyle?: ImageProps;
@@ -105,7 +106,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                   <Icon as={GafiIcon} h={5} w={5} />
 
                   <Box>
-                    <Text fontWeight="medium">{item.currentAuction}</Text>
+                    <Text fontWeight="medium">
+                      {formatGAFI(item.currentAuction)}
+                    </Text>
                     <Text fontSize="xs" color="shader.a.500">
                       ($502,333)
                     </Text>

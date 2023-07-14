@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   HStack,
+  Heading,
   Icon,
   Image,
   Link,
@@ -197,9 +198,7 @@ const HotCollection = () => {
                 },
               }}
             />
-            <Text fontWeight="semibold" fontSize="xl">
-              Trending Collections
-            </Text>
+            <Heading variant="sub02">Trending Collections</Heading>
           </Flex>
 
           <Link href="/marketplace/explorer/collections">

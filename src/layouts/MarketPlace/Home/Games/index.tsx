@@ -2,13 +2,12 @@ import TopAdventureGame from './components/TopAdventureGame';
 import TopFightGames from './components/TopFightGames';
 import GameEvent from './components/GameEvent';
 import GameArticles from './components/GameArticles';
-
-import NewRelease from './components/NewRelease';
+import NewGamesSection from './components/NewGamesSection';
 
 const OverviewGames = () => {
   return (
     <>
-      <NewRelease />
+      <NewGamesSection />
       <TopAdventureGame />
       <TopFightGames />
       <GameEvent />

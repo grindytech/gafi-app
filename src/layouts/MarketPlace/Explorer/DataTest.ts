@@ -392,3 +392,97 @@ export const DataTestNftAuctions = [
     amount: '0.055',
   },
 ];
+
+export interface TestDataProps2 {
+  image: string;
+  name: string;
+  id: string;
+  minted: string;
+  volume: string;
+  price: string;
+  isVerified?: boolean;
+}
+export const TestDataTopPool: TestDataProps2[] = [
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'Call Of Duty 2027',
+    id: '16',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '100',
+    isVerified: true,
+  },
+  {
+    image:
+      'https://cdn.tgdd.vn/Files/2020/12/26/1316151/overwatchdangduocmienphi4-_1920x1080-800-resize.jpg',
+    name: 'Overwatch: Gun',
+    id: '17',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '200',
+  },
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'Rush War: Gun & Gear',
+    id: '18',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://img-cdn.2game.vn/pictures/xemgame/2019/08/27/rush-war-1.jpg',
+    name: 'Call Of Duty 2027',
+    id: '19',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'SoG: Weapon',
+    id: '20',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://img-cdn.2game.vn/pictures/xemgame/2019/08/27/rush-war-1.jpg',
+    name: 'Azuki 2020',
+    id: '21',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'Azuki 2020',
+    id: '22',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'Call Of Duty 2027',
+    id: '23',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+  {
+    image:
+      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
+    name: 'Call Of Duty 2027',
+    id: '24',
+    volume: '119.5M',
+    minted: '10,0789,663',
+    price: '300',
+  },
+];

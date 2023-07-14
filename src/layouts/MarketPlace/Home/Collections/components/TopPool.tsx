@@ -1,104 +1,23 @@
-import { Box, Flex, HStack, Link, Text, Icon, Button } from '@chakra-ui/react';
-import React from 'react';
+import {
+  Box,
+  Flex,
+  HStack,
+  Link,
+  Text,
+  Icon,
+  Button,
+  VStack,
+  Image,
+} from '@chakra-ui/react';
 
+import VerifyIcon from 'public/assets/fill/verified.svg';
 import GameIcon from 'public/assets/line/game.svg';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
 import Carousel from 'components/Carousel/Carousel';
-import CardTypeTwo from 'components/ProductCard/CardTypeTwo';
+
 import { SwiperSlide } from 'swiper/react';
-export interface TestDataProps2 {
-  image: string;
-  name: string;
-  id: string;
-  minted: string;
-  volume: string;
-  price: string;
-  isVerified?: boolean;
-}
-const TestDataTopPool: TestDataProps2[] = [
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'Call Of Duty 2027',
-    id: '16',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '100',
-    isVerified: true,
-  },
-  {
-    image:
-      'https://cdn.tgdd.vn/Files/2020/12/26/1316151/overwatchdangduocmienphi4-_1920x1080-800-resize.jpg',
-    name: 'Overwatch: Gun',
-    id: '17',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '200',
-  },
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'Rush War: Gun & Gear',
-    id: '18',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://img-cdn.2game.vn/pictures/xemgame/2019/08/27/rush-war-1.jpg',
-    name: 'Call Of Duty 2027',
-    id: '19',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'SoG: Weapon',
-    id: '20',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://img-cdn.2game.vn/pictures/xemgame/2019/08/27/rush-war-1.jpg',
-    name: 'Azuki 2020',
-    id: '21',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'Azuki 2020',
-    id: '22',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'Call Of Duty 2027',
-    id: '23',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-  {
-    image:
-      'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
-    name: 'Call Of Duty 2027',
-    id: '24',
-    volume: '119.5M',
-    minted: '10,0789,663',
-    price: '300',
-  },
-];
+import CardBox from 'components/CardBox';
+import { TestDataTopPool } from 'layouts/MarketPlace/Explorer/DataTest';
 const TopPool = () => {
   return (
     <>
@@ -110,7 +29,16 @@ const TopPool = () => {
           left={0}
         >
           <Flex gap={3} alignItems="center">
-            <Icon as={GameIcon} height={6} width={6} color="#D946EF" />
+            <Icon
+              as={GameIcon}
+              height={6}
+              width={6}
+              sx={{
+                path: {
+                  stroke: 'url(#GameLinear06)',
+                },
+              }}
+            />
             <Text color="shader.a.900" fontWeight="semibold" fontSize="xl">
               Top Pools
             </Text>
@@ -138,7 +66,75 @@ const TopPool = () => {
           <Carousel>
             {TestDataTopPool.map(item => (
               <SwiperSlide key={item.id}>
-                <CardTypeTwo item={item} />
+                <CardBox
+                  padding={0}
+                  variant="baseStyle"
+                  boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
+                  height="full"
+                >
+                  <VStack color="shader.a.900" gap={0}>
+                    <Box padding={2} width="full">
+                      <Image
+                        objectFit="cover"
+                        src={item.image}
+                        alt={`Image ${item.name}`}
+                        h="12.5rem"
+                        borderRadius="xl"
+                        width="full"
+                      />
+                    </Box>
+                    <Box
+                      padding={4}
+                      w="full"
+                      borderTop="0.063rem solid "
+                      borderColor="shader.a.200"
+                    >
+                      <VStack alignItems="start" gap="12px" mb="24px" w="full">
+                        <HStack justifyContent="space-between" w="full">
+                          <Flex alignItems="center" gap={1}>
+                            <Text fontWeight="medium">{item.name}</Text>
+                            {item.isVerified && (
+                              <Icon
+                                as={VerifyIcon}
+                                h={5}
+                                w={5}
+                                aria-label="Verifiled Icon"
+                              />
+                            )}
+                          </Flex>
+
+                          <Flex>
+                            <Text color="shader.a.600">ID:</Text>
+                            <Text>{item.id}</Text>
+                          </Flex>
+                        </HStack>
+                        <HStack
+                          justifyContent="space-between"
+                          w="full"
+                          fontSize="sm"
+                        >
+                          <Box>
+                            <Text color="shader.a.600">Minted:</Text>
+                            <Text fontWeight="medium">{item.minted}</Text>
+                          </Box>
+                          <Box>
+                            <Text
+                              textAlign="right"
+                              color="shader.a.600"
+                              fontSize="sm"
+                            >
+                              Volume:
+                            </Text>
+                            <Text fontWeight="medium">{item.volume} GAFI</Text>
+                          </Box>
+                        </HStack>
+                      </VStack>
+                      <Button width="full" variant="primary">
+                        Mint for {item.price}
+                      </Button>
+                    </Box>
+                  </VStack>
+                </CardBox>
               </SwiperSlide>
             ))}
           </Carousel>
