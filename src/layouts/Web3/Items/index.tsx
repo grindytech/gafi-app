@@ -13,10 +13,10 @@ import GoBack from 'components/GoBack';
 
 import LineAddIcon from 'public/assets/line/add.svg';
 
-import CreateItem from './CreateItem';
-import AddSupply from './AddSupply';
+import AddSupply from './components/AddSupply';
 import theme from 'theme/theme';
-import AddMetadataItem from './AddMetadataItem';
+import CreateItem from './components/CreateItem';
+import AddMetadataItem from './components/AddMetadataItem';
 
 export default function Items() {
   return (

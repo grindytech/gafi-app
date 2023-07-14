@@ -13,10 +13,10 @@ import GoBack from 'components/GoBack';
 
 import LineAddIcon from 'public/assets/line/add.svg';
 
-import CollectionsCreate from './components/CreateCollections';
-import AcceptCollections from './components/AcceptCollections';
-import AddCollections from './components/AddCollections';
 import theme from 'theme/theme';
+import CollectionsCreate from './components/CreateCollections';
+import AddCollections from './components/AddCollections';
+import AcceptCollections from './components/AcceptCollections';
 import AddMetadataCollection from './components/AddMetadataCollection';
 
 export default function Collections() {
