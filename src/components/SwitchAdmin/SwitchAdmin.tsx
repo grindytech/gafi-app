@@ -120,6 +120,7 @@ export default function SwitchAdmin({
               zIndex="dropdown"
               width="full"
               opacity={isOpen ? 1 : 0}
+              pointerEvents={isOpen ? undefined : 'none'}
             >
               {allAccount
                 .filter(item => item.address !== currentAccount.address)
