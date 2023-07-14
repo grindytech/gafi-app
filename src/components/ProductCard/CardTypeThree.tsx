@@ -88,11 +88,6 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                     />
                   )}
                 </Flex>
-
-                {/*  <Flex>
-                  <Text color="shader.a.600">ID:</Text>
-                  <Text>{item.id}</Text>
-                </Flex> */}
               </HStack>
               <Text color="shader.a.600" fontSize="sm" fontWeight="medium">
                 Current Auction:

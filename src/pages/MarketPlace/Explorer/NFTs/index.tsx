@@ -124,7 +124,7 @@ const NFTs = () => {
                     }}
                     item={{
                       image:
-                        'https://i.seadn.io/gcs/files/7eb724aadba564601666b4371241a2b5.png?auto=format&dpr=1&w=282',
+                        'https://i.seadn.io/gcs/files/f129242f85ba52d455a78cd70a379bef.png?auto=format&dpr=1&w=282',
                       name: item.title,
                       floor: '200000000000',
                       volume: item.stock,

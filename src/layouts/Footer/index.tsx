@@ -73,7 +73,7 @@ export default function Footer() {
         borderColor: 'shader.a.300',
         position: 'absolute',
         height: 'full',
-        width: '200vw',
+        width: '100vw',
         left: '50%',
         transform: 'translateX(-50%)',
       }}

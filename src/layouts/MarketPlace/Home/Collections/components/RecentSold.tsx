@@ -107,7 +107,6 @@ const RecentSold = () => {
                 },
               }}
               aria-label="Money Icon"
-              color="#2E4FF4"
             />
             <Text fontSize="lg">Recently Sold</Text>
           </HStack>

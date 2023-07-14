@@ -25,6 +25,7 @@ const NewGamesSection = () => {
               delay: 1500,
               disableOnInteraction: false,
             },
+            loop: true,
             breakpoints: {
               360: {
                 slidesPerView: 1,

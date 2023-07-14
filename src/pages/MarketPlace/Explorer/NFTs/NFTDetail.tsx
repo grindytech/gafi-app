@@ -30,7 +30,11 @@ const NFTDetail = () => {
   return (
     <>
       <Box pb={4}>
-        <Grid gridTemplateColumns="repeat(2,1fr)" gap={5} mb={4}>
+        <Grid
+          gridTemplateColumns={{ lg: 'repeat(2,1fr)', md: 'repeat(1,1fr)' }}
+          gap={5}
+          mb={4}
+        >
           <Box
             borderRadius="16px"
             border="0.063rem solid"
