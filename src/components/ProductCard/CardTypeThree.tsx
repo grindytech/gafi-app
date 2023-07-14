@@ -37,7 +37,7 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
       >
         <VStack color="shader.a.900" gap={0}>
           <Box position="relative" padding={2} width="full">
-            <Box overflow="hidden" borderRadius="xl">
+            <Box overflow="hidden" borderRadius="lg">
               <Image
                 objectFit="cover"
                 src={item.image}

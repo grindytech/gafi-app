@@ -95,7 +95,7 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
           opacity={0}
           visibility="hidden"
           className="btn-carousel"
-          transition="visibility 0s, opacity 0.5s linear"
+          transition="visibility 0.3s , opacity 0.3s ease-in-out"
           /*  _groupHover={{
             opacity: 1,
             visibility: 'visible',

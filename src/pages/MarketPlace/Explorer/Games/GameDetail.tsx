@@ -211,7 +211,12 @@ const GameDetail = () => {
                     >
                       By {item.creator}
                     </Text>
-                    <HStack fontSize="sm" fontWeight="medium" gap={2}>
+                    <HStack
+                      fontSize="sm"
+                      fontWeight="medium"
+                      gap={2}
+                      color="white"
+                    >
                       <Text>Collections: {item.collection}</Text>
                       <CircleIcon width="0.25rem" height="0.25rem" />
                       <Text>Items: {item.items}</Text>

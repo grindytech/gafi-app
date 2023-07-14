@@ -66,7 +66,7 @@ const NavLinkSocial = ({ sx }: IProps) => {
               w={6}
               _hover={{
                 color: 'primary.a.500',
-                transition: 'linear 0.5s',
+                transition: 'linear 0.3s',
               }}
             />
           </Link>

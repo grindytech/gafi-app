@@ -14,7 +14,7 @@ import CardBox from 'components/CardBox';
 import NavLinkSocial from 'components/Link/NavLinkSocial';
 import { DataTestNftAttributes } from '../Explorer/DataTest';
 
-const NftTab = () => {
+const NftTabDetail = () => {
   return (
     <CardBox variant="baseStyle" padding={0}>
       <Tabs variant="baseStyle">
@@ -53,11 +53,11 @@ const NftTab = () => {
                 <Flex flexDirection="column" gap={2.5}>
                   <HStack justifyContent="space-between">
                     <Text>Contract</Text>
-                    <Text>0x3b5a...6b10e</Text>
+                    <Text color="primary.a.500">0x3b5a...6b10e</Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Token ID</Text>
-                    <Text>599</Text>
+                    <Text color="primary.a.500">599</Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Token Standard</Text>
@@ -118,4 +118,4 @@ const NftTab = () => {
   );
 };
 
-export default NftTab;
+export default NftTabDetail;

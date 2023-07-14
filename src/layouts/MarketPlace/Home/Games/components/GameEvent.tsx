@@ -1,7 +1,7 @@
 import { Box, Text, Image, HStack, Icon } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
-
+import { Navigation, Mousewheel, Autoplay } from 'swiper';
 import GafiIcon from 'public/assets/token/gafi-token.svg';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import BgGrid from 'public/assets/background/bg-grid.svg';
@@ -45,6 +45,12 @@ const GameEvent = () => {
       <Box mt={4}>
         <Carousel
           options={{
+            modules: [Autoplay, Navigation, Mousewheel],
+            autoplay: {
+              delay: 1500,
+              disableOnInteraction: false,
+            },
+            loop: true,
             breakpoints: {
               360: {
                 slidesPerView: 1,

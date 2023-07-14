@@ -7,9 +7,7 @@ import {
   Image,
   VStack,
   Text,
-  Icon,
 } from '@chakra-ui/react';
-import ChevronIcon from 'public/assets/line/chevron-01.svg';
 
 const dataTest = {
   avatar:
@@ -26,14 +24,17 @@ const NftActivityTable = () => {
           {[...Array(6)].map(item => (
             <Tr key={item}>
               <Td>
-                <HStack gap={4}>
+                <HStack gap={4} flexWrap="wrap">
                   <Image
                     src={dataTest.avatar}
                     h="2.25rem"
                     width="2.25rem"
                     borderRadius="full"
                   />
-                  <VStack alignItems="flex-start">
+                  <VStack
+                    alignItems="flex-start"
+                    display={{ md: 'flex', base: 'none' }}
+                  >
                     <Text color="shader.a.500" fontSize="sm">
                       From
                     </Text>
@@ -43,13 +44,13 @@ const NftActivityTable = () => {
                   </VStack>
                 </HStack>
               </Td>
-              <Td>
+              <Td display={{ md: 'table-cell', base: 'none' }}>
                 <Text>Transfer to</Text>
                 <Text fontSize="sm" color="shader.a.500">
                   36 minutes ago
                 </Text>
               </Td>
-              <Td>
+              <Td display={{ md: 'table-cell', base: 'none' }}>
                 <Text color="shader.a.500" fontSize="sm">
                   To
                 </Text>
@@ -58,22 +59,19 @@ const NftActivityTable = () => {
                 </Text>
               </Td>
               <Td>
-                <Text color="shader.a.900" fontWeight="medium">
-                  {dataTest.amount} GAFI
-                </Text>
-                <Text fontSize="sm" color="shader.a.500">
-                  $302,425
-                </Text>
+                <VStack alignItems={{ md: 'flex-start', base: 'flex-end' }}>
+                  <Text color="shader.a.900" fontWeight="medium">
+                    {dataTest.amount} GAFI
+                  </Text>
+                  <Text fontSize="sm" color="shader.a.500">
+                    $302,425
+                  </Text>
+                </VStack>
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
-
-      <HStack width="full" justifyContent="center">
-        <Text cursor="pointer">View More</Text>
-        <Icon cursor="pointer" as={ChevronIcon} color="primary.a.500" />
-      </HStack>
     </>
   );
 };
