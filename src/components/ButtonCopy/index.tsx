@@ -1,5 +1,4 @@
 import { IconButton, IconButtonProps, useClipboard } from '@chakra-ui/react';
-import React from 'react';
 import CopyIcon from 'public/assets/line/copy.svg';
 import DoneIcon from 'public/assets/fill/done.svg';
 
