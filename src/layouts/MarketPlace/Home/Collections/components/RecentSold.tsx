@@ -14,6 +14,7 @@ import CustomRow from 'components/Table/CustomRow';
 
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
 import MoneyIcon from 'public/assets/line/money.svg';
+import { Link } from 'react-router-dom';
 export interface TestPropsSold {
   image: string;
   name: string;
@@ -110,7 +111,12 @@ const RecentSold = () => {
             />
             <Text fontSize="lg">Recently Sold</Text>
           </HStack>
-          <HStack color="primary.a.500">
+
+          <HStack
+            color="primary.a.500"
+            as={Link}
+            to="/marketplace/explorer/activities"
+          >
             <Text>See More</Text>
             <Icon
               as={ArrowIcon}

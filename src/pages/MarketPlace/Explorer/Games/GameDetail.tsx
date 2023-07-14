@@ -1,4 +1,3 @@
-import InternetIcon from 'public/assets/line/internet.svg';
 import {
   testGameDetail,
   testOptionSort,
@@ -12,7 +11,6 @@ import {
   Heading,
   Icon,
   Image,
-  Link,
   Select,
   Text,
 } from '@chakra-ui/react';
@@ -22,6 +20,7 @@ import Collections from '../Collections';
 import { SwiperSlide } from 'swiper/react';
 import Carousel from 'components/Carousel/Carousel';
 import { CircleIcon } from 'components/Substrate/SubstrateNode';
+import NavLinkSocial from 'components/Link/NavLinkSocial';
 const GameDetail = () => {
   /**
    * The way to define and chek current view base on nodeOfLine setting
@@ -81,29 +80,9 @@ const GameDetail = () => {
                 {testGameDetail.author}
               </Text>
             </HStack>
-            <HStack gap={4} my={5}>
-              {testGameDetail.website && (
-                <Link
-                  href={testGameDetail.website}
-                  _hover={{
-                    color: 'primary.a.500',
-                  }}
-                >
-                  <Icon as={InternetIcon} height={6} w={6} />
-                </Link>
-              )}
-              {testGameDetail.social.map(item => (
-                <Link
-                  key={item.key}
-                  href={item.link}
-                  _hover={{
-                    color: 'primary.a.500',
-                  }}
-                >
-                  <Icon as={item.icon} height={6} w={6} />
-                </Link>
-              ))}
-            </HStack>
+
+            <NavLinkSocial sx={{ my: 5 }} />
+
             <Box
               display="inline-flex"
               alignContent="flex-end"

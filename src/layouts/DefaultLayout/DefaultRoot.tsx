@@ -17,11 +17,9 @@ export default function DefaultMain() {
       <Flex flexDirection="column" height="100vh">
         <Container maxWidth={breakpointsContainer} as="article">
           <Header />
-
           <Box as="main" minHeight={`calc(100vh - ${header})`}>
             <Outlet />
           </Box>
-
           <Footer />
         </Container>
       </Flex>

@@ -19,6 +19,7 @@ interface IProps {
   item: TestDataProps3;
   imageStyle?: ImageProps;
 }
+// This card use to activities,live auction section
 const CardTypeThree = ({ item, imageStyle }: IProps) => {
   return (
     <>

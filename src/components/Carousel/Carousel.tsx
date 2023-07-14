@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import { Swiper } from 'swiper/react';
-import { Navigation } from 'swiper';
+// Core modules imports are same as usual
+import { Navigation, Mousewheel } from 'swiper';
+
 import { Box, Button, ButtonProps, Icon } from '@chakra-ui/react';
 
 import { SwiperOptions } from 'swiper/types';
-
+import 'swiper/css/mousewheel';
 interface IProps {
   children: React.ReactNode;
   options?: SwiperOptions;
@@ -21,7 +23,10 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
           // install Swiper modules
           spaceBetween={20}
           slidesPerView={4}
-          modules={[Navigation]}
+          modules={[Navigation, Mousewheel]}
+          mousewheel={{
+            forceToAxis: true,
+          }}
           navigation={{
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             prevEl: prevRef.current!,

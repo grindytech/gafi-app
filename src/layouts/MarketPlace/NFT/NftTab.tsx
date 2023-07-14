@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Grid,
   HStack,
   Tab,
   TabList,
@@ -10,6 +11,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
+import NavLinkSocial from 'components/Link/NavLinkSocial';
+import { DataTestNftAttributes } from '../Explorer/DataTest';
 
 const NftTab = () => {
   return (
@@ -42,6 +45,7 @@ const NftTab = () => {
                   0x3b5a...6b10e
                 </Text>
               </HStack>
+              <NavLinkSocial />
               <CardBox variant="baseStyle" padding={4}>
                 <Text fontWeight="medium" color="black" mb={2}>
                   Details
@@ -75,8 +79,35 @@ const NftTab = () => {
               </CardBox>
             </Flex>
           </TabPanel>
-          <TabPanel>
-            <p>two!</p>
+          <TabPanel padding={6}>
+            <Grid
+              gridTemplateColumns={{
+                md: 'repeat(3,1fr)',
+                base: 'repeat(2,1fr)',
+              }}
+              gridGap={2.5}
+            >
+              {DataTestNftAttributes.map((item, index) => (
+                <Box
+                  borderRadius="xl"
+                  border="0.063rem solid"
+                  borderColor="shader.a.300"
+                  bg="shader.a.100"
+                  key={index}
+                  padding={4}
+                >
+                  <Text fontSize="sm" color="shader.a.500">
+                    {item.attr}
+                  </Text>
+                  <HStack>
+                    <Text fontWeight="medium">{item.name}</Text>
+                    <Text color="second.purple" fontSize="sm">
+                      {item.rarity}%
+                    </Text>
+                  </HStack>
+                </Box>
+              ))}
+            </Grid>
           </TabPanel>
           <TabPanel>
             <p>two!</p>

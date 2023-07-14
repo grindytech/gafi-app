@@ -59,11 +59,6 @@ const router = createBrowserRouter([
             path: 'minting',
             element: <MintingPoolMarket />,
           },
-
-          /*  [ListExplorerChild.map(tabLink => ({
-            path: tabLink.link,
-            element: tabLink.element,
-          }))], */
         ],
       },
       {

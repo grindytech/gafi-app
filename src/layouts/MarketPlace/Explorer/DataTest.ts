@@ -353,3 +353,42 @@ export const TestDataRelease = [
     currency: 'GAFI',
   },
 ];
+
+export const DataTestNftAttributes = [
+  {
+    name: 'Shiny Red',
+    attr: 'Color',
+    rarity: '15',
+  },
+  {
+    name: 'Shiny Red',
+    attr: 'Wheel',
+    rarity: '15',
+  },
+  {
+    name: 'Shiny Red',
+    attr: 'Headlight',
+    rarity: '15',
+  },
+  {
+    name: 'Shiny Red',
+    attr: 'SSS',
+    rarity: '15',
+  },
+  {
+    name: 'Shiny Red',
+    attr: 'Normal',
+    rarity: '15',
+  },
+];
+
+export const DataTestNftAuctions = [
+  {
+    image: '',
+    address: '',
+    timestamp: '',
+    type: 'Floor auction',
+    status: 'Expires',
+    amount: '0.055',
+  },
+];

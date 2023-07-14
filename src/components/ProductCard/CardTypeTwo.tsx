@@ -17,6 +17,8 @@ interface IProps {
   item: TestDataProps2;
   imageStyle?: ImageProps;
 }
+// This card will use to nft
+
 const CardTypeTwo = ({ item, imageStyle }: IProps) => {
   return (
     <>

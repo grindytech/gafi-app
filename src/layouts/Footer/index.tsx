@@ -11,14 +11,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import LogoGafi from 'public/assets/logo/gafi-app.svg';
-import InternetIcon from 'public/assets/line/internet.svg';
-import TelegramIcon from 'public/assets/fill/telegram-fill.svg';
-import TwiterIcon from 'public/assets/fill/twitter-fill.svg';
-import GithubIcon from 'public/assets/fill/github.svg';
-import YouTubeIcon from 'public/assets/fill/youtube.svg';
-import DiscordIcon from 'public/assets/fill/discord.svg';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import NavLinkSocial from 'components/Link/NavLinkSocial';
 interface NavLinkProps {
   title: string;
   subLink: {
@@ -27,18 +22,6 @@ interface NavLinkProps {
   }[];
 }
 
-const SocialData = [
-  { link: '#', icon: InternetIcon, alt: 'Host Website' },
-  { link: '#', icon: TelegramIcon, alt: 'Telegram icon' },
-  {
-    link: '#',
-    icon: TwiterIcon,
-    alt: 'Twitter icon',
-  },
-  { link: '#', icon: GithubIcon, alt: 'Github icon' },
-  { link: '#', icon: YouTubeIcon, alt: 'YouTub icon' },
-  { link: '#', icon: DiscordIcon, alt: 'Discord icon' },
-];
 const NavLinkData: NavLinkProps[] = [
   {
     title: 'Marketplace',
@@ -80,6 +63,7 @@ const NavLinkData: NavLinkProps[] = [
 export default function Footer() {
   return (
     <Box
+      mt={6}
       as="footer"
       position="relative"
       _before={{
@@ -114,19 +98,7 @@ export default function Footer() {
               sollicitudin rutrum. Neque velit commodo.
             </Text>
             <HStack gap={4}>
-              {SocialData.map(item => (
-                <Link key={item.alt} to={item.link} target="_blank">
-                  <Icon
-                    as={item.icon}
-                    h={6}
-                    w={6}
-                    _hover={{
-                      color: 'primary.a.500',
-                      transition: 'linear 0.5s',
-                    }}
-                  />
-                </Link>
-              ))}
+              <NavLinkSocial />
             </HStack>
           </VStack>
           <VStack

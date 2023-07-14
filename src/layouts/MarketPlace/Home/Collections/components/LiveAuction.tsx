@@ -97,7 +97,7 @@ const LiveAuction = () => {
           <Text>Live Auction</Text>
         </Flex>
 
-        <Link href="#">
+        <Link href="/marketplace/explorer/nfts">
           <Button
             variant="more"
             fontSize="sm"
@@ -119,7 +119,9 @@ const LiveAuction = () => {
         <Carousel>
           {dataTest.map(item => (
             <SwiperSlide key={item.id}>
-              <CardTypeThree item={item} />
+              <Link href={`/nft/${item.id}`}>
+                <CardTypeThree item={item} />
+              </Link>
             </SwiperSlide>
           ))}
         </Carousel>

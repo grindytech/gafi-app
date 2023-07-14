@@ -15,7 +15,7 @@ export interface TestDataProps2 {
   price: string;
   isVerified?: boolean;
 }
-const TestData: TestDataProps2[] = [
+const TestDataTopPool: TestDataProps2[] = [
   {
     image:
       'https://cdn.akamai.steamstatic.com/steam/apps/42700/capsule_616x353.jpg?t=1654809667',
@@ -136,7 +136,7 @@ const TopPool = () => {
         </HStack>
         <Box mt={5}>
           <Carousel>
-            {TestData.map(item => (
+            {TestDataTopPool.map(item => (
               <SwiperSlide key={item.id}>
                 <CardTypeTwo item={item} />
               </SwiperSlide>

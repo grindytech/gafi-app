@@ -17,6 +17,8 @@ interface IProps {
   link?: string;
   imageStyle?: ImageProps;
 }
+// This Card use for collection , game
+
 const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
   return (
     <>
