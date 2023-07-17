@@ -6,9 +6,7 @@
   2. refetch after completing CreateGame
   3. currently GameID
 
----
-
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/c7d9175a-8a3b-4004-9053-cbe44f6e3f8e
+- ### Video https://www.youtube.com/watch?v=Wm-zwpfFa_M
 
 # 2. Collection
 
@@ -18,9 +16,7 @@ https://github.com/Southern-Discoveries/gafi-app/assets/42969529/c7d9175a-8a3b-4
   2. refetch after completing CreateGame
   3. current CollectionID
 
----
-
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/e20d0098-b01d-42e2-8f15-d9be189f1ccf
+- ### Video https://www.youtube.com/watch?v=_d0T6BnBT1w
 
 - ### AddAcceptAdding
 
@@ -28,43 +24,59 @@ https://github.com/Southern-Discoveries/gafi-app/assets/42969529/e20d0098-b01d-4
   2. Select Collection ID
   3. Select Game ID
 
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/40d7fe46-013a-49ec-a7e4-2d881493f8b1
+- ### Video https://www.youtube.com/watch?v=yIQdgTGDExo
 
 - ### AddCollection
+
   1. switch target address by arrow-chevron (only admin)
   2. Select Collection ID
   3. Select Game ID
 
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/cae8c29a-1d88-42f6-a349-7e7c80dc50ae
+- ### Video https://www.youtube.com/watch?v=xTkTdjL3q3c
 
 - ### AddMetaData
+
   1. switch target address by arrow-chevron (only admin)
   2. Select Image (PNG, JPG, SVG) & maximum size 5MB & 320 x 192px
   3. Select Collection ID
   4. Select Title Of Collection (Cooming Soon 17/7/2023)
   5. External URL Of Collection
 
+- ### Video https://www.youtube.com/watch?v=amZOXNOXGKY
+
 # 3. Item
 
 - ### CreateItem
+
   1. switch target address by arrow-chevron (only admin)
   2. Select Collection ID
   3. Select Item ID
   4. Select Supply of Item (optional)
 
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/ef0494cf-39dc-4b97-9d74-320f2df5b96f
+- ### Video https://www.youtube.com/watch?v=svqcs_zFRWk
 
 - ### AddSupply
+
   1. switch target address by arrow-chevron (only admin)
   2. Select Collection ID
   3. Select Item ID
   4. Select Amount
 
-https://github.com/Southern-Discoveries/essential-frontend/assets/42969529/51688dcc-e59b-494b-abce-7d6e03839368
+- ### Video https://www.youtube.com/watch?v=sVn9LOBhMLA
+
+- ### AddMetaData
+
+  1. switch target address by arrow-chevron (only admin)
+  2. Select Image (PNG, JPG, SVG) & maximum size 5MB & 320 x 192px
+  3. Select Collection ID
+  4. Select Title Of Item (Cooming Soon 17/7/2023)
+
+- ### Video https://www.youtube.com/watch?v=mQUfuviX8CU
 
 # 4. Pool
 
 - ### CreateDynamicPool (isn't Infinity) or CreateStablePool (infinity required)
+
   1. switch target address by arrow-chevron (only admin)
   2. Mining Fee
   3. Start Block & End Block (optional)
@@ -73,4 +85,4 @@ https://github.com/Southern-Discoveries/essential-frontend/assets/42969529/51688
      Select Item ID
   5. Weight Of Supply
 
-https://github.com/Southern-Discoveries/gafi-app/assets/42969529/e964c42e-f785-4ad9-b733-c1ffd7676216
+- ### Video https://www.youtube.com/watch?v=zdYSmknG42Y
