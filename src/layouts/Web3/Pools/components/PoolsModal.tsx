@@ -47,17 +47,17 @@ export default function PoolsModal({
 }: PoolsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { admin, fee, supply, start_block, end_block } = getValues();
-
-  const time = new Date().getTime();
+  const { role, fee, supply, start_block, end_block } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
-    key: [type, `${admin.address} ${time}`],
+    address: role.address,
+    key: [type, role.address],
     onSuccess() {
       onClose();
     },
   });
+
+  const getTotalSupply = supply.filter(item => !!item);
 
   return (
     <Modal isOpen={true} onClose={onClose} size="2xl">
@@ -86,7 +86,7 @@ export default function PoolsModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
@@ -100,10 +100,10 @@ export default function PoolsModal({
                 <Td>
                   <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
                     {React.Children.toArray(
-                      supply.map((item, index) => {
+                      getTotalSupply.map((item, index) => {
                         const weight = CalculatorOfRarity(
                           item.weight,
-                          supply.map(item => item.weight)
+                          getTotalSupply.map(item => item.weight)
                         );
 
                         return (
@@ -187,7 +187,7 @@ export default function PoolsModal({
               if (api) {
                 if (type === 'createDynamicPool') {
                   return mutation(
-                    api.tx.game.createDynamicPool(supply, admin.address, {
+                    api.tx.game.createDynamicPool(supply, role.address, {
                       minType: 'Public',
                       price: unitGAFI(fee),
                       startBlock: start_block,
@@ -197,7 +197,7 @@ export default function PoolsModal({
                 }
                 if (type === 'createStablePool') {
                   return mutation(
-                    api.tx.game.createStablePool(supply, admin.address, {
+                    api.tx.game.createStablePool(supply, role.address, {
                       minType: 'Public',
                       price: unitGAFI(fee),
                       startBlock: start_block,
