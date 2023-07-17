@@ -55,6 +55,7 @@ export const formatGAFI = (fee: number | string) => {
     withSi: false,
     forceUnit: '-',
     decimals: chainDecimal,
+    withZero: false,
   });
 
   return formatNumber;
