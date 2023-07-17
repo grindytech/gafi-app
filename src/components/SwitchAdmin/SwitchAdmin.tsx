@@ -2,6 +2,7 @@ import {
   Box,
   BoxProps,
   Center,
+  Flex,
   Heading,
   Icon,
   IconButton,
@@ -20,6 +21,7 @@ import { UseFormSetValue } from 'react-hook-form';
 import { useAppSelector } from 'hooks/useRedux';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
+import SwitchAdminAdd from './SwitchAdminAdd';
 
 export type TypeSwitchAdmin = Record<
   'admin',
@@ -32,6 +34,7 @@ export type TypeSwitchAdmin = Record<
 interface SwitchAdminProps {
   setValue: UseFormSetValue<TypeSwitchAdmin>;
   type?: 'Admin' | 'Owner';
+  add?: boolean;
   sx?: BoxProps;
 }
 
@@ -39,6 +42,7 @@ export default function SwitchAdmin({
   setValue,
   type = 'Admin',
   sx,
+  add,
 }: SwitchAdminProps) {
   const { account, allAccount } = useAppSelector(
     state => state.injected.polkadot
@@ -88,24 +92,28 @@ export default function SwitchAdmin({
                 account={String(currentAccount.name)}
               />
 
-              <IconButton
-                aria-label="arrow-chevron"
-                onClick={onToggle}
-                transitionDuration="ultra-slow"
-                _hover={{
-                  bg: convertHex(colors.primary.a[500], 0.1),
-                }}
-                icon={
-                  <Icon
-                    as={Chevron01Icon}
-                    width={6}
-                    height={6}
-                    color="primary.a.500"
-                    transitionDuration="inherit"
-                    transform={isOpen ? 'rotate(-180deg)' : undefined}
-                  />
-                }
-              />
+              <Flex gap={4}>
+                {add ? <SwitchAdminAdd /> : null}
+
+                <IconButton
+                  aria-label="arrow-chevron"
+                  onClick={onToggle}
+                  transitionDuration="ultra-slow"
+                  _hover={{
+                    bg: convertHex(colors.primary.a[500], 0.1),
+                  }}
+                  icon={
+                    <Icon
+                      as={Chevron01Icon}
+                      width={6}
+                      height={6}
+                      color="primary.a.500"
+                      transitionDuration="inherit"
+                      transform={isOpen ? 'rotate(-180deg)' : undefined}
+                    />
+                  }
+                />
+              </Flex>
             </Center>
 
             <List

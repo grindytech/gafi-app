@@ -1,7 +1,7 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
-import { UseFormSetValue, useForm } from 'react-hook-form';
+import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
 
 import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin, {
@@ -10,6 +10,7 @@ import SwitchAdmin, {
 
 import { useOutletContext } from 'react-router-dom';
 import { Web3OutletContextProps } from 'pages/Web3';
+import GameOwner, { TypeGameOwner } from 'components/Game/GameOwner';
 
 export interface CreateCollectionFieldProps extends TypeSwitchAdmin {
   collection_id: string;
@@ -30,9 +31,14 @@ export default function CollectionsCreate() {
       flexDirection="column"
       gap={3}
     >
+      <GameOwner
+        setValue={setValue as FieldValues as UseFormSetValue<TypeGameOwner>}
+      />
+
       <SwitchAdmin
         setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
         type="Admin"
+        add={true}
       />
 
       <CollectionID setValue={setValue} refetch={collection} />
