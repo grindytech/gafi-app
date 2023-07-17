@@ -9,7 +9,6 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import useForceMount from 'hooks/useForceMount';
 import GameOwner, { TypeGameOwner } from 'components/Game/GameOwner';
 import GameID from 'components/Game/GameID';
 
@@ -21,8 +20,8 @@ export interface NewGamesFieldProps extends TypeSwitchAdmin, TypeGameOwner {
 export default function NewGames() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { mounting, setMounting } = useForceMount();
-  const { setValue, getValues, handleSubmit } = useForm<NewGamesFieldProps>();
+  const { setValue, getValues, handleSubmit, watch } =
+    useForm<NewGamesFieldProps>();
 
   return (
     <Box
@@ -45,10 +44,10 @@ export default function NewGames() {
 
         <SwitchAdmin
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
-          add={true}
+          watch={watch().role}
         />
 
-        <GameID setValue={setValue} refetch={mounting} />
+        <GameID setValue={setValue} />
 
         <Button
           isDisabled={isOpen}
@@ -61,13 +60,7 @@ export default function NewGames() {
         </Button>
       </Flex>
 
-      {isOpen && (
-        <NewGamesAuthorize
-          refetch={setMounting}
-          onClose={onClose}
-          getValues={getValues}
-        />
-      )}
+      {isOpen && <NewGamesAuthorize onClose={onClose} getValues={getValues} />}
     </Box>
   );
 }
