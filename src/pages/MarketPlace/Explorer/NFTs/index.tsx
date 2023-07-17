@@ -117,7 +117,7 @@ const NFTs = () => {
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
             >
               {products.map((item: any) => (
-                <Link key={item.id} to={`/nft/${item.id}`}>
+                <Link key={item.id} to={`/marketplace/nft/${item.id}`}>
                   <CardTypeTwo
                     imageStyle={{
                       height: 'inherit',

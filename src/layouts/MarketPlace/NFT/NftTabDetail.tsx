@@ -62,27 +62,31 @@ const NftTabDetail = () => {
                 <Flex flexDirection="column" gap={2.5}>
                   <HStack justifyContent="space-between">
                     <Text>Contract</Text>
-                    <Text color="primary.a.500">0x3b5a...6b10e</Text>
+                    <Text color="primary.a.500" fontWeight="medium">
+                      0x3b5a...6b10e
+                    </Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Token ID</Text>
-                    <Text color="primary.a.500">599</Text>
+                    <Text color="primary.a.500" fontWeight="medium">
+                      599
+                    </Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Token Standard</Text>
-                    <Text>ERC-721</Text>
+                    <Text fontWeight="medium">ERC-721</Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Chain</Text>
-                    <Text>Etherum</Text>
+                    <Text fontWeight="medium">Etherum</Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Last Updated</Text>
-                    <Text>2 hours ago</Text>
+                    <Text fontWeight="medium">2 hours ago</Text>
                   </HStack>
                   <HStack justifyContent="space-between">
                     <Text>Creator Earning</Text>
-                    <Text>8%</Text>
+                    <Text fontWeight="medium">8%</Text>
                   </HStack>
                 </Flex>
               </CardBox>

@@ -85,6 +85,7 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
           }}
           style={{
             position: 'relative',
+            paddingBottom: '1rem',
           }}
           {...options}
         >

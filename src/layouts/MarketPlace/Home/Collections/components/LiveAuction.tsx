@@ -119,7 +119,7 @@ const LiveAuction = () => {
         <Carousel>
           {dataTest.map(item => (
             <SwiperSlide key={item.id}>
-              <Link to={`/nft/${item.id}`}>
+              <Link to={`/marketplace/nft/${item.id}`}>
                 <CardTypeThree item={item} />
               </Link>
             </SwiperSlide>

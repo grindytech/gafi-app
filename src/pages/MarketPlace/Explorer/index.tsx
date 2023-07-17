@@ -8,6 +8,9 @@ import Games from './Games';
 import Collections from './Collections';
 import NFTs from './NFTs';
 import GameDetail from './Games/GameDetail';
+import NFTDetail from './NFTs/NFTDetail';
+import CollectionDetail from './Collections/CollectionDetail';
+import BundleDetail from './Bundles/BundleDetail';
 
 export const ListExplorerTab = [
   {
@@ -36,10 +39,22 @@ export const ListExplorerTab = [
     element: <Collections />,
   },
 ];
-export const ListExplorerChild = [
+export const ListMarketDetail = [
   {
-    link: 'game/:id',
+    path: 'game/:id',
     element: <GameDetail />,
+  },
+  {
+    path: 'nft/:id',
+    element: <NFTDetail />,
+  },
+  {
+    path: 'collection/:id',
+    element: <CollectionDetail />,
+  },
+  {
+    path: 'bundle/:id',
+    element: <BundleDetail />,
   },
 ];
 const Explorer = () => {

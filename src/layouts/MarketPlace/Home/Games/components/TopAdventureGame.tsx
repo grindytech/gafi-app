@@ -87,7 +87,7 @@ const TopAdventureGame = () => {
         <Carousel>
           {TestData.map(item => (
             <SwiperSlide key={item.id}>
-              <CardTypeOne item={item} link={`/game/${item.id}`} />
+              <CardTypeOne item={item} link={`/marketplace/game/${item.id}`} />
             </SwiperSlide>
           ))}
         </Carousel>

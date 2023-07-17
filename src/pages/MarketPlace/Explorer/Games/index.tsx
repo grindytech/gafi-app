@@ -118,22 +118,9 @@ const Games = () => {
               }}
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
             >
-              {' '}
-              {/* <CardTypeOne
-                  key={item.title}
-                  item={{
-                    image:
-                      'https://i.seadn.io/gcs/files/1deeafe9cb7d2eeb2e2116804e06dc88.gif?auto=format&dpr=1&w=282',
-                    name: item.title,
-                    floor: item.id,
-                    volume: item.id,
-                    id: item.id,
-                    isVerified: true,
-                  }}
-                /> */}
               {products.map((item: any) => (
                 <>
-                  <Link to={'/game/213'}>
+                  <Link to={'/marketplace/game/213'}>
                     <CardBox
                       key={item.id}
                       mt={2}

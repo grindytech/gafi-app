@@ -22,7 +22,7 @@ interface IProps {
 const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
   return (
     <>
-      <Link to={link || `/collection/${item.id}`}>
+      <Link to={link || `/marketplace/collection/${item.id}`}>
         <CardBox
           mt={2}
           padding={0}
