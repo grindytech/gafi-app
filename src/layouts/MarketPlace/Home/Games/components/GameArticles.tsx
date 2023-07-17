@@ -2,7 +2,7 @@ import { Box, Text, Image, HStack, Icon, Heading } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
-
+import { Navigation, Mousewheel, Autoplay } from 'swiper';
 import { DataTestArticle } from 'layouts/MarketPlace/Explorer/DataTest';
 
 const GameArticles = () => {
@@ -13,6 +13,12 @@ const GameArticles = () => {
         <Box mt={4}>
           <Carousel
             options={{
+              modules: [Autoplay, Navigation, Mousewheel],
+              autoplay: {
+                delay: 1500,
+                disableOnInteraction: false,
+              },
+              loop: true,
               breakpoints: {
                 360: {
                   slidesPerView: 1,

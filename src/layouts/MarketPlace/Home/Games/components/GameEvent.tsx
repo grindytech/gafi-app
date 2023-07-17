@@ -1,7 +1,8 @@
 import { Box, Text, Image, HStack, Icon } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import { SwiperSlide } from 'swiper/react';
-
+import { Navigation, Mousewheel, Autoplay } from 'swiper';
+import GafiIcon from 'public/assets/token/gafi-token.svg';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import BgGrid from 'public/assets/background/bg-grid.svg';
 import TimeReminder from 'components/Time/TimeReminder';
@@ -12,8 +13,8 @@ const GameEvent = () => {
       borderRadius="2xl"
       background="shader.a.900"
       color="shader.a.100"
-      px={8}
-      pt={8}
+      px={{ md: 8, base: 4 }}
+      pt={{ md: 9, base: 4 }}
       pb={20}
       position="relative"
       overflow="hidden"
@@ -44,6 +45,12 @@ const GameEvent = () => {
       <Box mt={4}>
         <Carousel
           options={{
+            modules: [Autoplay, Navigation, Mousewheel],
+            autoplay: {
+              delay: 1500,
+              disableOnInteraction: false,
+            },
+            loop: true,
             breakpoints: {
               360: {
                 slidesPerView: 1,
@@ -94,10 +101,16 @@ const GameEvent = () => {
                   <Text color="shader.a.400" fontSize="sm" noOfLines={2} mb={4}>
                     {item.description}
                   </Text>
-                  <HStack gap={0.5}>
+                  <HStack gap={2}>
                     <Text fontSize="sm" fontWeight="medium">
                       Reward
                     </Text>
+                    <Box display="inline-flex" alignItems="center" gap={1}>
+                      <Icon as={GafiIcon} h={4} w={4} />
+                      <Text fontSize="sm" fontWeight="medium">
+                        2,000 GAFI
+                      </Text>
+                    </Box>
                   </HStack>
                 </Box>
               </Box>
@@ -106,14 +119,12 @@ const GameEvent = () => {
         </Carousel>
       </Box>
       <Box
-        overflow="hidden"
         width="full"
         height="full"
         sx={{
           svg: {
-            /*    width: 'full',
-            height: 'full', */
             position: 'absolute',
+            width: 'inherit',
             left: 0,
             bottom: 0,
           },

@@ -4,81 +4,83 @@ import {
   Image,
   HStack,
   Text,
-  Button,
   Icon,
-  Flex,
   ImageProps,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestDataProps2 } from 'layouts/MarketPlace/Home/Collections/components/TopPool';
+import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
 
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {
-  item: TestDataProps2;
+  item: TestPropsType1;
   imageStyle?: ImageProps;
 }
+// This card will use to nft
+
 const CardTypeTwo = ({ item, imageStyle }: IProps) => {
   return (
     <>
       <CardBox
+        mt={2}
         padding={0}
         variant="baseStyle"
         boxShadow="0px 3px 14px 0px rgba(0, 0, 0, 0.05)"
-        height="full"
+        cursor="pointer"
+        role="group"
+        _hover={{
+          transform: 'translateY(-5px)',
+          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
+        }}
+        transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
       >
-        <VStack color="shader.a.900" gap={0}>
-          <Box padding={2} width="full">
-            <Image
-              objectFit="cover"
-              src={item.image}
-              alt={`Image ${item.name}`}
-              h="12.5rem"
-              {...imageStyle}
-              borderRadius="xl"
-              width="full"
-            />
+        <VStack alignItems="flex-start" gap={0}>
+          <Box width="full" padding={2}>
+            <Box overflow="hidden" borderRadius="lg">
+              <Image
+                objectFit="cover"
+                _groupHover={{
+                  transform: 'scale(1.2)',
+                  transition: ' 0.25s ease-in-out',
+                }}
+                src={item.image}
+                alt={`Image ${item.name}`}
+                width="full"
+                h="10.5rem"
+                {...imageStyle}
+              />
+            </Box>
           </Box>
+
           <Box
-            padding={4}
-            w="full"
+            p={4}
+            width="full"
             borderTop="0.063rem solid "
             borderColor="shader.a.200"
           >
-            <VStack alignItems="start" gap="12px" mb="24px" w="full">
-              <HStack justifyContent="space-between" w="full">
-                <Flex alignItems="center" gap={1}>
-                  <Text fontWeight="medium">{item.name}</Text>
-                  {item.isVerified && (
-                    <Icon
-                      as={VerifyIcon}
-                      h={5}
-                      w={5}
-                      aria-label="Verifiled Icon"
-                    />
-                  )}
-                </Flex>
+            <HStack gap={1.5} fontSize="sm">
+              <Text fontWeight="medium" noOfLines={1}>
+                {item.name}
+              </Text>
 
-                <Flex>
-                  <Text color="shader.a.600">ID:</Text>
-                  <Text>{item.id}</Text>
-                </Flex>
-              </HStack>
-              <HStack justifyContent="space-between" w="full" fontSize="sm">
-                <Box>
-                  <Text color="shader.a.600">Minted:</Text>
-                  <Text fontWeight="medium">{item.minted}</Text>
-                </Box>
-                <Box>
-                  <Text textAlign="right" color="shader.a.600" fontSize="sm">
-                    Volume:
-                  </Text>
-                  <Text fontWeight="medium">{item.volume} GAFI</Text>
-                </Box>
-              </HStack>
-            </VStack>
-            <Button width="full" variant="primary">
-              Mint for {item.price}
-            </Button>
+              {item.isVerified && (
+                <Icon as={VerifyIcon} h={5} w={5} aria-label="Verifiled Icon" />
+              )}
+            </HStack>
+            <HStack mb={3.5} fontWeight="medium" fontSize="sm">
+              <Text noOfLines={1}>{item.name}</Text>
+              <Text>#34444</Text>
+            </HStack>
+
+            <HStack justifyContent="space-between" width="full" fontSize="sm">
+              <Box>
+                <Text color="shader.a.600">Prices:</Text>
+                <Text fontWeight="medium">0.002 GAFI</Text>
+              </Box>
+              <Box>
+                <Text color="shader.a.600">Auction:</Text>
+                <Text fontWeight="medium">No auction</Text>
+              </Box>
+            </HStack>
           </Box>
         </VStack>
       </CardBox>

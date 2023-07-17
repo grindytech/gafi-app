@@ -15,10 +15,12 @@ import GafiIcon from 'public/assets/token/gafi-token.svg';
 import TimeIcon from 'public/assets/line/time.svg';
 import VerifyIcon from 'public/assets/fill/verified.svg';
 import { TestDataProps3 } from 'layouts/MarketPlace/Home/Collections/components/LiveAuction';
+import { formatGAFI } from 'utils/utils';
 interface IProps {
   item: TestDataProps3;
   imageStyle?: ImageProps;
 }
+// This card use to activities,live auction section
 const CardTypeThree = ({ item, imageStyle }: IProps) => {
   return (
     <>
@@ -35,7 +37,7 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
       >
         <VStack color="shader.a.900" gap={0}>
           <Box position="relative" padding={2} width="full">
-            <Box overflow="hidden" borderRadius="xl">
+            <Box overflow="hidden" borderRadius="lg">
               <Image
                 objectFit="cover"
                 src={item.image}
@@ -86,11 +88,6 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                     />
                   )}
                 </Flex>
-
-                {/*  <Flex>
-                  <Text color="shader.a.600">ID:</Text>
-                  <Text>{item.id}</Text>
-                </Flex> */}
               </HStack>
               <Text color="shader.a.600" fontSize="sm" fontWeight="medium">
                 Current Auction:
@@ -104,7 +101,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                   <Icon as={GafiIcon} h={5} w={5} />
 
                   <Box>
-                    <Text fontWeight="medium">{item.currentAuction}</Text>
+                    <Text fontWeight="medium">
+                      {formatGAFI(item.currentAuction)}
+                    </Text>
                     <Text fontSize="xs" color="shader.a.500">
                       ($502,333)
                     </Text>

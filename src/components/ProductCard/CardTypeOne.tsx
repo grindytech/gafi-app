@@ -17,6 +17,8 @@ interface IProps {
   link?: string;
   imageStyle?: ImageProps;
 }
+// This Card use for collection , game
+
 const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
   return (
     <>
@@ -36,7 +38,7 @@ const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
         >
           <VStack alignItems="flex-start" gap={0}>
             <Box width="full" padding={2}>
-              <Box overflow="hidden" borderRadius="xl">
+              <Box overflow="hidden" borderRadius="lg">
                 <Image
                   objectFit="cover"
                   _groupHover={{

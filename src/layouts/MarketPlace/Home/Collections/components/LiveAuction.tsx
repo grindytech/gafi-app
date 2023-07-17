@@ -1,8 +1,8 @@
-import { Box, Button, Flex, HStack, Icon, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Heading, Icon } from '@chakra-ui/react';
 import Carousel from 'components/Carousel/Carousel';
 import CardTypeThree from 'components/ProductCard/CardTypeThree';
 import { CircleIcon } from 'components/Substrate/SubstrateNode';
-
+import { Link } from 'react-router-dom';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
 import { SwiperSlide } from 'swiper/react';
 import { colors } from 'theme/theme';
@@ -87,17 +87,17 @@ const LiveAuction = () => {
         <Flex gap={3} alignItems="center" color="shader.a.900">
           <CircleIcon
             sx={{
-              height: '14px',
-              width: '14px',
+              height: 3.5,
+              width: 3.5,
               color: 'second.purple',
               borderRadius: 'full',
-              border: `2px solid ${convertHex(colors.second.purple, 0.3)}`,
+              border: `0.125rem solid ${convertHex(colors.second.purple, 0.3)}`,
             }}
           />
-          <Text>Live Auction</Text>
+          <Heading variant="sub02">Live Auction</Heading>
         </Flex>
 
-        <Link href="#">
+        <Link to="/marketplace/explorer/nfts">
           <Button
             variant="more"
             fontSize="sm"
@@ -119,7 +119,9 @@ const LiveAuction = () => {
         <Carousel>
           {dataTest.map(item => (
             <SwiperSlide key={item.id}>
-              <CardTypeThree item={item} />
+              <Link to={`/nft/${item.id}`}>
+                <CardTypeThree item={item} />
+              </Link>
             </SwiperSlide>
           ))}
         </Carousel>

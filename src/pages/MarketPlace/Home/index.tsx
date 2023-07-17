@@ -5,7 +5,7 @@ import { Flex } from '@chakra-ui/react';
 const HomeMarketPlace = () => {
   return (
     <>
-      <Flex flexDirection="column" gap={10}>
+      <Flex flexDirection="column" gap={6}>
         <OverviewCollection />
         <OverviewGames />
       </Flex>

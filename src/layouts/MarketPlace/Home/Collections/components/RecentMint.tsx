@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import CustomRow from 'components/Table/CustomRow';
-
+import { Link } from 'react-router-dom';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 export interface TestPropsSold {
@@ -122,7 +122,8 @@ const RecentMint = () => {
             />
             <Text fontSize="lg">Recently Mint</Text>
           </HStack>
-          <HStack color="primary.a.500">
+
+          <HStack color="primary.a.500" as={Link} to="/marketplace/explorer">
             <Text>See More</Text>
             <Icon
               as={ArrowIcon}

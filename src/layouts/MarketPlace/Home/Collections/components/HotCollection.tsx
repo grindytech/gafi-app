@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   HStack,
+  Heading,
   Icon,
   Image,
   Link,
@@ -10,13 +11,14 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { Navigation } from 'swiper';
+import { Navigation, Mousewheel } from 'swiper';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import CollectionIcon from 'public/assets/line/collection-02.svg';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
 import { CircleIcon } from 'components/Substrate/SubstrateNode';
+import 'swiper/css/mousewheel';
 interface TestProps {
   image: string;
   name: string;
@@ -123,8 +125,9 @@ const TestData: TestProps[] = [
     vol: '13475',
   },
 ];
+
 const slidePerPage = (objectArray: TestProps[]) => {
-  const itemsPerPage = 3;
+  const itemsPerPage = 3; //setting item each page is 3
   const totalSlides = Math.ceil(objectArray.length / itemsPerPage);
   return (
     <div>
@@ -184,14 +187,21 @@ const HotCollection = () => {
           position="sticky"
           left={0}
         >
-          <Flex gap={3}>
-            <Icon as={CollectionIcon} height="1.5rem" width="1.5rem" />
-            <Text fontWeight="semibold" fontSize="xl">
-              Hot Collections
-            </Text>
+          <Flex gap={3} alignItems="center">
+            <Icon
+              as={CollectionIcon}
+              h={6}
+              w={6}
+              sx={{
+                path: {
+                  stroke: 'url(#CollectionLinear06)',
+                },
+              }}
+            />
+            <Heading variant="sub02">Trending Collections</Heading>
           </Flex>
 
-          <Link href="#">
+          <Link href="/marketplace/explorer/collections">
             <Button
               variant="more"
               fontSize="sm"
@@ -212,8 +222,11 @@ const HotCollection = () => {
         <Box my={4}>
           <Swiper
             // install Swiper modules
-            modules={[Navigation]}
+            modules={[Navigation, Mousewheel]}
             spaceBetween={20}
+            mousewheel={{
+              forceToAxis: true,
+            }}
             slidesPerView={3.5}
             breakpoints={{
               370: {

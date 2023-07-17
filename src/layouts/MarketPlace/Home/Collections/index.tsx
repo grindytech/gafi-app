@@ -14,6 +14,7 @@ export default function OverviewCollection() {
     <>
       <ExplorerBanner />
       <HotCollection />
+      <TrendingSection />
       <Grid
         my={5}
         gridTemplateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
@@ -23,7 +24,7 @@ export default function OverviewCollection() {
         <RecentSold />
         <RecentMint />
       </Grid>
-      <TrendingSection />
+
       <TopPool />
       <LiveAuction />
     </>

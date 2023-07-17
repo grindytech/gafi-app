@@ -217,9 +217,6 @@ export const Table: ComponentStyleConfig = {
       },
     },
     listTable: {
-      /*   tbody: {
-        padding: 4,
-      }, */
       tr: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -231,6 +228,29 @@ export const Table: ComponentStyleConfig = {
         },
         td: {
           padding: 0,
+        },
+      },
+    },
+    activityTable: {
+      table: {
+        borderCollapse: 'separate',
+        /*    padding: '0.0625rem', */
+        borderSpacing: '0px 1rem',
+      },
+      tr: {
+        /*   p: 4, */
+        verticalAlign: 'top',
+        borderRadius: 'xl',
+        outline: '0.063rem solid',
+        outlineColor: 'shader.a.300',
+      },
+      td: {
+        fontWeight: 'medium',
+        zIndex: 'docked',
+
+        padding: {
+          base: 2.5,
+          sm: 3.5,
         },
       },
     },
@@ -286,6 +306,24 @@ export const Tabs: ComponentStyleConfig = {
           border: 'unset',
           color: 'shader.a.100',
           bg: 'primary.a.500',
+        },
+      },
+    },
+    baseStyle: {
+      tablist: {
+        display: 'flex',
+        px: 6,
+        py: 5,
+        gap: 6,
+        borderBottom: '0.063rem solid',
+        borderBottomColor: 'shader.a.200',
+      },
+      tab: {
+        fontWeight: 'medium',
+        color: 'shader.a.400',
+        padding: 0,
+        _selected: {
+          color: 'shader.a.900',
         },
       },
     },

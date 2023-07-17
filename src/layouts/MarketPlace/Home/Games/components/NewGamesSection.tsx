@@ -5,8 +5,8 @@ import { SwiperSlide } from 'swiper/react';
 import VerifyIcon from 'public/assets/fill/verified.svg';
 import { CircleIcon } from 'components/Substrate/SubstrateNode';
 import { TestDataRelease } from 'layouts/MarketPlace/Explorer/DataTest';
-
-const NewRelease = () => {
+import { Navigation, Mousewheel, Autoplay } from 'swiper';
+const NewGamesSection = () => {
   return (
     <Box>
       <Text
@@ -15,11 +15,17 @@ const NewRelease = () => {
         fontWeight="bold"
         lineHeight="2"
       >
-        New release
+        New Games
       </Text>
       <Box mt={4}>
         <Carousel
           options={{
+            modules: [Autoplay, Navigation, Mousewheel],
+            autoplay: {
+              delay: 1500,
+              disableOnInteraction: false,
+            },
+            loop: true,
             breakpoints: {
               360: {
                 slidesPerView: 1,
@@ -92,7 +98,12 @@ const NewRelease = () => {
                   <Text fontSize="sm" color="rgba(255, 255, 255, 0.80)" mb={6}>
                     By {item.creator}
                   </Text>
-                  <HStack fontSize="sm" fontWeight="medium" gap={2}>
+                  <HStack
+                    fontSize="sm"
+                    fontWeight="medium"
+                    gap={2}
+                    color="white"
+                  >
                     <Text>Collections: {item.collection}</Text>
                     <CircleIcon width="0.25rem" height="0.25rem" />
                     <Text>Items: {item.items}</Text>
@@ -109,4 +120,4 @@ const NewRelease = () => {
   );
 };
 
-export default NewRelease;
+export default NewGamesSection;

@@ -32,7 +32,7 @@ const ListHeader = [
     link: '/blockchain',
   },
   {
-    title: 'Market place',
+    title: 'Marketplace',
     link: '/marketplace',
   },
 ];

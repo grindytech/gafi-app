@@ -24,11 +24,10 @@ const TrendingSection = () => {
         <Tabs variant="unstyled">
           <HStack justifyContent="space-between">
             <TabList gap={4} flexWrap="wrap">
-              <Tab>Hot Games</Tab>
-              <Tab>Hot Collections</Tab>
-              <Tab>Hot NFTs</Tab>
+              <Tab>Top Collections</Tab>
+              <Tab>Top NFTs</Tab>
             </TabList>
-            <Link href="#">
+            <Link href="/marketplace/explorer/collections">
               <Button
                 variant="more"
                 fontSize="sm"
@@ -52,7 +51,7 @@ const TrendingSection = () => {
               <Carousel>
                 {TestDataCollections.map(item => (
                   <SwiperSlide key={item.id}>
-                    <CardTypeOne item={item} link={`/game/${item.id}`} />
+                    <CardTypeOne item={item} link={`/collection/${item.id}`} />
                   </SwiperSlide>
                 ))}
               </Carousel>

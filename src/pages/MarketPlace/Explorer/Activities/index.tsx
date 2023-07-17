@@ -117,6 +117,9 @@ const Activities = () => {
               {products.map((item: any) => (
                 <CardTypeThree
                   key={item.id}
+                  imageStyle={{
+                    height: 'inherit',
+                  }}
                   item={{
                     image:
                       'https://i.seadn.io/gcs/files/7eb724aadba564601666b4371241a2b5.png?auto=format&dpr=1&w=282',

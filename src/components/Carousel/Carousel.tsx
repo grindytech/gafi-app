@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import NextIcon from 'public/assets/line/chevron-01.svg';
 import { Swiper } from 'swiper/react';
-import { Navigation } from 'swiper';
+// Core modules imports are same as usual
+import { Navigation, Mousewheel } from 'swiper';
+
 import { Box, Button, ButtonProps, Icon } from '@chakra-ui/react';
 
 import { SwiperOptions } from 'swiper/types';
-
+import 'swiper/css/mousewheel';
 interface IProps {
   children: React.ReactNode;
   options?: SwiperOptions;
@@ -16,12 +18,25 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
   const nextRef = useRef<HTMLButtonElement>(null);
   return (
     <>
-      <Box position="relative">
+      <Box
+        position="relative"
+        sx={{
+          _hover: {
+            '.btn-carousel': {
+              opacity: 1,
+              visibility: 'visible',
+            },
+          },
+        }}
+      >
         <Swiper
           // install Swiper modules
           spaceBetween={20}
           slidesPerView={4}
-          modules={[Navigation]}
+          modules={[Navigation, Mousewheel]}
+          mousewheel={{
+            forceToAxis: true,
+          }}
           navigation={{
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             prevEl: prevRef.current!,
@@ -54,7 +69,8 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
           }}
           breakpoints={{
             360: {
-              slidesPerView: 1,
+              slidesPerView: 1.1,
+              spaceBetween: 10,
             },
             630: {
               slidesPerView: 2,
@@ -76,6 +92,14 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
         </Swiper>
         <Box
           display="flex"
+          opacity={0}
+          visibility="hidden"
+          className="btn-carousel"
+          transition="visibility 0.3s , opacity 0.3s ease-in-out"
+          /*  _groupHover={{
+            opacity: 1,
+            visibility: 'visible',
+          }} */
           justifyContent="space-between"
           width="100%"
           position="absolute"
@@ -88,10 +112,10 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
             ref={prevRef}
             variant="navigation"
             sx={{
-              left: '-20px',
+              left: { md: '-1.25rem', base: '-0.75rem' },
             }}
-            {...styleButton}
             color="primary.a.500"
+            {...styleButton}
           >
             <Icon as={NextIcon} height={6} w={6} transform="rotate(90deg)" />
           </Button>
@@ -99,7 +123,7 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
             ref={nextRef}
             variant="navigation"
             sx={{
-              right: '-20px',
+              right: { md: '-1.25rem', base: '-0.75rem' },
             }}
             color="primary.a.500"
             {...styleButton}
