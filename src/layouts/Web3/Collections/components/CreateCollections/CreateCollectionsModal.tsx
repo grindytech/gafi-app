@@ -13,6 +13,7 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
@@ -21,24 +22,25 @@ import { UseFormGetValues } from 'react-hook-form';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { CreateCollectionFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
+import { useOutletContext } from 'react-router-dom';
+import { Web3OutletContextProps } from 'pages/Web3';
 
 interface CreateCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<CreateCollectionFieldProps>;
-  refetch: () => void;
 }
 
 export default function CreateCollectionsModal({
   onClose,
   getValues,
-  refetch,
 }: CreateCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
-
-  const { collection_id, admin } = getValues();
+  const toast = useToast();
+  const { collection_id, role, owner } = getValues();
+  const { collection: refetch } = useOutletContext<Web3OutletContextProps>();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: owner.address,
     key: ['createCollection', collection_id],
     onSuccess() {
       refetch();
@@ -71,7 +73,7 @@ export default function CreateCollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
@@ -95,9 +97,18 @@ export default function CreateCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => {
+            onClick={async () => {
               if (api) {
-                mutation(api.tx.game.createCollection(admin.address));
+                try {
+                  mutation(api.tx.game.createCollection(role.address));
+                } catch (error: any) {
+                  toast({
+                    position: 'top-right',
+                    status: 'error',
+                    description: error.toString(),
+                    isClosable: true,
+                  });
+                }
               }
             }}
           >

@@ -8,18 +8,16 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 import GameOwner, { TypeGameOwner } from 'components/Game/GameOwner';
 
-export interface CreateCollectionFieldProps extends TypeSwitchAdmin {
+export interface CreateCollectionFieldProps
+  extends TypeSwitchAdmin,
+    TypeGameOwner {
   collection_id: string;
 }
 
 export default function CollectionsCreate() {
-  const { collection } = useOutletContext<Web3OutletContextProps>();
-
-  const { setValue, getValues, handleSubmit } =
+  const { setValue, getValues, handleSubmit, watch } =
     useForm<CreateCollectionFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,10 +36,10 @@ export default function CollectionsCreate() {
       <SwitchAdmin
         setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
         type="Admin"
-        add={true}
+        watch={watch().role}
       />
 
-      <CollectionID setValue={setValue} refetch={collection} />
+      <CollectionID setValue={setValue} />
 
       <Button
         isDisabled={isOpen}
@@ -54,11 +52,7 @@ export default function CollectionsCreate() {
       </Button>
 
       {isOpen && (
-        <CreateCollectionsModal
-          refetch={collection}
-          onClose={onClose}
-          getValues={getValues}
-        />
+        <CreateCollectionsModal onClose={onClose} getValues={getValues} />
       )}
     </Flex>
   );
