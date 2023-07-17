@@ -45,6 +45,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
     register,
     handleSubmit,
     clearErrors,
+    resetField,
     formState: { errors },
   } = useForm<PoolsCreateFieldProps>();
 
@@ -71,6 +72,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
       >
         <SwitchAdmin
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+          type="Owner"
         />
 
         <CardBox variant="createGames">
@@ -113,6 +115,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
                 ? () => {
                     removeField(element);
                     removeIsExpanded(element);
+                    resetField(`supply.${element}`);
                   }
                 : undefined
             }

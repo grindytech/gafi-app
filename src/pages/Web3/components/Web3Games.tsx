@@ -14,6 +14,7 @@ import AvatarPopover from 'components/Avatar/AvatarPopover';
 
 export interface Web3GamesDataProps {
   owner: string;
+  role: string;
   game_id: number;
   collections: number[];
 }
@@ -23,8 +24,6 @@ export interface Web3GamesProps {
 }
 
 export default function Web3Games({ data }: Web3GamesProps) {
-  const address = '5DhYYp1Q2sNXR7HfzbQFUt3XHfK4CKYRA4vaaKRiWpSLkp62';
-
   return (
     <Grid
       gridTemplateColumns={{
@@ -62,9 +61,9 @@ export default function Web3Games({ data }: Web3GamesProps) {
 
           <Stack bg="white" spacing={3} padding={4} flex={1}>
             <Flex>
-              <AvatarPopover type="Owner" address={address} name="-">
+              <AvatarPopover type="Owner" address={game.owner} name="-">
                 <AccountJazzicon
-                  address={address}
+                  address={game.owner}
                   sx={{
                     width: '100%',
                     height: '100%',
@@ -72,9 +71,9 @@ export default function Web3Games({ data }: Web3GamesProps) {
                 />
               </AvatarPopover>
 
-              <AvatarPopover type="Admin" address={address} name="-">
+              <AvatarPopover type="Admin" address={game.role} name="-">
                 <AccountJazzicon
-                  address={address}
+                  address={game.role}
                   sx={{
                     width: '100%',
                     height: '100%',

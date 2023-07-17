@@ -2,17 +2,19 @@ import { Center, Heading, Skeleton, Text } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import useNextGameID from 'hooks/useNextGameID';
 import React from 'react';
-import { TypeSetValue } from 'types';
+import { UseFormSetValue } from 'react-hook-form';
 
 interface GameIDProps {
-  setValue: TypeSetValue;
-  refetch: () => void;
+  setValue: UseFormSetValue<any>;
+  refetch?: () => void;
 }
 
 export default function GameID({ setValue, refetch }: GameIDProps) {
   const { ID } = useNextGameID({
     refetch: () => {
-      refetch();
+      if (refetch) {
+        refetch();
+      }
     },
   });
 

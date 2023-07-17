@@ -86,10 +86,9 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
     },
     {
       enabled: !!(api && api.query.game),
+      cacheTime: 0,
     }
   );
-
-  console.log(data);
 
   if (!pool_id) return undefined;
 

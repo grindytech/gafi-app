@@ -15,8 +15,6 @@ export interface CreateItemFieldProps extends TypeSwitchAdmin {
 
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 export default function CreateItem() {
   const {
@@ -28,8 +26,6 @@ export default function CreateItem() {
   } = useForm<CreateItemFieldProps>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { items } = useOutletContext<Web3OutletContextProps>();
 
   return (
     <>
@@ -82,13 +78,7 @@ export default function CreateItem() {
           Submit Transaction
         </Button>
 
-        {isOpen && (
-          <CreateItemModal
-            refetch={items}
-            onClose={onClose}
-            getValues={getValues}
-          />
-        )}
+        {isOpen && <CreateItemModal onClose={onClose} getValues={getValues} />}
       </Flex>
     </>
   );

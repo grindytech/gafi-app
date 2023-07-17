@@ -33,10 +33,10 @@ export default function AcceptCollectionsModal({
 }: AcceptCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { collection_id, game_id, admin } = getValues();
+  const { collection_id, game_id, role } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['acceptAdding', collection_id],
     onSuccess() {
       onClose();
@@ -68,7 +68,7 @@ export default function AcceptCollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody

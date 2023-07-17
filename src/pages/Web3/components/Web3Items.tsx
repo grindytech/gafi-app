@@ -6,7 +6,7 @@ export interface Web3ItemsDataProps {
   collection_id: number;
   item_id: number;
   supply: string | null;
-  metadataOfItem: TypeMetadataOfItem;
+  metadata: TypeMetadataOfItem;
 }
 
 interface Web3ItemsProps {
@@ -62,11 +62,11 @@ export default function Web3Items({ data }: Web3ItemsProps) {
                 },
               }}
             >
-              {child.metadataOfItem?.image ? (
+              {child.metadata?.image ? (
                 <Image
                   objectFit="cover"
                   alt="image is outdated"
-                  src={`${cloundinary_link}/${child.metadataOfItem.image}`}
+                  src={`${cloundinary_link}/${child.metadata.image}`}
                 />
               ) : (
                 <Image src="/assets/fill/item.png" objectFit="none" />
@@ -76,7 +76,7 @@ export default function Web3Items({ data }: Web3ItemsProps) {
             <Box padding={4} bg="white">
               <Center justifyContent="space-between" mb={1}>
                 <Heading className="card-value" fontSize="md!">
-                  {child.metadataOfItem?.title || '-'}
+                  {child.metadata?.title || '-'}
                 </Heading>
 
                 <Text className="card-value" color="shader.a.500!">

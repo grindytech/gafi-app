@@ -170,9 +170,7 @@ export default function ConnectWallet() {
                     style: 'currency',
                     currencyDisplay: 'narrowSymbol',
                     currency: 'usd',
-                  })
-                    .format(Number(balance.replaceAll(',', '')))
-                    .toString()}
+                  }).format(Number(balance.replaceAll(',', '')))}
                 </Text>
               </Box>
             </MenuItem>

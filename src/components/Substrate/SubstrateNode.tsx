@@ -81,7 +81,7 @@ const SubstrateNode = () => {
               setConnect(event.target.value);
             }}
           >
-            {config.PROVIDER_SOCKETS.map((socketAddress: string) => (
+            {config.PROVIDER_SOCKETS?.map((socketAddress: string) => (
               <option key={socketAddress} value={socketAddress}>
                 {socketAddress}
               </option>
