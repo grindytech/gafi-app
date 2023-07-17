@@ -37,16 +37,16 @@ export default function AddMetadataItemModal({
   onClose,
 }: AddMetadataItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
-  const { items } = useOutletContext<Web3OutletContextProps>();
+  const { item: refetch } = useOutletContext<Web3OutletContextProps>();
 
-  const { collection_id, admin, item_id, image, title } = getValues();
+  const { collection_id, role, item_id, image, title } = getValues();
 
   const { setIsLoading, isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['CollectionMetadataSet', String(collection_id)],
     onSuccess() {
       onClose();
-      items();
+      refetch();
     },
   });
 
@@ -75,7 +75,7 @@ export default function AddMetadataItemModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody

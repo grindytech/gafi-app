@@ -22,9 +22,10 @@ import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormGetValues } from 'react-hook-form';
 import { CreateItemFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
+import { Web3OutletContextProps } from 'pages/Web3';
+import { useOutletContext } from 'react-router-dom';
 
 interface CreateItemModalProps {
-  refetch: () => void;
   onClose: () => void;
   getValues: UseFormGetValues<CreateItemFieldProps>;
 }
@@ -32,14 +33,14 @@ interface CreateItemModalProps {
 export default function CreateItemModal({
   getValues,
   onClose,
-  refetch,
 }: CreateItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { collection_id, item_id, admin, maybeSupply } = getValues();
+  const { item: refetch } = useOutletContext<Web3OutletContextProps>();
+  const { collection_id, item_id, role, maybeSupply } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['createItem', String(item_id)],
     onSuccess() {
       onClose();
@@ -72,7 +73,7 @@ export default function CreateItemModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
