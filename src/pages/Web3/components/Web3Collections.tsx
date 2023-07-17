@@ -18,11 +18,11 @@ import { TypeMetadataOfCollection } from 'types';
 import { convertHex } from 'utils/utils';
 
 export interface Web3CollectionsDataProps {
-  admin: string;
   owner: string;
+  role: string;
   collection_id: number;
-  metadataOfCollection: TypeMetadataOfCollection;
-  game_id: number[];
+  getGamesOfCollection: number[];
+  metadata: TypeMetadataOfCollection;
 }
 
 export interface Web3CollectionsProps {
@@ -82,11 +82,11 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
               },
             }}
           >
-            {collection.metadataOfCollection?.image ? (
+            {collection.metadata?.image ? (
               <Image
                 objectFit="cover"
                 alt="image is outdated"
-                src={`${cloundinary_link}/${collection.metadataOfCollection.image}`}
+                src={`${cloundinary_link}/${collection.metadata.image}`}
               />
             ) : (
               <Image src="/assets/fill/item.png" objectFit="none" />
@@ -105,9 +105,9 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
                 />
               </AvatarPopover>
 
-              <AvatarPopover type="Admin" address={collection.admin} name="-">
+              <AvatarPopover type="Admin" address={collection.role} name="-">
                 <AccountJazzicon
-                  address={collection.admin}
+                  address={collection.role}
                   sx={{
                     width: '100%',
                     height: '100%',
@@ -118,7 +118,7 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
 
             <Center justifyContent="space-between">
               <Heading fontSize="md" fontWeight="medium" color="shader.a.900">
-                {collection.metadataOfCollection?.title || '-'}
+                {collection.metadata?.title || '-'}
               </Heading>
 
               <Text fontSize="sm" fontWeight="medium" color="shader.a.500">
@@ -138,15 +138,17 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
               >
                 Games:&nbsp;
                 <Text as="span" color="shader.a.900" fontWeight="medium">
-                  {collection.game_id.length}
+                  {collection.getGamesOfCollection.length}
                 </Text>
               </Heading>
 
               <Flex py={2} gap={2} overflowX="auto">
-                {collection.game_id.length ? (
-                  [...Array(collection.game_id)].map((_, index) => (
-                    <TagOfCollection key={index} title="Heroes & Empires" />
-                  ))
+                {collection.getGamesOfCollection.length ? (
+                  [...Array(collection.getGamesOfCollection)].map(
+                    (_, index) => (
+                      <TagOfCollection key={index} title="Heroes & Empires" />
+                    )
+                  )
                 ) : (
                   <TagOfCollection title="-" />
                 )}
@@ -162,15 +164,17 @@ export default function Web3Collections({ data }: Web3CollectionsProps) {
               >
                 Pool:&nbsp;
                 <Text as="span" color="shader.a.900" fontWeight="medium">
-                  {collection.game_id.length}
+                  {collection.getGamesOfCollection.length}
                 </Text>
               </Heading>
 
               <Flex py={2} gap={2} overflowX="auto">
-                {collection.game_id.length ? (
-                  [...Array(collection.game_id.length)].map((_, index) => (
-                    <TagOfCollection key={index} title={String(index)} />
-                  ))
+                {collection.getGamesOfCollection.length ? (
+                  [...Array(collection.getGamesOfCollection.length)].map(
+                    (_, index) => (
+                      <TagOfCollection key={index} title={String(index)} />
+                    )
+                  )
                 ) : (
                   <TagOfCollection title="-" />
                 )}
