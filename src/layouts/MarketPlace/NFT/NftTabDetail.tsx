@@ -21,16 +21,30 @@ const NftTabDetail = () => {
         <TabList>
           <Tab>Overview</Tab>
           <Tab>Atributes</Tab>
-          <Tab>Auctions</Tab>
         </TabList>
         <TabPanels>
           <TabPanel padding={0}>
             <Flex flexDirection="column" gap={5} padding={6}>
-              <Box>
-                <Text fontWeight="medium" color="black" mb={2}>
+              <CardBox variant="baseStyle" padding={4}>
+                <Text fontWeight="medium" color="black" mb={4}>
                   Description
                 </Text>
-                <Text noOfLines={3}>
+                <HStack mb={2}>
+                  <Text color="shader.a.500">Created by</Text>
+                  <Text color="primary.a.500" fontWeight="medium">
+                    Hyperizre
+                  </Text>
+                </HStack>
+                <Text color="shader.a.700">
+                  Gear Club 2 pedal to the metal, race along more than 3,000
+                  kilometers.
+                </Text>
+              </CardBox>
+              <CardBox variant="baseStyle" padding={4}>
+                <Text fontWeight="medium" color="black" mb={4}>
+                  About Gear Club 2: Super Car
+                </Text>
+                <Text noOfLines={3} mb={5}>
                   Gear Club 2 pedal to the metal, race along more than 3,000
                   kilometers of tracks Each Mara, with the ingestion of a
                   Seasonal Catalyst, can become a Kodamara that’s or along the
@@ -38,14 +52,9 @@ const NftTabDetail = () => {
                   Seasonal Catalyst, can become a Kodamara that’s or along the
                   coast, defend your position in more.
                 </Text>
-              </Box>
-              <HStack>
-                <Text color="shader.a.500">Owned by</Text>
-                <Text color="primary.a.500" fontWeight="medium">
-                  0x3b5a...6b10e
-                </Text>
-              </HStack>
-              <NavLinkSocial />
+                <NavLinkSocial />
+              </CardBox>
+
               <CardBox variant="baseStyle" padding={4}>
                 <Text fontWeight="medium" color="black" mb={2}>
                   Details

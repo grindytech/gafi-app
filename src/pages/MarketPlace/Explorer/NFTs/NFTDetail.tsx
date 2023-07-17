@@ -25,8 +25,13 @@ import CardBox from 'components/CardBox';
 import NftTabDetail from 'layouts/MarketPlace/NFT/NftTabDetail';
 import TopFightGames from 'layouts/MarketPlace/Home/Games/components/TopFightGames';
 import NftActivityTable from 'layouts/MarketPlace/NFT/NftActivityTable';
+import { CircleIcon } from 'components/Substrate/SubstrateNode';
+
+import TimeReminder from 'components/Time/TimeReminder';
 
 const NFTDetail = () => {
+  const NOW_TIME = new Date().getTime();
+
   return (
     <>
       <Box pb={4} width="full">
@@ -88,8 +93,18 @@ const NFTDetail = () => {
                   </Text>
                 </HStack>
               </VStack>
-              <CardBox variant="baseStyle">
-                <Flex flexDirection="column" gap={6}>
+              <CardBox variant="baseStyle" padding={0}>
+                <HStack
+                  px={6}
+                  py={4}
+                  borderBottom="0.063rem solid"
+                  borderColor="shader.a.200"
+                >
+                  <CircleIcon w={4} h={4} />
+                  <Text>Auction ends at </Text>
+                  <TimeReminder targetDate={24 * 60 * 60 * 1000 + NOW_TIME} />
+                </HStack>
+                <Flex flexDirection="column" gap={6} padding={6}>
                   <Box
                     padding={4}
                     bg="shader.a.200"
@@ -157,12 +172,14 @@ const NFTDetail = () => {
                 <Icon as={HistoryIcon} h={5} w={5} />
                 <Text> Activitys</Text>
               </Tab>
+              <Tab>Auctions</Tab>
               <Tab>Statics</Tab>
             </TabList>
             <TabPanels>
               <TabPanel padding={6}>
                 <NftActivityTable />
               </TabPanel>
+              <TabPanel padding={0}>Auctions</TabPanel>
               <TabPanel padding={0}>Static</TabPanel>
             </TabPanels>
           </Tabs>
