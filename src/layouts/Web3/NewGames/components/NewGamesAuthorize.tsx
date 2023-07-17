@@ -13,6 +13,7 @@ import {
   Tbody,
   Td,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 
 import NewGamesProfile from './NewGamesProfile';
@@ -22,22 +23,23 @@ import { UseFormGetValues } from 'react-hook-form';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { NewGamesFieldProps } from '../index';
 import { useAppSelector } from 'hooks/useRedux';
+import { useOutletContext } from 'react-router-dom';
+import { Web3OutletContextProps } from 'pages/Web3';
 
 interface NewGamesAuthorizeProps {
   onClose: () => void;
   getValues: UseFormGetValues<NewGamesFieldProps>;
-  refetch: () => void;
 }
 
 export default function NewGamesAuthorize({
   onClose,
   getValues,
-  refetch,
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
+  const toast = useToast();
+  const { game_id, role, title, owner } = getValues();
 
-  const { game_id, admin, title, owner } = getValues();
-
+  const { game: refetch } = useOutletContext<Web3OutletContextProps>();
   const { isLoading, mutation } = useSignAndSend({
     address: owner.address,
     key: ['createGame', game_id],
@@ -72,7 +74,7 @@ export default function NewGamesAuthorize({
             />
           </Center>
 
-          <NewGamesProfile account={owner.name} hash={owner.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
@@ -101,9 +103,18 @@ export default function NewGamesAuthorize({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => {
+            onClick={async () => {
               if (api) {
-                mutation(api.tx.game.createGame(admin.address));
+                try {
+                  mutation(api.tx.game.createGame(role.address));
+                } catch (error: any) {
+                  toast({
+                    position: 'top-right',
+                    status: 'error',
+                    description: error.toString(),
+                    isClosable: true,
+                  });
+                }
               }
             }}
           >
