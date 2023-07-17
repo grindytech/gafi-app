@@ -45,6 +45,7 @@ export default function NewGames() {
 
         <SwitchAdmin
           setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+          add={true}
         />
 
         <GameID setValue={setValue} refetch={mounting} />
