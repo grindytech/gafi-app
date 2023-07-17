@@ -2,17 +2,19 @@ import { Center, Heading, Skeleton, Text } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import useNextCollectionID from 'hooks/useNextCollectionID';
 import React from 'react';
-import { TypeSetValue } from 'types';
+import { UseFormSetValue } from 'react-hook-form';
 
 interface CollectionIDProps {
-  setValue: TypeSetValue;
-  refetch: () => void;
+  setValue: UseFormSetValue<any>;
+  refetch?: () => void;
 }
 
 export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
   const { ID } = useNextCollectionID({
     refetch() {
-      refetch();
+      if (refetch) {
+        refetch();
+      }
     },
   });
 
