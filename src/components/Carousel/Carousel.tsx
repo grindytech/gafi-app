@@ -3,17 +3,16 @@ import NextIcon from 'public/assets/line/chevron-01.svg';
 import { Swiper } from 'swiper/react';
 // Core modules imports are same as usual
 import { Navigation, Mousewheel } from 'swiper';
-
-import { Box, Button, ButtonProps, Icon } from '@chakra-ui/react';
-
+import { Box, BoxProps, Button, ButtonProps, Icon } from '@chakra-ui/react';
 import { SwiperOptions } from 'swiper/types';
 import 'swiper/css/mousewheel';
 interface IProps {
   children: React.ReactNode;
   options?: SwiperOptions;
   styleButton?: ButtonProps;
+  sxProps?: BoxProps;
 }
-const Carousel = ({ children, options, styleButton }: IProps) => {
+const Carousel = ({ children, options, styleButton, sxProps }: IProps) => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   return (
@@ -97,10 +96,6 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
           visibility="hidden"
           className="btn-carousel"
           transition="visibility 0.3s , opacity 0.3s ease-in-out"
-          /*  _groupHover={{
-            opacity: 1,
-            visibility: 'visible',
-          }} */
           justifyContent="space-between"
           width="100%"
           position="absolute"
@@ -108,6 +103,7 @@ const Carousel = ({ children, options, styleButton }: IProps) => {
             top: '50%',
             zIndex: 10,
           }}
+          {...sxProps}
         >
           <Button
             ref={prevRef}
