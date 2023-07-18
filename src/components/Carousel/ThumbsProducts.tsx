@@ -31,7 +31,7 @@ const ThumbsProducts = ({ items, setThumbsSwiper }: IProps) => {
             slidesPerView={7}
             modules={[Mousewheel]}
             mousewheel={{ forceToAxis: true, releaseOnEdges: false }}
-            spaceBetween={10}
+            spaceBetween={16}
             breakpoints={{
               360: {
                 slidesPerView: 4,
@@ -53,15 +53,16 @@ const ThumbsProducts = ({ items, setThumbsSwiper }: IProps) => {
                 <SwiperSlide
                   key={`product-thumb-gallery-${item.id}`}
                   className="custom-thumbs"
+                  style={{
+                    width: 70,
+                  }}
                 >
                   <Image
                     src={item.image}
                     alt={`Product thumb gallery ${item.id}`}
-                    width={70}
                     padding={1}
                     objectFit="cover"
                     borderRadius="xl"
-                    height={70}
                   />
                 </SwiperSlide>
               );

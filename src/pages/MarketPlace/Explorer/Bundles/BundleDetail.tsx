@@ -69,7 +69,7 @@ const BundleDetail = () => {
                   <Text fontWeight="medium">144</Text>
                 </Flex>
               </HStack>
-              <Flex gap={2}>
+              <Flex gap={2} alignItems="center">
                 <Icon as={ShareIcon} h={5} w={5} />
                 <Text fontWeight="medium">Share</Text>
               </Flex>
