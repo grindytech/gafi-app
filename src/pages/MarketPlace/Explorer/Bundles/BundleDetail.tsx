@@ -27,11 +27,12 @@ import { TestDataBundleDetails } from 'layouts/MarketPlace/Explorer/DataTest';
 import { useState } from 'react';
 import ThumbsProducts from 'components/Carousel/ThumbsProducts';
 import ThumbProductImage from 'components/Carousel/ThumbProductImage';
+import BundleListDetails from 'layouts/MarketPlace/Bundle/BundleListDetails';
 
 const BundleDetail = () => {
   const data = TestDataBundleDetails;
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  console.log('Current');
+
   return (
     <Box pb={4} width="full">
       <Grid
@@ -100,7 +101,7 @@ const BundleDetail = () => {
                 </Text>
               </HStack>
             </VStack>
-            <CardBox variant="baseStyle" padding={0}>
+            <CardBox variant="baseStyle" padding={0} mb={4}>
               <HStack
                 px={6}
                 py={4}
@@ -155,6 +156,7 @@ const BundleDetail = () => {
                 </HStack>
               </Flex>
             </CardBox>
+            <BundleListDetails items={data.items} />
           </CardBox>
         </VStack>
       </Grid>

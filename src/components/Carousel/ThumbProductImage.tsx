@@ -14,6 +14,7 @@ const ThumbProductImage = ({ items, thumbsSwiper }: IProps) => {
         thumbs: { swiper: thumbsSwiper },
         modules: [Navigation, Thumbs, Mousewheel],
         slidesPerView: 1,
+        freeMode: true,
         breakpoints: {
           360: {
             slidesPerView: 1,
