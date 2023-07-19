@@ -1,7 +1,7 @@
 import { Text as PolText } from '@polkadot/types';
 import { Flex, Text, HStack, Select, Icon, IconProps } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import SettingIcon from 'public/assets/line/setting.svg';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import config from 'config';
@@ -89,7 +89,7 @@ const SubstrateNode = () => {
           </Select>
 
           <HStack>
-            <Icon as={SettingIcon} />
+            <Icon as={SettingIcon} color="primary.a.500" />
             <Text color="shader.a.500">{nodeInfo?.nodeVersion}</Text>
           </HStack>
         </Flex>

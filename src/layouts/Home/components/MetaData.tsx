@@ -53,7 +53,7 @@ const MetaData = () => {
         </Button>
 
         <HStack>
-          <Icon as={SettingIcon} />
+          <Icon as={SettingIcon} color="primary.a.500" />
           <Text color="shader.a.500">v{metadata?.version}</Text>
         </HStack>
       </CardBox>
