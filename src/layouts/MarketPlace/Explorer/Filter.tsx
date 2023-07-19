@@ -78,7 +78,7 @@ const Filter = ({ isOpen }: IProps) => {
               ))}
             </Select>
           </FormControl>
-          <FormControl gap={2}>
+          <FormControl gap={2} width="full">
             <FormLabel color="shader.a.500" fontSize="sm">
               Bundles & Items
             </FormLabel>
@@ -94,9 +94,9 @@ const Filter = ({ isOpen }: IProps) => {
               </RadioGroup>
             </WrapperSelectFilter>
           </FormControl>
-          <FormControl gap={2}>
+          <FormControl gap={2} width="full">
             <FormLabel color="shader.a.500" fontSize="sm">
-              Type
+              Type & ?????
             </FormLabel>
             <WrapperSelectFilter defaultTitle="Auction">
               <RadioGroup defaultValue="auction">

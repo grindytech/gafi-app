@@ -15,7 +15,7 @@ const GameArticles = () => {
             options={{
               modules: [Autoplay, Navigation, Mousewheel],
               autoplay: {
-                delay: 1500,
+                delay: 2500,
                 disableOnInteraction: false,
               },
               loop: true,

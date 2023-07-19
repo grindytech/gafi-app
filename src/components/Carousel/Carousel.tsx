@@ -35,6 +35,9 @@ const Carousel = ({ children, options, styleButton, sxProps }: IProps) => {
           modules={[Navigation, Mousewheel]}
           mousewheel={{
             forceToAxis: true,
+            thresholdDelta: 50,
+            releaseOnEdges: false,
+            /*   thresholdTime: 4, */
           }}
           navigation={{
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
