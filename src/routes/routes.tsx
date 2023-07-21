@@ -12,8 +12,9 @@ import Explorer, {
 } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import MintingPoolMarket from 'pages/MarketPlace/MintingPools';
+
+import OwnerSetting from 'pages/Account/Settings';
 import Account from 'pages/Account';
-import { ListProfileData } from 'pages/Account';
 
 const router = createBrowserRouter([
   {
@@ -71,10 +72,10 @@ const router = createBrowserRouter([
       {
         path: 'account',
         element: <Account />,
-        children: ListProfileData.map(tabLink => ({
-          path: tabLink.link,
-          element: tabLink.element,
-        })),
+      },
+      {
+        path: 'account/setting',
+        element: <OwnerSetting />,
       },
       {
         path: 'minting',

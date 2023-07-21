@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
 import ConnectWalletProfile from './ConnectWalletProfile';
 import { InjectedAccount } from '@polkadot/extension-inject/types';

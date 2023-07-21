@@ -20,6 +20,11 @@ import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
 
 import Swap02Icon from 'public/assets/line/swap-02.svg';
+import NFTIcon from 'public/assets/line/nfts.svg';
+import ChartIcon from 'public/assets/line/chart-02.svg';
+import CartIcon from 'public/assets/line/cart-02.svg';
+import LoveIcon from 'public/assets/line/heart.svg';
+import SettingIcon from 'public/assets/line/setting.svg';
 
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
 
@@ -33,8 +38,42 @@ import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { injectedAccount } from 'redux/injected';
 import useForceMount from 'hooks/useForceMount';
 import { Link } from 'react-router-dom';
-import { ListProfileData } from 'pages/Account';
+import OwnerNFts from 'pages/Account/NFTs';
+import OwnerSetting from 'pages/Account/Settings';
+import OwnerProfile from 'pages/Account/Profile';
 
+export const ListProfileData = [
+  {
+    icon: NFTIcon,
+    title: 'My NFTs',
+    link: '/account',
+    element: <OwnerProfile />,
+  },
+  {
+    icon: ChartIcon,
+    title: 'Activity',
+    link: '#',
+    element: <OwnerSetting />,
+  },
+  {
+    icon: CartIcon,
+    title: 'My Cart',
+    link: '#',
+    element: <OwnerNFts />,
+  },
+  {
+    icon: LoveIcon,
+    title: 'Favourited',
+    link: '#',
+    element: <OwnerNFts />,
+  },
+  {
+    icon: SettingIcon,
+    title: 'Settings',
+    link: '#',
+    element: <OwnerNFts />,
+  },
+];
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
   const { setMounting, mounting } = useForceMount();

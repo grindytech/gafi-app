@@ -1,7 +1,7 @@
 import React from 'react';
 
 const OwnerSetting = () => {
-  return <div>OwnerSetting</div>;
+  return <></>;
 };
 
 export default OwnerSetting;
