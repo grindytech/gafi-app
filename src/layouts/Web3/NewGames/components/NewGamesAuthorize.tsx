@@ -9,10 +9,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Table,
-  Tbody,
-  Td,
-  Tr,
   useToast,
 } from '@chakra-ui/react';
 
@@ -23,8 +19,6 @@ import { UseFormGetValues } from 'react-hook-form';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { NewGamesFieldProps } from '../index';
 import { useAppSelector } from 'hooks/useRedux';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 interface NewGamesAuthorizeProps {
   onClose: () => void;
@@ -37,14 +31,12 @@ export default function NewGamesAuthorize({
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
   const toast = useToast();
-  const { game_id, role, title, owner } = getValues();
+  const { game_id, role, owner } = getValues();
 
-  const { game: refetch } = useOutletContext<Web3OutletContextProps>();
   const { isLoading, mutation } = useSignAndSend({
     address: owner.address,
     key: ['createGame', game_id],
     onSuccess() {
-      refetch();
       onClose();
     },
   });
@@ -82,7 +74,8 @@ export default function NewGamesAuthorize({
           borderWidth="0.0625rem 0 0.0625rem 0"
           borderColor="shader.a.300"
         >
-          <Table variant="createGameSubmit">
+          {/* note as CreateCollection */}
+          {/* <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
                 <Td>Title</Td>
@@ -94,7 +87,7 @@ export default function NewGamesAuthorize({
                 <Td>{game_id}</Td>
               </Tr>
             </Tbody>
-          </Table>
+          </Table> */}
         </ModalBody>
 
         <ModalFooter px={0} pb={0}>
