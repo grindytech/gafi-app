@@ -16,7 +16,7 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 
-import Chevron02Icon from 'public/assets/line/chevron-02.svg';
+import Chevron01Icon from 'public/assets/line/chevron-01.svg';
 import LayoutGridIcon from 'public/assets/line/layout-grid.svg';
 import LayoutRowIcon from 'public/assets/line/layout-row.svg';
 import { useQueries } from '@tanstack/react-query';
@@ -32,17 +32,16 @@ import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
 import { Outlet, useLocation } from 'react-router-dom';
 import theme from 'theme/theme';
 import { TypeMetadataOfItem } from 'types';
-
-export interface Web3OutletContextProps {
-  collection: () => void;
-  item: () => void;
-  game: () => void;
-}
+import useSubscribeSystem from 'hooks/useSubscribeSystem';
+import React from 'react';
 
 export default function Web3() {
-  const { pathname } = useLocation();
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { event, setEvent } = useSubscribeSystem();
 
+  const { pathname } = useLocation();
+  const [tab, setTab] = React.useState(0);
+
+  const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
   const [game, collection, item] = useQueries({
@@ -238,6 +237,56 @@ export default function Web3() {
     ],
   });
 
+  React.useEffect(() => {
+    const subscribe = () => {
+      if (event && account?.address) {
+        event.some(({ eventName, eventValue }) => {
+          switch (eventName) {
+            /* ------------ Game --------------- */
+            case 'game::GameCreated': {
+              const [owner] = JSON.parse(eventValue);
+
+              if (account.address === owner) {
+                return game.refetch();
+              }
+              break;
+            }
+
+            /* ------------ Collection --------------- */
+            case 'nfts::Created': {
+              const [, owner, role] = JSON.parse(eventValue);
+
+              if (account.address === role || account.address === owner) {
+                return collection.refetch();
+              }
+              break;
+            }
+
+            /* ------------ NFT --------------- */
+            case 'game::ItemCreated': {
+              if (collection.data?.length) {
+                const [, collection_id] = JSON.parse(eventValue);
+
+                collection.data.some(data => {
+                  if (data.collection_id === collection_id) {
+                    item.refetch();
+                  }
+                });
+              }
+              break;
+            }
+          }
+
+          setEvent([]);
+        });
+      }
+    };
+
+    subscribe();
+
+    return () => subscribe();
+  }, [event]);
+
   if (game.isLoading || collection.isLoading) {
     return (
       <Center height="100vh" gap={4}>
@@ -249,12 +298,36 @@ export default function Web3() {
     );
   }
 
+  const ListTab = [
+    {
+      key: 0,
+      data: game.data || [],
+      component: (data: Web3GamesDataProps[]) => <Web3Games data={data} />,
+    },
+    {
+      key: 1,
+      data: collection.data || [],
+      component: (data: Web3CollectionsDataProps[]) => (
+        <Web3Collections data={data} />
+      ),
+    },
+    {
+      key: 2,
+      data: item.data || [],
+      component: (data: Web3ItemsDataProps[][]) => <Web3Items data={data} />,
+    },
+  ];
+
   return (
     <>
       {pathname === '/web3' ? (
         game.data?.length || collection.data?.length || item.data?.length ? (
           <DefaultWeb3>
-            <Tabs variant="unstyled">
+            <Tabs
+              variant="unstyled"
+              onChange={index => setTab(index)}
+              index={tab}
+            >
               <TabList flexWrap="wrap-reverse" gap={4}>
                 <Flex
                   overflowX="auto"
@@ -306,7 +379,7 @@ export default function Web3() {
                         height="unset"
                         as={Button}
                         iconSpacing={1}
-                        rightIcon={<Chevron02Icon />}
+                        rightIcon={<Chevron01Icon />}
                       >
                         Date modified
                       </MenuButton>
@@ -334,29 +407,20 @@ export default function Web3() {
               </TabList>
 
               <TabPanels
+                tabIndex={tab}
                 sx={{
                   '> div': {
                     px: 0,
                   },
                 }}
               >
-                {game.data && (
-                  <TabPanel>
-                    <Web3Games data={game.data} />
+                {ListTab.map(item => (
+                  <TabPanel key={item.key}>
+                    {tab === item.key && item.data
+                      ? item.component(item.data as keyof typeof item.component)
+                      : null}
                   </TabPanel>
-                )}
-
-                {collection.data && (
-                  <TabPanel>
-                    <Web3Collections data={collection.data} />
-                  </TabPanel>
-                )}
-
-                {item.data && (
-                  <TabPanel>
-                    <Web3Items data={item.data} />
-                  </TabPanel>
-                )}
+                ))}
               </TabPanels>
             </Tabs>
           </DefaultWeb3>
@@ -364,13 +428,7 @@ export default function Web3() {
           <Web3FirstBuild />
         )
       ) : (
-        <Outlet
-          context={{
-            collection: collection.refetch,
-            item: item.refetch,
-            game: game.refetch,
-          }}
-        />
+        <Outlet />
       )}
     </>
   );
