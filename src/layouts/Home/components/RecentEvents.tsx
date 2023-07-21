@@ -67,7 +67,7 @@ const RecentEvents = () => {
         </Text>
         <Text color="primary.a.500">Clear all</Text>
       </HStack>
-      <Box height="400px">
+      <Box height="25rem" overflowY="scroll">
         {React.Children.toArray(
           eventFeed?.map(event => (
             <Box>

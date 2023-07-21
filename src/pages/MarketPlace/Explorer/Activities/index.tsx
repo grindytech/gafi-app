@@ -110,7 +110,7 @@ const Activities = () => {
               gridTemplateColumns={{
                 lg: `repeat(${isOpen ? 4 : 5},1fr)`,
                 md: 'repeat(2,1fr)',
-                base: 'repeat(1,1fr)',
+                base: 'repeat(2,1fr)',
               }}
               gap={{ md: isOpen ? 3 : 5, base: 2 }}
             >

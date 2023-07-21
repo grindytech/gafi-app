@@ -27,11 +27,10 @@ export default function ConnectWalletSwitch({
       opacity={isOpen ? undefined : 0}
       transitionDuration="ultra-slow"
       position="absolute"
-      transform="translateY(100%)"
+      transform="translateY(5%)"
       bg="white"
       border="0.0625rem solid"
       borderColor="shader.a.300"
-      bottom="-10%"
       borderRadius="xl"
       right={0}
       left={0}
