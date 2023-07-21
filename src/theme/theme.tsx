@@ -39,7 +39,7 @@ export const colors = {
     },
   },
   second: {
-    red: '#DB2330',
+    red: '#EF4444',
     orange: '#FF7B00',
     purple: '#8338EC',
   },
@@ -396,6 +396,7 @@ export const FormControl: ComponentStyleConfig = {
     },
   },
 };
+
 const theme = extendTheme({
   colors,
   styles,

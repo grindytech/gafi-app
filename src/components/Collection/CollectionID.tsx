@@ -6,17 +6,10 @@ import { UseFormSetValue } from 'react-hook-form';
 
 interface CollectionIDProps {
   setValue: UseFormSetValue<any>;
-  refetch?: () => void;
 }
 
-export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
-  const { ID } = useNextCollectionID({
-    refetch() {
-      if (refetch) {
-        refetch();
-      }
-    },
-  });
+export default function CollectionID({ setValue }: CollectionIDProps) {
+  const { ID } = useNextCollectionID();
 
   React.useEffect(() => {
     setValue('collection_id', ID);
@@ -24,7 +17,7 @@ export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading variant="game">Collection ID</Heading>
+      <Heading variant="game">Current Collection ID</Heading>
 
       {ID ? (
         <Text fontWeight="medium" color="shader.a.900">
