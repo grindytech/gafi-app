@@ -356,6 +356,20 @@ export const Input: ComponentStyleConfig = {
         },
       },
     },
+    settingProfile: {
+      field: {
+        px: 4,
+        py: 2,
+        border: '0.063rem solid',
+        borderColor: 'shader.a.300',
+        background: 'shader.a.200',
+        borderRadius: 'xl',
+        height: '3rem',
+        _placeholder: {
+          color: 'shader.a.400',
+        },
+      },
+    },
   },
 };
 export const Select: ComponentStyleConfig = {

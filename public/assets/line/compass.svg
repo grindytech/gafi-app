@@ -9,4 +9,14 @@
         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
     </g>
   </g>
+  <defs>
+      <linearGradient id="CompassLinear04" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#75EA85"/>
+      <stop offset="1" stop-color="#1FBA53"/>
+      </linearGradient>
+      <linearGradient id="paint1_linear_1485_10103" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#75EA85"/>
+      <stop offset="1" stop-color="#1FBA53"/>
+      </linearGradient>
+  </defs>
 </svg>

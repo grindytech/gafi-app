@@ -38,40 +38,32 @@ import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { injectedAccount } from 'redux/injected';
 import useForceMount from 'hooks/useForceMount';
 import { Link } from 'react-router-dom';
-import OwnerNFts from 'pages/Account/NFTs';
-import OwnerSetting from 'pages/Account/Settings';
-import OwnerProfile from 'pages/Account/Profile';
 
 export const ListProfileData = [
   {
     icon: NFTIcon,
     title: 'My NFTs',
     link: '/account',
-    element: <OwnerProfile />,
   },
   {
     icon: ChartIcon,
     title: 'Activity',
     link: '#',
-    element: <OwnerSetting />,
   },
   {
     icon: CartIcon,
     title: 'My Cart',
     link: '#',
-    element: <OwnerNFts />,
   },
   {
     icon: LoveIcon,
     title: 'Favourited',
     link: '#',
-    element: <OwnerNFts />,
   },
   {
     icon: SettingIcon,
     title: 'Settings',
     link: '#',
-    element: <OwnerNFts />,
   },
 ];
 export default function ConnectWallet() {

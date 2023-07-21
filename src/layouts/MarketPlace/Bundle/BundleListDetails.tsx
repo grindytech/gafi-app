@@ -1,6 +1,5 @@
 import { Box, Flex, HStack, Image, Text } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import React from 'react';
 
 interface IProps {
   items: Array<{
