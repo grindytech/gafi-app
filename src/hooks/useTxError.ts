@@ -50,12 +50,14 @@ export default function useTxError({ onSuccess }: useTxErrorProps) {
 
     toast({
       position: 'top-right',
-      status: 'success',
+      status: result.isCompleted ? 'success' : 'loading',
       title: status.type,
       description: status.type,
+      isClosable: true,
+      duration: 3000,
     });
 
-    if (status.isFinalized && isError === false) {
+    if (result.isCompleted && isError === false) {
       if (onSuccess) {
         onSuccess();
       }
