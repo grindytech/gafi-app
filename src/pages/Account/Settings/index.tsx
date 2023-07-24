@@ -1,4 +1,4 @@
-import Setting from 'layouts/Account/Settings/SettingPage';
+import Setting from 'layouts/Account/Settings';
 
 const AccountSetting = () => {
   return <Setting />;

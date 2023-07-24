@@ -5,79 +5,19 @@ import {
   Input,
   FormControl,
   FormLabel,
-  Center,
   Icon,
   HStack,
   Button,
 } from '@chakra-ui/react';
-import CameraIcon from 'public/assets/fill/camera.svg';
+
 import CompassIcon from 'public/assets/line/compass.svg';
+import SettingProfileImage from './SettingProfileImage';
 const SettingProfileForm = () => {
   return (
     <>
       <Box width="full">
         <Box position="relative" minH="12.5rem">
-          <Box
-            height="full"
-            width="full"
-            bg="shader.a.300"
-            position="absolute"
-            transition="all linear 0.25s"
-            borderRadius="xl"
-            _hover={{
-              background: 'shader.a.400',
-              svg: {
-                opacity: 1,
-                transform: 'translateY(0)',
-              },
-            }}
-            top={0}
-          >
-            <Center height="full">
-              <Icon
-                transition="all linear 0.25s"
-                opacity={0}
-                transform="translateY(10%)"
-                as={CameraIcon}
-                height={10}
-                width={10}
-                color="white"
-                cursor="pointer"
-              />
-            </Center>
-          </Box>
-          <Box
-            bottom={'-15%'}
-            position="absolute"
-            borderRadius="full"
-            border="0.5rem solid"
-            borderColor="white"
-            bg="shader.a.300"
-            left="1.5rem"
-            height={40}
-            width={40}
-            transition="all linear 0.25s"
-            _hover={{
-              background: 'shader.a.400',
-              svg: {
-                opacity: 1,
-                transform: 'translateY(0)',
-              },
-            }}
-          >
-            <Center height="full">
-              <Icon
-                transition="all linear 0.25s"
-                opacity={0}
-                as={CameraIcon}
-                transform="translateY(10%)"
-                height={10}
-                width={10}
-                color="white"
-                cursor="pointer"
-              />
-            </Center>
-          </Box>
+          <SettingProfileImage />
         </Box>
         <Flex pt={10} flexDirection="column" gap={6}>
           <FormControl gap={2}>
