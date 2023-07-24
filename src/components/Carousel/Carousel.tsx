@@ -35,7 +35,6 @@ const Carousel = ({ children, options, styleButton, sxProps }: IProps) => {
           modules={[Navigation, Mousewheel]}
           mousewheel={{
             forceToAxis: true,
-            releaseOnEdges: false,
             thresholdDelta: 4,
           }}
           navigation={{
