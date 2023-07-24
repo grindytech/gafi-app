@@ -9,7 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
+import { TestPropsType1 } from 'hooks/DataTest';
 import { Link } from 'react-router-dom';
 
 interface IProps {

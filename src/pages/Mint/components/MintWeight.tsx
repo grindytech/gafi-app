@@ -13,6 +13,7 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import CardBox from 'components/CardBox';
 
 import { useAppSelector } from 'hooks/useRedux';
+import useSubscribeSystem from 'hooks/useSubscribeSystem';
 import React from 'react';
 import { TypeMetadataOfItem } from 'types';
 
@@ -28,9 +29,12 @@ interface MintWeightProps {
 }
 
 export default function MintWeight({ pool_id }: MintWeightProps) {
+  const { event } = useSubscribeSystem('nfts::ItemMetadataSet');
+  const { account } = useAppSelector(state => state.injected.polkadot);
+
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading, isError, refetch } = useQuery(
     ['getItemsOfPoolID', pool_id],
     async () => {
       if (api && api.query.game) {
@@ -89,9 +93,21 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
     }
   );
 
-  console.log(data);
+  React.useEffect(() => {
+    if (event && account?.address) {
+      event.forEach(({ eventValue }) => {
+        const [collection, item] = JSON.parse(eventValue) as number[];
 
-  if (!pool_id) return undefined;
+        if (data?.length) {
+          data.forEach(({ collection_id, item_id }) => {
+            if (item === item_id && collection === collection_id) {
+              refetch();
+            }
+          });
+        }
+      });
+    }
+  }, [event]);
 
   if (isError || !data?.length)
     return (

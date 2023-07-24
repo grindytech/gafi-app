@@ -24,7 +24,7 @@ import { colors } from 'theme/theme';
 import SwitchAdminAdd from './SwitchAdminAdd';
 
 export type TypeSwitchAdmin = Record<
-  'admin',
+  'role',
   {
     address: string;
     name: string;
@@ -33,8 +33,11 @@ export type TypeSwitchAdmin = Record<
 
 interface SwitchAdminProps {
   setValue: UseFormSetValue<TypeSwitchAdmin>;
+  watch?: {
+    address: string;
+    name: string;
+  };
   type?: 'Admin' | 'Owner';
-  add?: boolean;
   sx?: BoxProps;
 }
 
@@ -42,7 +45,7 @@ export default function SwitchAdmin({
   setValue,
   type = 'Admin',
   sx,
-  add,
+  watch,
 }: SwitchAdminProps) {
   const { account, allAccount } = useAppSelector(
     state => state.injected.polkadot
@@ -54,7 +57,7 @@ export default function SwitchAdmin({
 
   React.useEffect(() => {
     if (currentAccount && currentAccount.address) {
-      setValue('admin', {
+      setValue('role', {
         address: currentAccount.address,
         name: currentAccount.name as string,
       });
@@ -86,14 +89,22 @@ export default function SwitchAdmin({
 
         {allAccount && currentAccount && currentAccount.address ? (
           <>
-            <Center justifyContent="space-between" padding={4} pb={6}>
+            <Center
+              justifyContent="space-between"
+              padding={4}
+              pb={6}
+              flexWrap="wrap-reverse"
+              gap={4}
+            >
               <NewGamesProfile
-                hash={currentAccount.address}
-                account={String(currentAccount.name)}
+                hash={watch?.address || currentAccount.address}
+                account={watch?.name || String(currentAccount.name)}
               />
 
-              <Flex gap={4}>
-                {add ? <SwitchAdminAdd /> : null}
+              <Flex gap={4} flexWrap="wrap">
+                {watch ? (
+                  <SwitchAdminAdd setValue={setValue} value="role" />
+                ) : null}
 
                 <IconButton
                   aria-label="arrow-chevron"

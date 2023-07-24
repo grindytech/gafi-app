@@ -21,8 +21,6 @@ import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormGetValues } from 'react-hook-form';
 import { AddCollectionFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 interface AddCollectionsModalProps {
   onClose: () => void;
@@ -34,16 +32,14 @@ export default function AddCollectionsModal({
   onClose,
 }: AddCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
-  const { collection: refetch } = useOutletContext<Web3OutletContextProps>();
 
-  const { admin, collection_id, game_id } = getValues();
+  const { role, collection_id, game_id } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['addCollection', collection_id],
     onSuccess() {
       onClose();
-      refetch();
     },
   });
 
@@ -72,7 +68,7 @@ export default function AddCollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody

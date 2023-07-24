@@ -1,29 +1,29 @@
 import React from 'react';
 import { useAppSelector } from './useRedux';
+import useSubscribeSystem from './useSubscribeSystem';
 
-interface useNextCollectionIDProps {
-  refetch?: () => void;
-}
-
-export default function useNextCollectionID({
-  refetch,
-}: useNextCollectionIDProps = {}) {
+export default function useNextCollectionID() {
+  const { event } = useSubscribeSystem('nfts::NextCollectionIdIncremented');
   const { api } = useAppSelector(state => state.substrate);
 
   const [ID, setID] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    const getCollectionID = async () => {
-      if (api && api.query.nfts) {
-        const res = await api.query.nfts.nextCollectionId();
-        const id = res.toString();
+    const getCollectionID = () => {
+      const callback = async () => {
+        if (api && api.query.nfts) {
+          const res = await api.query.nfts.nextCollectionId();
+          setID(res.toString() || '0');
+        }
+      };
 
-        setID(id || '0');
-      }
+      callback();
     };
 
     getCollectionID();
-  }, [api?.query, refetch]);
+
+    return () => getCollectionID();
+  }, [event]);
 
   return { ID };
 }

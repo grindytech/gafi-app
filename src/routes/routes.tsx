@@ -1,4 +1,3 @@
-import Mint from 'pages/Mint';
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
 import Web3 from 'pages/Web3';
@@ -11,10 +10,10 @@ import Explorer, {
   ListMarketDetail,
 } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
-import MintingPoolMarket from 'pages/MarketPlace/MintingPools';
-
-import OwnerSetting from 'pages/Account/Settings';
-import Account from 'pages/Account';
+import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
+import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
+import ExplorerCollectionsDetail from 'layouts/MarketPlace/Explorer/ExplorerCollections/ExplorerCollectionsDetail';
+import Mint from 'pages/Mint';
 
 const router = createBrowserRouter([
   {
@@ -59,24 +58,20 @@ const router = createBrowserRouter([
             })),
           },
           {
-            path: 'minting',
-            element: <MintingPoolMarket />,
+            path: 'game/:id',
+            element: <ExplorerGamesDetail />,
           },
-        ].concat(
-          ListMarketDetail.map(tabLink => ({
-            path: tabLink.path,
-            element: tabLink.element,
-          }))
-        ),
+          {
+            path: 'nft/:id',
+            element: <ExplorerNFTsDetail />,
+          },
+          {
+            path: 'collection/:id',
+            element: <ExplorerCollectionsDetail />,
+          },
+        ],
       },
-      {
-        path: 'account',
-        element: <Account />,
-      },
-      {
-        path: 'account/setting',
-        element: <OwnerSetting />,
-      },
+
       {
         path: 'minting',
       },

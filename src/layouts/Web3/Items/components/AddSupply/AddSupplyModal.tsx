@@ -22,8 +22,6 @@ import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormGetValues } from 'react-hook-form';
 import { AddSupplyFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 interface AddSupplyModalProps {
   onClose: () => void;
@@ -35,16 +33,14 @@ export default function AddSupplyModal({
   onClose,
 }: AddSupplyModalProps) {
   const { api } = useAppSelector(state => state.substrate);
-  const { items: refetch } = useOutletContext<Web3OutletContextProps>();
 
-  const { collection_id, item_id, amount, admin } = getValues();
+  const { collection_id, item_id, amount, role } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['createItem', String(item_id)],
     onSuccess() {
       onClose();
-      refetch();
     },
   });
 
@@ -73,7 +69,7 @@ export default function AddSupplyModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody

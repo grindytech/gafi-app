@@ -9,10 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Table,
-  Tbody,
-  Td,
-  Tr,
+  useToast,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
@@ -25,23 +22,21 @@ import { useAppSelector } from 'hooks/useRedux';
 interface CreateCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<CreateCollectionFieldProps>;
-  refetch: () => void;
 }
 
 export default function CreateCollectionsModal({
   onClose,
   getValues,
-  refetch,
 }: CreateCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { collection_id, admin } = getValues();
+  const toast = useToast();
+  const { collection_id, role, owner } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: owner.address,
     key: ['createCollection', collection_id],
     onSuccess() {
-      refetch();
       onClose();
     },
   });
@@ -71,7 +66,7 @@ export default function CreateCollectionsModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
@@ -79,14 +74,15 @@ export default function CreateCollectionsModal({
           borderWidth="0.0625rem 0 0.0625rem 0"
           borderColor="shader.a.300"
         >
-          <Table variant="createGameSubmit">
+          {/* using notification 'bell' instead for show collection id */}
+          {/* <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
                 <Td>Collection ID</Td>
                 <Td>{collection_id}</Td>
               </Tr>
             </Tbody>
-          </Table>
+          </Table> */}
         </ModalBody>
 
         <ModalFooter px={0} pb={0}>
@@ -95,9 +91,18 @@ export default function CreateCollectionsModal({
             isLoading={isLoading}
             _hover={{}}
             margin="unset"
-            onClick={() => {
+            onClick={async () => {
               if (api) {
-                mutation(api.tx.game.createCollection(admin.address));
+                try {
+                  mutation(api.tx.game.createCollection(role.address));
+                } catch (error: any) {
+                  toast({
+                    position: 'top-right',
+                    status: 'error',
+                    description: error.toString(),
+                    isClosable: true,
+                  });
+                }
               }
             }}
           >

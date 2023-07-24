@@ -19,7 +19,7 @@ import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormGetValues } from 'react-hook-form';
 
 import { useQuery } from '@tanstack/react-query';
-import { formatGAFI } from 'utils/utils';
+import { formatGAFI, unitGAFI } from 'utils/utils';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { MintFieldProps } from '../index';
 import { useAppSelector } from 'hooks/useRedux';
@@ -30,7 +30,7 @@ interface MintModalProps {
 }
 
 export default function MintModal({ getValues, onClose }: MintModalProps) {
-  const { amount, pool_id, admin } = getValues();
+  const { amount, pool_id, role } = getValues();
 
   const { api } = useAppSelector(state => state.substrate);
 
@@ -51,8 +51,8 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
   });
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
-    key: ['Minging', pool_id],
+    address: role.address,
+    key: ['Mining', pool_id],
     onSuccess() {
       onClose();
     },
@@ -83,7 +83,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody
@@ -100,18 +100,30 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
               </Tr>
 
               <Tr>
-                <Td>Amount ID</Td>
+                <Td>Amount</Td>
                 <Td>{amount}</Td>
               </Tr>
 
-              {data ? (
-                <Tr>
-                  <Td>Fee</Td>
-                  <Td>
-                    <GafiAmount amount={formatGAFI(data.mintSettings.price)} />
-                  </Td>
-                </Tr>
-              ) : null}
+              {data
+                ? (function () {
+                    const price = Number(
+                      formatGAFI(data.mintSettings.price).replaceAll(',', '')
+                    );
+
+                    const convertGAFI = unitGAFI(
+                      String(Number(price) * Number(amount))
+                    );
+
+                    return (
+                      <Tr>
+                        <Td>Fee</Td>
+                        <Td>
+                          <GafiAmount amount={formatGAFI(convertGAFI)} />
+                        </Td>
+                      </Tr>
+                    );
+                  })()
+                : null}
             </Tbody>
           </Table>
         </ModalBody>
@@ -124,7 +136,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
             isLoading={isLoading}
             onClick={() => {
               if (api) {
-                mutation(api.tx.game.mint(pool_id, admin.address, amount));
+                mutation(api.tx.game.mint(pool_id, role.address, amount));
               }
             }}
           >

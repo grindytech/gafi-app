@@ -24,7 +24,6 @@ import { CreateItemFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
 interface CreateItemModalProps {
-  refetch: () => void;
   onClose: () => void;
   getValues: UseFormGetValues<CreateItemFieldProps>;
 }
@@ -32,18 +31,16 @@ interface CreateItemModalProps {
 export default function CreateItemModal({
   getValues,
   onClose,
-  refetch,
 }: CreateItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { collection_id, item_id, admin, maybeSupply } = getValues();
+  const { collection_id, item_id, role, maybeSupply } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: admin.address,
+    address: role.address,
     key: ['createItem', String(item_id)],
     onSuccess() {
       onClose();
-      refetch();
     },
   });
 
@@ -72,7 +69,7 @@ export default function CreateItemModal({
             />
           </Center>
 
-          <NewGamesProfile account={admin.name} hash={admin.address} />
+          <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
         <ModalBody

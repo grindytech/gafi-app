@@ -81,7 +81,7 @@ const SubstrateNode = () => {
               setConnect(event.target.value);
             }}
           >
-            {config.PROVIDER_SOCKETS.map((socketAddress: string) => (
+            {config.PROVIDER_SOCKETS?.map((socketAddress: string) => (
               <option key={socketAddress} value={socketAddress}>
                 {socketAddress}
               </option>
@@ -89,7 +89,7 @@ const SubstrateNode = () => {
           </Select>
 
           <HStack>
-            <Icon as={SettingIcon} color="primary.a.500" />
+            <Icon as={SettingIcon} width={4} height={4} color="primary.a.500" />
             <Text color="shader.a.500">{nodeInfo?.nodeVersion}</Text>
           </HStack>
         </Flex>

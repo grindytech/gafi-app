@@ -9,13 +9,13 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import BellIcon from 'public/assets/line/bell.svg';
 import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
 
 import { Link, useLocation } from 'react-router-dom';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import ConnectWallet from 'components/ConnectWallet';
+import Notification from 'components/Notification';
 
 const ListHeader = [
   {
@@ -129,7 +129,7 @@ export default function Header() {
 
         <List display="flex" alignItems="center" gap={6}>
           <ListItem>
-            <BellIcon />
+            <Notification />
           </ListItem>
 
           <ListItem>

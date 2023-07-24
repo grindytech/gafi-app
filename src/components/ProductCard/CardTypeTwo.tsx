@@ -8,7 +8,7 @@ import {
   ImageProps,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
+import { TestPropsType1 } from 'hooks/DataTest';
 
 import VerifyIcon from 'public/assets/fill/verified.svg';
 interface IProps {

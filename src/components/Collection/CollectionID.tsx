@@ -2,19 +2,14 @@ import { Center, Heading, Skeleton, Text } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 import useNextCollectionID from 'hooks/useNextCollectionID';
 import React from 'react';
-import { TypeSetValue } from 'types';
+import { UseFormSetValue } from 'react-hook-form';
 
 interface CollectionIDProps {
-  setValue: TypeSetValue;
-  refetch: () => void;
+  setValue: UseFormSetValue<any>;
 }
 
-export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
-  const { ID } = useNextCollectionID({
-    refetch() {
-      refetch();
-    },
-  });
+export default function CollectionID({ setValue }: CollectionIDProps) {
+  const { ID } = useNextCollectionID();
 
   React.useEffect(() => {
     setValue('collection_id', ID);
@@ -22,7 +17,7 @@ export default function CollectionID({ setValue, refetch }: CollectionIDProps) {
 
   return (
     <CardBox as={Center} variant="createGames" justifyContent="space-between">
-      <Heading variant="game">Collection ID</Heading>
+      <Heading variant="game">Current Collection ID</Heading>
 
       {ID ? (
         <Text fontWeight="medium" color="shader.a.900">
