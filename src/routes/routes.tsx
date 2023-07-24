@@ -5,15 +5,16 @@ import MarketPlace from 'pages/MarketPlace';
 import Home from 'layouts/Home';
 import { ListWeb3Item } from 'layouts/DefaultLayout/DefaultWeb3';
 import Blockchain, { ListBlockchain } from 'pages/Blockchain';
-import Explorer, {
-  ListExplorerTab,
-  ListMarketDetail,
-} from 'pages/MarketPlace/Explorer';
+import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
 import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
 import ExplorerCollectionsDetail from 'layouts/MarketPlace/Explorer/ExplorerCollections/ExplorerCollectionsDetail';
 import Mint from 'pages/Mint';
+import ExplorerBundleDetail from 'layouts/MarketPlace/Explorer/ExplorerBundles/ExplorerBundleDetail';
+import Account from 'pages/Account';
+
+import AccountSetting from 'pages/Account/Settings';
 
 const router = createBrowserRouter([
   {
@@ -69,9 +70,17 @@ const router = createBrowserRouter([
             path: 'collection/:id',
             element: <ExplorerCollectionsDetail />,
           },
+          {
+            path: 'bundle/:id',
+            element: <ExplorerBundleDetail />,
+          },
         ],
       },
-
+      {
+        path: 'account',
+        element: <Account />,
+      },
+      { path: 'account/setting', element: <AccountSetting /> },
       {
         path: 'minting',
       },

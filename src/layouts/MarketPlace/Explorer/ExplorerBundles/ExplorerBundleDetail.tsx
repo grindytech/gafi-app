@@ -21,15 +21,16 @@ import VerifyIcon from 'public/assets/fill/verified.svg';
 import Cart02Icon from 'public/assets/line/cart-02.svg';
 import HistoryIcon from 'public/assets/line/history.svg';
 import CardBox from 'components/CardBox';
-import NftActivityTable from 'layouts/MarketPlace/NFT/NftActivityTable';
-import TopFightGames from 'layouts/MarketPlace/Home/Games/components/TopFightGames';
-import { TestDataBundleDetails } from 'layouts/MarketPlace/Explorer/DataTest';
+
 import { useState } from 'react';
 import ThumbsProducts from 'components/Carousel/ThumbsProducts';
 import ThumbProductImage from 'components/Carousel/ThumbProductImage';
-import BundleListDetails from 'layouts/MarketPlace/Bundle/BundleListDetails';
+import BundleListDetails from './BundleListDetails';
+import { TestDataBundleDetails } from 'hooks/DataTest';
+import ExplorerNFTsActivityTable from '../ExplorerNFTs/ExplorerNFTsActivityTable';
+import HomeTopFightGame from 'layouts/MarketPlace/Home/HomeTopFightGame';
 
-const BundleDetail = () => {
+const ExplorerBundleDetail = () => {
   const data = TestDataBundleDetails;
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -183,16 +184,16 @@ const BundleDetail = () => {
           </TabList>
           <TabPanels>
             <TabPanel padding={6}>
-              <NftActivityTable />
+              <ExplorerNFTsActivityTable />
             </TabPanel>
             <TabPanel padding={0}>Auctions</TabPanel>
             <TabPanel padding={0}>Static</TabPanel>
           </TabPanels>
         </Tabs>
       </CardBox>
-      <TopFightGames />
+      <HomeTopFightGame />
     </Box>
   );
 };
 
-export default BundleDetail;
+export default ExplorerBundleDetail;
