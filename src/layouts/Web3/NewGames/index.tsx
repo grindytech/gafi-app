@@ -14,7 +14,6 @@ import GameID from 'components/Game/GameID';
 
 export interface NewGamesFieldProps extends TypeSwitchAdmin, TypeGameOwner {
   game_id: string;
-  title: string;
 }
 
 export default function NewGames() {

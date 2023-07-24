@@ -9,10 +9,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Table,
-  Tbody,
-  Td,
-  Tr,
   useToast,
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
@@ -22,8 +18,6 @@ import { UseFormGetValues } from 'react-hook-form';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { CreateCollectionFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 interface CreateCollectionsModalProps {
   onClose: () => void;
@@ -35,15 +29,14 @@ export default function CreateCollectionsModal({
   getValues,
 }: CreateCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
+
   const toast = useToast();
   const { collection_id, role, owner } = getValues();
-  const { collection: refetch } = useOutletContext<Web3OutletContextProps>();
 
   const { isLoading, mutation } = useSignAndSend({
     address: owner.address,
     key: ['createCollection', collection_id],
     onSuccess() {
-      refetch();
       onClose();
     },
   });
@@ -81,14 +74,15 @@ export default function CreateCollectionsModal({
           borderWidth="0.0625rem 0 0.0625rem 0"
           borderColor="shader.a.300"
         >
-          <Table variant="createGameSubmit">
+          {/* using notification 'bell' instead for show collection id */}
+          {/* <Table variant="createGameSubmit">
             <Tbody>
               <Tr>
                 <Td>Collection ID</Td>
                 <Td>{collection_id}</Td>
               </Tr>
             </Tbody>
-          </Table>
+          </Table> */}
         </ModalBody>
 
         <ModalFooter px={0} pb={0}>

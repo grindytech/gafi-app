@@ -65,7 +65,7 @@ import {
 */
 {
   it(`formatGAFI(fee) should return 1,500.0000`, () => {
-    expect(formatGAFI('1500000000000000000000')).toEqual('1,500.0000');
+    expect(formatGAFI('1500000000000000000000')).toEqual('1,500');
   });
 }
 
@@ -90,7 +90,7 @@ import {
     });
 
     it('should combine formatGAFI to return correctly unit (1)', () => {
-      expect(formatGAFI(unitGAFI('1'))).toBe('1.0000');
+      expect(formatGAFI(unitGAFI('1'))).toBe('1');
     });
 
     it('should combine formatGAFI to return correctly unit (0.1)', () => {

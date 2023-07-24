@@ -24,8 +24,6 @@ import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
 } from 'axios/cloudinary_axios';
-import { useOutletContext } from 'react-router-dom';
-import { Web3OutletContextProps } from 'pages/Web3';
 
 interface AddMetadataItemModalProps {
   onClose: () => void;
@@ -37,7 +35,6 @@ export default function AddMetadataItemModal({
   onClose,
 }: AddMetadataItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
-  const { item: refetch } = useOutletContext<Web3OutletContextProps>();
 
   const { collection_id, role, item_id, image, title } = getValues();
 
@@ -46,7 +43,6 @@ export default function AddMetadataItemModal({
     key: ['CollectionMetadataSet', String(collection_id)],
     onSuccess() {
       onClose();
-      refetch();
     },
   });
 
