@@ -45,7 +45,7 @@ const Account = () => {
               height="full"
               background="shader.a.900"
               opacity={0}
-              transition="opacity 0.5s ease-in-out"
+              transition="opacity 0.3s ease-in-out"
               _groupHover={{
                 opacity: 0.5,
               }}
@@ -104,7 +104,7 @@ const Account = () => {
               height="full"
               background="shader.a.900"
               opacity={0}
-              transition="opacity 0.5s ease-in-out"
+              transition="opacity 0.3s ease-in-out"
               _groupHover={{
                 opacity: 0.5,
               }}

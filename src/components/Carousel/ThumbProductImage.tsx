@@ -14,7 +14,8 @@ const ThumbProductImage = ({ items, thumbsSwiper }: IProps) => {
         thumbs: { swiper: thumbsSwiper },
         modules: [Navigation, Thumbs, Mousewheel],
         slidesPerView: 1,
-        freeMode: true,
+        /*     freeMode: true, */
+
         breakpoints: {
           360: {
             slidesPerView: 1,
@@ -41,6 +42,7 @@ const ThumbProductImage = ({ items, thumbsSwiper }: IProps) => {
           key={`product-gallery-${item.id}`}
           style={{
             width: 'inherit',
+            transition: 'all linear 300ms',
           }}
         >
           <Image

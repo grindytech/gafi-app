@@ -99,7 +99,6 @@ export default function ConnectWallet() {
 
   return (
     <>
-      {/* <Menu closeOnSelect={false} onClose={onClose} placement="bottom-end"> */}
       {account && account.address ? (
         <Button onClick={onToggle} variant="unstyled">
           <AccountJazzicon address={account.address} />
