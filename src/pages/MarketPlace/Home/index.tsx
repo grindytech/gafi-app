@@ -1,16 +1,50 @@
-import OverviewCollection from 'layouts/MarketPlace/Home/Collections';
-import OverviewGames from 'layouts/MarketPlace/Home/Games';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 
-const HomeMarketPlace = () => {
+import HomeExtraordinary from 'layouts/MarketPlace/Home/HomeExtraordinary';
+import HomeTrendingCollection from 'layouts/MarketPlace/Home/HomeTrendingCollection';
+import HomeTopCategory from 'layouts/MarketPlace/Home/HomeTopCategory';
+import HomeRecentlySold from 'layouts/MarketPlace/Home/HomeRecently/HomeRecentlySold';
+import HomeRecentlyMint from 'layouts/MarketPlace/Home/HomeRecently/HomeRecentlyMint';
+import HomeTopPools from 'layouts/MarketPlace/Home/HomeTopPools';
+import HomeLiveAuction from 'layouts/MarketPlace/Home/HomeGameArticle';
+import HomeNewGames from 'layouts/MarketPlace/Home/HomeNewGames';
+import HomeTopAdventure from 'layouts/MarketPlace/Home/HomeTopAdventure';
+import HomeTopFightGame from 'layouts/MarketPlace/Home/HomeTopFightGame';
+import HomeGameEvent from 'layouts/MarketPlace/Home/HomeGameEvent';
+import HomeGameArticle from 'layouts/MarketPlace/Home/HomeGameArticle';
+
+export default function HomeMarketPlace() {
   return (
-    <>
-      <Flex flexDirection="column" gap={6}>
-        <OverviewCollection />
-        <OverviewGames />
-      </Flex>
-    </>
-  );
-};
+    <Flex flexDirection="column" gap={6}>
+      <HomeExtraordinary />
 
-export default HomeMarketPlace;
+      <HomeTrendingCollection />
+
+      <HomeTopCategory />
+
+      <Grid
+        my={5}
+        gridTemplateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
+        gap={5}
+      >
+        <HomeRecentlySold />
+
+        <HomeRecentlyMint />
+      </Grid>
+
+      <HomeTopPools />
+
+      <HomeLiveAuction />
+
+      <HomeNewGames />
+
+      <HomeTopAdventure />
+
+      <HomeTopFightGame />
+
+      <HomeGameEvent />
+
+      <HomeGameArticle />
+    </Flex>
+  );
+}

@@ -52,7 +52,7 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
 
   const { isLoading, mutation } = useSignAndSend({
     address: role.address,
-    key: ['Minging', pool_id],
+    key: ['Mining', pool_id],
     onSuccess() {
       onClose();
     },

@@ -10,7 +10,7 @@ const common: commonProps = {
 };
 
 const development = {
-  PROVIDER_SOCKETS: ['ws://127.0.0.1:9944'],
+  PROVIDER_SOCKETS: ['ws://192.168.1.28:9944'],
 };
 
 const production = {
