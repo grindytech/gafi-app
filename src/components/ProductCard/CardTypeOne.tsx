@@ -9,7 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
-import { TestPropsType1 } from 'layouts/MarketPlace/Explorer/DataTest';
+import { TestPropsType1 } from 'hooks/DataTest';
 import { Link } from 'react-router-dom';
 
 interface IProps {
@@ -22,7 +22,7 @@ interface IProps {
 const CardTypeOne = ({ item, imageStyle, link }: IProps) => {
   return (
     <>
-      <Link to={link || `/collection/${item.id}`}>
+      <Link to={link || `/marketplace/collection/${item.id}`}>
         <CardBox
           mt={2}
           padding={0}

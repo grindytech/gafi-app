@@ -14,8 +14,9 @@ import CardBox from 'components/CardBox';
 import GafiIcon from 'public/assets/token/gafi-token.svg';
 import TimeIcon from 'public/assets/line/time.svg';
 import VerifyIcon from 'public/assets/fill/verified.svg';
-import { TestDataProps3 } from 'layouts/MarketPlace/Home/Collections/components/LiveAuction';
+
 import { formatGAFI } from 'utils/utils';
+import { TestDataProps3 } from 'layouts/MarketPlace/Home/HomeLiveAuction';
 interface IProps {
   item: TestDataProps3;
   imageStyle?: ImageProps;
