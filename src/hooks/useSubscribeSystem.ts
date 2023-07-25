@@ -15,13 +15,8 @@ interface StateEventProps {
   optional 2:
     - show everything
 */
-/* const FILTERED_EVENTS = [
-  'system:ExtrinsicSuccess::(phase={"applyExtrinsic":0})',
-]; */
-const FILTER_EVENT = 'system::ExtrinsicSuccess::{"applyExtrinsic":0}';
-
 export default function useSubscribeSystem(include?: string) {
-  const [events, setEvents] = React.useState<StateEventProps[] | undefined>([]);
+  const [event, setEvent] = React.useState<StateEventProps[] | undefined>([]);
   const { api } = useAppSelector(state => state.substrate);
 
   React.useEffect(() => {
@@ -33,10 +28,13 @@ export default function useSubscribeSystem(include?: string) {
             const eventValue = record.event.data.toString();
             const eventPhase = eventName + '::' + record.phase.toString();
 
+            const FILTER_EVENT =
+              'system::ExtrinsicSuccess::{"applyExtrinsic":0}';
+
             if (FILTER_EVENT.includes(eventPhase)) return;
 
             if (include && eventName === include) {
-              return setEvents(prev => [
+              return setEvent(prev => [
                 {
                   eventName,
                   eventValue,
@@ -47,7 +45,7 @@ export default function useSubscribeSystem(include?: string) {
             }
 
             if (!include) {
-              return setEvents(prev => [
+              return setEvent(prev => [
                 {
                   eventName,
                   eventValue,
@@ -67,7 +65,7 @@ export default function useSubscribeSystem(include?: string) {
   }, [api?.query.system]);
 
   return {
-    events,
-    setEvents,
+    event,
+    setEvent,
   };
 }

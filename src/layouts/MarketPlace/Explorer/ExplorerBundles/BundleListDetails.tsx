@@ -24,7 +24,13 @@ const BundleListDetails = ({ items }: IProps) => {
           {items.length} items
         </Text>
       </HStack>
-      <Flex flexDirection="column" gap={6} padding={6}>
+      <Flex
+        flexDirection="column"
+        gap={6}
+        padding={6}
+        maxHeight="37.5rem "
+        overflowY="scroll"
+      >
         {items.map(item => (
           <HStack
             borderRadius="xl"
