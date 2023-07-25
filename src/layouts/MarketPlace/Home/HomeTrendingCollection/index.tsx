@@ -1,189 +1,66 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   HStack,
   Heading,
   Icon,
   Image,
-  Link,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 
-import { Navigation, Mousewheel } from 'swiper';
-
+import { Grid, Mousewheel } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import CollectionIcon from 'public/assets/line/collection-02.svg';
 import ArrowIcon from 'public/assets/line/chevron-02.svg';
-import { CircleIcon } from 'components/Substrate/SubstrateNode';
-import 'swiper/css/mousewheel';
-interface TestProps {
-  image: string;
-  name: string;
-  floor: string;
-  vol: string;
-}
-const TestData: TestProps[] = [
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz1',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz1',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz1',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz2',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz2',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz2',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz3',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz3',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz3',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?auto=format&dpr=1&w=256',
-    name: 'reepz',
-    floor: '0.08',
-    vol: '13475',
-  },
-  {
-    image:
-      'https://i.seadn.io/gcs/files/96b6b321ab6d829e19f831cf21f13341.png?auto=format&dpr=1&w=285',
-    name: 'reepz',
-    floor: '0.08',
-    vol: '13475',
-  },
-];
 
-const slidePerPage = (objectArray: TestProps[]) => {
-  const itemsPerPage = 3; //setting item each page is 3
-  const totalSlides = Math.ceil(objectArray.length / itemsPerPage);
-  return (
-    <div>
-      {[...Array(totalSlides)].map((_, slideIndex) => (
-        <SwiperSlide key={slideIndex}>
-          <VStack gap={8} alignItems="flex-start">
-            {objectArray
-              .slice(slideIndex * itemsPerPage, (slideIndex + 1) * itemsPerPage)
-              .map((item, index) => (
-                <HStack
-                  color="shader.a.900"
-                  spacing={3}
-                  key={` ${slideIndex * itemsPerPage + index + 1}`}
-                >
-                  <Text fontWeight="bold">{` ${
-                    slideIndex * itemsPerPage + index + 1
-                  }`}</Text>
+import { useQuery } from '@tanstack/react-query';
+import { useAppSelector } from 'hooks/useRedux';
+import { TypeMetadataOfCollection } from 'types';
+import React from 'react';
 
-                  <Image
-                    src={item.image}
-                    height={14}
-                    width={14}
-                    borderRadius="xl"
-                  />
-                  <VStack alignItems="flex-start">
-                    <Text fontWeight="bold">{item.name}</Text>
-                    <HStack>
-                      <Flex>
-                        <Text>Floor Price:</Text>
-                        <Text fontWeight="bold">{item.floor}</Text>
-                      </Flex>
-                      <CircleIcon height="8px" />
-                      <Flex>
-                        <Text>Vol:</Text>
-                        <Text fontWeight="bold">{item.floor}</Text>
-                      </Flex>
-                    </HStack>
-                  </VStack>
-                </HStack>
-              ))}
-          </VStack>
-        </SwiperSlide>
-      ))}
-    </div>
-  );
-};
+import { cloundinary_link } from 'axios/cloudinary_axios';
+import { Link } from 'react-router-dom';
 
 export default function HomeTrendingCollection() {
+  const { api } = useAppSelector(state => state.substrate);
+
+  const { data } = useQuery({
+    queryKey: ['1'],
+    queryFn: async () => {
+      if (api) {
+        const getCollections = await api.query.nfts.collection.entries();
+
+        return Promise.all(
+          getCollections.map(
+            async ([
+              {
+                args: [collection_id],
+              },
+            ]) => {
+              const metadata = await api.query.nfts
+                .collectionMetadataOf(collection_id)
+                .then(item => item.toHuman() as { data: string } | null);
+
+              return {
+                metadata: metadata
+                  ? (JSON.parse(metadata.data) as TypeMetadataOfCollection)
+                  : null,
+                collection_id: collection_id.toNumber(),
+              };
+            }
+          )
+        );
+      }
+    },
+    enabled: !!(api && api.query.nfts.collection),
+  });
+
   return (
     <Box color="shader.a.900">
-      <HStack
-        justifyContent="space-between"
-        spacing={0}
-        position="sticky"
-        left={0}
-      >
+      <Center justifyContent="space-between">
         <Flex gap={3} alignItems="center">
           <Icon
             as={CollectionIcon}
@@ -198,7 +75,7 @@ export default function HomeTrendingCollection() {
           <Heading variant="sub02">Trending Collections</Heading>
         </Flex>
 
-        <Link href="/marketplace/explorer/collections">
+        <Link to="/marketplace/explorer/collections">
           <Button
             variant="more"
             fontSize="sm"
@@ -215,35 +92,90 @@ export default function HomeTrendingCollection() {
             more
           </Button>
         </Link>
-      </HStack>
-      <Box my={4}>
+      </Center>
+
+      <Box mt={6}>
         <Swiper
-          // install Swiper modules
-          modules={[Navigation, Mousewheel]}
-          spaceBetween={20}
+          modules={[Mousewheel, Grid]}
+          spaceBetween={32}
+          slidesPerView={4}
+          grid={{
+            rows: 3,
+            fill: 'row',
+          }}
           mousewheel={{
             forceToAxis: true,
           }}
-          slidesPerView={3.5}
-          breakpoints={{
-            370: {
-              slidesPerView: 1,
-            },
-            450: {
-              slidesPerView: 1,
-            },
-            630: {
-              slidesPerView: 2,
-            },
-            920: {
-              slidesPerView: 2.5,
-            },
-            1520: {
-              slidesPerView: 3.5,
-            },
-          }}
         >
-          {slidePerPage(TestData)}
+          {data && data.length
+            ? (function () {
+                const newest = data
+                  .sort((a, b) => a.collection_id - b.collection_id)
+                  .slice(0, 10);
+
+                return React.Children.toArray(
+                  newest.map(item => {
+                    return (
+                      <SwiperSlide>
+                        <HStack
+                          as={Link}
+                          to={`/marketplace/collection/${item.collection_id}`}
+                          position="relative"
+                          _hover={{
+                            textDecoration: 'none',
+                          }}
+                        >
+                          <Text
+                            position="absolute"
+                            left={0}
+                            textAlign="left"
+                            fontWeight="medium"
+                          >
+                            {item.collection_id}
+                          </Text>
+
+                          <Center
+                            ml={8}
+                            bg="shader.a.300"
+                            position="relative"
+                            overflow="hidden"
+                            width={14}
+                            height={14}
+                            borderRadius="xl"
+                            sx={{
+                              img: {
+                                position: 'absolute',
+                                inset: 0,
+                                width: 'full',
+                                height: 'full',
+                              },
+                            }}
+                          >
+                            {item.metadata?.image ? (
+                              <Image
+                                objectFit="cover"
+                                alt="image is outdated"
+                                src={`${cloundinary_link}/${item.metadata.image}`}
+                              />
+                            ) : (
+                              <Image padding={2} src="/assets/fill/item.png" />
+                            )}
+                          </Center>
+
+                          <Text
+                            color="shader.a.900"
+                            fontSize="lg"
+                            fontWeight="medium"
+                          >
+                            {item.metadata?.title || '-'}
+                          </Text>
+                        </HStack>
+                      </SwiperSlide>
+                    );
+                  })
+                );
+              })()
+            : null}
         </Swiper>
       </Box>
     </Box>

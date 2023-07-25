@@ -9,8 +9,9 @@ import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
 import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
-import ExplorerCollectionsDetail from 'layouts/MarketPlace/Explorer/ExplorerCollections/ExplorerCollectionsDetail';
+
 import Mint from 'pages/Mint';
+import CollectionDetail from 'pages/MarketPlace/CollectionDetail';
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'collection/:id',
-            element: <ExplorerCollectionsDetail />,
+            element: <CollectionDetail />,
           },
         ],
       },
