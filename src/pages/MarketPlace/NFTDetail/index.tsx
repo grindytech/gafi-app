@@ -58,7 +58,6 @@ interface getBundleProps {
   item_id: number;
   trade_id: number;
   amount: number;
-  // trade: GafiSupportGameTypesTradeType;
 }
 
 export default function NFTDetail() {
