@@ -23,6 +23,8 @@ import { TypeMetadataOfItem } from 'types';
 import React from 'react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
+import { PalletNftsItemMetadata } from '@polkadot/types/lookup';
+import { Option } from '@polkadot/types';
 
 export default function CollectionDetailNFT() {
   const { id } = useParams();
@@ -31,7 +33,7 @@ export default function CollectionDetailNFT() {
   const { isOpen, onToggle } = useDisclosure();
 
   const { data } = useQuery({
-    queryKey: ['collection_nft', id],
+    queryKey: [`collection_nft/${id}`],
     queryFn: async () => {
       if (api) {
         const getItem = (await api.query.nfts.item.entries(id)).map(
@@ -40,14 +42,16 @@ export default function CollectionDetailNFT() {
               args: [collection_id, item_id],
             },
           ]) => {
-            const metadata = await api.query.nfts.itemMetadataOf
-              .entries(item_id)
-              .then(item => {
-                if (item.length) {
-                  const data = item[0][1].toHuman() as { data: string };
+            const metadata = await api.query.nfts
+              .itemMetadataOf(collection_id.toNumber(), item_id.toNumber())
+              .then((meta): TypeMetadataOfItem | null => {
+                const service = meta as Option<PalletNftsItemMetadata>;
 
-                  return JSON.parse(data.data) as TypeMetadataOfItem;
+                if (service.isSome) {
+                  return JSON.parse(String(service.value.data.toHuman()));
                 }
+
+                return null;
               });
 
             return {
@@ -120,7 +124,7 @@ export default function CollectionDetailNFT() {
                   <Box
                     as={Link}
                     flex={1}
-                    to={`/marketplace/nft/${item.item_id}`}
+                    to={`/marketplace/nft/${item.item_id}/${item.collection_id}`}
                     height="fit-content"
                     key={item.item_id}
                     border="0.0625rem solid"

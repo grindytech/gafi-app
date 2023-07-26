@@ -8,10 +8,10 @@ import Blockchain, { ListBlockchain } from 'pages/Blockchain';
 import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
-import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
 
 import Mint from 'pages/Mint';
 import CollectionDetail from 'pages/MarketPlace/CollectionDetail';
+import NFTDetail from 'pages/MarketPlace/NFTDetail';
 
 const router = createBrowserRouter([
   {
@@ -60,8 +60,8 @@ const router = createBrowserRouter([
             element: <ExplorerGamesDetail />,
           },
           {
-            path: 'nft/:id',
-            element: <ExplorerNFTsDetail />,
+            path: 'nft/:nft_id/:collection_id',
+            element: <NFTDetail />,
           },
           {
             path: 'collection/:id',
