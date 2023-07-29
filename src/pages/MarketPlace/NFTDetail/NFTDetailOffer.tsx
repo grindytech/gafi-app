@@ -1,143 +1,305 @@
 import {
+  Box,
   Button,
+  Center,
+  Flex,
   FormControl,
-  FormLabel,
+  HStack,
+  Heading,
+  Image,
   Input,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
+import { cloundinary_link } from 'axios/cloudinary_axios';
+import GafiAmount from 'components/GafiAmount';
+
 import { useAppSelector } from 'hooks/useRedux';
 import useSignAndSend from 'hooks/useSignAndSend';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { formatCurrency } from 'utils/utils';
 
-interface NFTDetailSellFieldProps {
-  amount: string;
-  price: string;
-  start_block: string | null;
-  end_block: string | null;
+import useBlockTime from 'hooks/useBlockTime';
+import DurationBlock from 'components/DurationBlock';
+import useMetaNFT from 'hooks/useMetaNFT';
+import useMetaCollection from 'hooks/useMetaCollection';
+
+interface NFTDetailOfferProps {
+  fee: number;
+  amount: number;
 }
 
-interface ListControlFormProps {
-  field: keyof NFTDetailSellFieldProps;
-  heading: string;
-  isRequired?: boolean;
-  isInvalid?: boolean;
-}
-
-export default function NFTDetailOffer() {
+export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
   const { nft_id, collection_id } = useParams();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<NFTDetailSellFieldProps>();
 
   const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const [duration, setDuration] = React.useState(0);
+  const { blockNumber } = useBlockTime('bestNumber');
+
+  const { metaCollection } = useMetaCollection({
+    collection_id: Number(collection_id),
+    key: `${nft_id}/${collection_id}`,
+  });
+
+  const { metaNFT } = useMetaNFT({
+    collection_id: Number(collection_id),
+    nft_id: Number(nft_id),
+    key: `${nft_id}/${collection_id}`,
+  });
+
   const { isLoading, mutation } = useSignAndSend({
-    key: ['sell_nft', String(nft_id)],
+    key: ['make_offer', String(nft_id)],
     address: account?.address as string,
     onSuccess() {
       onClose();
+      reset();
     },
   });
 
-  const ListControlForm: ListControlFormProps[] = [
-    {
-      field: 'amount',
-      heading: 'Amount',
-      isRequired: true,
-      isInvalid: !!errors.amount,
-    },
-    {
-      field: 'price',
-      heading: 'Price',
-      isRequired: true,
-      isInvalid: !!errors.price,
-    },
-    {
-      field: 'start_block',
-      heading: 'Start Block',
-    },
-    {
-      field: 'end_block',
-      heading: 'End Block',
-    },
-  ];
-
   return (
-    <>
-      <Button variant="cancel" borderRadius="3xl" onClick={onOpen}>
-        Make offer
-      </Button>
-
+    <Button
+      variant="cancel"
+      borderRadius="3xl"
+      isLoading={isLoading}
+      onClick={onOpen}
+      _hover={{}}
+    >
+      Make offer
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal
+          isOpen={isOpen}
+          onClose={() => {
+            reset();
+            onClose();
+          }}
+          closeOnOverlayClick={!isLoading}
+        >
           <ModalOverlay />
 
           <ModalContent
             as="form"
-            onSubmit={handleSubmit(meta => {
+            sx={{
+              input: {
+                padding: 4,
+                height: 'auto',
+                fontSize: 'sm',
+                color: 'shader.a.900',
+                borderRadius: 'xl',
+                borderColor: 'shader.a.300',
+              },
+              span: {
+                color: 'shader.a.500',
+                fontWeight: 'normal',
+                fontSize: 'sm',
+              },
+              '.amount-gafi': {
+                color: 'shader.a.900',
+                fontSize: 'sm',
+                fontWeight: 'medium',
+              },
+            }}
+            onSubmit={handleSubmit(({ price, amount }) => {
               if (api) {
                 mutation(
                   api.tx.game.setBuy(
-                    {
-                      collection: collection_id,
-                      item: nft_id,
-                      amount: meta.amount,
-                    },
-                    meta.price,
-                    null,
-                    null
+                    { collection: collection_id, item: nft_id, amount },
+                    price,
+                    blockNumber, // start_block
+                    blockNumber + duration // end_block
                   )
                 );
               }
             })}
           >
-            <ModalBody padding={6}>
-              {React.Children.toArray(
-                ListControlForm.map(meta => (
-                  <FormControl
-                    isRequired={meta.isRequired}
-                    isInvalid={meta.isInvalid}
-                    _notFirst={{ mt: 4 }}
-                  >
-                    <FormLabel>{meta.heading}</FormLabel>
+            <ModalHeader
+              display="flex"
+              justifyContent="space-between"
+              padding={4}
+              borderBottom="0.0625rem solid"
+              borderColor="shader.a.300"
+            >
+              <Heading fontSize="xl" color="shader.a.900" fontWeight="semibold">
+                Make offer
+              </Heading>
 
-                    <Input
-                      {...TextInputMaxLengthStyle}
-                      isRequired={false}
-                      placeholder="Ex: 0"
-                      {...register(meta.field, {
-                        required: meta.isRequired,
-                      })}
-                    />
-                  </FormControl>
-                ))
-              )}
+              <ModalCloseButton position="unset" width={6} height={6} />
+            </ModalHeader>
+
+            <ModalBody
+              display="flex"
+              flexDirection="column"
+              gap={5}
+              padding={4}
+            >
+              <HStack alignItems="flex-start" spacing={4}>
+                <Flex gap={4}>
+                  <Center
+                    aspectRatio={16 / 9}
+                    position="relative"
+                    width={32}
+                    borderRadius="lg"
+                    overflow="hidden"
+                    bg="shader.a.300"
+                    sx={{
+                      img: {
+                        position: 'absolute',
+                        inset: 0,
+                        width: 'full',
+                        height: 'full',
+                      },
+                    }}
+                  >
+                    {metaNFT?.image ? (
+                      <Image
+                        objectFit="cover"
+                        alt="image is outdated"
+                        src={`${cloundinary_link}/${metaNFT.image}`}
+                      />
+                    ) : (
+                      <Image src="/assets/fill/item.png" objectFit="none" />
+                    )}
+                  </Center>
+
+                  <Box>
+                    <Text color="primary.a.500" fontWeight="medium">
+                      {metaCollection?.title || '-'}
+                    </Text>
+
+                    <Text
+                      as="span"
+                      color="shader.a.900"
+                      fontWeight="semibold"
+                      fontSize="xl"
+                    >
+                      {metaNFT?.title || '-'}
+                      <Text
+                        as="strong"
+                        fontWeight="medium"
+                        fontSize="md"
+                        color="primary.a.500"
+                      >
+                        &nbsp;x{amount}
+                      </Text>
+                    </Text>
+                  </Box>
+                </Flex>
+              </HStack>
+
+              <Flex
+                borderRadius="xl"
+                bg="shader.a.200"
+                border="0.0625rem solid"
+                borderColor="shader.a.300"
+                justifyContent="space-between"
+                padding={2}
+              >
+                <Text as="span">Best offer</Text>
+
+                <Box textAlign="right">
+                  <GafiAmount
+                    amount={fee}
+                    sx={{
+                      className: 'amount-gafi',
+                      sx: {
+                        span: {
+                          color: 'inherit!',
+                          fontSize: 'inherit',
+                          fontWeight: 'inherit',
+                        },
+                      },
+                    }}
+                  />
+
+                  <Text as="span">{formatCurrency(fee, 'usd')}</Text>
+                </Box>
+              </Flex>
+
+              <FormControl isRequired={true} isInvalid={!!errors.price}>
+                <Input
+                  placeholder="Enter offer"
+                  isRequired={false}
+                  {...register('price', { required: true })}
+                />
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={!!errors.amount}>
+                <Input
+                  placeholder="Enter Amount"
+                  isRequired={false}
+                  {...register('amount', { required: true })}
+                />
+              </FormControl>
+
+              <DurationBlock currentDuration={setDuration} />
             </ModalBody>
 
-            <ModalFooter gap={2}>
-              <Button variant="primary" type="submit" isLoading={isLoading}>
-                Submit
-              </Button>
-              <Button variant="cancel" onClick={onClose}>
-                Cancel
+            <ModalFooter
+              gap={2}
+              borderTop="0.0625rem solid"
+              borderColor="shader.a.300"
+              padding={4}
+              justifyContent="space-between"
+              display="block"
+            >
+              <Flex justifyContent="space-between">
+                <Text as="span">Total value</Text>
+
+                <Box textAlign="right">
+                  <GafiAmount
+                    amount={watch().price || 0}
+                    sx={{
+                      className: 'amount-gafi',
+                      sx: {
+                        span: {
+                          color: 'inherit!',
+                          fontSize: 'inherit',
+                          fontWeight: 'inherit',
+                        },
+                      },
+                    }}
+                  />
+
+                  <Text as="span">
+                    {formatCurrency(Number(watch().price || 0), 'usd')}
+                  </Text>
+                </Box>
+              </Flex>
+
+              <Button
+                isLoading={isLoading}
+                variant="primary"
+                width="full"
+                type="submit"
+                mt={4}
+                _hover={{}}
+              >
+                Make offer
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
       )}
-    </>
+    </Button>
   );
 }

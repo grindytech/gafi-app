@@ -24,7 +24,7 @@ export default function NFTDetailCancelOffer({
       isLoading={isLoading}
       onClick={() => {
         if (api) {
-          mutation(api.tx.game.cancelTrade(trade_id, 'SetBuy'));
+          mutation(api.tx.game.cancelTrade(trade_id, 'SetPrice'));
         }
       }}
     >
