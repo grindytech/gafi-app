@@ -1,0 +1,36 @@
+import { Text, TextProps } from '@chakra-ui/react';
+import { secondsToHours, secondsToMinutes } from 'date-fns';
+
+interface DateBlockProps {
+  time: number;
+  sx?: TextProps;
+}
+
+export default function DateBlock({ time, sx }: DateBlockProps) {
+  const expired = Math.sign(time) === -1;
+
+  return (
+    <Text {...sx}>
+      {(function () {
+        // outdated
+        if (expired) return 'Expired';
+
+        // seconds (< 60 S)
+        if (time <= 60) return `in ${time} seconds`;
+
+        // minutes (< 60 M)
+        if (time < 3600) return `in ${secondsToMinutes(time)} minutes`;
+
+        // hours (< 24 H)
+        if (time < 86400) return `in ${secondsToHours(time)} hours`;
+
+        // days (< 30 D)
+        if (time < 2505600) return `in ${Math.round(time / (3600 * 24))} day`;
+
+        // months (> 30 D)
+        if (time > 2505600)
+          return `in ${Math.round(time / (2592000 * 1))} months`;
+      })()}
+    </Text>
+  );
+}
