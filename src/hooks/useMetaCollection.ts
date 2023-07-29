@@ -1,5 +1,3 @@
-import { Option } from '@polkadot/types';
-import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from './useRedux';
 import { TypeMetadataOfCollection } from 'types';
@@ -7,13 +5,17 @@ import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
 
 interface useMetaCollectionProps {
-  collection_id: number;
-  key: string;
+  key?: string;
+  group:
+    | {
+        collection_id: number;
+      }[]
+    | undefined;
 }
 
 export default function useMetaCollection({
-  collection_id,
   key,
+  group,
 }: useMetaCollectionProps) {
   const { event, setEvent } = useSubscribeSystem('nfts::CollectionMetadataSet');
 
@@ -22,33 +24,39 @@ export default function useMetaCollection({
   const { data, refetch } = useQuery({
     queryKey: [`metaCollection/${key}`],
     queryFn: async () => {
-      if (api) {
-        const service = (await api.query.nfts.collectionMetadataOf(
-          collection_id
-        )) as Option<PalletNftsCollectionMetadata>;
+      if (api && group?.length) {
+        const response = Promise.all(
+          group.map(async ({ collection_id }) => {
+            const service = await api.query.nfts.collectionMetadataOf(
+              collection_id
+            );
+            if (service.isEmpty) return null;
+            return JSON.parse(service.value.data.toHuman());
+          })
+        );
 
-        if (service.isEmpty) {
-          return null;
-        }
-
-        return JSON.parse(
-          String(service.value.data.toHuman())
-        ) as TypeMetadataOfCollection;
+        return (await response).filter(
+          (item): item is TypeMetadataOfCollection => !!item
+        );
       }
+
+      // not found group
+      return [];
     },
+    enabled: !!group,
   });
 
   useEffect(() => {
-    if (event) {
+    if (event && group?.length) {
       event.forEach(({ eventValue }) => {
         const [collection] = JSON.parse(eventValue);
 
-        if (collection === collection_id) {
-          refetch();
-          setEvent([]);
-
-          console.log('refetch collection', collection);
-        }
+        group.forEach(({ collection_id }) => {
+          if (collection === collection_id) {
+            setEvent([]);
+            refetch();
+          }
+        });
       });
     }
   }, [event]);

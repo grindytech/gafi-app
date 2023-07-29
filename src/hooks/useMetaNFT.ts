@@ -1,22 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from './useRedux';
-import { Option } from '@polkadot/types';
-import { PalletNftsItemMetadata } from '@polkadot/types/lookup';
 import { TypeMetadataOfItem } from 'types';
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 
 interface useMetaNFTProps {
-  collection_id: number;
-  nft_id: number;
-  key: string;
+  key?: string;
+  group:
+    | {
+        collection_id: number;
+        nft_id: number;
+      }[]
+    | undefined;
 }
 
-export default function useMetaNFT({
-  collection_id,
-  nft_id,
-  key,
-}: useMetaNFTProps) {
+export default function useMetaNFT({ key, group }: useMetaNFTProps) {
   const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
 
   const { api } = useAppSelector(state => state.substrate);
@@ -24,32 +22,42 @@ export default function useMetaNFT({
   const { data, refetch } = useQuery({
     queryKey: [`metaItem/${key}`],
     queryFn: async () => {
-      if (api) {
-        const service = (await api.query.nfts.itemMetadataOf(
-          collection_id,
-          nft_id
-        )) as Option<PalletNftsItemMetadata>;
+      if (api && group?.length) {
+        const response = Promise.all(
+          group.map(async ({ collection_id, nft_id }) => {
+            const service = await api.query.nfts.itemMetadataOf(
+              collection_id,
+              nft_id
+            );
 
-        if (service.isEmpty) {
-          return null;
-        }
+            if (service.isEmpty) return null;
 
-        return JSON.parse(
-          String(service.value.data.toHuman())
-        ) as TypeMetadataOfItem;
+            return JSON.parse(service.value.data.toHuman());
+          })
+        );
+
+        return (await response).filter(
+          (item): item is TypeMetadataOfItem => !!item
+        );
       }
+
+      // not found group
+      return [];
     },
+    enabled: !!group,
   });
 
   useEffect(() => {
-    if (event) {
+    if (event && group?.length) {
       event.forEach(({ eventValue }) => {
         const [collection, item] = JSON.parse(eventValue);
 
-        if (collection === collection_id && item === nft_id) {
-          refetch();
-          setEvent([]);
-        }
+        group.forEach(({ collection_id, nft_id }) => {
+          if (collection === collection_id && nft_id === item) {
+            refetch();
+            setEvent([]);
+          }
+        });
       });
     }
   }, [event]);
