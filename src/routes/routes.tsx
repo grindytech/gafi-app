@@ -8,10 +8,12 @@ import Blockchain, { ListBlockchain } from 'pages/Blockchain';
 import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
-
 import Mint from 'pages/Mint';
 import CollectionDetail from 'pages/MarketPlace/CollectionDetail';
 import NFTDetail from 'pages/MarketPlace/NFTDetail';
+import ExplorerBundleDetail from 'layouts/MarketPlace/Explorer/ExplorerBundles/ExplorerBundleDetail';
+import Account from 'pages/Account';
+import AccountSetting from 'pages/Account/Settings';
 
 const router = createBrowserRouter([
   {
@@ -67,9 +69,17 @@ const router = createBrowserRouter([
             path: 'collection/:collection_id',
             element: <CollectionDetail />,
           },
+          {
+            path: 'bundle/:id',
+            element: <ExplorerBundleDetail />,
+          },
         ],
       },
-
+      {
+        path: 'account',
+        element: <Account />,
+      },
+      { path: 'account/setting', element: <AccountSetting /> },
       {
         path: 'minting',
       },

@@ -2,12 +2,15 @@ import {
   Box,
   Button,
   Center,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerOverlay,
+  Flex,
+  HStack,
   Icon,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   useDisclosure,
   useToast,
@@ -17,6 +20,12 @@ import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
 
 import Swap02Icon from 'public/assets/line/swap-02.svg';
+import NFTIcon from 'public/assets/line/nfts.svg';
+import ChartIcon from 'public/assets/line/chart-02.svg';
+import CartIcon from 'public/assets/line/cart-02.svg';
+import LoveIcon from 'public/assets/line/heart.svg';
+import SettingIcon from 'public/assets/line/setting.svg';
+
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
 
 import useSignAndSend from 'hooks/useSignAndSend';
@@ -28,7 +37,35 @@ import ConnectWalletLogOut from './ConnectWalletLogOut';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { injectedAccount } from 'redux/injected';
 import useForceMount from 'hooks/useForceMount';
+import { Link } from 'react-router-dom';
 
+export const ListProfileData = [
+  {
+    icon: NFTIcon,
+    title: 'My NFTs',
+    link: '/account',
+  },
+  {
+    icon: ChartIcon,
+    title: 'Activity',
+    link: '#',
+  },
+  {
+    icon: CartIcon,
+    title: 'My Cart',
+    link: '#',
+  },
+  {
+    icon: LoveIcon,
+    title: 'Favourited',
+    link: '#',
+  },
+  {
+    icon: SettingIcon,
+    title: 'Settings',
+    link: '#',
+  },
+];
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
   const { setMounting, mounting } = useForceMount();
@@ -54,15 +91,21 @@ export default function ConnectWallet() {
 
   const toast = useToast();
   const { isOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: isOpenSwitch,
+    onClose: onCloseSwitch,
+    onToggle: onToggleSwitch,
+  } = useDisclosure();
 
   return (
-    <Menu closeOnSelect={false} onClose={onClose} placement="bottom-end">
+    <>
       {account && account.address ? (
-        <MenuButton>
+        <Button onClick={onToggle} variant="unstyled">
           <AccountJazzicon address={account.address} />
-        </MenuButton>
+        </Button>
       ) : (
-        <MenuButton
+        <Button
+          variant="baseStyle"
           onClick={() => {
             if (allAccount && allAccount.length) {
               const { address, name } = allAccount[0];
@@ -90,110 +133,166 @@ export default function ConnectWallet() {
           }}
         >
           Connect Wallet
-        </MenuButton>
+        </Button>
       )}
 
       {account && account.address && account.name && allAccount ? (
-        <MenuList
-          borderRadius="2xl"
-          bg="white"
-          borderColor="shader.a.400"
-          padding={4}
-        >
-          <MenuItem bg="transparent" as="div" padding={0} position="relative">
-            <Center
-              justifyContent="space-between"
-              gap={4}
-              px={4}
-              py={2}
-              border="0.0625rem solid"
-              borderColor="shader.a.300"
-              borderRadius="xl"
-            >
-              <ConnectWalletProfile
-                address={account.address}
-                name={account.name}
-                sx={{ padding: 0 }}
-              />
+        <Drawer isOpen={isOpen} onClose={onClose} size="sm">
+          <DrawerOverlay />
+          <DrawerContent
+            my={{ lg: 6, base: 0 }}
+            borderRadius={{ lg: '2xl', base: 0 }}
+            mr={{ lg: 3, base: 0 }}
+          >
+            <DrawerBody padding={0}>
+              <Box padding={6}>
+                <Flex
+                  flexDirection="column"
+                  padding={4}
+                  borderRadius="xl"
+                  border="0.063rem solid "
+                  borderColor="shader.a.400"
+                >
+                  <Box position="relative">
+                    <Center
+                      justifyContent="space-between"
+                      gap={4}
+                      px={4}
+                      py={2}
+                      border="0.0625rem solid"
+                      borderColor="shader.a.300"
+                      borderRadius="xl"
+                    >
+                      <ConnectWalletProfile
+                        address={account.address}
+                        name={account.name}
+                        sx={{ padding: 0 }}
+                      />
 
-              <IconButton
-                onClick={onToggle}
-                aria-label="switch-account"
-                variant="unstyled"
-                bg="primary.a.100"
-                color="primary.a.500"
-                borderRadius="2xl"
-                minWidth="auto"
-                height="auto"
-                width="auto"
-                _hover={{}}
-                padding={1.5}
-                icon={<Swap02Icon />}
-              />
-            </Center>
+                      <IconButton
+                        onClick={onToggleSwitch}
+                        aria-label="switch-account"
+                        variant="unstyled"
+                        bg="primary.a.100"
+                        color="primary.a.500"
+                        borderRadius="2xl"
+                        minWidth="auto"
+                        height="auto"
+                        width="auto"
+                        _hover={{}}
+                        padding={1.5}
+                        icon={<Swap02Icon />}
+                      />
+                    </Center>
+                    <ConnectWalletSwitch
+                      isOpen={isOpenSwitch}
+                      onClose={onCloseSwitch}
+                      accounts={allAccount.filter(
+                        item => item.address !== account.address
+                      )}
+                    >
+                      <ConnectWalletLogOut
+                        onClose={() => {
+                          onClose();
+                          onCloseSwitch();
+                        }}
+                      />
+                    </ConnectWalletSwitch>
+                  </Box>
 
-            <ConnectWalletSwitch
-              isOpen={isOpen}
-              onClose={onClose}
-              accounts={allAccount.filter(
-                item => item.address !== account.address
-              )}
-            >
-              <ConnectWalletLogOut onClose={onClose} />
-            </ConnectWalletSwitch>
-          </MenuItem>
+                  {balance ? (
+                    <Box
+                      bg="transparent"
+                      textAlign="center"
+                      flexDirection="column"
+                      pt={10}
+                      mb={6}
+                    >
+                      <Icon as={GafiTokenIcon} width={8} height={8} />
+                      <Box mt={4}>
+                        <GafiAmount
+                          amount={balance}
+                          sx={{
+                            sx: {
+                              fontSize: '2xl',
+                              span: {
+                                fontSize: 'sm',
+                              },
+                            },
+                          }}
+                        />
 
-          {balance ? (
-            <MenuItem
-              bg="transparent"
-              textAlign="center"
-              mt={8}
-              flexDirection="column"
-            >
-              <Icon as={GafiTokenIcon} width={8} height={8} />
+                        <Text fontSize="sm" color="shader.a.500">
+                          {Intl.NumberFormat(undefined, {
+                            style: 'currency',
+                            currencyDisplay: 'narrowSymbol',
+                            currency: 'usd',
+                          })
+                            .format(Number(balance.replaceAll(',', '')))
+                            .toString()}
+                        </Text>
+                      </Box>
+                    </Box>
+                  ) : null}
 
-              <Box mt={4}>
-                <GafiAmount
-                  amount={balance}
-                  sx={{
-                    sx: {
-                      fontSize: '2xl',
-                      span: {
-                        fontSize: 'sm',
-                      },
-                    },
-                  }}
-                />
-
-                <Text fontSize="sm" color="shader.a.500">
-                  {Intl.NumberFormat(undefined, {
-                    style: 'currency',
-                    currencyDisplay: 'narrowSymbol',
-                    currency: 'usd',
-                  }).format(Number(balance.replaceAll(',', '')))}
-                </Text>
+                  <Button
+                    variant="primary"
+                    isLoading={isLoading}
+                    onClick={() => {
+                      if (api) {
+                        mutation(api.tx.faucet.faucet());
+                      }
+                    }}
+                  >
+                    Faucet
+                  </Button>
+                </Flex>
               </Box>
-            </MenuItem>
-          ) : null}
+              <Box
+                padding={6}
+                borderTop="0.063rem solid"
+                borderTopColor="shader.a.200"
+              >
+                <Text color="shader.a.400">My profile</Text>
+                <Flex gap={6} flexDirection="column" mt={6}>
+                  {ListProfileData.map(item => (
+                    <>
+                      <Link to={item.link} onClick={onClose}>
+                        <HStack
+                          cursor="pointer"
+                          gap={3}
+                          color="shader.a.500"
+                          _hover={{
+                            color: 'shader.a.900',
+                          }}
+                        >
+                          <Icon as={item.icon} height={6} width={6} />
+                          <Text fontSize="lg" fontWeight="medium">
+                            {item.title}
+                          </Text>
+                        </HStack>
+                      </Link>
+                    </>
+                  ))}
+                </Flex>
+              </Box>
+            </DrawerBody>
 
-          <MenuItem as="div" padding={0} mt={4}>
-            <Button
-              bg="primary.a.500"
-              color="white"
-              width="full"
-              isLoading={isLoading}
-              onClick={() => {
-                if (api) {
-                  mutation(api.tx.faucet.faucet());
-                }
-              }}
-              _hover={{}}
-            >
-              Faucet
-            </Button>
-          </MenuItem>
-        </MenuList>
+            <DrawerFooter>
+              <Button
+                variant="baseStyle"
+                width="full"
+                onClick={onClose}
+                _hover={{
+                  borderColor: 'shader.a.900',
+                }}
+              >
+                Close
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       ) : null}
-    </Menu>
+    </>
   );
 }

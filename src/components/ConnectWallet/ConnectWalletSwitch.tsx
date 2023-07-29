@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
 import ConnectWalletProfile from './ConnectWalletProfile';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
@@ -27,11 +27,10 @@ export default function ConnectWalletSwitch({
       opacity={isOpen ? undefined : 0}
       transitionDuration="ultra-slow"
       position="absolute"
-      transform="translateY(100%)"
+      transform="translateY(5%)"
       bg="white"
       border="0.0625rem solid"
       borderColor="shader.a.300"
-      bottom="-10%"
       borderRadius="xl"
       right={0}
       left={0}
