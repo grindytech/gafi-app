@@ -11,6 +11,10 @@ import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/Expl
 import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
 import ExplorerCollectionsDetail from 'layouts/MarketPlace/Explorer/ExplorerCollections/ExplorerCollectionsDetail';
 import Mint from 'pages/Mint';
+import ExplorerBundleDetail from 'layouts/MarketPlace/Explorer/ExplorerBundles/ExplorerBundleDetail';
+import Account from 'pages/Account';
+
+import AccountSetting from 'pages/Account/Settings';
 
 const router = createBrowserRouter([
   {
@@ -66,9 +70,17 @@ const router = createBrowserRouter([
             path: 'collection/:id',
             element: <ExplorerCollectionsDetail />,
           },
+          {
+            path: 'bundle/:id',
+            element: <ExplorerBundleDetail />,
+          },
         ],
       },
-
+      {
+        path: 'account',
+        element: <Account />,
+      },
+      { path: 'account/setting', element: <AccountSetting /> },
       {
         path: 'minting',
       },

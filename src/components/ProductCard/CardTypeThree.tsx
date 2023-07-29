@@ -32,9 +32,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
         role="group"
         _hover={{
           transform: 'translateY(-5px)',
-          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 16px 16px',
+          boxShadow: 'rgba(0, 0, 0, 0.08) 7px 4px 16px',
         }}
-        transition="box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s"
+        transition="all 0.1s ease 0s"
       >
         <VStack color="shader.a.900" gap={0}>
           <Box position="relative" padding={2} width="full">
@@ -43,9 +43,9 @@ const CardTypeThree = ({ item, imageStyle }: IProps) => {
                 objectFit="cover"
                 src={item.image}
                 _groupHover={{
-                  transform: 'scale(1.2)',
-                  transition: ' 0.25s ease-in-out',
+                  transform: 'scale(1.1)',
                 }}
+                transition="transform 0.4s ease 0s"
                 alt={`Image ${item.name}`}
                 h="12.5rem"
                 width="full"

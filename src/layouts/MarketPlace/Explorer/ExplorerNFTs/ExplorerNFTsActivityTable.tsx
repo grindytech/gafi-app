@@ -1,128 +1,79 @@
 import {
-  Box,
-  Flex,
-  Grid,
   HStack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
+  Table,
+  Tbody,
+  Td,
+  Tr,
+  Image,
+  VStack,
   Text,
 } from '@chakra-ui/react';
-import CardBox from 'components/CardBox';
-import NavLinkSocial from 'components/Link/NavLinkSocial';
-import { DataTestNftAttributes } from 'hooks/DataTest';
 
-export default function ExplorerNFTsActivityTable() {
+const dataTest = {
+  avatar:
+    'https://i.seadn.io/gcs/files/c388840a729e6183fc0b3c7f1e9d5838.png?auto=format&dpr=1&w=136&h=136&fr=1',
+  from: '0xe536a...6790a',
+  to: '0xe536a...67933',
+  amount: '0.0055',
+};
+const ExplorerNFTsActivityTable = () => {
   return (
-    <CardBox variant="baseStyle" padding={0}>
-      <Tabs variant="baseStyle">
-        <TabList>
-          <Tab>Overview</Tab>
-          <Tab>Atributes</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel padding={0}>
-            <Flex flexDirection="column" gap={5} padding={6}>
-              <CardBox variant="baseStyle" padding={4}>
-                <Text fontWeight="medium" color="black" mb={4}>
-                  Description
-                </Text>
-                <HStack mb={2}>
-                  <Text color="shader.a.500">Created by</Text>
-                  <Text color="primary.a.500" fontWeight="medium">
-                    Hyperizre
-                  </Text>
-                </HStack>
-                <Text color="shader.a.700">
-                  Gear Club 2 pedal to the metal, race along more than 3,000
-                  kilometers.
-                </Text>
-              </CardBox>
-              <CardBox variant="baseStyle" padding={4}>
-                <Text fontWeight="medium" color="black" mb={4}>
-                  About Gear Club 2: Super Car
-                </Text>
-                <Text noOfLines={3} mb={5}>
-                  Gear Club 2 pedal to the metal, race along more than 3,000
-                  kilometers of tracks Each Mara, with the ingestion of a
-                  Seasonal Catalyst, can become a Kodamara that’s or along the
-                  coast, defend your position in more. with the ingestion of a
-                  Seasonal Catalyst, can become a Kodamara that’s or along the
-                  coast, defend your position in more.
-                </Text>
-                <NavLinkSocial />
-              </CardBox>
-
-              <CardBox variant="baseStyle" padding={4}>
-                <Text fontWeight="medium" color="black" mb={2}>
-                  Details
-                </Text>
-                <Flex flexDirection="column" gap={2.5}>
-                  <HStack justifyContent="space-between">
-                    <Text>Contract</Text>
-                    <Text color="primary.a.500">0x3b5a...6b10e</Text>
-                  </HStack>
-                  <HStack justifyContent="space-between">
-                    <Text>Token ID</Text>
-                    <Text color="primary.a.500">599</Text>
-                  </HStack>
-                  <HStack justifyContent="space-between">
-                    <Text>Token Standard</Text>
-                    <Text>ERC-721</Text>
-                  </HStack>
-                  <HStack justifyContent="space-between">
-                    <Text>Chain</Text>
-                    <Text>Etherum</Text>
-                  </HStack>
-                  <HStack justifyContent="space-between">
-                    <Text>Last Updated</Text>
-                    <Text>2 hours ago</Text>
-                  </HStack>
-                  <HStack justifyContent="space-between">
-                    <Text>Creator Earning</Text>
-                    <Text>8%</Text>
-                  </HStack>
-                </Flex>
-              </CardBox>
-            </Flex>
-          </TabPanel>
-          <TabPanel padding={6}>
-            <Grid
-              gridTemplateColumns={{
-                md: 'repeat(3,1fr)',
-                base: 'repeat(2,1fr)',
-              }}
-              gridGap={2.5}
-            >
-              {DataTestNftAttributes.map((item, index) => (
-                <Box
-                  borderRadius="xl"
-                  border="0.063rem solid"
-                  borderColor="shader.a.300"
-                  bg="shader.a.100"
-                  key={index}
-                  padding={4}
-                >
-                  <Text fontSize="sm" color="shader.a.500">
-                    {item.attr}
-                  </Text>
-                  <HStack>
-                    <Text fontWeight="medium">{item.name}</Text>
-                    <Text color="second.purple" fontSize="sm">
-                      {item.rarity}%
+    <>
+      <Table variant="activityTable">
+        <Tbody>
+          {[...Array(6)].map(item => (
+            <Tr key={item}>
+              <Td>
+                <HStack gap={4} flexWrap="wrap">
+                  <Image
+                    src={dataTest.avatar}
+                    h="2.25rem"
+                    width="2.25rem"
+                    borderRadius="full"
+                  />
+                  <VStack
+                    alignItems="flex-start"
+                    display={{ md: 'flex', base: 'none' }}
+                  >
+                    <Text color="shader.a.500" fontSize="sm">
+                      From
                     </Text>
-                  </HStack>
-                </Box>
-              ))}
-            </Grid>
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </CardBox>
+                    <Text color="shader.a.900" fontWeight="medium">
+                      {dataTest.from}
+                    </Text>
+                  </VStack>
+                </HStack>
+              </Td>
+              <Td display={{ md: 'table-cell', base: 'none' }}>
+                <Text>Transfer to</Text>
+                <Text fontSize="sm" color="shader.a.500">
+                  36 minutes ago
+                </Text>
+              </Td>
+              <Td display={{ md: 'table-cell', base: 'none' }}>
+                <Text color="shader.a.500" fontSize="sm">
+                  To
+                </Text>
+                <Text color="shader.a.900" fontWeight="medium">
+                  {dataTest.to}
+                </Text>
+              </Td>
+              <Td>
+                <VStack alignItems={{ md: 'flex-start', base: 'flex-end' }}>
+                  <Text color="shader.a.900" fontWeight="medium">
+                    {dataTest.amount} GAFI
+                  </Text>
+                  <Text fontSize="sm" color="shader.a.500">
+                    $302,425
+                  </Text>
+                </VStack>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </>
   );
-}
+};
+
+export default ExplorerNFTsActivityTable;

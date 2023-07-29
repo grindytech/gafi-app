@@ -1,6 +1,9 @@
-import React from 'react';
 import { Box, HStack, Text } from '@chakra-ui/react';
+
+import useSubscribeSystem from 'hooks/useSubscribeSystem';
+
 const RecentEvents = () => {
+  const { events } = useSubscribeSystem();
   return (
     <Box
       borderRadius="xl"
@@ -19,7 +22,15 @@ const RecentEvents = () => {
         </Text>
         <Text color="primary.a.500">Clear all</Text>
       </HStack>
-      <Box height="400px"></Box>
+      <Box height="25rem" overflowY="scroll">
+        {events?.map(event => (
+          <Box key={event.timestamp}>
+            <Text>{event.eventName}</Text>
+            <Text>{event.eventValue}</Text>
+            <Text>{event.timestamp}</Text>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 };

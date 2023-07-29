@@ -486,3 +486,98 @@ export const TestDataTopPool: TestDataProps2[] = [
     price: '300',
   },
 ];
+
+export const TestDataBundleDetails = {
+  name: 'Gear Club 2',
+  owner: '0x3b5a...6b10e',
+  isVerifiled: true,
+  bundleName: 'Top 10 Super Warrior',
+  auction: true,
+  price: '1,550,000',
+  auctionDate: 3 * 24 * 60 * 60 * 1000 + NOW_TIME,
+  like: 20,
+  view: 144,
+  items: [
+    {
+      id: '3',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/d8c6d9896ff5a79b640dc3763eefeaff.png?auto=format&dpr=1&w=1000',
+      rarity: '30',
+      quantity: '5',
+    },
+    {
+      id: '4',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/bb5123ecc94a8353e51da42f0f5cc055.png?auto=format&dpr=1&w=1000',
+      rarity: '72',
+      quantity: '25',
+    },
+    {
+      id: '5',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/97aa43ddb68f5ca4ca87391efab81beb.png?auto=format&dpr=1&w=1000',
+      rarity: '27',
+      quantity: '25',
+    },
+    {
+      id: '6',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/1d403ab7cffba128e801254f1fea7da9.png?auto=format&dpr=1&w=1000',
+      rarity: '16',
+      quantity: '4',
+    },
+    {
+      id: '7',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/195a2605290a0b3c30fd1d72afa57a81.png?auto=format&dpr=1&w=1000',
+      rarity: '2',
+      quantity: '1',
+    },
+    {
+      id: '8',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/17d5f64f4a7e291038e67f7ebdcb00e8.png?auto=format&dpr=1&w=1000',
+      rarity: '46',
+      quantity: '20',
+    },
+    {
+      id: '9',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/0b1f50e2183ef180c9495ea3ec16049d.png?auto=format&dpr=1&w=1000',
+      rarity: '80',
+      quantity: '25',
+    },
+    {
+      id: '10',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/281bb1659fafbd3bca4b6577f08a20d1.png?auto=format&dpr=1&w=1000',
+
+      rarity: '80',
+      quantity: '25',
+    },
+    {
+      id: '11',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/c60c3a90099d4c4fc5dae7c187bb35a7.png?auto=format&dpr=1&w=1000',
+      rarity: '80',
+      quantity: '25',
+    },
+    {
+      id: '12',
+      name: 'BMW i3',
+      image:
+        'https://i.seadn.io/gcs/files/a02b7edb69d385bbf416914e656adb10.png?auto=format&dpr=1&w=1000',
+      rarity: '0.002',
+      quantity: '1',
+    },
+  ],
+};
