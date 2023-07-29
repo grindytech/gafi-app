@@ -34,7 +34,7 @@ import useMetaNFT from 'hooks/useMetaNFT';
 import useMetaCollection from 'hooks/useMetaCollection';
 
 interface NFTDetailOfferProps {
-  fee: number;
+  fee: number | undefined;
   amount: number;
 }
 
@@ -54,18 +54,27 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
     formState: { errors },
   } = useForm();
 
-  const [duration, setDuration] = React.useState(0);
+  const one_minute = 60;
+  const [duration, setDuration] = React.useState(one_minute);
   const { blockNumber } = useBlockTime('bestNumber');
 
   const { metaCollection } = useMetaCollection({
-    collection_id: Number(collection_id),
     key: `${nft_id}/${collection_id}`,
+    group: [
+      {
+        collection_id: Number(collection_id),
+      },
+    ],
   });
 
   const { metaNFT } = useMetaNFT({
-    collection_id: Number(collection_id),
-    nft_id: Number(nft_id),
     key: `${nft_id}/${collection_id}`,
+    group: [
+      {
+        collection_id: Number(collection_id),
+        nft_id: Number(nft_id),
+      },
+    ],
   });
 
   const { isLoading, mutation } = useSignAndSend({
@@ -170,11 +179,11 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
                       },
                     }}
                   >
-                    {metaNFT?.image ? (
+                    {metaNFT?.[0]?.image ? (
                       <Image
                         objectFit="cover"
                         alt="image is outdated"
-                        src={`${cloundinary_link}/${metaNFT.image}`}
+                        src={`${cloundinary_link}/${metaNFT[0].image}`}
                       />
                     ) : (
                       <Image src="/assets/fill/item.png" objectFit="none" />
@@ -183,7 +192,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
 
                   <Box>
                     <Text color="primary.a.500" fontWeight="medium">
-                      {metaCollection?.title || '-'}
+                      {metaCollection?.[0]?.title || '-'}
                     </Text>
 
                     <Text
@@ -192,7 +201,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
                       fontWeight="semibold"
                       fontSize="xl"
                     >
-                      {metaNFT?.title || '-'}
+                      {metaNFT?.[0]?.title || '-'}
                       <Text
                         as="strong"
                         fontWeight="medium"
@@ -218,7 +227,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
 
                 <Box textAlign="right">
                   <GafiAmount
-                    amount={fee}
+                    amount={fee || 0}
                     sx={{
                       className: 'amount-gafi',
                       sx: {
@@ -231,7 +240,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
                     }}
                   />
 
-                  <Text as="span">{formatCurrency(fee, 'usd')}</Text>
+                  <Text as="span">{formatCurrency(fee || 0, 'usd')}</Text>
                 </Box>
               </Flex>
 

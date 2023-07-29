@@ -1,10 +1,9 @@
 import React from 'react';
-import VerfyIcon from 'public/assets/fill/verified.svg';
+
 import {
   Box,
   Center,
   HStack,
-  Icon,
   Image,
   List,
   ListItem,
@@ -17,34 +16,38 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
 import { useParams } from 'react-router-dom';
 import { shorten } from 'utils/utils';
-import { TypeMetadataOfCollection } from 'types';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import CollectionDetailNFT from './CollectionDetailNFT';
+import useMetaCollection from 'hooks/useMetaCollection';
+import { Option } from '@polkadot/types';
+import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 
 export default function CollectionDetail() {
-  const { id } = useParams();
+  const { collection_id } = useParams();
 
   const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
+  const { metaCollection } = useMetaCollection({
+    key: String(collection_id),
+    group: [
+      {
+        collection_id: Number(collection_id),
+      },
+    ],
+  });
+
   const { data, isError } = useQuery({
-    queryKey: ['collection', id],
+    queryKey: ['collection', collection_id],
     queryFn: async () => {
       if (api) {
-        const getCollection = (
-          await api.query.nfts.collection(id)
-        ).toHuman() as { items: number; owner: string };
-
-        const metadata = (
-          await api.query.nfts.collectionMetadataOf(id)
-        ).toHuman() as { data: string };
+        const service = (await api.query.nfts.collection(
+          collection_id
+        )) as Option<PalletNftsCollectionDetails>;
 
         return {
-          owner: getCollection.owner,
-          items: getCollection.items,
-          metadata: metadata
-            ? (JSON.parse(metadata.data) as TypeMetadataOfCollection)
-            : null,
+          owner: service.value.owner,
+          items: service.value.items,
         };
       }
     },
@@ -72,9 +75,9 @@ export default function CollectionDetail() {
               overflow="hidden"
               position="relative"
             >
-              {data.metadata?.image ? (
+              {metaCollection?.[0]?.image ? (
                 <Image
-                  src={`${cloundinary_link}/${data.metadata.image}`}
+                  src={`${cloundinary_link}/${metaCollection[0].image}`}
                   pointerEvents="none"
                   position="absolute"
                   inset="50% auto auto 50%"
@@ -119,10 +122,10 @@ export default function CollectionDetail() {
                   bg="shader.a.300"
                   border="0.625rem solid white"
                   height="full"
-                  objectFit={data.metadata?.image ? 'cover' : 'none'}
+                  objectFit={metaCollection?.[0]?.image ? 'cover' : 'none'}
                   src={
-                    data.metadata?.image
-                      ? `${cloundinary_link}/${data.metadata.image}`
+                    metaCollection?.[0]?.image
+                      ? `${cloundinary_link}/${metaCollection?.[0].image}`
                       : '/assets/fill/item.png'
                   }
                 />
@@ -130,26 +133,22 @@ export default function CollectionDetail() {
 
               <HStack spacing={1} mt={24}>
                 <Text fontSize="2xl" lineHeight="initial" fontWeight="bold">
-                  {data.metadata?.title || '-'}
+                  {metaCollection?.[0]?.title || '-'}
                 </Text>
-
-                {data.metadata?.title ? (
-                  <Icon as={VerfyIcon} h={5} w={5} />
-                ) : null}
               </HStack>
 
               <HStack>
                 <Text color="shader.a.500">
                   Owner by&nbsp;
                   <Text as="span" color="primary.a.500" fontWeight="medium">
-                    {data.owner === account?.address
+                    {data.owner.toString() === account?.address
                       ? 'you'
-                      : shorten(data.owner, 6)}
+                      : shorten(data.owner.toString(), 6)}
                   </Text>
                 </Text>
               </HStack>
 
-              {data.metadata?.description ? (
+              {metaCollection?.[0]?.description ? (
                 <>
                   <ChakraBox
                     width="2xl"
@@ -159,7 +158,7 @@ export default function CollectionDetail() {
                       height: line > 2 && !isOpen ? '3rem' : undefined,
                     }}
                   >
-                    {data.metadata.description}
+                    {metaCollection?.[0].description}
                   </ChakraBox>
 
                   {line > 2 ? (
@@ -198,7 +197,7 @@ export default function CollectionDetail() {
                 <ListItem>
                   <Text>Items</Text>
 
-                  <Text as="span">{data.items}</Text>
+                  <Text as="span">{data.items.toNumber()}</Text>
                 </ListItem>
               </List>
             </Center>

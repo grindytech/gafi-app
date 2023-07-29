@@ -59,14 +59,22 @@ export default function NFTDetailBuy({
   } = useForm();
 
   const { metaCollection } = useMetaCollection({
-    collection_id: Number(collection_id),
     key: `${nft_id}/${collection_id}`,
+    group: [
+      {
+        collection_id: Number(collection_id),
+      },
+    ],
   });
 
   const { metaNFT } = useMetaNFT({
-    collection_id: Number(collection_id),
-    nft_id: Number(nft_id),
     key: `${nft_id}/${collection_id}`,
+    group: [
+      {
+        collection_id: Number(collection_id),
+        nft_id: Number(nft_id),
+      },
+    ],
   });
 
   const { isLoading, mutation } = useItemBought({
@@ -166,11 +174,11 @@ export default function NFTDetailBuy({
                       },
                     }}
                   >
-                    {metaNFT?.image ? (
+                    {metaNFT?.[0]?.image ? (
                       <Image
                         objectFit="cover"
                         alt="image is outdated"
-                        src={`${cloundinary_link}/${metaNFT.image}`}
+                        src={`${cloundinary_link}/${metaNFT[0].image}`}
                       />
                     ) : (
                       <Image src="/assets/fill/item.png" objectFit="none" />
@@ -179,7 +187,7 @@ export default function NFTDetailBuy({
 
                   <Box>
                     <Text color="primary.a.500" fontWeight="medium">
-                      {metaCollection?.title || '-'}
+                      {metaCollection?.[0]?.title || '-'}
                     </Text>
 
                     <Text
@@ -188,7 +196,7 @@ export default function NFTDetailBuy({
                       fontWeight="semibold"
                       fontSize="xl"
                     >
-                      {metaNFT?.title || '-'}
+                      {metaNFT?.[0]?.title || '-'}
                       <Text
                         as="strong"
                         fontWeight="medium"

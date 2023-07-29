@@ -43,7 +43,8 @@ export default function NFTDetailSell() {
     formState: { errors },
   } = useForm();
 
-  const [duration, setDuration] = React.useState(0);
+  const one_minute = 60;
+  const [duration, setDuration] = React.useState(one_minute);
 
   const { blockNumber } = useBlockTime('bestNumber');
 

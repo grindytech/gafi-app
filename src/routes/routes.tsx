@@ -64,7 +64,7 @@ const router = createBrowserRouter([
             element: <NFTDetail />,
           },
           {
-            path: 'collection/:id',
+            path: 'collection/:collection_id',
             element: <CollectionDetail />,
           },
         ],

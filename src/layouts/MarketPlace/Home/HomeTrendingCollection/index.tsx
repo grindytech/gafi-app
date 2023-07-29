@@ -18,44 +18,40 @@ import ArrowIcon from 'public/assets/line/chevron-02.svg';
 
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
-import { TypeMetadataOfCollection } from 'types';
 import React from 'react';
 
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
+import useMetaCollection from 'hooks/useMetaCollection';
 
 export default function HomeTrendingCollection() {
   const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAppSelector(state => state.injected.polkadot);
 
   const { data } = useQuery({
-    queryKey: ['1'],
+    queryKey: ['trendingCollection', account?.address],
     queryFn: async () => {
       if (api) {
-        const getCollections = await api.query.nfts.collection.entries();
+        const service = await api.query.nfts.collection.entries();
 
-        return Promise.all(
-          getCollections.map(
-            async ([
-              {
-                args: [collection_id],
-              },
-            ]) => {
-              const metadata = await api.query.nfts
-                .collectionMetadataOf(collection_id)
-                .then(item => item.toHuman() as { data: string } | null);
-
-              return {
-                metadata: metadata
-                  ? (JSON.parse(metadata.data) as TypeMetadataOfCollection)
-                  : null,
-                collection_id: collection_id.toNumber(),
-              };
-            }
-          )
+        return service.map(
+          ([
+            {
+              args: [collection_id],
+            },
+          ]) => ({
+            collection_id: collection_id.toNumber(),
+          })
         );
       }
     },
     enabled: !!(api && api.query.nfts.collection),
+  });
+
+  const { metaCollection } = useMetaCollection({
+    group: data?.map(item => ({
+      collection_id: item.collection_id,
+    })),
   });
 
   return (
@@ -107,75 +103,69 @@ export default function HomeTrendingCollection() {
             forceToAxis: true,
           }}
         >
-          {data && data.length
-            ? (function () {
-                const newest = data
-                  .sort((a, b) => a.collection_id - b.collection_id)
-                  .slice(0, 10);
+          {data && data.length ? (
+            React.Children.toArray(
+              data.map(({ collection_id }, index) => (
+                <SwiperSlide>
+                  <HStack
+                    as={Link}
+                    to={`/marketplace/collection/${collection_id}`}
+                    position="relative"
+                    _hover={{
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <Text
+                      position="absolute"
+                      left={0}
+                      textAlign="left"
+                      fontWeight="medium"
+                    >
+                      {collection_id}
+                    </Text>
 
-                return React.Children.toArray(
-                  newest.map(item => {
-                    return (
-                      <SwiperSlide>
-                        <HStack
-                          as={Link}
-                          to={`/marketplace/collection/${item.collection_id}`}
-                          position="relative"
-                          _hover={{
-                            textDecoration: 'none',
-                          }}
-                        >
-                          <Text
-                            position="absolute"
-                            left={0}
-                            textAlign="left"
-                            fontWeight="medium"
-                          >
-                            {item.collection_id}
-                          </Text>
+                    <Center
+                      ml={8}
+                      bg="shader.a.300"
+                      position="relative"
+                      overflow="hidden"
+                      width={14}
+                      height={14}
+                      borderRadius="xl"
+                      sx={{
+                        img: {
+                          position: 'absolute',
+                          inset: 0,
+                          width: 'full',
+                          height: 'full',
+                        },
+                      }}
+                    >
+                      {metaCollection?.[index]?.image ? (
+                        <Image
+                          objectFit="cover"
+                          alt="image is outdated"
+                          src={`${cloundinary_link}/${metaCollection[index]?.image}`}
+                        />
+                      ) : (
+                        <Image padding={2} src="/assets/fill/item.png" />
+                      )}
+                    </Center>
 
-                          <Center
-                            ml={8}
-                            bg="shader.a.300"
-                            position="relative"
-                            overflow="hidden"
-                            width={14}
-                            height={14}
-                            borderRadius="xl"
-                            sx={{
-                              img: {
-                                position: 'absolute',
-                                inset: 0,
-                                width: 'full',
-                                height: 'full',
-                              },
-                            }}
-                          >
-                            {item.metadata?.image ? (
-                              <Image
-                                objectFit="cover"
-                                alt="image is outdated"
-                                src={`${cloundinary_link}/${item.metadata.image}`}
-                              />
-                            ) : (
-                              <Image padding={2} src="/assets/fill/item.png" />
-                            )}
-                          </Center>
-
-                          <Text
-                            color="shader.a.900"
-                            fontSize="lg"
-                            fontWeight="medium"
-                          >
-                            {item.metadata?.title || '-'}
-                          </Text>
-                        </HStack>
-                      </SwiperSlide>
-                    );
-                  })
-                );
-              })()
-            : null}
+                    <Text
+                      color="shader.a.900"
+                      fontSize="lg"
+                      fontWeight="medium"
+                    >
+                      {metaCollection?.[index]?.title || '-'}
+                    </Text>
+                  </HStack>
+                </SwiperSlide>
+              ))
+            )
+          ) : (
+            <Center>Empty</Center>
+          )}
         </Swiper>
       </Box>
     </Box>

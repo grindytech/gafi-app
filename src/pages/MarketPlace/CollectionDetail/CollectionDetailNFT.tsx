@@ -19,52 +19,46 @@ import MarketPlaceFilter from 'components/MarketPlaceFilter';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
-import { TypeMetadataOfItem } from 'types';
 import React from 'react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
-import { PalletNftsItemMetadata } from '@polkadot/types/lookup';
-import { Option } from '@polkadot/types';
+
+import useMetaNFT from 'hooks/useMetaNFT';
 
 export default function CollectionDetailNFT() {
-  const { id } = useParams();
+  const { collection_id } = useParams();
   const { api } = useAppSelector(state => state.substrate);
 
   const { isOpen, onToggle } = useDisclosure();
 
   const { data } = useQuery({
-    queryKey: [`collection_nft/${id}`],
+    queryKey: [`collection_nft/${collection_id}`],
     queryFn: async () => {
       if (api) {
-        const getItem = (await api.query.nfts.item.entries(id)).map(
-          async ([
+        const service = (await api.query.nfts.item.entries(collection_id)).map(
+          ([
             {
-              args: [collection_id, item_id],
+              args: [collection, item],
             },
           ]) => {
-            const metadata = await api.query.nfts
-              .itemMetadataOf(collection_id.toNumber(), item_id.toNumber())
-              .then((meta): TypeMetadataOfItem | null => {
-                const service = meta as Option<PalletNftsItemMetadata>;
-
-                if (service.isSome) {
-                  return JSON.parse(String(service.value.data.toHuman()));
-                }
-
-                return null;
-              });
-
             return {
-              metadata,
-              item_id: item_id.toNumber(),
-              collection_id: collection_id.toNumber(),
+              item_id: item.toNumber(),
+              collection_id: collection.toNumber(),
             };
           }
         );
 
-        return Promise.all(getItem);
+        return service;
       }
     },
+  });
+
+  const { metaNFT } = useMetaNFT({
+    key: collection_id,
+    group: data?.map(item => ({
+      collection_id: item.collection_id,
+      nft_id: item.item_id,
+    })),
   });
 
   return (
@@ -118,15 +112,20 @@ export default function CollectionDetailNFT() {
               </Box>
             ) : null}
 
-            <Flex flex={1} gap={4}>
+            <Grid
+              flex={1}
+              gap={4}
+              gridTemplateColumns={{
+                sm: 'repeat(2, 1fr)',
+                lg: 'repeat(4, 1fr)',
+              }}
+            >
               {React.Children.toArray(
-                data.map(item => (
+                data.map((item, index) => (
                   <Box
-                    as={Link}
-                    flex={1}
-                    to={`/marketplace/nft/${item.item_id}/${item.collection_id}`}
-                    height="fit-content"
                     key={item.item_id}
+                    as={Link}
+                    to={`/marketplace/nft/${item.item_id}/${item.collection_id}`}
                     border="0.0625rem solid"
                     borderColor="shader.a.300"
                     bg="white"
@@ -141,7 +140,8 @@ export default function CollectionDetailNFT() {
                         borderRadius="xl"
                         bg="shader.a.300"
                         position="relative"
-                        pt={(9 / 16) * 100 + '%'} // 16:9 Aspect Ratio
+                        overflow="hidden"
+                        aspectRatio={16 / 9}
                         sx={{
                           img: {
                             position: 'absolute',
@@ -151,11 +151,11 @@ export default function CollectionDetailNFT() {
                           },
                         }}
                       >
-                        {item.metadata?.image ? (
+                        {metaNFT?.[index]?.image ? (
                           <Image
                             objectFit="cover"
                             alt="image is outdated"
-                            src={`${cloundinary_link}/${item.metadata.image}`}
+                            src={`${cloundinary_link}/${metaNFT[index]?.image}`}
                           />
                         ) : (
                           <Image src="/assets/fill/item.png" objectFit="none" />
@@ -178,7 +178,7 @@ export default function CollectionDetailNFT() {
 
                       <Center justifyContent="space-between">
                         <Heading className="card-value" fontSize="md!">
-                          {item.metadata?.title || '-'}
+                          {metaNFT?.[index]?.title || '-'}
                         </Heading>
 
                         <Text className="card-value" color="shader.a.500!">
@@ -192,10 +192,8 @@ export default function CollectionDetailNFT() {
                   </Box>
                 ))
               )}
-            </Flex>
+            </Grid>
           </Flex>
-
-          <Grid gridTemplateColumns="repeat(2, 1fr)"></Grid>
         </Box>
       ) : null}
     </>

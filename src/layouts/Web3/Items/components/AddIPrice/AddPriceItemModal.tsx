@@ -107,8 +107,6 @@ export default function AddPriceItemModal({
             margin="unset"
             onClick={() => {
               if (api) {
-                console.log(getValues());
-
                 mutation(
                   api.tx.game.setPrice(
                     {

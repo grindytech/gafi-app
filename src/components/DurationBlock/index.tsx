@@ -56,11 +56,6 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
 
   const [duration, setDuration] = React.useState(ListDuration[0]);
 
-  // initial value
-  React.useEffect(() => {
-    currentDuration(ListDuration[0].time);
-  }, []);
-
   return (
     <Box>
       <Text mb={2} color="shader.a.500" fontSize="sm" fontWeight="medium">
