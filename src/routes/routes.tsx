@@ -8,12 +8,11 @@ import Blockchain, { ListBlockchain } from 'pages/Blockchain';
 import Explorer, { ListExplorerTab } from 'pages/MarketPlace/Explorer';
 import HomeMarketPlace from 'pages/MarketPlace/Home';
 import ExplorerGamesDetail from 'layouts/MarketPlace/Explorer/ExplorerGames/ExplorerGamesDetail';
-import ExplorerNFTsDetail from 'layouts/MarketPlace/Explorer/ExplorerNFTs/ExplorerNFTsDetail';
-import ExplorerCollectionsDetail from 'layouts/MarketPlace/Explorer/ExplorerCollections/ExplorerCollectionsDetail';
 import Mint from 'pages/Mint';
+import CollectionDetail from 'pages/MarketPlace/CollectionDetail';
+import NFTDetail from 'pages/MarketPlace/NFTDetail';
 import ExplorerBundleDetail from 'layouts/MarketPlace/Explorer/ExplorerBundles/ExplorerBundleDetail';
 import Account from 'pages/Account';
-
 import AccountSetting from 'pages/Account/Settings';
 
 const router = createBrowserRouter([
@@ -63,12 +62,12 @@ const router = createBrowserRouter([
             element: <ExplorerGamesDetail />,
           },
           {
-            path: 'nft/:id',
-            element: <ExplorerNFTsDetail />,
+            path: 'nft/:nft_id/:collection_id',
+            element: <NFTDetail />,
           },
           {
-            path: 'collection/:id',
-            element: <ExplorerCollectionsDetail />,
+            path: 'collection/:collection_id',
+            element: <CollectionDetail />,
           },
           {
             path: 'bundle/:id',

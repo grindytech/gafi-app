@@ -2,7 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import * as ReactDOM from 'react-dom/client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import 'swiper/swiper.min.css';
+import 'swiper/css/bundle';
 import 'cropperjs/dist/cropper.css';
 
 import '@fontsource-variable/lexend';

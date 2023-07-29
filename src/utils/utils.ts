@@ -61,6 +61,14 @@ export const formatGAFI = (fee: number | string) => {
   return formatNumber;
 };
 
+export const formatCurrency = (value: number, currency?: string) => {
+  return Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currencyDisplay: 'narrowSymbol',
+    currency: currency,
+  }).format(value);
+};
+
 export const unitGAFI = (fee: string) => {
   const shouldZeroFirst = fee.startsWith('0.');
 
