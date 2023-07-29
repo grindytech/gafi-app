@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <HeroSection />
       <Grid
-        gridTemplateColumns={{ sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+        gridTemplateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
         columnGap={5}
         rowGap={5}
       >

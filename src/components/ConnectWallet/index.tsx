@@ -36,8 +36,9 @@ import ConnectWalletSwitch from './ConnectWalletSwitch';
 import ConnectWalletLogOut from './ConnectWalletLogOut';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { injectedAccount } from 'redux/injected';
-import useForceMount from 'hooks/useForceMount';
 import { Link } from 'react-router-dom';
+import { formatCurrency } from 'utils/utils';
+import React from 'react';
 
 export const ListProfileData = [
   {
@@ -68,7 +69,6 @@ export const ListProfileData = [
 ];
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
-  const { setMounting, mounting } = useForceMount();
 
   const { account, allAccount } = useAppSelector(
     state => state.injected.polkadot
@@ -79,14 +79,10 @@ export default function ConnectWallet() {
   const { isLoading, mutation } = useSignAndSend({
     address: account?.address as string,
     key: ['faucet'],
-    onSuccess() {
-      setMounting();
-    },
   });
 
   const { balance } = useBalance({
     account: account?.address as string,
-    refetch: mounting,
   });
 
   const toast = useToast();
@@ -223,13 +219,10 @@ export default function ConnectWallet() {
                         />
 
                         <Text fontSize="sm" color="shader.a.500">
-                          {Intl.NumberFormat(undefined, {
-                            style: 'currency',
-                            currencyDisplay: 'narrowSymbol',
-                            currency: 'usd',
-                          })
-                            .format(Number(balance.replaceAll(',', '')))
-                            .toString()}
+                          {formatCurrency(
+                            Number(balance.replaceAll(',', '')),
+                            'usd'
+                          )}
                         </Text>
                       </Box>
                     </Box>
@@ -255,8 +248,8 @@ export default function ConnectWallet() {
               >
                 <Text color="shader.a.400">My profile</Text>
                 <Flex gap={6} flexDirection="column" mt={6}>
-                  {ListProfileData.map(item => (
-                    <>
+                  {React.Children.toArray(
+                    ListProfileData.map(item => (
                       <Link to={item.link} onClick={onClose}>
                         <HStack
                           cursor="pointer"
@@ -272,8 +265,8 @@ export default function ConnectWallet() {
                           </Text>
                         </HStack>
                       </Link>
-                    </>
-                  ))}
+                    ))
+                  )}
                 </Flex>
               </Box>
             </DrawerBody>
