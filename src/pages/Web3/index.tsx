@@ -31,9 +31,15 @@ import Web3Collections, {
 import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
 import { Outlet, useLocation } from 'react-router-dom';
 import theme from 'theme/theme';
-import { TypeMetadataOfItem } from 'types';
+
 import useSubscribeSystem from 'hooks/useSubscribeSystem';
 import React from 'react';
+
+import { Option, StorageKey, u32 } from '@polkadot/types';
+import {
+  PalletGameGameDetails,
+  PalletNftsCollectionDetails,
+} from '@polkadot/types/lookup';
 
 export default function Web3() {
   const { event, setEvent } = useSubscribeSystem();
@@ -49,41 +55,35 @@ export default function Web3() {
       {
         queryKey: ['gameAccount', account?.address],
         queryFn: async () => {
-          if (api && api.query.game && account?.address) {
+          if (api && account?.address) {
             const getGamesOfAccount = await api.query.game.game.entries();
 
             return Promise.all(
-              getGamesOfAccount.map(async item => {
-                const game_owner = item[1].toHuman() as { owner: string };
-                const game_id = item[0].toHuman() as number[];
+              getGamesOfAccount.map(
+                async ([meta, config]: [
+                  StorageKey<[u32]>,
+                  Option<PalletGameGameDetails>
+                ]) => {
+                  const gameOfCollection = await api.query.game.gamesOf(
+                    meta.args[0].toNumber()
+                  );
 
-                const roleOfGame = await api.query.game.gameRoleOf
-                  .entries(game_id)
-                  .then(item => {
-                    const data = item[0][0].toHuman() as string[];
+                  const getOwner =
+                    config.value.owner.toString() === account.address;
 
+                  const getRole =
+                    config.value.admin.toString() === account.address;
+
+                  if (getOwner || getRole) {
                     return {
-                      game_id: Number(data[0]),
-                      role: data[1],
+                      collection: gameOfCollection.toHuman(),
+                      game_id: meta.args[0].toNumber(),
+                      owner: config.value.owner.toString(),
+                      role: config.value.admin.toString(),
                     };
-                  });
-
-                const collectionOfGame = await api.query.game
-                  .collectionsOf(game_id)
-                  .then(item => item.toHuman() as number[]);
-
-                const getRole = roleOfGame.role === account.address;
-                const getOwner = game_owner.owner === account.address;
-
-                if (getRole || getOwner) {
-                  return {
-                    role: roleOfGame.role,
-                    owner: game_owner.owner,
-                    game_id: roleOfGame.game_id,
-                    collections: collectionOfGame,
-                  };
+                  }
                 }
-              })
+              )
             ).then(data =>
               data.filter((item): item is Web3GamesDataProps => !!item)
             );
@@ -96,57 +96,43 @@ export default function Web3() {
       {
         queryKey: ['collectionAccount', account?.address],
         queryFn: async () => {
-          if (api && api.query.game && account && account.address) {
-            const getCollections = (
-              await api.query.nfts.collection.entries()
-            ).map(([parmas1, parmas2]) => {
-              const collection_owner = parmas2.toHuman() as { owner: string };
-              const collection_id = parmas1.toHuman() as string[];
-
-              return {
-                collection_id: Number(collection_id[0]),
-                collection_owner: String(collection_owner.owner),
-              };
-            });
+          if (api && account?.address) {
+            const getCollections = await api.query.nfts.collection.entries();
 
             return Promise.all(
-              getCollections.map(async data => {
-                const getGamesOfCollection = await api.query.game.gamesOf(
-                  data.collection_id
-                );
+              getCollections.map(
+                async ([collection_id, service]: [
+                  StorageKey<[u32]>,
+                  Option<PalletNftsCollectionDetails>
+                ]) => {
+                  const getGamesOfCollection = await api.query.game.gamesOf(
+                    collection_id.args[0].toNumber()
+                  );
 
-                const metadataOfCollections = await api.query.nfts
-                  .collectionMetadataOf(data.collection_id)
-                  .then(item => {
-                    const metadata = item.value.toHuman();
-
-                    if (metadata) {
-                      return JSON.parse(metadata.data);
-                    }
-                  });
-
-                const getRoleOfCollections =
-                  await api.query.nfts.collectionRoleOf
-                    .entries(data.collection_id)
-                    .then(item =>
-                      item.map(([owner]) => owner.toHuman() as string)
+                  const getRoleOfCollections =
+                    await api.query.nfts.collectionRoleOf.entries(
+                      collection_id.args[0].toNumber()
                     );
 
-                const getOwner = data.collection_owner === account.address;
-                const getRole = getRoleOfCollections[0][1] === account.address;
+                  const getRole = getRoleOfCollections.some(
+                    ([meta]) => meta.args[1].toString() === account.address
+                  );
 
-                if (getRole || getOwner) {
-                  return {
-                    owner: data.collection_owner,
-                    role: getRoleOfCollections[0][1],
-                    collection_id: data.collection_id,
-                    getGamesOfCollection: getGamesOfCollection.toHuman(),
-                    metadata: metadataOfCollections,
-                  };
+                  const getOwner =
+                    service.value.owner.toString() === account.address;
+
+                  if (getOwner || getRole) {
+                    return {
+                      owner: service.value.owner.toString(),
+                      role: getRoleOfCollections[0][0].args[1].toString(),
+                      collection_id: collection_id.args[0].toNumber(),
+                      getGamesOfCollection: getGamesOfCollection.toHuman(),
+                    };
+                  }
                 }
-              })
-            ).then(item =>
-              item.filter((item): item is Web3CollectionsDataProps => !!item)
+              )
+            ).then(data =>
+              data.filter((item): item is Web3CollectionsDataProps => !!item)
             );
           }
 
@@ -158,75 +144,38 @@ export default function Web3() {
         queryKey: ['item', account?.address],
         queryFn: async () => {
           if (api && api.query.nfts && account?.address) {
-            const getCollections = (
-              await api.query.nfts.collection.entries()
-            ).map(([parmas1, parmas2]) => {
-              const collection_owner = parmas2.toHuman() as { owner: string };
-              const collection_id = parmas1.toHuman() as string[];
-
-              return {
-                collection_id: Number(collection_id[0]),
-                collection_owner: String(collection_owner.owner),
-              };
-            });
+            const getCollections = await api.query.nfts.collection.entries();
 
             return Promise.all(
-              getCollections.map(
-                async ({ collection_id, collection_owner }) => {
-                  const itemsOfCollection = await api.query.nfts.item
-                    .entries(collection_id)
-                    .then(data =>
-                      data.map(item => {
-                        const data = item[0].toHuman() as number[];
-                        return {
-                          item_id: data[1],
-                          collection_id: data[0],
-                        };
-                      })
-                    );
+              getCollections.map(async ([collection_id, owner]) => {
+                const itemsOfCollection = await api.query.nfts.item.entries(
+                  collection_id.args[0].toNumber()
+                );
 
-                  const roleOfCollections =
-                    await api.query.nfts.collectionRoleOf
-                      .entries(collection_id)
-                      .then(item =>
-                        item.map(([address]) => address.toHuman() as string)
-                      );
+                const getRoleOfCollections =
+                  await api.query.nfts.collectionRoleOf.entries(
+                    collection_id.args[0].toNumber()
+                  );
 
-                  const getRole = account.address === roleOfCollections[0][1];
-                  const getOwner = account.address === collection_owner;
+                const getRole = getRoleOfCollections.some(
+                  ([meta]) => meta.args[1].toString() === account.address
+                );
 
-                  if (getOwner || getRole) {
-                    return Promise.all(
-                      itemsOfCollection.map(
-                        async ({ item_id, collection_id }) => {
-                          const metadataOfItem = (await api.query.nfts
-                            .itemMetadataOf(collection_id, item_id)
-                            .then(item => {
-                              const metadata = item.value.toHuman();
+                const getOwner =
+                  owner.value.owner.toString() === account.address;
 
-                              if (metadata) {
-                                return JSON.parse(String(metadata.data));
-                              }
-                            })) as TypeMetadataOfItem;
-
-                          const supplyOfItem = await api.query.game
-                            .supplyOf(collection_id, item_id)
-                            .then(item => item.toHuman() as string | null);
-
-                          return {
-                            collection_id: collection_id,
-                            metadata: metadataOfItem,
-                            item_id,
-                            supply: supplyOfItem,
-                          };
-                        }
-                      )
-                    );
-                  }
+                if (getOwner || getRole) {
+                  return itemsOfCollection.map(([meta]) => ({
+                    owner: owner.value.owner.toString(),
+                    collection_id: meta.args[0].toNumber(),
+                    nft_id: meta.args[1].toNumber(),
+                  }));
                 }
-              )
-            ).then(then =>
-              then.filter((item): item is Web3ItemsDataProps[] => !!item)
+              })
+            ).then(data =>
+              data
+                .filter((item): item is Web3ItemsDataProps[] => !!item?.length)
+                .flat()
             );
           }
 
@@ -314,7 +263,7 @@ export default function Web3() {
     {
       key: 2,
       data: item.data || [],
-      component: (data: Web3ItemsDataProps[][]) => <Web3Items data={data} />,
+      component: (data: Web3ItemsDataProps[]) => <Web3Items data={data} />,
     },
   ];
 
@@ -350,11 +299,7 @@ export default function Web3() {
 
                   <Tab>
                     Items&nbsp;
-                    {item.data && item.data.length
-                      ? item.data
-                          .map(item => item.length)
-                          .reduce((prev, current) => prev + current)
-                      : 0}
+                    {item.data?.length || 0}
                   </Tab>
                 </Flex>
 
