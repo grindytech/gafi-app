@@ -30,8 +30,13 @@ export default function useMetaCollection({
             const service = await api.query.nfts.collectionMetadataOf(
               collection_id
             );
+
             if (service.isEmpty) return null;
-            return JSON.parse(service.value.data.toHuman());
+
+            return {
+              ...JSON.parse(service.value.data.toHuman()),
+              collection_id,
+            };
           })
         );
 

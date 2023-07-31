@@ -11,6 +11,7 @@ export type TypeMetadataOfCollection =
       external_url: string;
       image: string;
       title: string;
+      collection_id: number;
     }
   | undefined;
 
@@ -18,5 +19,7 @@ export type TypeMetadataOfItem =
   | {
       image: string;
       title: string;
+      collection_id: number;
+      nft_id: number;
     }
   | undefined;

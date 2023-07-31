@@ -5,8 +5,8 @@ export const cloudinary_config = {
   preset_key: process.env.VITE_PRESET_KEY,
 };
 
-export const cloundinary_link =
-  'https://res.cloudinary.com/synasapmob/image/upload/';
+export const cloundinary_link = (src?: string) =>
+  'https://res.cloudinary.com/synasapmob/image/upload/' + src;
 
 export const cloudinary_upload_type = {
   image: 'image/upload',
