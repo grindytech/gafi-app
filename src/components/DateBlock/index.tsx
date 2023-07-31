@@ -1,18 +1,23 @@
 import { Text, TextProps } from '@chakra-ui/react';
 import { secondsToHours, secondsToMinutes } from 'date-fns';
+import useBlockTime from 'hooks/useBlockTime';
+import { BLOCK_TIME } from 'utils/constants';
 
 interface DateBlockProps {
-  time: number;
+  endBlock: number;
   sx?: TextProps;
 }
 
-export default function DateBlock({ time, sx }: DateBlockProps) {
+export default function DateBlock({ endBlock, sx }: DateBlockProps) {
+  const { blockNumber: currentBlock } = useBlockTime('bestNumber');
+
+  const time = (endBlock - currentBlock) * BLOCK_TIME;
   const expired = Math.sign(time) === -1;
 
   return (
     <Text {...sx}>
       {(function () {
-        // outdated
+        // outdated;
         if (expired) return 'Expired';
 
         // seconds (< 60 S)

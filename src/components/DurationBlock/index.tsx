@@ -14,47 +14,55 @@ import {
 import React from 'react';
 
 import Chevron01Icon from 'public/assets/line/chevron-01.svg';
+import { BLOCK_TIME } from 'utils/constants';
 
 export interface ListDurationProps {
   text: string;
   time: number;
 }
 
+// unit seconds
+export const ListDuration: ListDurationProps[] = [
+  {
+    text: '1 Minutes',
+    time: 60 / BLOCK_TIME,
+  },
+  {
+    text: '5 Minutes',
+    time: 300 / BLOCK_TIME,
+  },
+  {
+    text: '1 Hours',
+    time: 3600 / BLOCK_TIME,
+  },
+  {
+    text: '1 Day',
+    time: (86400 * 1) / BLOCK_TIME,
+  },
+  {
+    text: '1 Week',
+    time: (86400 * 7) / BLOCK_TIME,
+  },
+  {
+    text: '2 Weeks',
+    time: (86400 * 14) / BLOCK_TIME,
+  },
+  {
+    text: '1 Month',
+    time: (86400 * 30) / BLOCK_TIME,
+  },
+];
+
 interface DurationBlockProps {
-  currentDuration: React.Dispatch<React.SetStateAction<number>>;
+  duration: ListDurationProps;
+  setCurrentDuration: React.Dispatch<React.SetStateAction<ListDurationProps>>;
 }
 
-export default function DurationBlock({ currentDuration }: DurationBlockProps) {
+export default function DurationBlock({
+  duration,
+  setCurrentDuration,
+}: DurationBlockProps) {
   const { isOpen, onClose, onToggle } = useDisclosure();
-
-  const ListDuration = [
-    {
-      text: '1 Minutes',
-      time: 60,
-    },
-    {
-      text: '1 Hour',
-      time: 3600,
-    },
-    {
-      text: '1 Day',
-      time: 86400 * 1, // 24H * day
-    },
-    {
-      text: '1 Week',
-      time: 86400 * 7, // 24H * day
-    },
-    {
-      text: '2 Weeks',
-      time: 86400 * 14, // 24H * day
-    },
-    {
-      text: '1 Month',
-      time: 86400 * 30, // 24H * day
-    },
-  ];
-
-  const [duration, setDuration] = React.useState(ListDuration[0]);
 
   return (
     <Box>
@@ -100,8 +108,7 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
                       cursor="pointer"
                       onClick={() => {
                         onClose();
-                        setDuration(meta);
-                        currentDuration(meta.time);
+                        setCurrentDuration(meta);
                       }}
                       _hover={{
                         bg: 'shader.a.300',
