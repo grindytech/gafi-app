@@ -5,7 +5,6 @@ import { formatCurrency, shorten } from 'utils/utils';
 import NFTDetailAcceptOffer from './NFTDetailAcceptOffer';
 import { getTradeConfigProps } from './index';
 
-import useBlockTime from 'hooks/useBlockTime';
 import GafiAmount from 'components/GafiAmount';
 import DateBlock from 'components/DateBlock';
 import CancelTrade from 'components/CancelTrade';
@@ -19,8 +18,6 @@ export default function NFTDetailListOffer({
   lowestSetBuy,
   refetch,
 }: NFTDetailListOfferProps) {
-  const { blockNumber } = useBlockTime('bestNumber');
-
   return (
     <Table
       variant="unstyled"
@@ -76,9 +73,7 @@ export default function NFTDetailListOffer({
                 <Td>
                   <Text as="span">Date</Text>
 
-                  <DateBlock
-                    time={meta.endBlock.value.toNumber() - blockNumber}
-                  />
+                  <DateBlock endBlock={meta.endBlock.value.toNumber()} />
                 </Td>
 
                 <Td textAlign="right">

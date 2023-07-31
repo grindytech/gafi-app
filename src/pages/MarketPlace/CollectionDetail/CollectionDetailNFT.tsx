@@ -7,7 +7,6 @@ import {
   HStack,
   Heading,
   Icon,
-  Image,
   Select,
   Text,
   useDisclosure,
@@ -17,53 +16,36 @@ import FilterIcon from 'public/assets/line/filter.svg';
 
 import MarketPlaceFilter from 'components/MarketPlaceFilter';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from 'hooks/useRedux';
+
 import React from 'react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
 
 import useMetaNFT from 'hooks/useMetaNFT';
+import useGetNFT, { nftsItemProps } from 'hooks/useGetNFT';
+import RatioPicture from 'components/RatioPicture';
 
 export default function CollectionDetailNFT() {
   const { collection_id } = useParams();
-  const { api } = useAppSelector(state => state.substrate);
 
   const { isOpen, onToggle } = useDisclosure();
 
-  const { data } = useQuery({
-    queryKey: [`collection_nft/${collection_id}`],
-    queryFn: async () => {
-      if (api) {
-        const service = (await api.query.nfts.item.entries(collection_id)).map(
-          ([
-            {
-              args: [collection, item],
-            },
-          ]) => {
-            return {
-              item_id: item.toNumber(),
-              collection_id: collection.toNumber(),
-            };
-          }
-        );
-
-        return service;
-      }
-    },
+  const getNFT = useGetNFT<nftsItemProps[]>({
+    key: collection_id,
+    group: [Number(collection_id)],
   });
 
   const { metaNFT } = useMetaNFT({
     key: collection_id,
-    group: data?.map(item => ({
+    group: getNFT?.map(item => ({
       collection_id: item.collection_id,
-      nft_id: item.item_id,
+      nft_id: item.nft_id,
     })),
   });
 
   return (
     <>
-      {data && data.length ? (
+      {getNFT?.length ? (
         <Box
           padding={6}
           borderTop="0.0625rem solid"
@@ -121,76 +103,58 @@ export default function CollectionDetailNFT() {
               }}
             >
               {React.Children.toArray(
-                data.map((item, index) => (
-                  <Box
-                    key={item.item_id}
-                    as={Link}
-                    to={`/marketplace/nft/${item.item_id}/${item.collection_id}`}
-                    border="0.0625rem solid"
-                    borderColor="shader.a.300"
-                    bg="white"
-                    borderRadius="xl"
-                  >
+                getNFT.map(meta => {
+                  const currentNFT = metaNFT?.find(
+                    item => item?.nft_id === meta.nft_id
+                  );
+
+                  return (
                     <Box
-                      padding={2}
-                      borderBottom="0.0625rem solid"
-                      borderColor="shader.a.200"
+                      as={Link}
+                      to={`/marketplace/nft/${meta.nft_id}/${meta.collection_id}`}
+                      border="0.0625rem solid"
+                      borderColor="shader.a.300"
+                      bg="white"
+                      borderRadius="xl"
                     >
-                      <Center
-                        borderRadius="xl"
-                        bg="shader.a.300"
-                        position="relative"
-                        overflow="hidden"
-                        aspectRatio={16 / 9}
-                        sx={{
-                          img: {
-                            position: 'absolute',
-                            inset: 0,
-                            width: 'full',
-                            height: 'full',
-                          },
-                        }}
-                      >
-                        {metaNFT?.[index]?.image ? (
-                          <Image
-                            objectFit="cover"
-                            alt="image is outdated"
-                            src={`${cloundinary_link}/${metaNFT[index]?.image}`}
-                          />
-                        ) : (
-                          <Image src="/assets/fill/item.png" objectFit="none" />
-                        )}
-                      </Center>
-                    </Box>
+                      <RatioPicture
+                        src={
+                          currentNFT?.image
+                            ? cloundinary_link(currentNFT.image)
+                            : null
+                        }
+                        alt={meta.nft_id}
+                      />
 
-                    <Box padding={4}>
-                      <Center justifyContent="space-between">
-                        <Heading
-                          fontSize="sm"
-                          fontWeight="medium"
-                          color="shader.a.900"
-                        >
-                          Collection ID
-                        </Heading>
+                      <Box padding={4}>
+                        <Center justifyContent="space-between">
+                          <Heading
+                            fontSize="sm"
+                            fontWeight="medium"
+                            color="shader.a.900"
+                          >
+                            Collection ID
+                          </Heading>
 
-                        <Text>{item.collection_id}</Text>
-                      </Center>
+                          <Text>{meta.collection_id}</Text>
+                        </Center>
 
-                      <Center justifyContent="space-between">
-                        <Heading className="card-value" fontSize="md!">
-                          {metaNFT?.[index]?.title || '-'}
-                        </Heading>
+                        <Center justifyContent="space-between">
+                          <Heading className="card-value" fontSize="md!">
+                            {currentNFT?.title || '-'}
+                          </Heading>
 
-                        <Text className="card-value" color="shader.a.500!">
-                          ID:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {item.item_id}
+                          <Text className="card-value" color="shader.a.500!">
+                            ID:&nbsp;
+                            <Text as="span" color="primary.a.500">
+                              {meta.nft_id}
+                            </Text>
                           </Text>
-                        </Text>
-                      </Center>
+                        </Center>
+                      </Box>
                     </Box>
-                  </Box>
-                ))
+                  );
+                })
               )}
             </Grid>
           </Flex>

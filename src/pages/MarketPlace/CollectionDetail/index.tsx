@@ -12,20 +12,20 @@ import {
 } from '@chakra-ui/react';
 
 import ChakraBox from 'components/ChakraBox';
-import { useQuery } from '@tanstack/react-query';
+
 import { useAppSelector } from 'hooks/useRedux';
 import { useParams } from 'react-router-dom';
 import { shorten } from 'utils/utils';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import CollectionDetailNFT from './CollectionDetailNFT';
 import useMetaCollection from 'hooks/useMetaCollection';
-import { Option } from '@polkadot/types';
-import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
+
+import useGetCollection, { nftsCollectionProps } from 'hooks/useGetCollection';
+import RatioPicture from 'components/RatioPicture';
 
 export default function CollectionDetail() {
   const { collection_id } = useParams();
 
-  const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   const { metaCollection } = useMetaCollection({
@@ -37,171 +37,152 @@ export default function CollectionDetail() {
     ],
   });
 
-  const { data, isError } = useQuery({
-    queryKey: ['collection', collection_id],
-    queryFn: async () => {
-      if (api) {
-        const service = (await api.query.nfts.collection(
-          collection_id
-        )) as Option<PalletNftsCollectionDetails>;
-
-        return {
-          owner: service.value.owner,
-          items: service.value.items,
-        };
-      }
-    },
+  const getCollection = useGetCollection<nftsCollectionProps>({
+    key: String(account?.address),
+    group: [Number(collection_id)],
+    filter: 'only',
   });
 
   const { isOpen, onToggle } = useDisclosure();
   const [line, setLine] = React.useState(0);
 
-  if (isError) {
+  if (getCollection.isError) {
     return <Center>not found</Center>;
   }
 
   return (
     <>
-      {data ? (
+      {getCollection.data ? (
         <Box
           borderRadius="xl"
           boxShadow="0px 0.1875rem 0.875rem 0px rgba(0, 0, 0, 0.05)"
           bg="white"
         >
-          <Box position="relative" pb={6}>
-            <Center
-              height={64}
-              bg="shader.a.300"
-              overflow="hidden"
-              position="relative"
-            >
-              {metaCollection?.[0]?.image ? (
-                <Image
-                  src={`${cloundinary_link}/${metaCollection[0].image}`}
-                  pointerEvents="none"
-                  position="absolute"
-                  inset="50% auto auto 50%"
-                  transform="translate(-50%, -50%)"
-                  width="full"
-                />
-              ) : null}
-
-              <Box
-                bg="linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)"
+          <Center height={80} bg="shader.a.300" position="relative">
+            {metaCollection?.[0]?.image ? (
+              <Image
                 position="absolute"
-                height={24}
-                inset="auto 0 0 0"
+                width="full"
+                height="full"
+                objectFit="cover"
+                src={cloundinary_link(metaCollection?.[0].image)}
               />
-            </Center>
+            ) : null}
 
-            <Center
-              flexDirection="column"
-              position="relative"
-              textAlign="center"
-              onLoad={(event: any) => {
-                // because dom content needs loaded
-                const target =
-                  event.target.offsetParent.parentElement.children[3];
+            <Box
+              bg="linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)"
+              position="absolute"
+              height={24}
+              inset="auto 0 0 0"
+            />
 
-                const getLine = Number(
-                  String(Math.round(Number(target.offsetHeight / 2)))[0] // first digits
-                );
+            <RatioPicture
+              src={
+                metaCollection?.[0]
+                  ? cloundinary_link(metaCollection?.[0].image)
+                  : null
+              }
+              sx={{
+                pt: 'unset',
+                height: 32,
+                width: 32,
+                border: '0.625rem solid white',
+                position: 'absolute',
+                inset: 'auto auto 0 50%',
+                transform: 'translate(-50%, 50%)',
+              }}
+            />
+          </Center>
 
-                setLine(getLine);
+          <Center
+            pt={20}
+            pb={6}
+            flexDirection="column"
+            position="relative"
+            textAlign="center"
+            onLoad={(event: any) => {
+              // because dom content needs loaded
+              const target =
+                event.target.offsetParent.parentElement.children[3];
+
+              const getLine = Number(
+                String(Math.round(Number(target.offsetHeight / 2)))[0] // first digits
+              );
+
+              setLine(getLine);
+            }}
+          >
+            <HStack spacing={1}>
+              <Text fontSize="2xl" lineHeight="initial" fontWeight="bold">
+                {metaCollection?.[0]?.title || '-'}
+              </Text>
+            </HStack>
+
+            <HStack>
+              <Text color="shader.a.500">
+                Owner by&nbsp;
+                <Text as="span" color="primary.a.500" fontWeight="medium">
+                  {getCollection.data.owner === account?.address
+                    ? 'you'
+                    : shorten(getCollection.data.owner, 6)}
+                </Text>
+              </Text>
+            </HStack>
+
+            {metaCollection?.[0]?.description ? (
+              <>
+                <ChakraBox
+                  width="2xl"
+                  color="shader.a.700"
+                  overflow="hidden"
+                  animate={{
+                    height: line > 2 && !isOpen ? '3rem' : undefined,
+                  }}
+                >
+                  {metaCollection?.[0].description}
+                </ChakraBox>
+
+                {line > 2 ? (
+                  <Text
+                    as="span"
+                    color="primary.a.500"
+                    fontWeight="medium"
+                    onClick={onToggle}
+                    cursor="pointer"
+                  >
+                    {isOpen ? 'Show less' : 'Show more'}
+                  </Text>
+                ) : null}
+              </>
+            ) : null}
+
+            <List
+              mt={5}
+              display="flex"
+              gap={16}
+              px={6}
+              py={4}
+              borderRadius="xl"
+              border="0.0625rem solid"
+              borderColor="shader.a.300"
+              sx={{
+                p: {
+                  color: 'shader.a.500',
+                  pb: 0.5,
+                },
+                span: {
+                  color: 'shader.a.900',
+                  fontWeight: 'medium',
+                },
               }}
             >
-              <Center
-                height={32}
-                position="absolute"
-                overflow="hidden"
-                transform="translateY(-50%)"
-                inset="0 0 auto 0"
-              >
-                <Image
-                  borderRadius="xl"
-                  bg="shader.a.300"
-                  border="0.625rem solid white"
-                  height="full"
-                  objectFit={metaCollection?.[0]?.image ? 'cover' : 'none'}
-                  src={
-                    metaCollection?.[0]?.image
-                      ? `${cloundinary_link}/${metaCollection?.[0].image}`
-                      : '/assets/fill/item.png'
-                  }
-                />
-              </Center>
+              <ListItem>
+                <Text>Items</Text>
 
-              <HStack spacing={1} mt={24}>
-                <Text fontSize="2xl" lineHeight="initial" fontWeight="bold">
-                  {metaCollection?.[0]?.title || '-'}
-                </Text>
-              </HStack>
-
-              <HStack>
-                <Text color="shader.a.500">
-                  Owner by&nbsp;
-                  <Text as="span" color="primary.a.500" fontWeight="medium">
-                    {data.owner.toString() === account?.address
-                      ? 'you'
-                      : shorten(data.owner.toString(), 6)}
-                  </Text>
-                </Text>
-              </HStack>
-
-              {metaCollection?.[0]?.description ? (
-                <>
-                  <ChakraBox
-                    width="2xl"
-                    color="shader.a.700"
-                    overflow="hidden"
-                    animate={{
-                      height: line > 2 && !isOpen ? '3rem' : undefined,
-                    }}
-                  >
-                    {metaCollection?.[0].description}
-                  </ChakraBox>
-
-                  {line > 2 ? (
-                    <Text
-                      as="span"
-                      color="primary.a.500"
-                      fontWeight="medium"
-                      onClick={onToggle}
-                      cursor="pointer"
-                    >
-                      {isOpen ? 'Show less' : 'Show more'}
-                    </Text>
-                  ) : null}
-                </>
-              ) : null}
-
-              <List
-                display="flex"
-                gap={16}
-                px={6}
-                py={4}
-                borderRadius="xl"
-                border="0.0625rem solid"
-                borderColor="shader.a.300"
-                sx={{
-                  p: {
-                    color: 'shader.a.500',
-                    pb: 0.5,
-                  },
-                  span: {
-                    color: 'shader.a.900',
-                    fontWeight: 'medium',
-                  },
-                }}
-              >
-                <ListItem>
-                  <Text>Items</Text>
-
-                  <Text as="span">{data.items.toNumber()}</Text>
-                </ListItem>
-              </List>
-            </Center>
-          </Box>
+                <Text as="span">{getCollection.data.items}</Text>
+              </ListItem>
+            </List>
+          </Center>
 
           <CollectionDetailNFT />
         </Box>

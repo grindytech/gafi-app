@@ -2,12 +2,10 @@ import {
   Box,
   Button,
   ButtonProps,
-  Center,
   Flex,
   FormControl,
   HStack,
   Heading,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -31,6 +29,7 @@ import { formatCurrency } from 'utils/utils';
 import useMetaCollection from 'hooks/useMetaCollection';
 import useMetaNFT from 'hooks/useMetaNFT';
 import useItemBought from 'hooks/useItemBought';
+import RatioPicture from 'components/RatioPicture';
 
 interface NFTDetailBuyProps {
   trade_id: number;
@@ -158,33 +157,17 @@ export default function NFTDetailBuy({
             >
               <HStack alignItems="flex-start" spacing={4}>
                 <Flex gap={4}>
-                  <Center
-                    aspectRatio={16 / 9}
-                    position="relative"
-                    width={32}
-                    borderRadius="lg"
-                    overflow="hidden"
-                    bg="shader.a.300"
-                    sx={{
-                      img: {
-                        position: 'absolute',
-                        inset: 0,
-                        width: 'full',
-                        height: 'full',
-                      },
-                    }}
-                  >
-                    {metaNFT?.[0]?.image ? (
-                      <Image
-                        objectFit="cover"
-                        alt="image is outdated"
-                        src={`${cloundinary_link}/${metaNFT[0].image}`}
-                      />
-                    ) : (
-                      <Image src="/assets/fill/item.png" objectFit="none" />
-                    )}
-                  </Center>
-
+                  <Box>
+                    <RatioPicture
+                      alt={nft_id}
+                      src={
+                        metaNFT?.[0]?.image
+                          ? cloundinary_link(metaNFT?.[0]?.image)
+                          : null
+                      }
+                      sx={{ width: 32 }}
+                    />
+                  </Box>
                   <Box>
                     <Text color="primary.a.500" fontWeight="medium">
                       {metaCollection?.[0]?.title || '-'}

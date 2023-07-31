@@ -157,7 +157,9 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                           height="full"
                           objectFit="cover"
                           alt="image is outdated"
-                          src={`${cloundinary_link}/${item.metadataOfCollection.image}`}
+                          src={cloundinary_link(
+                            item.metadataOfCollection.image
+                          )}
                         />
                       ) : (
                         <Image src={'assets/fill/item.png'} />
