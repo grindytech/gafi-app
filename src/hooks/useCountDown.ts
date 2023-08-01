@@ -22,7 +22,7 @@ const useCountdown = (targetDate: number) => {
 
     return () => clearInterval(interval);
   }, [countDownDate]);
-  /*  console.log(getReturnValues(countDown)); */
+
   return getReturnValues(countDown);
 };
 

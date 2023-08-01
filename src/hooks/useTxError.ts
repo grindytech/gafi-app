@@ -4,10 +4,11 @@ import { ISubmittableResult } from '@polkadot/types/types';
 import { useAppSelector } from './useRedux';
 
 interface useTxErrorProps {
-  onSuccess?: () => void;
+  onSuccess: () => void;
+  onError: () => void;
 }
 
-export default function useTxError({ onSuccess }: useTxErrorProps) {
+export default function useTxError({ onSuccess, onError }: useTxErrorProps) {
   const toast = useToast();
   const { api } = useAppSelector(state => state.substrate);
 
@@ -42,9 +43,7 @@ export default function useTxError({ onSuccess }: useTxErrorProps) {
           description: errorInfo,
         });
 
-        if (onSuccess) {
-          onSuccess();
-        }
+        onError();
       }
     });
 
@@ -58,9 +57,7 @@ export default function useTxError({ onSuccess }: useTxErrorProps) {
     });
 
     if (result.isCompleted && isError === false) {
-      if (onSuccess) {
-        onSuccess();
-      }
+      onSuccess();
     }
   };
 
