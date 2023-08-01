@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  BoxProps,
   Center,
   List,
   ListItem,
@@ -56,16 +57,20 @@ export const ListDuration: ListDurationProps[] = [
 interface DurationBlockProps {
   duration: ListDurationProps;
   setCurrentDuration: React.Dispatch<React.SetStateAction<ListDurationProps>>;
+  listDuration: ListDurationProps[];
+  sx?: BoxProps;
 }
 
 export default function DurationBlock({
   duration,
   setCurrentDuration,
+  listDuration,
+  sx,
 }: DurationBlockProps) {
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   return (
-    <Box>
+    <Box {...sx}>
       <Text mb={2} color="shader.a.500" fontSize="sm" fontWeight="medium">
         Duration
       </Text>
@@ -79,8 +84,14 @@ export default function DurationBlock({
           fontSize="sm"
           fontWeight="medium"
         >
-          <Center justifyContent="space-between" padding={4}>
-            <Text color="shader.a.">{duration.text}</Text>
+          <Center
+            className="current-minute"
+            justifyContent="space-between"
+            padding={4}
+          >
+            <Text as="span" color="shader.a.900">
+              {duration.text}
+            </Text>
 
             <AccordionButton
               width="auto"
@@ -99,8 +110,9 @@ export default function DurationBlock({
           >
             <List>
               {React.Children.toArray(
-                ListDuration.filter(meta => meta.text !== duration.text).map(
-                  meta => (
+                listDuration
+                  .filter(meta => meta.text !== duration.text)
+                  .map(meta => (
                     <ListItem
                       padding={4}
                       transitionDuration="ultra-slow"
@@ -116,8 +128,7 @@ export default function DurationBlock({
                     >
                       {meta.text}
                     </ListItem>
-                  )
-                )
+                  ))
               )}
             </List>
           </AccordionPanel>

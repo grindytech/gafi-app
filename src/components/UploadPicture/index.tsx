@@ -27,8 +27,12 @@ import Cropper, { ReactCropperElement } from 'react-cropper';
 import CameraIcon from 'public/assets/fill/camera.svg';
 
 interface UploadPictureProps {
-  setValue: UseFormSetValue<any>;
-  value: string;
+  formState: {
+    setValue: UseFormSetValue<any>;
+    value: string;
+    isInvalid?: boolean;
+    isRequired?: boolean;
+  };
 }
 
 interface stateImageProps {
@@ -36,33 +40,33 @@ interface stateImageProps {
   crop?: string;
 }
 
-export default function UploadPicture({ value, setValue }: UploadPictureProps) {
+export default function UploadPicture({ formState }: UploadPictureProps) {
   const [image, setImage] = React.useState<stateImageProps>({});
+  const upload = document.getElementById('upload-image') as HTMLInputElement;
 
   const cropperRef = React.useRef<ReactCropperElement>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const revokeObject = (type: 'crop' | 'preview') => {
+    if (type === 'crop' && image.crop) return URL.revokeObjectURL(image.crop);
+
+    if (type === 'preview' && image.preview)
+      return URL.revokeObjectURL(image.preview);
+  };
+
   const handleUpload = (file: FileList | null) => {
     // delete memory
-    if (image.preview) {
-      URL.revokeObjectURL(image.preview);
-    }
+    revokeObject('preview');
 
     // update blob
     if (file && file[0]) {
-      console.log(file[0]);
-
-      setImage({
-        preview: URL.createObjectURL(file[0]),
-      });
-
+      setImage({ preview: URL.createObjectURL(file[0]) });
       onOpen();
     }
   };
 
   const handleCrop = () => {
-    const upload = document.getElementById('upload-image') as HTMLInputElement;
     const file_upload = upload.files as FileList;
 
     if (cropperRef.current) {
@@ -72,8 +76,10 @@ export default function UploadPicture({ value, setValue }: UploadPictureProps) {
             type: file_upload[0].type,
           });
 
+          revokeObject('crop');
+
           setImage({ crop: URL.createObjectURL(file) });
-          setValue(value, file);
+          formState.setValue(formState.value, file);
           onClose();
         }
       });
@@ -88,97 +94,107 @@ export default function UploadPicture({ value, setValue }: UploadPictureProps) {
       sibling.style.opacity = String(opacity);
     }
   };
-  handleMouse;
+
+  React.useEffect(() => {
+    if (formState?.isInvalid && upload) {
+      upload.value = ''; // reset value
+      revokeObject('crop');
+      setImage({});
+    }
+  }, [formState?.isInvalid]);
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
-        <ModalOverlay />
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+          <ModalOverlay />
 
-        <ModalContent
-          px={2}
-          mx={8}
-          textAlign="center"
-          sx={{
-            '.cropper-modal': {
-              opacity: 0.55,
-            },
-            '.cropper-line': {
-              bg: 'unset',
-              display: 'none',
-              pointerEvents: 'none',
-            },
-            '.cropper-face': {
-              bg: 'unset',
-            },
-            '.cropper-view-box': {
-              border: '0.0625rem dashed white',
-              outline: 'unset',
-            },
-            '.cropper-center': {
-              display: 'none',
-              pointerEvents: 'none',
-            },
-            '.cropper-point.point': {
-              '&-e, &-w, &-n, &-s': {
+          <ModalContent
+            px={2}
+            mx={8}
+            textAlign="center"
+            sx={{
+              '.cropper-modal': {
+                opacity: 0.55,
+              },
+              '.cropper-line': {
+                bg: 'unset',
                 display: 'none',
                 pointerEvents: 'none',
               },
-              '&-se, &-sw, &-nw, &-ne': {
-                width: 3,
-                height: 3,
-                bg: 'white',
-                borderRadius: 'full',
+              '.cropper-face': {
+                bg: 'unset',
               },
-            },
-          }}
-        >
-          <ModalHeader padding={0}>
-            <Heading
-              fontSize="md"
-              color="shader.a.900"
-              fontWeight="medium"
-              my={4}
-            >
-              Crop Images
-            </Heading>
-          </ModalHeader>
+              '.cropper-view-box': {
+                border: '0.0625rem dashed white',
+                outline: 'unset',
+              },
+              '.cropper-center': {
+                display: 'none',
+                pointerEvents: 'none',
+              },
+              '.cropper-point.point': {
+                '&-e, &-w, &-n, &-s': {
+                  display: 'none',
+                  pointerEvents: 'none',
+                },
+                '&-se, &-sw, &-nw, &-ne': {
+                  width: 3,
+                  height: 3,
+                  bg: 'white',
+                  borderRadius: 'full',
+                },
+              },
+            }}
+          >
+            <ModalHeader padding={0}>
+              <Heading
+                fontSize="md"
+                color="shader.a.900"
+                fontWeight="medium"
+                my={4}
+              >
+                Crop Images
+              </Heading>
+            </ModalHeader>
 
-          <ModalBody padding={0}>
-            <Cropper
-              style={{
-                width: '100%',
-                height: '27rem',
-              }}
-              src={image.preview}
-              ref={cropperRef}
-              viewMode={1}
-              guides={false}
-              zoomable={false}
-              aspectRatio={16 / 9}
-              autoCropArea={0.5}
-              checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
-            />
+            <ModalBody padding={0}>
+              <Cropper
+                style={{
+                  width: '100%',
+                  height: '27rem',
+                }}
+                src={image.preview}
+                ref={cropperRef}
+                viewMode={1}
+                guides={false}
+                zoomable={false}
+                aspectRatio={16 / 9}
+                autoCropArea={0.5}
+                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+              />
 
-            <Text fontSize="sm" color="shader.a.700" mt={6}>
-              Recommend: 16:9&nbsp;
-              <Text as="span" color="shader.a.900">
-                (320px x 180px)
+              <Text fontSize="sm" color="shader.a.700" mt={6}>
+                Recommend: 16:9&nbsp;
+                <Text as="span" color="shader.a.900">
+                  (320px x 180px)
+                </Text>
+                &nbsp;for best quality
               </Text>
-              &nbsp;for best quality
-            </Text>
-          </ModalBody>
+            </ModalBody>
 
-          <ModalFooter justifyContent="center" padding={0} gap={3} my={6}>
-            <Button borderRadius="3xl" variant="cancel" onClick={onClose}>
-              Cancel
-            </Button>
+            <ModalFooter justifyContent="center" padding={0} gap={3} my={6}>
+              <Button borderRadius="3xl" variant="cancel" onClick={onClose}>
+                Cancel
+              </Button>
 
-            <Button borderRadius="3xl" variant="primary" onClick={handleCrop}>
-              Save Crop
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+              <Button borderRadius="3xl" variant="primary" onClick={handleCrop}>
+                Save Crop
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
 
       <Flex gap={4}>
         <Center
@@ -245,12 +261,14 @@ export default function UploadPicture({ value, setValue }: UploadPictureProps) {
             }}
             id="upload-image"
             type="file"
-            accept="image/png,image/jpeg,image/gif,image/svg+xml"
+            accept="image/png,image/jpeg,image/svg+xml"
             position="absolute"
             cursor="pointer"
             height="full"
             inset={0}
             opacity={0}
+            isRequired={formState?.isRequired}
+            isInvalid={true}
           />
         </Center>
 

@@ -47,10 +47,11 @@ export default function NumberInputMaxLength({
         render={({ field }) => (
           <NumberInput
             name={field.name}
-            value={field.value}
+            value={field.value || ''}
             max={max}
             onChange={field.onChange}
           >
+            {JSON.stringify(field)}
             <Input
               as={NumberInputField}
               variant="control"
