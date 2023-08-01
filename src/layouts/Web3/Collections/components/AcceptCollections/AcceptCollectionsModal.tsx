@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 
 import useSignAndSend from 'hooks/useSignAndSend';
 import { AcceptCollectionsFieldProps } from './index';
@@ -25,11 +25,13 @@ import { useAppSelector } from 'hooks/useRedux';
 interface AcceptCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<AcceptCollectionsFieldProps>;
+  reset: UseFormReset<AcceptCollectionsFieldProps>;
 }
 
 export default function AcceptCollectionsModal({
   onClose,
   getValues,
+  reset,
 }: AcceptCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -39,6 +41,14 @@ export default function AcceptCollectionsModal({
     address: role.address,
     key: ['acceptAdding', collection_id],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        game_id: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });

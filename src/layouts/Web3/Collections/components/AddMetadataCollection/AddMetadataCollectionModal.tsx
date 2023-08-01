@@ -29,12 +29,13 @@ import { useAppSelector } from 'hooks/useRedux';
 
 interface AddMetadataCollectionModalProps {
   onClose: () => void;
-  reset: UseFormReset<AddMetadataCollectionFieldProps>;
   getValues: UseFormGetValues<AddMetadataCollectionFieldProps>;
+  reset: UseFormReset<AddMetadataCollectionFieldProps>;
 }
 export default function AddMetadataCollectionModal({
   getValues,
   onClose,
+  reset,
 }: AddMetadataCollectionModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -44,6 +45,16 @@ export default function AddMetadataCollectionModal({
     address: role.address,
     key: ['CollectionMetadataSet', collection_id],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        image: undefined,
+        title: undefined,
+        external_url: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });
