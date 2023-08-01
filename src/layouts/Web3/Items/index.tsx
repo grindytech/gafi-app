@@ -17,7 +17,6 @@ import AddSupply from './components/AddSupply';
 import theme from 'theme/theme';
 import CreateItem from './components/CreateItem';
 import AddMetadataItem from './components/AddMetadataItem';
-import AddPriceItem from './components/AddIPrice';
 
 export default function Items() {
   return (
@@ -54,8 +53,6 @@ export default function Items() {
           </Tab>
 
           <Tab>Add Metadata</Tab>
-
-          <Tab>Add Price</Tab>
         </TabList>
 
         <TabPanels
@@ -75,10 +72,6 @@ export default function Items() {
 
           <TabPanel>
             <AddMetadataItem />
-          </TabPanel>
-
-          <TabPanel>
-            <AddPriceItem />
           </TabPanel>
         </TabPanels>
       </Tabs>

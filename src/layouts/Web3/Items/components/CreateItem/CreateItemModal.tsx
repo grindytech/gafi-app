@@ -19,27 +19,38 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { CreateItemFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
 interface CreateItemModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<CreateItemFieldProps>;
+  reset: UseFormReset<CreateItemFieldProps>;
 }
 
 export default function CreateItemModal({
   getValues,
   onClose,
+  reset,
 }: CreateItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
   const { collection_id, item_id, role, maybeSupply } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
-    address: role.address,
+    address: role?.address,
     key: ['createItem', String(item_id)],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        item_id: undefined,
+        maybeSupply: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });

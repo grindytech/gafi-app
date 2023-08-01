@@ -4,28 +4,25 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
 import AddSupplyModal from './AddSupplyModal';
 
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
+import { isNull } from '@polkadot/util';
 
 export interface AddSupplyFieldProps extends TypeSwitchAdmin {
   collection_id: number;
   item_id: number;
-  amount: number;
+  supply: number;
 }
 
 export default function AddSupply() {
-  const {
-    getValues,
-    setValue,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AddSupplyFieldProps>();
+  const { getValues, setValue, handleSubmit, control, watch, reset } =
+    useForm<AddSupplyFieldProps>();
 
+  const { supply, collection_id, item_id } = watch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -36,36 +33,42 @@ export default function AddSupply() {
       gap={3}
     >
       <SwitchAdmin
-        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        setValue={setValue as keyof UseFormSetValue<TypeSwitchAdmin>}
       />
 
       <CardBox variant="createGames">
         <NumberInput
-          value="collection_id"
-          title="Collection ID"
-          register={register}
-          isInvalid={!!errors.collection_id}
-          isRequired={true}
+          formState={{
+            control,
+            value: 'collection_id',
+            isInvalid: isNull(collection_id),
+            isRequired: true,
+          }}
+          heading="Collection ID"
         />
       </CardBox>
 
       <CardBox variant="createGames">
         <NumberInput
-          value="item_id"
-          title="Item ID"
-          register={register}
-          isInvalid={!!errors.item_id}
-          isRequired={true}
+          formState={{
+            control,
+            value: 'item_id',
+            isInvalid: isNull(item_id),
+            isRequired: true,
+          }}
+          heading="NFT ID"
         />
       </CardBox>
 
       <CardBox variant="createGames">
         <NumberInput
-          value="amount"
-          title="Amount"
-          isInvalid={!!errors.amount}
-          register={register}
-          isRequired={true}
+          formState={{
+            control,
+            value: 'supply',
+            isInvalid: isNull(supply),
+            isRequired: true,
+          }}
+          heading="Supply"
         />
       </CardBox>
 
@@ -79,7 +82,9 @@ export default function AddSupply() {
         Submit Transaction
       </Button>
 
-      {isOpen && <AddSupplyModal onClose={onClose} getValues={getValues} />}
+      {isOpen && (
+        <AddSupplyModal onClose={onClose} getValues={getValues} reset={reset} />
+      )}
     </Flex>
   );
 }

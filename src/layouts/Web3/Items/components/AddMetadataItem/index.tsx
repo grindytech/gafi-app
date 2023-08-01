@@ -4,7 +4,7 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
 import CardBox from 'components/CardBox';
 import NumberInput from 'components/NumberInput';
@@ -12,6 +12,7 @@ import TextInputMaxLength from 'components/TextInput/TextInputMaxLength';
 
 import AddMetadataItemModal from './AddMetadataItemModal';
 import UploadPicture from 'components/UploadPicture';
+import { isNull, isUndefined } from '@polkadot/util';
 
 export interface AddMetadataItemFieldProps extends TypeSwitchAdmin {
   collection_id: number;
@@ -24,11 +25,14 @@ export default function AddMetadataItem() {
   const {
     getValues,
     setValue,
-    register,
+
     handleSubmit,
-    formState: { errors },
+    watch,
+    reset,
+    control,
   } = useForm<AddMetadataItemFieldProps>();
 
+  const { collection_id, item_id, title, image } = watch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -39,42 +43,54 @@ export default function AddMetadataItem() {
       gap={3}
     >
       <SwitchAdmin
-        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        setValue={setValue as keyof UseFormSetValue<TypeSwitchAdmin>}
       />
 
       <CardBox variant="createGames">
-        <UploadPicture setValue={setValue} value="image" />
-      </CardBox>
-
-      <CardBox variant="createGames">
-        <NumberInput
-          value="collection_id"
-          title="Collection ID"
-          register={register}
-          isInvalid={!!errors.collection_id}
-          isRequired={true}
+        <UploadPicture
+          formState={{
+            setValue,
+            value: 'image',
+            isInvalid: isUndefined(image),
+            isRequired: true,
+          }}
         />
       </CardBox>
 
       <CardBox variant="createGames">
         <NumberInput
-          value="item_id"
-          title="Item ID"
-          register={register}
-          isInvalid={!!errors.item_id}
-          isRequired={true}
+          formState={{
+            control,
+            value: 'collection_id',
+            isInvalid: isNull(collection_id),
+            isRequired: true,
+          }}
+          heading="Collection ID"
+        />
+      </CardBox>
+
+      <CardBox variant="createGames">
+        <NumberInput
+          formState={{
+            control,
+            value: 'item_id',
+            isInvalid: isNull(item_id),
+            isRequired: true,
+          }}
+          heading="NFT ID"
         />
       </CardBox>
 
       <CardBox variant="createGames">
         <TextInputMaxLength
-          register={register}
-          value="title"
-          title="Title"
-          placeholder="Heroes & Empires"
-          isInvalid={!!errors.title}
-          isRequired={true}
-          max={28}
+          formState={{
+            control,
+            value: 'title',
+            isInvalid: isNull(title),
+            isRequired: true,
+            max: 28,
+          }}
+          heading="Title"
         />
       </CardBox>
 
@@ -89,7 +105,11 @@ export default function AddMetadataItem() {
       </Button>
 
       {isOpen && (
-        <AddMetadataItemModal onClose={onClose} getValues={getValues} />
+        <AddMetadataItemModal
+          onClose={onClose}
+          getValues={getValues}
+          reset={reset}
+        />
       )}
     </Flex>
   );
