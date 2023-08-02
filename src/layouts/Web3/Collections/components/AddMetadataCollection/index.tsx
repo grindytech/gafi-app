@@ -1,6 +1,6 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
 import SwitchAdmin, {
   TypeSwitchAdmin,
@@ -9,9 +9,10 @@ import SwitchAdmin, {
 import UploadPicture from 'components/UploadPicture';
 import CardBox from 'components/CardBox';
 import TextInputMaxLength from 'components/TextInput/TextInputMaxLength';
-import TextInput from 'components/TextInput';
+
 import NumberInput from 'components/NumberInput';
 import AddMetadataCollectionModal from './AddMetadataCollectionModal';
+import { isNull, isUndefined } from '@polkadot/util';
 
 export interface AddMetadataCollectionFieldProps extends TypeSwitchAdmin {
   collection_id: string;
@@ -21,15 +22,10 @@ export interface AddMetadataCollectionFieldProps extends TypeSwitchAdmin {
 }
 
 export default function AddMetadataCollection() {
-  const {
-    setValue,
-    getValues,
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<AddMetadataCollectionFieldProps>();
+  const { setValue, getValues, handleSubmit, reset, control, watch } =
+    useForm<AddMetadataCollectionFieldProps>();
 
+  const { collection_id, external_url, image, title } = watch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -40,43 +36,56 @@ export default function AddMetadataCollection() {
       gap={3}
     >
       <SwitchAdmin
-        setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+        setValue={setValue as keyof UseFormSetValue<TypeSwitchAdmin>}
       />
 
       <CardBox variant="createGames">
-        <UploadPicture setValue={setValue} value="image" />
+        <UploadPicture
+          formState={{
+            setValue,
+            value: 'image',
+            isInvalid: isUndefined(image),
+            isRequired: true,
+          }}
+        />
       </CardBox>
 
       <CardBox variant="createGames">
         <NumberInput
-          register={register}
-          title="Collection ID"
-          value="collection_id"
-          isInvalid={!!errors.collection_id}
-          isRequired={true}
+          formState={{
+            control,
+            value: 'collection_id',
+            isInvalid: isNull(collection_id),
+            isRequired: true,
+          }}
+          heading="Collection ID"
         />
       </CardBox>
 
       <CardBox variant="createGames">
         <TextInputMaxLength
-          register={register}
-          value="title"
-          title="Title"
+          formState={{
+            control,
+            value: 'title',
+            isInvalid: isNull(title),
+            isRequired: true,
+            max: 28,
+          }}
           placeholder="Heroes & Empires"
-          isInvalid={!!errors.title}
-          isRequired={true}
-          max={28}
+          heading="Title"
         />
       </CardBox>
 
       <CardBox variant="createGames">
-        <TextInput
-          value="external_url"
-          title="External URL"
-          register={register}
-          isInvalid={!!errors.external_url}
+        <TextInputMaxLength
+          formState={{
+            control,
+            value: 'external_url',
+            isInvalid: isNull(external_url),
+            isRequired: true,
+          }}
           placeholder="https://songaming.io/1"
-          isRequired={true}
+          heading="External URL"
         />
       </CardBox>
 

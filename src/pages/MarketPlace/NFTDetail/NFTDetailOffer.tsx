@@ -1,12 +1,10 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
   FormControl,
   HStack,
   Heading,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -29,9 +27,10 @@ import { useParams } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 
 import useBlockTime from 'hooks/useBlockTime';
-import DurationBlock from 'components/DurationBlock';
+import DurationBlock, { ListDuration } from 'components/DurationBlock';
 import useMetaNFT from 'hooks/useMetaNFT';
 import useMetaCollection from 'hooks/useMetaCollection';
+import RatioPicture from 'components/RatioPicture';
 
 interface NFTDetailOfferProps {
   fee: number | undefined;
@@ -54,8 +53,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
     formState: { errors },
   } = useForm();
 
-  const one_minute = 60;
-  const [duration, setDuration] = React.useState(one_minute);
+  const [duration, setDuration] = React.useState(ListDuration[0]);
   const { blockNumber } = useBlockTime('bestNumber');
 
   const { metaCollection } = useMetaCollection({
@@ -135,7 +133,7 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
                     { collection: collection_id, item: nft_id, amount },
                     price,
                     blockNumber, // start_block
-                    blockNumber + duration // end_block
+                    blockNumber + duration.time // end_block
                   )
                 );
               }
@@ -163,32 +161,17 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
             >
               <HStack alignItems="flex-start" spacing={4}>
                 <Flex gap={4}>
-                  <Center
-                    aspectRatio={16 / 9}
-                    position="relative"
-                    width={32}
-                    borderRadius="lg"
-                    overflow="hidden"
-                    bg="shader.a.300"
-                    sx={{
-                      img: {
-                        position: 'absolute',
-                        inset: 0,
-                        width: 'full',
-                        height: 'full',
-                      },
-                    }}
-                  >
-                    {metaNFT?.[0]?.image ? (
-                      <Image
-                        objectFit="cover"
-                        alt="image is outdated"
-                        src={`${cloundinary_link}/${metaNFT[0].image}`}
-                      />
-                    ) : (
-                      <Image src="/assets/fill/item.png" objectFit="none" />
-                    )}
-                  </Center>
+                  <Box>
+                    <RatioPicture
+                      alt={nft_id}
+                      src={
+                        metaNFT?.[0]?.image
+                          ? cloundinary_link(metaNFT?.[0]?.image)
+                          : null
+                      }
+                      sx={{ width: 32 }}
+                    />
+                  </Box>
 
                   <Box>
                     <Text color="primary.a.500" fontWeight="medium">
@@ -260,7 +243,10 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
                 />
               </FormControl>
 
-              <DurationBlock currentDuration={setDuration} />
+              <DurationBlock
+                duration={duration}
+                setCurrentDuration={setDuration}
+              />
             </ModalBody>
 
             <ModalFooter

@@ -6,7 +6,6 @@ import {
   HStack,
   Heading,
   Icon,
-  Image,
   Text,
 } from '@chakra-ui/react';
 
@@ -23,6 +22,7 @@ import React from 'react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
 import useMetaCollection from 'hooks/useMetaCollection';
+import RatioPicture from 'components/RatioPicture';
 
 export default function HomeTrendingCollection() {
   const { api } = useAppSelector(state => state.substrate);
@@ -124,33 +124,19 @@ export default function HomeTrendingCollection() {
                       {collection_id}
                     </Text>
 
-                    <Center
-                      ml={8}
-                      bg="shader.a.300"
-                      position="relative"
-                      overflow="hidden"
-                      width={14}
-                      height={14}
-                      borderRadius="xl"
+                    <RatioPicture
+                      alt={collection_id}
+                      src={
+                        metaCollection?.[index]?.image
+                          ? cloundinary_link(metaCollection?.[index]?.image)
+                          : null
+                      }
                       sx={{
-                        img: {
-                          position: 'absolute',
-                          inset: 0,
-                          width: 'full',
-                          height: 'full',
-                        },
+                        pt: 'unset',
+                        width: 14,
+                        height: 14,
                       }}
-                    >
-                      {metaCollection?.[index]?.image ? (
-                        <Image
-                          objectFit="cover"
-                          alt="image is outdated"
-                          src={`${cloundinary_link}/${metaCollection[index]?.image}`}
-                        />
-                      ) : (
-                        <Image padding={2} src="/assets/fill/item.png" />
-                      )}
-                    </Center>
+                    />
 
                     <Text
                       color="shader.a.900"

@@ -12,12 +12,14 @@ interface useSignAndSendProps {
   address: string;
   key: string[];
   onSuccess?: () => void;
+  onError?: () => void;
 }
 
 export default function useSignAndSend({
   address,
   key,
   onSuccess,
+  onError,
 }: useSignAndSendProps) {
   const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
   const toast = useToast();
@@ -29,6 +31,13 @@ export default function useSignAndSend({
 
       if (onSuccess) {
         onSuccess();
+      }
+    },
+    onError() {
+      setIsLoading(false);
+
+      if (onError) {
+        onError();
       }
     },
   });

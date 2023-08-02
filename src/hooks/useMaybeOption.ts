@@ -1,7 +1,9 @@
 import React from 'react';
 
 export default function useMaybeOption() {
-  const [fields, setFields] = React.useState<number[]>([0]);
+  const initialValue: number[] = [0];
+
+  const [fields, setFields] = React.useState(initialValue);
 
   const removeField = (index: number) => {
     setFields(prev => {
@@ -32,5 +34,8 @@ export default function useMaybeOption() {
     fields,
     setField,
     removeField,
+    removeFieldAll: () => {
+      setFields(initialValue);
+    },
   };
 }

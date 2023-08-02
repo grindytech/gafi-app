@@ -1,12 +1,10 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
   Grid,
   Heading,
   Icon,
-  Image,
   List,
   ListItem,
   Stack,
@@ -28,16 +26,14 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
 import { cloundinary_link } from 'axios/cloudinary_axios';
-import { shorten } from 'utils/utils';
 
 import {
   GafiSupportGameTypesPackage,
   GafiSupportGameTypesTradeType,
   PalletGameTradeConfig,
-  PalletNftsItemDetails,
 } from '@polkadot/types/lookup';
-import { Codec } from '@polkadot/types/types';
-import { Option, u128, u32 } from '@polkadot/types';
+
+import { Option, StorageKey, Vec, u128, u32 } from '@polkadot/types';
 import NFTDetailSell from './NFTDetailSell';
 import NFTDetailBuy from './NFTDetailBuy';
 
@@ -50,6 +46,10 @@ import useSubscribeSystem from 'hooks/useSubscribeSystem';
 import NFTDetailOwner from './NFTDetailOwner';
 import useMetaCollection from 'hooks/useMetaCollection';
 import useMetaNFT from 'hooks/useMetaNFT';
+import { shorten } from 'utils/utils';
+import NFTDetailListNFT from './NFTDetailListNFT';
+import useGetNFT, { nftsItemProps } from 'hooks/useGetNFT';
+import RatioPicture from 'components/RatioPicture';
 
 export interface getTradeConfigProps {
   trade: GafiSupportGameTypesTradeType;
@@ -63,63 +63,66 @@ export interface getTradeConfigProps {
 
 export default function NFTDetail() {
   const { nft_id, collection_id } = useParams();
+
   const { event, setEvent } = useSubscribeSystem();
 
   const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
+  const getNFT = useGetNFT<nftsItemProps>({
+    group: [Number(collection_id)],
+    filter: 'only',
+  });
+
   const { data, refetch } = useQuery({
-    queryKey: [`item_detail/${collection_id}/${nft_id}`],
+    queryKey: [`item_detail/${nft_id}/${collection_id}`],
     queryFn: async () => {
       if (api) {
-        const ownerOfItem = await api.query.nfts
-          .item(collection_id, nft_id)
-          .then((meta: Codec): string => {
-            const service = meta as Option<PalletNftsItemDetails>;
-
-            return service.value.owner.toString();
-          });
-
         const getBundle = (await api.query.game.bundleOf.entries())
-          .map(([trade_id, meta]) => {
-            const service: GafiSupportGameTypesPackage = meta[0];
-
-            if (
-              service.collection.toNumber() === Number(collection_id) &&
-              service.item.toNumber() === Number(nft_id)
-            ) {
-              return {
-                trade_id: trade_id.args[0].toNumber(),
-                amount: service.amount.toNumber(),
-              };
+          .map(
+            ([trade_id, [service]]: [
+              StorageKey<[u32]>,
+              Vec<GafiSupportGameTypesPackage>
+            ]) => {
+              if (
+                service.collection.toNumber() === Number(collection_id) &&
+                service.item.toNumber() === Number(nft_id)
+              ) {
+                return {
+                  trade_id: trade_id.args[0].toNumber(),
+                  amount: service.amount.toNumber(),
+                };
+              }
             }
-          })
+          )
           .filter((item): item is NonNullable<typeof item> => !!item);
 
         const getTradeConfig = (await api.query.game.tradeConfigOf.entries())
-          .map(([trade_id, meta]) => {
-            const service: PalletGameTradeConfig = meta.unwrap();
-
-            return getBundle
-              .map(data => {
-                if (trade_id.args[0].toNumber() === data.trade_id) {
-                  return {
-                    trade: service.trade,
-                    owner: service.owner,
-                    trade_id: data.trade_id,
-                    amount: data.amount,
-                    maybePrice: service.maybePrice,
-                    startBlock: service.startBlock,
-                    endBlock: service.endBlock,
-                  };
-                }
-              })
-              .find(item => !!item);
-          })
+          .map(
+            ([trade_id, service]: [
+              StorageKey<[u32]>,
+              Option<PalletGameTradeConfig>
+            ]) => {
+              return getBundle
+                .map(data => {
+                  if (trade_id.args[0].toNumber() === data.trade_id) {
+                    return {
+                      trade: service.value.trade,
+                      owner: service.value.owner,
+                      trade_id: data.trade_id,
+                      amount: data.amount,
+                      maybePrice: service.value.maybePrice,
+                      startBlock: service.value.startBlock,
+                      endBlock: service.value.endBlock,
+                    };
+                  }
+                })
+                .find(item => !!item);
+            }
+          )
           .filter((item): item is getTradeConfigProps => !!item);
 
         return {
-          owner: ownerOfItem,
           bundle: getTradeConfig,
         };
       }
@@ -200,29 +203,27 @@ export default function NFTDetail() {
               overflow="hidden"
               height="fit-content"
             >
-              <Center
-                bg="shader.a.300"
+              <RatioPicture
+                alt={nft_id}
+                src={
+                  metaNFT?.[0]?.image
+                    ? cloundinary_link(metaNFT?.[0]?.image)
+                    : null
+                }
                 sx={{
-                  img: {
-                    aspectRatio: {
-                      base: 16 / 9,
-                      lg: 1 / 1,
+                  pt: 'unset',
+                  aspectRatio: {
+                    base: 16 / 9,
+                    lg: 1 / 1,
+                  },
+
+                  sx: {
+                    img: {
+                      objectFit: metaNFT?.[0]?.image ? 'contain' : 'none',
                     },
-                    width: 'full',
-                    height: 'full',
                   },
                 }}
-              >
-                {metaNFT?.[0]?.image ? (
-                  <Image
-                    alt="image is outdated"
-                    objectFit="contain"
-                    src={`${cloundinary_link}/${metaNFT[0].image}`}
-                  />
-                ) : (
-                  <Image src="/assets/fill/item.png" objectFit="none" />
-                )}
-              </Center>
+              />
 
               <List
                 padding={6}
@@ -294,9 +295,9 @@ export default function NFTDetail() {
                   Owned by
                   <Text as="span" color="primary.a.500" fontWeight="medium">
                     &nbsp;
-                    {account?.address === data.owner
+                    {account?.address === getNFT?.owner
                       ? 'You'
-                      : shorten(data.owner, 6)}
+                      : shorten(getNFT.owner, 6)}
                   </Text>
                 </Text>
 
@@ -367,7 +368,7 @@ export default function NFTDetail() {
                   </Box>
 
                   <Flex gap={2}>
-                    {account?.address !== data.owner && (
+                    {account?.address !== getNFT?.owner && (
                       <>
                         {newestSetPrice?.[0]?.trade.isEmpty && (
                           <NFTDetailOffer
@@ -386,7 +387,7 @@ export default function NFTDetail() {
                       </>
                     )}
 
-                    {account?.address === data.owner && <NFTDetailSell />}
+                    {account?.address === getNFT?.owner && <NFTDetailSell />}
                   </Flex>
                 </Stack>
               </CardBox>
@@ -423,6 +424,8 @@ export default function NFTDetail() {
               </TabPanels>
             </Tabs>
           </CardBox>
+
+          <NFTDetailListNFT />
         </>
       )}
     </>

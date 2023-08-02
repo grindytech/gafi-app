@@ -53,7 +53,7 @@ export default function MaybeOptions({
       </Center>
 
       <ChakraBox
-        overflow="hidden"
+        overflow={toggle ? undefined : 'hidden'}
         animate={{
           height: toggle ? undefined : 0,
         }}

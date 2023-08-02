@@ -19,33 +19,49 @@ import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { AddSupplyFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
 interface AddSupplyModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<AddSupplyFieldProps>;
+  reset: UseFormReset<AddSupplyFieldProps>;
 }
 
 export default function AddSupplyModal({
   getValues,
   onClose,
+  reset,
 }: AddSupplyModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { collection_id, item_id, amount, role } = getValues();
+  const { collection_id, item_id, supply, role } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
     address: role.address,
     key: ['createItem', String(item_id)],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        item_id: undefined,
+        supply: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent
@@ -90,8 +106,8 @@ export default function AddSupplyModal({
               </Tr>
 
               <Tr>
-                <Td>Amount</Td>
-                <Td>{amount}</Td>
+                <Td>Supply</Td>
+                <Td>{supply}</Td>
               </Tr>
             </Tbody>
           </Table>
@@ -105,7 +121,7 @@ export default function AddSupplyModal({
             _hover={{}}
             onClick={() => {
               if (api) {
-                mutation(api.tx.game.addSupply(collection_id, item_id, amount));
+                mutation(api.tx.game.addSupply(collection_id, item_id, supply));
               }
             }}
           >

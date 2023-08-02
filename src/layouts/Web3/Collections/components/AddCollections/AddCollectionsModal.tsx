@@ -18,18 +18,20 @@ import {
 import useSignAndSend from 'hooks/useSignAndSend';
 
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { AddCollectionFieldProps } from './index';
 import { useAppSelector } from 'hooks/useRedux';
 
 interface AddCollectionsModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<AddCollectionFieldProps>;
+  reset: UseFormReset<AddCollectionFieldProps>;
 }
 
 export default function AddCollectionsModal({
   getValues,
   onClose,
+  reset,
 }: AddCollectionsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -39,12 +41,25 @@ export default function AddCollectionsModal({
     address: role.address,
     key: ['addCollection', collection_id],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        game_id: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent

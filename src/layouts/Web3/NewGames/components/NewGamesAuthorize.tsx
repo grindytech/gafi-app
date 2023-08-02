@@ -3,13 +3,11 @@ import {
   Center,
   Heading,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
 } from '@chakra-ui/react';
 
 import NewGamesProfile from './NewGamesProfile';
@@ -30,7 +28,7 @@ export default function NewGamesAuthorize({
   getValues,
 }: NewGamesAuthorizeProps) {
   const { api } = useAppSelector(state => state.substrate);
-  const toast = useToast();
+
   const { game_id, role, owner } = getValues();
 
   const { isLoading, mutation } = useSignAndSend({
@@ -42,7 +40,12 @@ export default function NewGamesAuthorize({
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent
@@ -69,27 +72,6 @@ export default function NewGamesAuthorize({
           <NewGamesProfile account={role.name} hash={role.address} />
         </ModalHeader>
 
-        <ModalBody
-          padding={0}
-          borderWidth="0.0625rem 0 0.0625rem 0"
-          borderColor="shader.a.300"
-        >
-          {/* note as CreateCollection */}
-          {/* <Table variant="createGameSubmit">
-            <Tbody>
-              <Tr>
-                <Td>Title</Td>
-                <Td>{title}</Td>
-              </Tr>
-
-              <Tr>
-                <Td>Game ID</Td>
-                <Td>{game_id}</Td>
-              </Tr>
-            </Tbody>
-          </Table> */}
-        </ModalBody>
-
         <ModalFooter px={0} pb={0}>
           <Button
             variant="primary"
@@ -98,16 +80,7 @@ export default function NewGamesAuthorize({
             margin="unset"
             onClick={async () => {
               if (api) {
-                try {
-                  mutation(api.tx.game.createGame(role.address));
-                } catch (error: any) {
-                  toast({
-                    position: 'top-right',
-                    status: 'error',
-                    description: error.toString(),
-                    isClosable: true,
-                  });
-                }
+                mutation(api.tx.game.createGame(role.address));
               }
             }}
           >

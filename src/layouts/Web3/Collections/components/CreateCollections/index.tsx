@@ -1,7 +1,7 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 
 import CreateCollectionsModal from './CreateCollectionsModal';
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
 import CollectionID from 'components/Collection/CollectionID';
 import SwitchAdmin, {
@@ -29,12 +29,10 @@ export default function CollectionsCreate() {
       flexDirection="column"
       gap={3}
     >
-      <GameOwner
-        setValue={setValue as FieldValues as UseFormSetValue<TypeGameOwner>}
-      />
+      <GameOwner setValue={setValue as keyof UseFormSetValue<TypeGameOwner>} />
 
       <SwitchAdmin
-        setValue={setValue as unknown as UseFormSetValue<TypeSwitchAdmin>}
+        setValue={setValue as keyof UseFormSetValue<TypeSwitchAdmin>}
         type="Admin"
         watch={watch().role}
       />

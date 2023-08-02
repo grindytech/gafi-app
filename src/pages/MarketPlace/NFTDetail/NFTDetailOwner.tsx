@@ -13,9 +13,8 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Codec } from '@polkadot/types/types';
-import { useQuery } from '@tanstack/react-query';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+import useItemBalanceOf from 'hooks/useItemBalanceOf';
 import { useAppSelector } from 'hooks/useRedux';
 import React from 'react';
 
@@ -23,49 +22,26 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { shorten } from 'utils/utils';
 
-interface itemBalanceOfProps {
-  owner: string;
-  amount: Codec;
-}
-
 export default function NFTDetailOwner() {
   const { nft_id, collection_id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
-  const { data } = useQuery({
-    queryKey: [`itemBalanceOf/${nft_id}/${collection_id}`],
-    queryFn: async () => {
-      if (api && account?.address) {
-        const service = await api.query.game.itemBalanceOf.entries(
-          account.address,
-          collection_id
-        );
-
-        return service
-          .map(([meta, amount]) => {
-            const [who, collection, item] = meta.args;
-
-            if (
-              Number(nft_id) === item.toNumber() &&
-              Number(collection_id) === collection.toNumber()
-            ) {
-              return {
-                owner: who.toString(),
-                amount,
-              };
-            }
-          })
-          .filter((item): item is itemBalanceOfProps => !!item);
-      }
-    },
+  const { getItemBalanceOf } = useItemBalanceOf({
+    key: `${nft_id}/${collection_id}`,
+    group: [
+      {
+        collection_id: Number(collection_id),
+        nft_id: Number(nft_id),
+        owner: String(account?.address),
+      },
+    ],
   });
 
   return (
     <>
-      {!!data?.length && (
+      {!!getItemBalanceOf?.length && (
         <>
           <Button
             onClick={onOpen}
@@ -76,7 +52,7 @@ export default function NFTDetailOwner() {
           >
             Owners
             <Text as="span" color="primary.a.500" fontWeight="medium">
-              &nbsp;{data.length}
+              &nbsp;{getItemBalanceOf.length}
             </Text>
           </Button>
 
@@ -105,7 +81,7 @@ export default function NFTDetailOwner() {
 
                 <ModalBody>
                   {React.Children.toArray(
-                    data.map(meta => (
+                    getItemBalanceOf.map(meta => (
                       <Center
                         as={Link}
                         to={`#`}
@@ -120,7 +96,7 @@ export default function NFTDetailOwner() {
                         <HStack spacing={4}>
                           <Box>
                             <AccountJazzicon
-                              address={meta.owner.toString()}
+                              address={String(meta?.owner)}
                               sx={{ width: '2rem', height: '2rem' }}
                             />
                           </Box>
@@ -128,12 +104,12 @@ export default function NFTDetailOwner() {
                           <Box>
                             <Text lineHeight={1}>-</Text>
                             <Text as="span">
-                              {shorten(meta.owner.toString(), 6)}
+                              {shorten(String(meta?.owner), 6)}
                             </Text>
                           </Box>
                         </HStack>
 
-                        <Text>{meta.amount.toString()} items</Text>
+                        <Text>{meta?.amount} items</Text>
                       </Center>
                     ))
                   )}

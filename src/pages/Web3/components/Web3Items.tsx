@@ -1,19 +1,39 @@
-import { Box, Center, Grid, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Center, Grid, Heading, Text } from '@chakra-ui/react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
-import { TypeMetadataOfItem } from 'types';
+import RatioPicture from 'components/RatioPicture';
+import useItemBalanceOf from 'hooks/useItemBalanceOf';
+import useMetaNFT from 'hooks/useMetaNFT';
+import React from 'react';
 
 export interface Web3ItemsDataProps {
   collection_id: number;
-  item_id: number;
-  supply: string | null;
-  metadata: TypeMetadataOfItem;
+  nft_id: number;
+  owner: string;
 }
 
 interface Web3ItemsProps {
-  data: Web3ItemsDataProps[][];
+  data: Web3ItemsDataProps[];
 }
 
 export default function Web3Items({ data }: Web3ItemsProps) {
+  const { metaNFT } = useMetaNFT({
+    key: String(
+      data.map(({ nft_id, collection_id }) => `${nft_id}/${collection_id}`)
+    ),
+    group: data.map(({ collection_id, nft_id }) => ({ collection_id, nft_id })),
+  });
+
+  const { getItemBalanceOf } = useItemBalanceOf({
+    key: String(
+      data.map(({ collection_id, nft_id }) => `${nft_id}/${collection_id}`)
+    ),
+    group: data.map(({ owner, collection_id, nft_id }) => ({
+      collection_id,
+      nft_id,
+      owner,
+    })),
+  });
+
   return (
     <Grid
       gridTemplateColumns={{
@@ -36,71 +56,67 @@ export default function Web3Items({ data }: Web3ItemsProps) {
         },
       }}
     >
-      {data.map(item =>
-        item.map(child => (
-          <Box
-            key={child.item_id}
-            border="0.0625rem solid"
-            borderColor="shader.a.300"
-            borderRadius="xl"
-            overflow="hidden"
-            display="flex"
-            flexDirection="column"
-          >
-            <Center
-              bg="shader.a.300"
-              position="relative"
-              width="full"
-              pt={(9 / 16) * 100 + '%'} // 16:9 Aspect Ratio
+      {React.Children.toArray(
+        data.map(({ collection_id, nft_id }) => {
+          const currentMeta = metaNFT?.find(
+            item =>
+              item?.nft_id === nft_id && item.collection_id === collection_id
+          );
+
+          const currentBalance = getItemBalanceOf?.find(
+            item =>
+              item?.nft_id === nft_id && item.collection_id === collection_id
+          );
+
+          return (
+            <Box
+              border="0.0625rem solid"
+              borderColor="shader.a.300"
+              borderRadius="xl"
               overflow="hidden"
-              sx={{
-                img: {
-                  position: 'absolute',
-                  inset: 0,
-                  width: 'full',
-                  height: 'full',
-                },
-              }}
+              display="flex"
+              flexDirection="column"
             >
-              {child.metadata?.image ? (
-                <Image
-                  objectFit="cover"
-                  alt="image is outdated"
-                  src={`${cloundinary_link}/${child.metadata.image}`}
-                />
-              ) : (
-                <Image src="/assets/fill/item.png" objectFit="none" />
-              )}
-            </Center>
+              <RatioPicture
+                src={
+                  currentMeta?.image
+                    ? cloundinary_link(currentMeta.image)
+                    : null
+                }
+                alt={nft_id}
+              />
 
-            <Box padding={4} bg="white">
-              <Center justifyContent="space-between" mb={1}>
-                <Heading className="card-value" fontSize="md!">
-                  {child.metadata?.title || '-'}
-                </Heading>
+              <Box padding={4} bg="white">
+                <Center justifyContent="space-between" mb={1}>
+                  <Heading className="card-value" fontSize="md!">
+                    {currentMeta?.title || '-'}
+                  </Heading>
 
-                <Text className="card-value" color="shader.a.500!">
-                  ID:&nbsp;
-                  <Text as="span" color="primary.a.500">
-                    {child.item_id}
+                  <Text className="card-value" color="shader.a.500!">
+                    ID:&nbsp;
+                    <Text as="span" color="primary.a.500">
+                      {nft_id}
+                    </Text>
                   </Text>
-                </Text>
-              </Center>
+                </Center>
 
-              <Center justifyContent="space-between">
-                <Heading className="card-heading">Supply</Heading>
+                <Center justifyContent="space-between">
+                  <Heading className="card-heading">Amount</Heading>
 
-                <Text className="card-value">{child.supply || 'Infinity'}</Text>
-              </Center>
+                  <Text className="card-value">
+                    {currentBalance?.amount || 'Infinity'}
+                  </Text>
+                </Center>
 
-              <Center justifyContent="space-between">
-                <Heading className="card-heading">Collection ID</Heading>
+                <Center justifyContent="space-between">
+                  <Heading className="card-heading">Collection ID</Heading>
 
-                <Text className="card-value">{child.collection_id}</Text>
-              </Center>
+                  <Text className="card-value">{collection_id}</Text>
+                </Center>
+              </Box>
             </Box>
-          </Box>
-        ))
+          );
+        })
       )}
     </Grid>
   );

@@ -1,22 +1,25 @@
 import {
-  Box,
   Center,
   FormControl,
   FormControlProps,
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightAddon,
 } from '@chakra-ui/react';
-import React from 'react';
-import { UseFormRegister } from 'react-hook-form';
+
+import { Control, Controller } from 'react-hook-form';
 
 interface TextInputMaxLengthProps {
-  title: string;
-  value: string;
-  register: UseFormRegister<any>;
-  isInvalid?: boolean;
-  isRequired?: boolean;
-  max: number;
+  formState: {
+    control: Control<any, any>;
+    value: string;
+    isInvalid?: boolean;
+    isRequired?: boolean;
+    max?: number;
+  };
+  heading?: string;
   placeholder?: string;
 }
 
@@ -50,42 +53,70 @@ export const TextInputMaxLengthStyle: FormControlProps = {
 };
 
 export default function TextInputMaxLength({
-  register,
-  isRequired,
-  isInvalid,
-  title,
-  value,
-  max,
   placeholder,
+  formState,
+  heading,
 }: TextInputMaxLengthProps) {
-  const [text, setText] = React.useState('');
-
   return (
     <FormControl
-      {...TextInputMaxLengthStyle}
-      isRequired={isRequired}
-      isInvalid={isInvalid}
+      justifyContent="space-between"
+      isRequired={formState?.isRequired}
+      isInvalid={formState?.isInvalid}
       as={Center}
     >
-      <FormLabel>
-        <Heading variant="game">{title}</Heading>
-      </FormLabel>
+      {heading ? (
+        <FormLabel display="flex" margin={0}>
+          <Heading variant="game">{heading}</Heading>
+        </FormLabel>
+      ) : null}
 
-      <Box position="relative">
-        <Input
-          variant="control"
-          required={false}
-          placeholder={placeholder || 'Ex: 0'}
-          pr={16}
-          maxLength={max}
-          {...register(value, { required: isRequired })}
-          onChange={e => setText(e.target.value)}
+      {formState?.control && (
+        <Controller
+          control={formState.control}
+          name={formState.value}
+          render={({ field }) => (
+            <InputGroup
+              borderColor="shader.a.300"
+              width={heading ? 'unset' : '100%'}
+            >
+              <Input
+                name={field.name}
+                value={field.value || ''} // reset should empty value
+                max={formState?.max}
+                onKeyDown={event => {
+                  if (event.nativeEvent.key !== 'Backspace') {
+                    if (field.value?.length >= Number(formState?.max)) {
+                      return event.preventDefault();
+                    }
+                  }
+                }}
+                onChange={({ target }) =>
+                  target.value?.length
+                    ? field.onChange(target.value)
+                    : field.onChange(null)
+                }
+                width={heading ? 'auto' : '100%'}
+                placeholder={placeholder || 'Ex: 0'}
+                color="shader.a.900"
+                fontSize="sm"
+                _placeholder={{
+                  color: 'shader.a.400',
+                  fontSize: 'inherit',
+                }}
+              />
+
+              {formState?.max ? (
+                <InputRightAddon bg="transparent">
+                  {field.value?.length || '0'}/{formState.max}
+                </InputRightAddon>
+              ) : null}
+            </InputGroup>
+          )}
+          rules={{
+            required: formState?.isRequired,
+          }}
         />
-
-        <Center title="maxium_length">
-          {text.length}/{max}
-        </Center>
-      </Box>
+      )}
     </FormControl>
   );
 }

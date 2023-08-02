@@ -1,4 +1,4 @@
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { AddMetadataItemFieldProps } from './index';
 import {
   Button,
@@ -28,11 +28,13 @@ import cloudinary_axios, {
 interface AddMetadataItemModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<AddMetadataItemFieldProps>;
+  reset: UseFormReset<AddMetadataItemFieldProps>;
 }
 
 export default function AddMetadataItemModal({
   getValues,
   onClose,
+  reset,
 }: AddMetadataItemModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -42,12 +44,27 @@ export default function AddMetadataItemModal({
     address: role.address,
     key: ['CollectionMetadataSet', String(collection_id)],
     onSuccess() {
+      reset({
+        role: { ...role },
+        collection_id: undefined,
+        item_id: undefined,
+        image: undefined,
+        title: undefined,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent

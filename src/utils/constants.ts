@@ -14,3 +14,5 @@ export const breakpointsContainer = {
 };
 
 export const chainDecimal = 18;
+
+export const BLOCK_TIME = 6;

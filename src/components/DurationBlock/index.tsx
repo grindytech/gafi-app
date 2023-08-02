@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  BoxProps,
   Center,
   List,
   ListItem,
@@ -14,50 +15,62 @@ import {
 import React from 'react';
 
 import Chevron01Icon from 'public/assets/line/chevron-01.svg';
+import { BLOCK_TIME } from 'utils/constants';
 
 export interface ListDurationProps {
   text: string;
   time: number;
 }
 
+// unit seconds
+export const ListDuration: ListDurationProps[] = [
+  {
+    text: '1 Minutes',
+    time: 60 / BLOCK_TIME,
+  },
+  {
+    text: '5 Minutes',
+    time: 300 / BLOCK_TIME,
+  },
+  {
+    text: '1 Hours',
+    time: 3600 / BLOCK_TIME,
+  },
+  {
+    text: '1 Day',
+    time: (86400 * 1) / BLOCK_TIME,
+  },
+  {
+    text: '1 Week',
+    time: (86400 * 7) / BLOCK_TIME,
+  },
+  {
+    text: '2 Weeks',
+    time: (86400 * 14) / BLOCK_TIME,
+  },
+  {
+    text: '1 Month',
+    time: (86400 * 30) / BLOCK_TIME,
+  },
+];
+
 interface DurationBlockProps {
-  currentDuration: React.Dispatch<React.SetStateAction<number>>;
+  duration: ListDurationProps;
+  setCurrentDuration: React.Dispatch<React.SetStateAction<ListDurationProps>>;
+  listDuration: ListDurationProps[];
+  sx?: BoxProps;
 }
 
-export default function DurationBlock({ currentDuration }: DurationBlockProps) {
+export default function DurationBlock({
+  duration,
+  setCurrentDuration,
+  listDuration,
+  sx,
+}: DurationBlockProps) {
   const { isOpen, onClose, onToggle } = useDisclosure();
 
-  const ListDuration = [
-    {
-      text: '1 Minutes',
-      time: 60,
-    },
-    {
-      text: '1 Hour',
-      time: 3600,
-    },
-    {
-      text: '1 Day',
-      time: 86400 * 1, // 24H * day
-    },
-    {
-      text: '1 Week',
-      time: 86400 * 7, // 24H * day
-    },
-    {
-      text: '2 Weeks',
-      time: 86400 * 14, // 24H * day
-    },
-    {
-      text: '1 Month',
-      time: 86400 * 30, // 24H * day
-    },
-  ];
-
-  const [duration, setDuration] = React.useState(ListDuration[0]);
-
   return (
-    <Box>
+    <Box {...sx}>
       <Text mb={2} color="shader.a.500" fontSize="sm" fontWeight="medium">
         Duration
       </Text>
@@ -71,8 +84,14 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
           fontSize="sm"
           fontWeight="medium"
         >
-          <Center justifyContent="space-between" padding={4}>
-            <Text color="shader.a.">{duration.text}</Text>
+          <Center
+            className="current-minute"
+            justifyContent="space-between"
+            padding={4}
+          >
+            <Text as="span" color="shader.a.900">
+              {duration.text}
+            </Text>
 
             <AccordionButton
               width="auto"
@@ -91,8 +110,9 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
           >
             <List>
               {React.Children.toArray(
-                ListDuration.filter(meta => meta.text !== duration.text).map(
-                  meta => (
+                listDuration
+                  .filter(meta => meta.text !== duration.text)
+                  .map(meta => (
                     <ListItem
                       padding={4}
                       transitionDuration="ultra-slow"
@@ -100,8 +120,7 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
                       cursor="pointer"
                       onClick={() => {
                         onClose();
-                        setDuration(meta);
-                        currentDuration(meta.time);
+                        setCurrentDuration(meta);
                       }}
                       _hover={{
                         bg: 'shader.a.300',
@@ -109,8 +128,7 @@ export default function DurationBlock({ currentDuration }: DurationBlockProps) {
                     >
                       {meta.text}
                     </ListItem>
-                  )
-                )
+                  ))
               )}
             </List>
           </AccordionPanel>

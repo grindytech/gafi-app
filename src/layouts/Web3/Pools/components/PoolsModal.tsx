@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 
 import useSignAndSend from 'hooks/useSignAndSend';
 
@@ -34,25 +34,39 @@ import {
 } from 'utils/utils';
 import { PoolsCreateFieldProps, PoolsCreateProps } from './PoolsCreate';
 import { useAppSelector } from 'hooks/useRedux';
+import useBlockTime from 'hooks/useBlockTime';
 
 interface PoolsModalProps extends PoolsCreateProps {
   onClose: () => void;
   getValues: UseFormGetValues<PoolsCreateFieldProps>;
+  reset: UseFormReset<PoolsCreateFieldProps>;
 }
 
 export default function PoolsModal({
   onClose,
   getValues,
+  reset,
   type,
 }: PoolsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { role, fee, supply, start_block, end_block } = getValues();
+  const { role, fee, supply, duration } = getValues();
+
+  const { blockNumber } = useBlockTime('bestNumber');
 
   const { isLoading, mutation } = useSignAndSend({
     address: role.address,
     key: [type, role.address],
     onSuccess() {
+      reset({
+        role: { ...role },
+        duration: undefined as keyof typeof getValues,
+        fee: undefined as keyof typeof getValues,
+        supply: undefined as keyof typeof getValues,
+      });
+      onClose();
+    },
+    onError() {
       onClose();
     },
   });
@@ -60,7 +74,12 @@ export default function PoolsModal({
   const getTotalSupply = supply.filter(item => !!item);
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="2xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="2xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent
@@ -157,22 +176,13 @@ export default function PoolsModal({
 
               <Tr>
                 <Td>Mining fee</Td>
-                <Td>{formatGAFI(unitGAFI(fee))}</Td>
+                <Td>{formatGAFI(unitGAFI(String(fee)))}</Td>
               </Tr>
 
-              {start_block ? (
-                <Tr>
-                  <Td>Start Block</Td>
-                  <Td>{start_block}</Td>
-                </Tr>
-              ) : null}
-
-              {end_block ? (
-                <Tr>
-                  <Td>End Block</Td>
-                  <Td>{end_block}</Td>
-                </Tr>
-              ) : null}
+              <Tr>
+                <Td>Duration</Td>
+                <Td>{duration?.text}</Td>
+              </Tr>
             </Tbody>
           </Table>
         </ModalBody>
@@ -185,13 +195,16 @@ export default function PoolsModal({
             margin="unset"
             onClick={() => {
               if (api) {
+                const start = duration?.time ? blockNumber : null;
+                const end = duration?.time ? blockNumber + duration.time : null;
+
                 if (type === 'createDynamicPool') {
                   return mutation(
                     api.tx.game.createDynamicPool(supply, role.address, {
                       minType: 'Public',
-                      price: unitGAFI(fee),
-                      startBlock: start_block,
-                      endBlock: end_block,
+                      price: unitGAFI(String(fee)),
+                      startBlock: start,
+                      endBlock: end,
                     })
                   );
                 }
@@ -199,9 +212,9 @@ export default function PoolsModal({
                   return mutation(
                     api.tx.game.createStablePool(supply, role.address, {
                       minType: 'Public',
-                      price: unitGAFI(fee),
-                      startBlock: start_block,
-                      endBlock: end_block,
+                      price: unitGAFI(String(fee)),
+                      startBlock: start,
+                      endBlock: end,
                     })
                   );
                 }

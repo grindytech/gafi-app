@@ -3,79 +3,72 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Input,
   NumberInput as NumberInputChakra,
   NumberInputField,
 } from '@chakra-ui/react';
-import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
-import React from 'react';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+
+import { Control, Controller } from 'react-hook-form';
 
 interface NumberInputProps {
-  title: string;
-  value: string;
-  register: UseFormRegister<any>;
-  setValue?: UseFormSetValue<any>;
-  isInvalid?: boolean;
-  isRequired?: boolean;
-  isReset?: boolean;
+  formState: {
+    control: Control<any, any>;
+    value: string;
+    isInvalid?: boolean;
+    isRequired?: boolean;
+    max?: number;
+  };
+  heading?: string;
   placeholder?: string;
 }
 
 export default function NumberInput({
-  register,
-  setValue,
-  isInvalid,
-  isRequired,
-  title,
-  value,
-  isReset,
+  formState,
   placeholder,
+  heading,
 }: NumberInputProps) {
-  const [text, setText] = React.useState<string>('');
-
-  React.useEffect(() => {
-    if (isReset) {
-      setText('');
-    }
-  }, [isReset]);
-
-  React.useEffect(() => {
-    if (setValue && !text.length) {
-      setValue(value, undefined);
-    }
-  }, [text]);
-
   return (
     <FormControl
-      {...TextInputMaxLengthStyle}
-      isRequired={isRequired}
-      isInvalid={isInvalid}
+      justifyContent="space-between"
+      isRequired={formState?.isRequired}
+      isInvalid={formState?.isInvalid}
       as={Center}
     >
-      <FormLabel>
-        <Heading variant="game">{title}</Heading>
-      </FormLabel>
+      {heading ? (
+        <FormLabel display="flex" margin={0}>
+          <Heading variant="game">{heading}</Heading>
+        </FormLabel>
+      ) : null}
 
-      <NumberInputChakra min={0} value={text}>
-        <Input
-          as={NumberInputField}
-          isRequired={false}
-          variant="control"
-          placeholder={placeholder || 'Ex: 0'}
-          {...register(value, {
-            required: isRequired,
-            onChange(event) {
-              setText(event.target.value);
-            },
-            onBlur(event) {
-              if (!event.target.value.length && setValue) {
-                setValue(value, undefined);
-              }
-            },
-          })}
-        />
-      </NumberInputChakra>
+      <Controller
+        control={formState.control}
+        name={formState.value}
+        render={({ field }) => (
+          <NumberInputChakra
+            borderColor="shader.a.300"
+            width={heading ? undefined : 'full'}
+            name={field.name}
+            value={field.value || ''} // reset should empty value
+            max={formState?.max}
+            onChange={event =>
+              event.length ? field.onChange(event) : field.onChange(null)
+            }
+          >
+            <NumberInputField
+              placeholder={placeholder || 'Ex: 0'}
+              pr={14}
+              color="shader.a.900"
+              fontSize="sm"
+              _placeholder={{
+                color: 'shader.a.400',
+                fontSize: 'inherit',
+              }}
+            />
+          </NumberInputChakra>
+        )}
+        rules={{
+          required: formState?.isRequired,
+        }}
+      />
     </FormControl>
   );
 }

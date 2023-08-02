@@ -4,7 +4,7 @@ import { TypeMetadataOfItem } from 'types';
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 
-interface useMetaNFTProps {
+export interface useMetaNFTProps {
   key?: string;
   group:
     | {
@@ -20,7 +20,7 @@ export default function useMetaNFT({ key, group }: useMetaNFTProps) {
   const { api } = useAppSelector(state => state.substrate);
 
   const { data, refetch } = useQuery({
-    queryKey: [`metaItem/${key}`],
+    queryKey: [`metaItem/${key || ''}`],
     queryFn: async () => {
       if (api && group?.length) {
         const response = Promise.all(
@@ -32,7 +32,11 @@ export default function useMetaNFT({ key, group }: useMetaNFTProps) {
 
             if (service.isEmpty) return null;
 
-            return JSON.parse(service.value.data.toHuman());
+            return {
+              ...JSON.parse(service.value.data.toHuman()),
+              collection_id,
+              nft_id,
+            };
           })
         );
 
