@@ -102,8 +102,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
       setValue('duration', duration);
     }
   }, [fee]);
-
-  console.log(watch());
+  console.log('supply', watch().supply);
 
   return (
     <Flex
@@ -164,66 +163,68 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
         />
       </CardBox>
 
-      {React.Children.toArray(
-        fields.map(element => (
-          <MaybeOptions
-            title={`Supply ${element}`}
-            toggle={isExpanded[element]}
-            switchClick={() => {
-              setIsExpanded(element);
-              resetField(`supply.${element}.maybeNft`);
-            }}
-            closeClick={
-              fields.length >= 2
-                ? () => {
-                    removeField(element);
-                    removeIsExpanded(element);
-                    resetField(`supply.${element}`);
-                  }
-                : undefined
-            }
-            childrenOption={
-              <>
-                <NumberInput
-                  formState={{
-                    control,
-                    value: isExpanded[element]
-                      ? `supply.${element}.maybeNft.collection_id`
-                      : '', // undefined
-                    isInvalid: isNull(
-                      supply?.[element]?.maybeNft?.collection_id
-                    ),
-                    isRequired: isExpanded[element],
-                  }}
-                  heading="Collection ID"
-                />
+      {fields.map(element => (
+        <MaybeOptions
+          key={element}
+          title={`Supply ${element}`}
+          toggle={isExpanded[element]}
+          switchClick={() => {
+            setIsExpanded(element);
+            resetField(`supply.${element}.maybeNft`);
+          }}
+          closeClick={
+            fields.length >= 2
+              ? () => {
+                  removeField(element);
+                  removeIsExpanded(element);
 
-                <NumberInput
-                  formState={{
-                    control,
-                    value: isExpanded[element]
-                      ? `supply.${element}.maybeNft.nft_id`
-                      : '', // undefined
-                    isInvalid: isNull(supply?.[element]?.maybeNft?.nft_id),
-                    isRequired: isExpanded[element],
-                  }}
-                  heading="NFT ID"
-                />
-              </>
-            }
-          >
-            <NumberInput
-              formState={{
-                control,
-                value: `supply.${element}.weight`,
-                isInvalid: isNull(supply?.[element]?.weight),
-                isRequired: true,
-              }}
-              heading="Weight"
-            />
-          </MaybeOptions>
-        ))
-      )}
+                  // reset field to { element: undefined }
+                  resetField(`supply.${element}`);
+
+                  // delete { element: undefined } so should [* empty]
+                  delete supply[element];
+                }
+              : undefined
+          }
+          childrenOption={
+            <>
+              <NumberInput
+                formState={{
+                  control,
+                  value: isExpanded[element]
+                    ? `supply.${element}.maybeNft.collection_id`
+                    : '', // undefined
+                  isInvalid: isNull(supply?.[element]?.maybeNft?.collection_id),
+                  isRequired: isExpanded[element],
+                }}
+                heading="Collection ID"
+              />
+
+              <NumberInput
+                formState={{
+                  control,
+                  value: isExpanded[element]
+                    ? `supply.${element}.maybeNft.nft_id`
+                    : '', // undefined
+                  isInvalid: isNull(supply?.[element]?.maybeNft?.nft_id),
+                  isRequired: isExpanded[element],
+                }}
+                heading="NFT ID"
+              />
+            </>
+          }
+        >
+          <NumberInput
+            formState={{
+              control,
+              value: `supply.${element}.weight`,
+              isInvalid: isNull(supply?.[element]?.weight),
+              isRequired: true,
+            }}
+            heading="Weight"
+          />
+        </MaybeOptions>
+      ))}
 
       <Flex>
         <Button

@@ -56,7 +56,12 @@ export default function CreateItemModal({
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent

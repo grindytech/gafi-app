@@ -3,7 +3,7 @@ import { Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
 import GoBack from 'components/GoBack';
 
 import NewGamesAuthorize from './components/NewGamesAuthorize';
-import { FieldValues, UseFormSetValue, useForm } from 'react-hook-form';
+import { UseFormSetValue, useForm } from 'react-hook-form';
 
 import SwitchAdmin, {
   TypeSwitchAdmin,
@@ -38,11 +38,11 @@ export default function NewGames() {
         mt={8}
       >
         <GameOwner
-          setValue={setValue as FieldValues as UseFormSetValue<TypeGameOwner>}
+          setValue={setValue as keyof UseFormSetValue<TypeGameOwner>}
         />
 
         <SwitchAdmin
-          setValue={setValue as FieldValues as UseFormSetValue<TypeSwitchAdmin>}
+          setValue={setValue as keyof UseFormSetValue<TypeSwitchAdmin>}
           watch={watch().role}
         />
 

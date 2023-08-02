@@ -24,8 +24,12 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 
-import DurationBlock, { ListDuration } from 'components/DurationBlock';
+import DurationBlock, {
+  ListDuration,
+  ListDurationProps,
+} from 'components/DurationBlock';
 import useBlockTime from 'hooks/useBlockTime';
+import { BLOCK_TIME } from 'utils/constants';
 
 export default function NFTDetailSell() {
   const { nft_id, collection_id } = useParams();
@@ -42,6 +46,37 @@ export default function NFTDetailSell() {
     reset,
     formState: { errors },
   } = useForm();
+
+  const ListDuration: ListDurationProps[] = [
+    {
+      text: '1 Minutes',
+      time: 60 / BLOCK_TIME,
+    },
+    {
+      text: '5 Minutes',
+      time: 300 / BLOCK_TIME,
+    },
+    {
+      text: '1 Hours',
+      time: 3600 / BLOCK_TIME,
+    },
+    {
+      text: '1 Day',
+      time: (86400 * 1) / BLOCK_TIME,
+    },
+    {
+      text: '1 Week',
+      time: (86400 * 7) / BLOCK_TIME,
+    },
+    {
+      text: '2 Weeks',
+      time: (86400 * 14) / BLOCK_TIME,
+    },
+    {
+      text: '1 Month',
+      time: (86400 * 30) / BLOCK_TIME,
+    },
+  ];
 
   const [duration, setDuration] = React.useState(ListDuration[0]);
 
@@ -142,6 +177,7 @@ export default function NFTDetailSell() {
             </FormControl>
 
             <DurationBlock
+              listDuration={ListDuration}
               duration={duration}
               setCurrentDuration={setDuration}
             />

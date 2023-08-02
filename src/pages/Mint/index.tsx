@@ -28,6 +28,7 @@ export default function Mint() {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<MintFieldProps>();
 
   const pool_id = watch('pool_id');
@@ -75,11 +76,14 @@ export default function Mint() {
         {pool_id ? <MintWeight pool_id={pool_id} /> : null}
 
         <Button
-          isDisabled={isOpen}
-          margin="auto"
-          px={6}
-          variant="primary"
-          type="submit"
+          onClick={() => {
+            reset();
+          }}
+          // isDisabled={isOpen}
+          // margin="auto"
+          // px={6}
+          // variant="primary"
+          // type="submit"
         >
           Submit Transaction
         </Button>

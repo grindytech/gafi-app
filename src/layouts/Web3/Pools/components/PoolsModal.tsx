@@ -74,7 +74,12 @@ export default function PoolsModal({
   const getTotalSupply = supply.filter(item => !!item);
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="2xl">
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      size="2xl"
+      closeOnOverlayClick={!isLoading}
+    >
       <ModalOverlay />
 
       <ModalContent
