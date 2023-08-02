@@ -4,7 +4,7 @@ import { TypeMetadataOfCollection } from 'types';
 import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
 
-interface useMetaCollectionProps {
+export interface useMetaCollectionProps {
   key?: string;
   group:
     | {

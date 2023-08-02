@@ -39,38 +39,36 @@ export default function NumberInput({
         </FormLabel>
       ) : null}
 
-      {formState?.control && (
-        <Controller
-          control={formState.control}
-          name={formState.value}
-          render={({ field }) => (
-            <NumberInputChakra
-              borderColor="shader.a.300"
-              width={heading ? undefined : 'full'}
-              name={field.name}
-              value={field.value || ''} // reset should empty value
-              max={formState?.max}
-              onChange={event =>
-                event.length ? field.onChange(event) : field.onChange(null)
-              }
-            >
-              <NumberInputField
-                placeholder={placeholder || 'Ex: 0'}
-                pr={14}
-                color="shader.a.900"
-                fontSize="sm"
-                _placeholder={{
-                  color: 'shader.a.400',
-                  fontSize: 'inherit',
-                }}
-              />
-            </NumberInputChakra>
-          )}
-          rules={{
-            required: formState?.isRequired,
-          }}
-        />
-      )}
+      <Controller
+        control={formState.control}
+        name={formState.value}
+        render={({ field }) => (
+          <NumberInputChakra
+            borderColor="shader.a.300"
+            width={heading ? undefined : 'full'}
+            name={field.name}
+            value={field.value || ''} // reset should empty value
+            max={formState?.max}
+            onChange={event =>
+              event.length ? field.onChange(event) : field.onChange(null)
+            }
+          >
+            <NumberInputField
+              placeholder={placeholder || 'Ex: 0'}
+              pr={14}
+              color="shader.a.900"
+              fontSize="sm"
+              _placeholder={{
+                color: 'shader.a.400',
+                fontSize: 'inherit',
+              }}
+            />
+          </NumberInputChakra>
+        )}
+        rules={{
+          required: formState?.isRequired,
+        }}
+      />
     </FormControl>
   );
 }

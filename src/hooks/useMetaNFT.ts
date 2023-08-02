@@ -4,7 +4,7 @@ import { TypeMetadataOfItem } from 'types';
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 
-interface useMetaNFTProps {
+export interface useMetaNFTProps {
   key?: string;
   group:
     | {

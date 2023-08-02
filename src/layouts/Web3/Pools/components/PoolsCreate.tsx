@@ -27,8 +27,8 @@ export interface PoolsCreateFieldProps extends TypeSwitchAdmin {
   supply: {
     weight: number;
     maybeNft: {
-      collection_id: number;
-      nft_id: number;
+      collection: number; // correctly should collection_id
+      item: number; // correctly should nft_id
     } | null;
   }[];
 }
@@ -40,8 +40,9 @@ export interface PoolsCreateProps {
 export default function PoolsCreate({ type }: PoolsCreateProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { setIsExpanded, removeIsExpanded, isExpanded } = useToggleMultiple();
-  const { fields, setField, removeField } = useMaybeOption();
+  const { setIsExpanded, removeIsExpanded, removeIsExpandedAll, isExpanded } =
+    useToggleMultiple();
+  const { fields, setField, removeField, removeFieldAll } = useMaybeOption();
 
   const {
     setValue,
@@ -98,11 +99,15 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
 
   React.useEffect(() => {
     if (isUndefined(fee)) {
+      // reset duration start and success submit
       setDuration(ListDuration[0]);
       setValue('duration', duration);
+
+      // reset field when start and success submit
+      removeFieldAll();
+      removeIsExpandedAll();
     }
   }, [fee]);
-  console.log('supply', watch().supply);
 
   return (
     <Flex
@@ -192,9 +197,9 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
                 formState={{
                   control,
                   value: isExpanded[element]
-                    ? `supply.${element}.maybeNft.collection_id`
+                    ? `supply.${element}.maybeNft.collection`
                     : '', // undefined
-                  isInvalid: isNull(supply?.[element]?.maybeNft?.collection_id),
+                  isInvalid: isNull(supply?.[element]?.maybeNft?.collection),
                   isRequired: isExpanded[element],
                 }}
                 heading="Collection ID"
@@ -204,9 +209,9 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
                 formState={{
                   control,
                   value: isExpanded[element]
-                    ? `supply.${element}.maybeNft.nft_id`
+                    ? `supply.${element}.maybeNft.item`
                     : '', // undefined
-                  isInvalid: isNull(supply?.[element]?.maybeNft?.nft_id),
+                  isInvalid: isNull(supply?.[element]?.maybeNft?.item),
                   isRequired: isExpanded[element],
                 }}
                 heading="NFT ID"

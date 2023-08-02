@@ -1,9 +1,9 @@
 import React from 'react';
 
 export default function useToggleMultiple() {
-  const [status, setStatus] = React.useState<Record<number, boolean>>({
-    0: false,
-  });
+  const initialValue: Record<number, boolean> = { 0: false };
+
+  const [status, setStatus] = React.useState(initialValue);
 
   const removeIsExpanded = (index: number) => {
     setStatus(prev => {
@@ -44,6 +44,9 @@ export default function useToggleMultiple() {
   return {
     setIsExpanded,
     removeIsExpanded,
+    removeIsExpandedAll: () => {
+      setStatus(initialValue);
+    },
     isExpanded: status,
   };
 }

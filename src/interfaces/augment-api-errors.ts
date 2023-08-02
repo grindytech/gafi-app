@@ -143,13 +143,13 @@ declare module '@polkadot/api-base/types/errors' {
       TradeEnded: AugmentedError<ApiType>;
       TradeIdInUse: AugmentedError<ApiType>;
       TradeNotStarted: AugmentedError<ApiType>;
-      UnknowMiningPool: AugmentedError<ApiType>;
       UnknownAcceptance: AugmentedError<ApiType>;
       UnknownAuction: AugmentedError<ApiType>;
       UnknownBid: AugmentedError<ApiType>;
       UnknownCollection: AugmentedError<ApiType>;
       UnknownGame: AugmentedError<ApiType>;
       UnknownItem: AugmentedError<ApiType>;
+      UnknownMiningPool: AugmentedError<ApiType>;
       UnknownTrade: AugmentedError<ApiType>;
       UnknownUpgrade: AugmentedError<ApiType>;
       UpgradeExists: AugmentedError<ApiType>;

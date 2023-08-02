@@ -24,10 +24,7 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 
-import DurationBlock, {
-  ListDuration,
-  ListDurationProps,
-} from 'components/DurationBlock';
+import DurationBlock, { ListDurationProps } from 'components/DurationBlock';
 import useBlockTime from 'hooks/useBlockTime';
 import { BLOCK_TIME } from 'utils/constants';
 

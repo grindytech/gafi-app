@@ -143,18 +143,18 @@ export default function PoolsModal({
                             </Heading>
 
                             <Box mt={4}>
-                              {item.maybeNft?.nft_id ? (
+                              {item.maybeNft?.item ? (
                                 <Text>
                                   Item ID:&nbsp;
-                                  <Text as="span">{item.maybeNft.nft_id}</Text>
+                                  <Text as="span">{item.maybeNft.item}</Text>
                                 </Text>
                               ) : null}
 
-                              {item.maybeNft?.collection_id ? (
+                              {item.maybeNft?.collection ? (
                                 <Text>
                                   Collection ID:&nbsp;
                                   <Text as="span">
-                                    {item.maybeNft.collection_id}
+                                    {item.maybeNft.collection}
                                   </Text>
                                 </Text>
                               ) : null}
@@ -195,8 +195,8 @@ export default function PoolsModal({
             margin="unset"
             onClick={() => {
               if (api) {
-                const start = duration.time ? blockNumber : null;
-                const end = duration.time ? blockNumber + duration.time : null;
+                const start = duration?.time ? blockNumber : null;
+                const end = duration?.time ? blockNumber + duration.time : null;
 
                 if (type === 'createDynamicPool') {
                   return mutation(

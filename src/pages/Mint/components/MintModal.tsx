@@ -18,11 +18,12 @@ import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormGetValues } from 'react-hook-form';
 
-import { useQuery } from '@tanstack/react-query';
-import { formatGAFI, unitGAFI } from 'utils/utils';
+import { formatGAFI } from 'utils/utils';
 import useSignAndSend from 'hooks/useSignAndSend';
 import { MintFieldProps } from '../index';
 import { useAppSelector } from 'hooks/useRedux';
+
+import usePoolOf from 'hooks/usePoolOf';
 
 interface MintModalProps {
   onClose: () => void;
@@ -34,20 +35,9 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
 
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data } = useQuery({
-    queryKey: ['poolOf', pool_id],
-    queryFn: async () => {
-      if (api) {
-        const res = await api.query.game.poolOf(pool_id);
-
-        return res.toPrimitive() as {
-          mintSettings: {
-            price: string;
-          };
-        };
-      }
-    },
-    enabled: !!(api && api.query.game),
+  const { getPoolOf } = usePoolOf({
+    key: pool_id,
+    group: [{ pool_id: Number(pool_id) }],
   });
 
   const { isLoading, mutation } = useSignAndSend({
@@ -104,26 +94,18 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
                 <Td>{amount}</Td>
               </Tr>
 
-              {data
-                ? (function () {
-                    const price = Number(
-                      formatGAFI(data.mintSettings.price).replaceAll(',', '')
-                    );
-
-                    const convertGAFI = unitGAFI(
-                      String(Number(price) * Number(amount))
-                    );
-
-                    return (
-                      <Tr>
-                        <Td>Fee</Td>
-                        <Td>
-                          <GafiAmount amount={formatGAFI(convertGAFI)} />
-                        </Td>
-                      </Tr>
-                    );
-                  })()
-                : null}
+              {getPoolOf ? (
+                <Tr>
+                  <Td>Fee</Td>
+                  <Td>
+                    <GafiAmount
+                      amount={
+                        Number(formatGAFI(getPoolOf.price)) * Number(amount)
+                      }
+                    />
+                  </Td>
+                </Tr>
+              ) : null}
             </Tbody>
           </Table>
         </ModalBody>

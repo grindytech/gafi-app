@@ -2,138 +2,189 @@ import {
   Box,
   Center,
   CircularProgress,
-  Flex,
   Heading,
-  Image,
   SimpleGrid,
   Text,
 } from '@chakra-ui/react';
+import { Vec } from '@polkadot/types';
+
+import { GafiSupportGameTypesLoot } from '@polkadot/types/lookup';
+import { isUndefined } from '@polkadot/util';
 import { useQuery } from '@tanstack/react-query';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import CardBox from 'components/CardBox';
+import DateBlock from 'components/DateBlock';
+import GafiAmount from 'components/GafiAmount';
+import RatioPicture from 'components/RatioPicture';
+import useMetaCollection, {
+  useMetaCollectionProps,
+} from 'hooks/useMetaCollection';
+import useMetaNFT, { useMetaNFTProps } from 'hooks/useMetaNFT';
+import usePoolOf from 'hooks/usePoolOf';
 
 import { useAppSelector } from 'hooks/useRedux';
-import useSubscribeSystem from 'hooks/useSubscribeSystem';
+
 import React from 'react';
-import { TypeMetadataOfItem } from 'types';
 
-import { CalculatorOfRarity, ColorOfRarity, formatGAFI } from 'utils/utils';
-
-type TypeMaybeNFT = {
-  collection: number;
-  item: number;
-};
+import {
+  CalculatorOfRarity,
+  ColorOfRarity,
+  formatGAFI,
+  shorten,
+} from 'utils/utils';
 
 interface MintWeightProps {
   pool_id: string;
 }
 
-export default function MintWeight({ pool_id }: MintWeightProps) {
-  const { event } = useSubscribeSystem('nfts::ItemMetadataSet');
-  const { account } = useAppSelector(state => state.injected.polkadot);
+interface lootTableOfMint {
+  rarity: number;
+  nft_id?: number;
+  collection_id?: number;
+  supply?: string;
+}
 
+export default function MintWeight({ pool_id }: MintWeightProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data, isLoading, isError, refetch } = useQuery(
-    ['getItemsOfPoolID', pool_id],
+  const { data, isLoading, isError } = useQuery(
+    ['lootTableOf', pool_id],
     async () => {
-      if (api && api.query.game) {
-        const res = await api.query.game.lootTableOf(pool_id);
+      if (api) {
+        const service: Vec<GafiSupportGameTypesLoot> =
+          await api.query.game.lootTableOf(pool_id);
 
         return Promise.all(
-          res.map(async ([maybeNft, weight]) => {
-            const getWeight = weight[1].toPrimitive() as number;
-            const poolOf = (await api.query.game.poolOf(pool_id)).toHuman() as {
-              mintSettings: {
-                startBlock: number;
-                endBlock: number;
-                price: string;
-                mintType: string;
-              };
-            };
-
-            if (maybeNft[1].isEmpty) {
-              return {
-                rarity: getWeight,
-                metadataOfPool: poolOf.mintSettings,
-              };
+          service.map(async meta => {
+            // should return Infinity
+            if (meta.maybeNft.isEmpty) {
+              return { rarity: meta.weight.toNumber() };
             }
 
-            const { collection, item } = maybeNft[1].toJSON() as TypeMaybeNFT;
-
-            const supplyOfItem = await api.query.game.supplyOf(
-              collection,
-              item
+            const getSupply = await api.query.game.supplyOf(
+              meta.maybeNft.value.collection.toNumber(),
+              meta.maybeNft.value.item.toNumber()
             );
 
-            const metadataOfCollection = (await api.query.nfts
-              .itemMetadataOf(collection, item)
-              .then(item => {
-                const data = item.value.toHuman();
-
-                if (data) {
-                  return JSON.parse(String(data.data));
-                }
-              })) as TypeMetadataOfItem;
-
             return {
-              item_id: item,
-              collection_id: collection,
-              rarity: getWeight,
-              supply: supplyOfItem.toHuman(),
-              metadataOfCollection,
-              metadataOfPool: poolOf.mintSettings,
-            };
+              nft_id: meta.maybeNft.value.item.toNumber(),
+              collection_id: meta.maybeNft.value.collection.toNumber(),
+              supply: getSupply.toHuman() as string,
+              rarity: meta.weight.toNumber(),
+            } as lootTableOfMint;
           })
         );
       }
     },
     {
-      enabled: !!(api && api.query.game),
+      enabled: !!api,
     }
   );
 
-  React.useEffect(() => {
-    if (event && account?.address) {
-      event.forEach(({ eventValue }) => {
-        const [collection, item] = JSON.parse(eventValue) as number[];
+  const { getPoolOf } = usePoolOf({
+    key: pool_id,
+    group: [{ pool_id: Number(pool_id) }],
+  });
 
-        if (data?.length) {
-          data.forEach(({ collection_id, item_id }) => {
-            if (item === item_id && collection === collection_id) {
-              refetch();
-            }
-          });
-        }
-      });
-    }
-  }, [event]);
+  const { metaNFT } = useMetaNFT({
+    key: pool_id,
+    group: data
+      ?.filter(item => !isUndefined(item.collection_id))
+      .map(
+        ({ collection_id, nft_id }) =>
+          ({ collection_id, nft_id } as keyof useMetaNFTProps['group'])
+      ),
+  });
 
-  if (isError || !data?.length)
+  const { metaCollection } = useMetaCollection({
+    key: String(pool_id),
+    group: data
+      ?.filter(item => !isUndefined(item.collection_id))
+      .map(
+        ({ collection_id }) =>
+          ({ collection_id } as keyof useMetaCollectionProps['group'])
+      ),
+  });
+
+  if (isError || !data?.length) {
     return (
       <CardBox variant="createGames" as={Center} py={4}>
         Not Found
       </CardBox>
     );
+  }
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <Center py={4}>
         <CircularProgress isIndeterminate color="primary.a.500" />
       </Center>
     );
+  }
 
   return (
     <>
-      {data && data.length ? (
+      {data.length ? (
         <CardBox variant="createGames">
+          {getPoolOf ? (
+            <>
+              <Center justifyContent="space-between">
+                <Heading fontSize="md" fontWeight="normal" color="shader.a.500">
+                  Owned by&nbsp;
+                  <Text as="span" fontWeight="medium" color="primary.a.500">
+                    {shorten(getPoolOf.owner)}
+                  </Text>
+                </Heading>
+
+                <Text color="shader.a.500">
+                  Finish in&nbsp;
+                  <DateBlock
+                    end="Infinity"
+                    endBlock={
+                      getPoolOf.endBlock?.isSome
+                        ? getPoolOf.endBlock.value.toNumber()
+                        : -1
+                    }
+                    sx={{
+                      as: 'span',
+                      fontWeight: 'medium',
+                      color: 'shader.a.900',
+                    }}
+                  />
+                </Text>
+              </Center>
+
+              <Heading
+                as="h6"
+                display="flex"
+                fontSize="md"
+                fontWeight="normal"
+                color="shader.a.500"
+              >
+                Price&nbsp;
+                <GafiAmount
+                  amount={formatGAFI(getPoolOf.price)}
+                  sx={{
+                    sx: {
+                      '&, span': {
+                        fontWeight: 'medium',
+                        color: 'primary.a.500',
+                        fontSize: 'md',
+                      },
+                    },
+                  }}
+                />
+              </Heading>
+            </>
+          ) : null}
+
           <SimpleGrid
+            mt={6}
+            gap={3.5}
             columns={{
-              sm: 2,
-              md: 3,
+              md: 2,
+              lg: 3,
             }}
-            mt={3}
-            gap={3}
           >
             {React.Children.toArray(
               data.map(item => {
@@ -142,112 +193,109 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                   data.map(item => item.rarity)
                 );
 
+                const currentNFT = metaNFT?.find(
+                  meta =>
+                    meta?.nft_id === item.nft_id &&
+                    meta?.collection_id === item.collection_id
+                );
+
+                const currentCollection = metaCollection?.find(
+                  meta => meta?.collection_id === item.collection_id
+                );
+
                 return (
-                  <Flex
-                    flexDirection="column"
-                    justifyContent="space-between"
+                  <Box
                     border="0.0625rem solid"
-                    borderColor="shader.a.400"
+                    borderColor="shader.a.200"
                     borderRadius="xl"
+                    bg="white"
+                    boxShadow="0px 0px 20px 0px rgba(0, 0, 0, 0.10)"
                   >
-                    <Center height={32} bg="shader.a.300" position="relative">
-                      {item.metadataOfCollection?.image ? (
-                        <Image
-                          width="full"
-                          height="full"
-                          objectFit="cover"
-                          alt="image is outdated"
-                          src={cloundinary_link(
-                            item.metadataOfCollection.image
-                          )}
-                        />
+                    <Box position="relative">
+                      <RatioPicture
+                        src={
+                          currentNFT?.image
+                            ? cloundinary_link(currentNFT?.image)
+                            : null
+                        }
+                        alt={`nft-${item.nft_id}`}
+                      />
+
+                      <RatioPicture
+                        src={
+                          currentCollection?.image
+                            ? cloundinary_link(currentCollection.image)
+                            : null
+                        }
+                        alt={`collection-${item.collection_id}`}
+                        sx={{
+                          ml: 4,
+                          mb: -3.5,
+                          pt: 'unset',
+                          width: 14,
+                          height: 14,
+                          position: 'absolute',
+                          inset: 'auto auto 0 0',
+                          borderRadius: '0.625rem',
+                          border: '0.25rem solid white',
+                        }}
+                      />
+                    </Box>
+
+                    <Box padding={4} pt={6} fontSize="sm">
+                      {currentCollection?.title ? (
+                        <Text color="shader.a.500">
+                          {currentCollection.title}
+                        </Text>
                       ) : (
-                        <Image src={'assets/fill/item.png'} />
+                        <Text color="second.red">Failed</Text>
                       )}
-                    </Center>
 
-                    <Box padding={4}>
-                      <Center justifyContent="space-between">
-                        <Heading
-                          fontSize="lg"
-                          fontWeight="medium"
-                          color="shader.a.900"
-                        >
-                          {item.metadataOfCollection?.title || '-'}
-                        </Heading>
+                      <Center
+                        gap={4}
+                        justifyContent="space-between"
+                        fontWeight="medium"
+                      >
+                        {currentNFT?.title ? (
+                          <Text color="shader.a.900" fontSize="md">
+                            {currentNFT?.title || '-'}
+                          </Text>
+                        ) : (
+                          <Text color="second.red" fontSize="md">
+                            Good luck next time
+                          </Text>
+                        )}
 
-                        {typeof item.item_id === 'number' ? (
-                          <Text>
-                            ID:&nbsp;
-                            <Text as="span" color="primary.a.500">
-                              {item.item_id}
-                            </Text>
+                        {typeof currentNFT?.nft_id === 'number' ? (
+                          <Text as="span" color="shader.a.900">
+                            ID: {currentNFT.nft_id}
                           </Text>
                         ) : null}
                       </Center>
 
-                      <Box mt={4}>
-                        {item.supply ? (
-                          <Text>
-                            Supply:&nbsp;
-                            <Text as="span" color="primary.a.500">
-                              {String(item.supply)}
+                      <Center justifyContent="space-between" gap={4}>
+                        {typeof item.supply !== 'undefined' ? (
+                          <Text fontSize="sm" color="shader.a.900">
+                            Amount:&nbsp;
+                            <Text as="span" fontWeight="medium">
+                              {item.supply || 'Infinity'}
                             </Text>
                           </Text>
                         ) : null}
 
-                        {typeof item.collection_id === 'number' ? (
-                          <Text>
-                            Collection ID:&nbsp;
-                            <Text as="span" color="primary.a.500">
-                              {item.collection_id}
-                            </Text>
-                          </Text>
-                        ) : null}
-
-                        <Text>
+                        <Text fontSize="sm" color="shader.a.900">
                           Rarity:&nbsp;
                           <Text
                             as="span"
+                            fontWeight="medium"
                             color={ColorOfRarity(rarity)}
-                            fontWeight="semibold"
                           >
                             {rarity}%
                           </Text>
                         </Text>
-
-                        <Text>
-                          Price:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {formatGAFI(
-                              item.metadataOfPool.price.replaceAll(',', '')
-                            )}
-                          </Text>
-                        </Text>
-
-                        <Text>
-                          Type:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {item.metadataOfPool.mintType}
-                          </Text>
-                        </Text>
-
-                        <Text>
-                          Start Block:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {item.metadataOfPool.startBlock || 'Infinity'}
-                          </Text>
-                        </Text>
-
-                        <Text>
-                          End Block:&nbsp;
-                          <Text as="span" color="primary.a.500">
-                            {item.metadataOfPool.endBlock || 'Infinity'}
-                          </Text>
-                        </Text>
-                      </Box>
+                      </Center>
                     </Box>
-                  </Flex>
+                  </Box>
                 );
               })
             )}

@@ -116,7 +116,7 @@ declare module '@polkadot/api-base/types/events' {
     game: {
       AddingAcceptanceSet: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       AuctionClaimed: AugmentedEvent<ApiType, [trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>>], { trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>> }>;
-      AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32 }>;
+      AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, duration: u32 }>;
       Bid: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bid: u128], { trade: u32, who: AccountId32, bid: u128 }>;
       BundleBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bidPrice: u128], { trade: u32, who: AccountId32, bidPrice: u128 }>;
       BundleSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128 }>;

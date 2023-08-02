@@ -12,62 +12,61 @@ import { Control, Controller } from 'react-hook-form';
 import { TextInputMaxLengthStyle } from 'components/TextInput/TextInputMaxLength';
 
 interface NumberInputMaxLengthProps {
-  title: string;
-  value: string;
-  control: Control<any, any>;
-  isInvalid?: boolean;
-  isRequired?: boolean;
-  max: number;
+  formState: {
+    control: Control<any, any>;
+    value: string;
+    isInvalid?: boolean;
+    isRequired?: boolean;
+    max?: number;
+    min?: number;
+  };
   placeholder?: string;
+  heading?: string;
 }
 
 export default function NumberInputMaxLength({
-  control,
-  isRequired,
-  isInvalid,
-  title,
-  value,
-  max,
+  formState,
+  heading,
   placeholder,
 }: NumberInputMaxLengthProps) {
   return (
     <FormControl
       {...TextInputMaxLengthStyle}
-      isRequired={isRequired}
-      isInvalid={isInvalid}
+      isRequired={formState?.isRequired}
+      isInvalid={formState?.isInvalid}
       as={Center}
     >
       <FormLabel>
-        <Heading variant="game">{title}</Heading>
+        <Heading variant="game">{heading}</Heading>
       </FormLabel>
 
       <Controller
-        control={control}
-        name={value}
+        control={formState.control}
+        name={formState.value}
         render={({ field }) => (
           <NumberInput
             name={field.name}
             value={field.value || ''}
-            max={max}
+            max={formState?.max}
+            min={formState?.min || 0}
             onChange={field.onChange}
           >
-            {JSON.stringify(field)}
             <Input
               as={NumberInputField}
               variant="control"
               required={false}
               placeholder={placeholder || 'Ex: 0'}
               pr={16}
-              maxLength={max}
+              maxLength={formState?.max}
             />
 
             <Center title="maxium_length">
-              {field.value || 0}/{max}
+              {field.value || 0}/{formState?.max}
             </Center>
           </NumberInput>
         )}
         rules={{
-          required: isRequired,
+          required: formState?.isRequired,
         }}
       />
     </FormControl>

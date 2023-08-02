@@ -6,9 +6,14 @@ import { BLOCK_TIME } from 'utils/constants';
 interface DateBlockProps {
   endBlock: number;
   sx?: TextProps;
+  end?: 'Expired' | 'Infinity';
 }
 
-export default function DateBlock({ endBlock, sx }: DateBlockProps) {
+export default function DateBlock({
+  endBlock,
+  end = 'Expired',
+  sx,
+}: DateBlockProps) {
   const { blockNumber: currentBlock } = useBlockTime('bestNumber');
 
   const time = (endBlock - currentBlock) * BLOCK_TIME;
@@ -18,7 +23,7 @@ export default function DateBlock({ endBlock, sx }: DateBlockProps) {
     <Text {...sx}>
       {(function () {
         // outdated;
-        if (expired) return 'Expired';
+        if (expired) return end;
 
         // seconds (< 60 S)
         if (time <= 60) return `in ${time} seconds`;
