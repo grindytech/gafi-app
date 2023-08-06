@@ -13,10 +13,11 @@ import {
   Tbody,
   Td,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 import GafiAmount from 'components/GafiAmount';
 import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
-import { UseFormGetValues } from 'react-hook-form';
+import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 
 import { formatGAFI } from 'utils/utils';
 import useSignAndSend from 'hooks/useSignAndSend';
@@ -24,14 +25,25 @@ import { MintFieldProps } from '../index';
 import { useAppSelector } from 'hooks/useRedux';
 
 import usePoolOf from 'hooks/usePoolOf';
+import MintSuccessfuly from './MintSuccessfuly';
 
 interface MintModalProps {
   onClose: () => void;
   getValues: UseFormGetValues<MintFieldProps>;
+  reset: UseFormReset<MintFieldProps>;
 }
 
-export default function MintModal({ getValues, onClose }: MintModalProps) {
+export default function MintModal({
+  getValues,
+  onClose,
+  reset,
+}: MintModalProps) {
   const { amount, pool_id, role } = getValues();
+  const {
+    isOpen: isSuccess,
+    onClose: closeSuccess,
+    onOpen: openSuccess,
+  } = useDisclosure();
 
   const { api } = useAppSelector(state => state.substrate);
 
@@ -44,88 +56,102 @@ export default function MintModal({ getValues, onClose }: MintModalProps) {
     address: role.address,
     key: ['Mining', pool_id],
     onSuccess() {
+      openSuccess();
+    },
+    onError() {
       onClose();
     },
   });
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="2xl">
-      <ModalOverlay />
+    <>
+      {isSuccess ? (
+        <MintSuccessfuly
+          reset={reset}
+          onClose={onClose}
+          onCloseSuccess={closeSuccess}
+          getValues={getValues}
+        />
+      ) : (
+        <Modal isOpen={true} onClose={onClose} size="2xl">
+          <ModalOverlay />
 
-      <ModalContent
-        padding={{
-          base: 4,
-          md: 6,
-        }}
-        mx={3}
-      >
-        <ModalHeader px={0} pt={0} pb={6}>
-          <Center justifyContent="space-between" pb={8}>
-            <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Mining
-            </Heading>
-
-            <ModalCloseButton
-              _hover={{}}
-              _active={{}}
-              position="unset"
-              size="sm"
-            />
-          </Center>
-
-          <NewGamesProfile account={role.name} hash={role.address} />
-        </ModalHeader>
-
-        <ModalBody
-          padding={0}
-          borderWidth="0.0625rem 0 0.0625rem 0"
-          borderColor="shader.a.300"
-        >
-          <Table variant="createGameSubmit">
-            <Tbody>
-              <Tr>
-                <Td>Pool ID</Td>
-
-                <Td>{pool_id}</Td>
-              </Tr>
-
-              <Tr>
-                <Td>Amount</Td>
-                <Td>{amount}</Td>
-              </Tr>
-
-              {getPoolOf ? (
-                <Tr>
-                  <Td>Fee</Td>
-                  <Td>
-                    <GafiAmount
-                      amount={
-                        Number(formatGAFI(getPoolOf.price)) * Number(amount)
-                      }
-                    />
-                  </Td>
-                </Tr>
-              ) : null}
-            </Tbody>
-          </Table>
-        </ModalBody>
-
-        <ModalFooter px={0} pb={0}>
-          <Button
-            variant="primary"
-            margin="unset"
-            _hover={{}}
-            isLoading={isLoading}
-            onClick={() => {
-              if (api) {
-                mutation(api.tx.game.mint(pool_id, role.address, amount));
-              }
+          <ModalContent
+            padding={{
+              base: 4,
+              md: 6,
             }}
+            mx={3}
           >
-            Sign & Submit
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+            <ModalHeader px={0} pt={0} pb={6}>
+              <Center justifyContent="space-between" pb={8}>
+                <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
+                  Mining
+                </Heading>
+
+                <ModalCloseButton
+                  _hover={{}}
+                  _active={{}}
+                  position="unset"
+                  size="sm"
+                />
+              </Center>
+
+              <NewGamesProfile account={role.name} hash={role.address} />
+            </ModalHeader>
+
+            <ModalBody
+              padding={0}
+              borderWidth="0.0625rem 0 0.0625rem 0"
+              borderColor="shader.a.300"
+            >
+              <Table variant="createGameSubmit">
+                <Tbody>
+                  <Tr>
+                    <Td>Pool ID</Td>
+
+                    <Td>{pool_id}</Td>
+                  </Tr>
+
+                  <Tr>
+                    <Td>Amount</Td>
+                    <Td>{amount}</Td>
+                  </Tr>
+
+                  {getPoolOf ? (
+                    <Tr>
+                      <Td>Fee</Td>
+                      <Td>
+                        <GafiAmount
+                          amount={
+                            Number(formatGAFI(getPoolOf.price)) * Number(amount)
+                          }
+                        />
+                      </Td>
+                    </Tr>
+                  ) : null}
+                </Tbody>
+              </Table>
+            </ModalBody>
+
+            <ModalFooter px={0} pb={0}>
+              <Button
+                variant="primary"
+                margin="unset"
+                _hover={{}}
+                isLoading={isLoading}
+                onClick={() => {
+                  if (api) {
+                    mutation(api.tx.game.mint(pool_id, role.address, amount));
+                  }
+                }}
+              >
+                Sign & Submit
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
   );
 }

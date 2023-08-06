@@ -13,7 +13,7 @@ import CollectionDetail from 'pages/MarketPlace/CollectionDetail';
 import NFTDetail from 'pages/MarketPlace/NFTDetail';
 import ExplorerBundleDetail from 'layouts/MarketPlace/Explorer/ExplorerBundles/ExplorerBundleDetail';
 import Account from 'pages/Account';
-import AccountSetting from 'pages/Account/Settings';
+import AccountSetting from 'pages/Account/AccountSetting';
 
 const router = createBrowserRouter([
   {
@@ -77,11 +77,16 @@ const router = createBrowserRouter([
       },
       {
         path: 'account',
-        element: <Account />,
-      },
-      { path: 'account/setting', element: <AccountSetting /> },
-      {
-        path: 'minting',
+        children: [
+          {
+            path: ':address',
+            element: <Account />,
+          },
+          {
+            path: ':address/setting',
+            element: <AccountSetting />,
+          },
+        ],
       },
     ],
   },
