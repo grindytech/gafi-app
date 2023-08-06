@@ -3,7 +3,6 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Input,
   NumberInput,
   NumberInputField,
 } from '@chakra-ui/react';
@@ -36,28 +35,34 @@ export default function NumberInputMaxLength({
       isInvalid={formState?.isInvalid}
       as={Center}
     >
-      <FormLabel>
-        <Heading variant="game">{heading}</Heading>
-      </FormLabel>
+      {heading ? (
+        <FormLabel>
+          <Heading variant="game">{heading}</Heading>
+        </FormLabel>
+      ) : null}
 
       <Controller
         control={formState.control}
         name={formState.value}
         render={({ field }) => (
           <NumberInput
+            width={heading ? undefined : 'full'}
             name={field.name}
             value={field.value || ''}
             max={formState?.max}
             min={formState?.min || 0}
             onChange={field.onChange}
           >
-            <Input
-              as={NumberInputField}
-              variant="control"
-              required={false}
+            <NumberInputField
               placeholder={placeholder || 'Ex: 0'}
-              pr={16}
               maxLength={formState?.max}
+              pr={14}
+              color="shader.a.900"
+              fontSize="sm"
+              _placeholder={{
+                color: 'shader.a.400',
+                fontSize: 'inherit',
+              }}
             />
 
             <Center title="maxium_length">
