@@ -41,7 +41,7 @@ export default function useGetNFT<T>({
               }
             );
           })
-        ).then(item => item[0]);
+        ).then(item => item.flat());
 
         if (filter === 'only') {
           return response.find(

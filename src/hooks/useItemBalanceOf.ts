@@ -3,7 +3,7 @@ import { useAppSelector } from './useRedux';
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 
-interface gameItembalanceOfProps {
+interface groupMetaProps {
   amount: number;
   owner: string;
   collection_id: number;
@@ -12,11 +12,7 @@ interface gameItembalanceOfProps {
 
 interface useItemBalanceOfProps {
   key?: string;
-  group: {
-    owner: string;
-    collection_id: number;
-    nft_id: number;
-  }[];
+  group: Omit<groupMetaProps, 'amount'>[];
 }
 
 export default function useItemBalanceOf({
@@ -56,7 +52,7 @@ export default function useItemBalanceOf({
           })
         ).then(data =>
           data.map(child =>
-            child.find((item): item is gameItembalanceOfProps => !!item)
+            child.find((item): item is groupMetaProps => !!item)
           )
         );
 
@@ -84,7 +80,17 @@ export default function useItemBalanceOf({
     }
   }, [event]);
 
+  const currentItemBalanceOf = ({
+    collection_id,
+    nft_id,
+  }: Omit<groupMetaProps, 'owner' | 'amount'>) => {
+    return data?.find(
+      meta => meta?.collection_id === collection_id && meta?.nft_id === nft_id
+    );
+  };
+
   return {
     getItemBalanceOf: data,
+    currentItemBalanceOf,
   };
 }

@@ -4,13 +4,13 @@ import { TypeMetadataOfCollection } from 'types';
 import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
 
+interface groupMetaNFTProps {
+  collection_id: number;
+}
+
 export interface useMetaCollectionProps {
   key?: string;
-  group:
-    | {
-        collection_id: number;
-      }[]
-    | undefined;
+  group: groupMetaNFTProps[] | undefined;
 }
 
 export default function useMetaCollection({
@@ -22,7 +22,7 @@ export default function useMetaCollection({
   const { api } = useAppSelector(state => state.substrate);
 
   const { data, refetch } = useQuery({
-    queryKey: [`metaCollection/${key}`],
+    queryKey: [`nfts_collectionMetadataOf/${key}`],
     queryFn: async () => {
       if (api && group?.length) {
         const response = Promise.all(
@@ -66,7 +66,12 @@ export default function useMetaCollection({
     }
   }, [event]);
 
+  const currentMetaCollection = ({ collection_id }: groupMetaNFTProps) => {
+    return data?.find(meta => meta?.collection_id === collection_id);
+  };
+
   return {
     metaCollection: data,
+    currentMetaCollection,
   };
 }
