@@ -21,7 +21,7 @@ export interface MintFieldProps extends TypeSwitchAdmin {
 }
 
 export default function Mint() {
-  const { setValue, getValues, watch, handleSubmit, control } =
+  const { setValue, getValues, watch, handleSubmit, control, reset } =
     useForm<MintFieldProps>();
 
   const { amount, pool_id } = watch();
@@ -52,6 +52,7 @@ export default function Mint() {
               value: 'amount',
               isInvalid: isNull(amount),
               isRequired: true,
+              min: 1,
               max: 10,
             }}
             heading="Amount"
@@ -83,7 +84,9 @@ export default function Mint() {
         </Button>
       </Flex>
 
-      {isOpen ? <MintModal onClose={onClose} getValues={getValues} /> : null}
+      {isOpen ? (
+        <MintModal onClose={onClose} getValues={getValues} reset={reset} />
+      ) : null}
     </Box>
   );
 }

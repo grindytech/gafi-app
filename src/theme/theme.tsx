@@ -283,12 +283,14 @@ const Heading: ComponentStyleConfig = {
     },
   },
 };
+
 export const Text: ComponentStyleConfig = {
   baseStyle: {
     color: 'shader.a.900',
   },
   variants: {},
 };
+
 export const Tabs: ComponentStyleConfig = {
   variants: {
     unstyled: {
@@ -329,6 +331,7 @@ export const Tabs: ComponentStyleConfig = {
     },
   },
 };
+
 export const Input: ComponentStyleConfig = {
   variants: {
     control: {
@@ -372,6 +375,7 @@ export const Input: ComponentStyleConfig = {
     },
   },
 };
+
 export const Select: ComponentStyleConfig = {
   variants: {
     formFilter: {
@@ -392,6 +396,7 @@ export const Select: ComponentStyleConfig = {
     },
   },
 };
+
 export const FormControl: ComponentStyleConfig = {
   variants: {
     transfer: {
@@ -411,6 +416,14 @@ export const FormControl: ComponentStyleConfig = {
   },
 };
 
+export const Modal: ComponentStyleConfig = {
+  baseStyle: {
+    dialogContainer: {
+      px: 4,
+    },
+  },
+};
+
 const theme = extendTheme({
   colors,
   styles,
@@ -424,6 +437,7 @@ const theme = extendTheme({
     Heading,
     FormControl,
     Input,
+    Modal,
   },
 });
 

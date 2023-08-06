@@ -53,8 +53,10 @@ module.exports = {
   },
   plugins: ['react-refresh', '@typescript-eslint', 'jsx-a11y', 'prettier'],
   rules: {
+    // disabled react-refresh of vite
     'react-refresh/only-export-components': 'off',
 
+    // format for project
     'prettier/prettier': [
       'error',
       {

@@ -1,4 +1,0 @@
-## Realtime
-
-- Listing
-- Offers

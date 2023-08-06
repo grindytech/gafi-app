@@ -1,5 +1,6 @@
 import {
   Center,
+  CenterProps,
   FormControl,
   FormLabel,
   Heading,
@@ -19,19 +20,24 @@ interface NumberInputProps {
   };
   heading?: string;
   placeholder?: string;
+  sx?: CenterProps;
 }
 
 export default function NumberInput({
   formState,
   placeholder,
   heading,
+  sx,
 }: NumberInputProps) {
+  const isEmpty = '';
+
   return (
     <FormControl
       justifyContent="space-between"
       isRequired={formState?.isRequired}
       isInvalid={formState?.isInvalid}
       as={Center}
+      {...sx}
     >
       {heading ? (
         <FormLabel display="flex" margin={0}>
@@ -47,7 +53,7 @@ export default function NumberInput({
             borderColor="shader.a.300"
             width={heading ? undefined : 'full'}
             name={field.name}
-            value={field.value || ''} // reset should empty value
+            value={field.value || isEmpty} // reset should empty value
             max={formState?.max}
             onChange={event =>
               event.length ? field.onChange(event) : field.onChange(null)

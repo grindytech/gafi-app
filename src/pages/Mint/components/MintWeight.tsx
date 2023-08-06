@@ -9,7 +9,7 @@ import {
 import { Vec } from '@polkadot/types';
 
 import { GafiSupportGameTypesLoot } from '@polkadot/types/lookup';
-import { isUndefined } from '@polkadot/util';
+import { isNull, isUndefined } from '@polkadot/util';
 import { useQuery } from '@tanstack/react-query';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import CardBox from 'components/CardBox';
@@ -78,6 +78,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
     },
     {
       enabled: !!api,
+      cacheTime: 0,
     }
   );
 
@@ -139,7 +140,11 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                 <Text color="shader.a.500">
                   Finish in&nbsp;
                   <DateBlock
-                    end="Infinity"
+                    end={
+                      isNull(getPoolOf?.endBlock?.value.toHuman())
+                        ? 'Infinity'
+                        : 'Expired'
+                    }
                     endBlock={
                       getPoolOf.endBlock?.isSome
                         ? getPoolOf.endBlock.value.toNumber()
@@ -203,6 +208,9 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                   meta => meta?.collection_id === item.collection_id
                 );
 
+                const isFailed = isUndefined(item.collection_id);
+                const isInfinity = isUndefined(item.supply);
+
                 return (
                   <Box
                     border="0.0625rem solid"
@@ -243,45 +251,40 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                     </Box>
 
                     <Box padding={4} pt={6} fontSize="sm">
-                      {currentCollection?.title ? (
-                        <Text color="shader.a.500">
-                          {currentCollection.title}
-                        </Text>
-                      ) : (
-                        <Text color="second.red">Failed</Text>
-                      )}
+                      <Text color={isFailed ? 'second.red' : 'shader.a.500'}>
+                        {isFailed ? 'Failed' : currentCollection?.title || '-'}
+                      </Text>
 
                       <Center
                         gap={4}
                         justifyContent="space-between"
                         fontWeight="medium"
                       >
-                        {currentNFT?.title ? (
-                          <Text color="shader.a.900" fontSize="md">
-                            {currentNFT?.title || '-'}
-                          </Text>
-                        ) : (
-                          <Text color="second.red" fontSize="md">
-                            Good luck next time
+                        <Text
+                          color={isFailed ? 'second.red' : 'shader.a.900'}
+                          fontSize="md"
+                        >
+                          {isFailed
+                            ? 'Good luck next time'
+                            : currentNFT?.title || '-'}
+                        </Text>
+
+                        {!isFailed && (
+                          <Text as="span" color="shader.a.900">
+                            ID: {item.nft_id}
                           </Text>
                         )}
-
-                        {typeof currentNFT?.nft_id === 'number' ? (
-                          <Text as="span" color="shader.a.900">
-                            ID: {currentNFT.nft_id}
-                          </Text>
-                        ) : null}
                       </Center>
 
                       <Center justifyContent="space-between" gap={4}>
-                        {typeof item.supply !== 'undefined' ? (
+                        {!isInfinity && (
                           <Text fontSize="sm" color="shader.a.900">
                             Amount:&nbsp;
                             <Text as="span" fontWeight="medium">
                               {item.supply || 'Infinity'}
                             </Text>
                           </Text>
-                        ) : null}
+                        )}
 
                         <Text fontSize="sm" color="shader.a.900">
                           Rarity:&nbsp;

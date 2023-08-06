@@ -4,14 +4,14 @@ import { TypeMetadataOfItem } from 'types';
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 
+interface groupMetaNFTProps {
+  collection_id: number;
+  nft_id: number;
+}
+
 export interface useMetaNFTProps {
   key?: string;
-  group:
-    | {
-        collection_id: number;
-        nft_id: number;
-      }[]
-    | undefined;
+  group: groupMetaNFTProps[] | undefined;
 }
 
 export default function useMetaNFT({ key, group }: useMetaNFTProps) {
@@ -57,7 +57,7 @@ export default function useMetaNFT({ key, group }: useMetaNFTProps) {
         const [collection, item] = JSON.parse(eventValue);
 
         group.forEach(({ collection_id, nft_id }) => {
-          if (collection === collection_id && nft_id === item) {
+          if (collection === collection_id && item === nft_id) {
             refetch();
             setEvent([]);
           }
@@ -66,7 +66,14 @@ export default function useMetaNFT({ key, group }: useMetaNFTProps) {
     }
   }, [event]);
 
+  const currentMetaNFT = ({ collection_id, nft_id }: groupMetaNFTProps) => {
+    return data?.find(
+      meta => meta?.collection_id === collection_id && meta.nft_id === nft_id
+    );
+  };
+
   return {
     metaNFT: data,
+    currentMetaNFT,
   };
 }

@@ -43,7 +43,6 @@ import { AccountId32 } from '@polkadot/types/interfaces';
 import NFTDetailListing from './NFTDetailListing';
 import React from 'react';
 import useSubscribeSystem from 'hooks/useSubscribeSystem';
-import NFTDetailOwner from './NFTDetailOwner';
 import useMetaCollection from 'hooks/useMetaCollection';
 import useMetaNFT from 'hooks/useMetaNFT';
 import { shorten } from 'utils/utils';
@@ -301,18 +300,14 @@ export default function NFTDetail() {
                   </Text>
                 </Text>
 
-                <Flex gap={2}>
-                  {newestSetPrice?.length ? (
-                    <Text color="shader.a.500">
-                      Amount&nbsp;
-                      <Text as="span" color="primary.a.500" fontWeight="medium">
-                        {newestSetPrice?.[0].amount || 0}
-                      </Text>
+                {newestSetPrice?.length ? (
+                  <Text color="shader.a.500">
+                    Amount&nbsp;
+                    <Text as="span" color="primary.a.500" fontWeight="medium">
+                      {newestSetPrice?.[0].amount || 0}
                     </Text>
-                  ) : null}
-
-                  <NFTDetailOwner />
-                </Flex>
+                  </Text>
+                ) : null}
               </VStack>
 
               <CardBox variant="baseStyle" mt={6}>

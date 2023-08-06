@@ -34,8 +34,6 @@ export default function useMaybeOption() {
     fields,
     setField,
     removeField,
-    removeFieldAll: () => {
-      setFields(initialValue);
-    },
+    setFields,
   };
 }

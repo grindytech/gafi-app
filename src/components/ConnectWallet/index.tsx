@@ -40,39 +40,40 @@ import { Link } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 import React from 'react';
 
-export const ListProfileData = [
-  {
-    icon: NFTIcon,
-    title: 'My NFTs',
-    link: '/account',
-  },
-  {
-    icon: ChartIcon,
-    title: 'Activity',
-    link: '#',
-  },
-  {
-    icon: CartIcon,
-    title: 'My Cart',
-    link: '#',
-  },
-  {
-    icon: LoveIcon,
-    title: 'Favourited',
-    link: '#',
-  },
-  {
-    icon: SettingIcon,
-    title: 'Settings',
-    link: '#',
-  },
-];
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
 
   const { account, allAccount } = useAppSelector(
     state => state.injected.polkadot
   );
+
+  const ListProfileData = [
+    {
+      icon: NFTIcon,
+      title: 'My Profile',
+      link: `/account/${account?.address}`,
+    },
+    {
+      icon: ChartIcon,
+      title: 'Activity',
+      link: '#',
+    },
+    {
+      icon: CartIcon,
+      title: 'My Cart',
+      link: '#',
+    },
+    {
+      icon: LoveIcon,
+      title: 'Favourited',
+      link: '#',
+    },
+    {
+      icon: SettingIcon,
+      title: 'Settings',
+      link: '#',
+    },
+  ];
 
   const dispatch = useAppDispatch();
 
@@ -246,8 +247,7 @@ export default function ConnectWallet() {
                 borderTop="0.063rem solid"
                 borderTopColor="shader.a.200"
               >
-                <Text color="shader.a.400">My profile</Text>
-                <Flex gap={6} flexDirection="column" mt={6}>
+                <Flex gap={6} flexDirection="column">
                   {React.Children.toArray(
                     ListProfileData.map(item => (
                       <Link to={item.link} onClick={onClose}>
