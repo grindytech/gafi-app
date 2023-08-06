@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Grid,
   Heading,
   Modal,
@@ -12,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Table,
   Tbody,
   Td,
@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { UseFormGetValues, UseFormReset } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 
 import useSignAndSend from 'hooks/useSignAndSend';
 
@@ -35,43 +35,35 @@ import {
 import { PoolsCreateFieldProps, PoolsCreateProps } from './PoolsCreate';
 import { useAppSelector } from 'hooks/useRedux';
 import useBlockTime from 'hooks/useBlockTime';
+import { isUndefined } from '@polkadot/util';
 
 interface PoolsModalProps extends PoolsCreateProps {
   onClose: () => void;
+  onSuccess: () => void;
   getValues: UseFormGetValues<PoolsCreateFieldProps>;
-  reset: UseFormReset<PoolsCreateFieldProps>;
 }
 
 export default function PoolsModal({
   onClose,
+  onSuccess,
   getValues,
-  reset,
   type,
 }: PoolsModalProps) {
   const { api } = useAppSelector(state => state.substrate);
 
-  const { role, fee, supply, duration } = getValues();
+  const { role, fee, supply: getSupply, duration } = getValues();
+  const supply = getSupply.filter(meta => !!meta);
 
   const { blockNumber } = useBlockTime('bestNumber');
 
   const { isLoading, mutation } = useSignAndSend({
     address: role.address,
     key: [type, role.address],
-    onSuccess() {
-      reset({
-        role: { ...role },
-        duration: undefined as keyof typeof getValues,
-        fee: undefined as keyof typeof getValues,
-        supply: undefined as keyof typeof getValues,
-      });
-      onClose();
-    },
+    onSuccess,
     onError() {
       onClose();
     },
   });
-
-  const getTotalSupply = supply.filter(item => !!item);
 
   return (
     <Modal
@@ -119,20 +111,22 @@ export default function PoolsModal({
                 <Td>
                   <Grid gridTemplateColumns="repeat(3, 1fr)" gap={3}>
                     {React.Children.toArray(
-                      getTotalSupply.map((item, index) => {
+                      supply.map((item, index) => {
                         const weight = CalculatorOfRarity(
                           item.weight,
-                          getTotalSupply.map(item => item.weight)
+                          supply.map(item => item.weight)
                         );
 
+                        const isFailed = isUndefined(item.maybeNft?.collection);
+
                         return (
-                          <Flex
-                            flexDirection="column"
+                          <Stack
                             justifyContent="space-between"
                             border="0.0625rem solid"
                             borderColor="shader.a.400"
                             borderRadius="xl"
                             padding={4}
+                            spacing={4}
                           >
                             <Heading
                               fontSize="lg"
@@ -142,22 +136,22 @@ export default function PoolsModal({
                               Supply {index}
                             </Heading>
 
-                            <Box mt={4}>
-                              {item.maybeNft?.item ? (
+                            <Box>
+                              {!isFailed && (
                                 <Text>
                                   Item ID:&nbsp;
-                                  <Text as="span">{item.maybeNft.item}</Text>
+                                  <Text as="span">{item.maybeNft?.item}</Text>
                                 </Text>
-                              ) : null}
+                              )}
 
-                              {item.maybeNft?.collection ? (
+                              {!isFailed && (
                                 <Text>
                                   Collection ID:&nbsp;
                                   <Text as="span">
-                                    {item.maybeNft.collection}
+                                    {item.maybeNft?.collection}
                                   </Text>
                                 </Text>
-                              ) : null}
+                              )}
 
                               <Text>
                                 Weight:&nbsp;
@@ -166,7 +160,7 @@ export default function PoolsModal({
                                 </Text>
                               </Text>
                             </Box>
-                          </Flex>
+                          </Stack>
                         );
                       })
                     )}
@@ -198,9 +192,16 @@ export default function PoolsModal({
                 const start = duration?.time ? blockNumber : null;
                 const end = duration?.time ? blockNumber + duration.time : null;
 
+                const modifed = supply.map(item => {
+                  return {
+                    weight: item.weight,
+                    maybeNft: item.maybeNft?.collection ? item.maybeNft : null,
+                  };
+                });
+
                 if (type === 'createDynamicPool') {
                   return mutation(
-                    api.tx.game.createDynamicPool(supply, role.address, {
+                    api.tx.game.createDynamicPool(modifed, role.address, {
                       minType: 'Public',
                       price: unitGAFI(String(fee)),
                       startBlock: start,
@@ -210,7 +211,7 @@ export default function PoolsModal({
                 }
                 if (type === 'createStablePool') {
                   return mutation(
-                    api.tx.game.createStablePool(supply, role.address, {
+                    api.tx.game.createStablePool(modifed, role.address, {
                       minType: 'Public',
                       price: unitGAFI(String(fee)),
                       startBlock: start,

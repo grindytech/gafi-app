@@ -5,7 +5,7 @@ import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { UseFormSetValue, useForm } from 'react-hook-form';
 
@@ -15,7 +15,7 @@ import PoolsModal from './PoolsModal';
 import useMaybeOption from 'hooks/useMaybeOption';
 import MaybeOptions from 'components/MaybeOptions/MaybeOptions';
 import useToggleMultiple from 'hooks/useToggleMultiple';
-import { isNull, isUndefined } from '@polkadot/util';
+import { isNull } from '@polkadot/util';
 import DurationBlock, { ListDurationProps } from 'components/DurationBlock';
 import { BLOCK_TIME } from 'utils/constants';
 
@@ -40,19 +40,13 @@ export interface PoolsCreateProps {
 export default function PoolsCreate({ type }: PoolsCreateProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { setIsExpanded, removeIsExpanded, removeIsExpandedAll, isExpanded } =
+  const { setIsExpanded, removeIsExpanded, isExpanded, setExpanded } =
     useToggleMultiple();
-  const { fields, setField, removeField, removeFieldAll } = useMaybeOption();
 
-  const {
-    setValue,
-    getValues,
-    handleSubmit,
-    resetField,
-    reset,
-    control,
-    watch,
-  } = useForm<PoolsCreateFieldProps>();
+  const { fields, setField, setFields, removeField } = useMaybeOption();
+
+  const { setValue, getValues, handleSubmit, control, watch } =
+    useForm<PoolsCreateFieldProps>();
 
   const ListDuration: ListDurationProps[] = [
     {
@@ -93,21 +87,31 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
 
   const { fee, supply } = watch();
 
+  // updating duration
   React.useEffect(() => {
     setValue('duration', duration);
   }, [duration]);
 
-  React.useEffect(() => {
-    if (isUndefined(fee)) {
-      // reset duration start and success submit
-      setDuration(ListDuration[0]);
-      setValue('duration', duration);
+  // fields add new
+  useEffect(() => {
+    fields.forEach(element => {
+      if (!isExpanded[element]) {
+        setExpanded(prev => ({
+          ...prev,
+          [element]: false,
+        }));
+      }
+    });
+  }, [fields]);
 
-      // reset field when start and success submit
-      removeFieldAll();
-      removeIsExpandedAll();
-    }
-  }, [fee]);
+  // isExpanded Closed
+  useEffect(() => {
+    fields.forEach(element => {
+      if (!isExpanded[element]) {
+        control.unregister(`supply.${element}.maybeNft`);
+      }
+    });
+  }, [isExpanded]);
 
   return (
     <Flex
@@ -173,21 +177,13 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
           key={element}
           title={`Supply ${element}`}
           toggle={isExpanded[element]}
-          switchClick={() => {
-            setIsExpanded(element);
-            resetField(`supply.${element}.maybeNft`);
-          }}
+          switchClick={() => setIsExpanded(element)}
           closeClick={
             fields.length >= 2
               ? () => {
-                  removeField(element);
                   removeIsExpanded(element);
-
-                  // reset field to { element: undefined }
-                  resetField(`supply.${element}`);
-
-                  // delete { element: undefined } so should [* empty]
-                  delete supply[element];
+                  removeField(element);
+                  control.unregister(`supply.${element}`);
                 }
               : undefined
           }
@@ -196,9 +192,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
               <NumberInput
                 formState={{
                   control,
-                  value: isExpanded[element]
-                    ? `supply.${element}.maybeNft.collection`
-                    : '', // undefined
+                  value: `supply.${element}.maybeNft.collection`,
                   isInvalid: isNull(supply?.[element]?.maybeNft?.collection),
                   isRequired: isExpanded[element],
                 }}
@@ -208,9 +202,7 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
               <NumberInput
                 formState={{
                   control,
-                  value: isExpanded[element]
-                    ? `supply.${element}.maybeNft.item`
-                    : '', // undefined
+                  value: `supply.${element}.maybeNft.item`,
                   isInvalid: isNull(supply?.[element]?.maybeNft?.item),
                   isRequired: isExpanded[element],
                 }}
@@ -252,10 +244,15 @@ export default function PoolsCreate({ type }: PoolsCreateProps) {
 
       {isOpen && (
         <PoolsModal
-          type={type}
+          onSuccess={() => {
+            setExpanded({ 0: false });
+            setFields([0]);
+            control.unregister();
+            onClose();
+          }}
           onClose={onClose}
+          type={type}
           getValues={getValues}
-          reset={reset}
         />
       )}
     </Flex>
