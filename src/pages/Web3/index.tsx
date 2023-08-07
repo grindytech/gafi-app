@@ -22,12 +22,7 @@ import LayoutRowIcon from 'public/assets/line/layout-row.svg';
 import { useQueries } from '@tanstack/react-query';
 
 import { useAppSelector } from 'hooks/useRedux';
-import Web3Games, { Web3GamesDataProps } from './components/Web3Games';
-import Web3Items, { Web3ItemsDataProps } from './components/Web3Items';
-import Web3FirstBuild from './components/Web3FirstBuild';
-import Web3Collections, {
-  Web3CollectionsDataProps,
-} from './components/Web3Collections';
+
 import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
 import { Outlet, useLocation } from 'react-router-dom';
 import theme from 'theme/theme';
@@ -40,6 +35,12 @@ import {
   PalletGameGameDetails,
   PalletNftsCollectionDetails,
 } from '@polkadot/types/lookup';
+import TabsGames, { TabsGamesDataProps } from './Tabs/TabsGames';
+import TabsCollections, {
+  TabsCollectionsDataProps,
+} from './Tabs/TabsCollections';
+import TabsNFTs, { TabsNFTsDataProps } from './Tabs/TabsNFTs';
+import TabsFirstBuild from './Tabs/TabsFirstBuild';
 
 export default function Web3() {
   const { event, setEvent } = useSubscribeSystem();
@@ -85,7 +86,7 @@ export default function Web3() {
                 }
               )
             ).then(data =>
-              data.filter((item): item is Web3GamesDataProps => !!item)
+              data.filter((item): item is TabsGamesDataProps => !!item)
             );
           }
 
@@ -132,7 +133,7 @@ export default function Web3() {
                 }
               )
             ).then(data =>
-              data.filter((item): item is Web3CollectionsDataProps => !!item)
+              data.filter((item): item is TabsCollectionsDataProps => !!item)
             );
           }
 
@@ -174,7 +175,7 @@ export default function Web3() {
               })
             ).then(data =>
               data
-                .filter((item): item is Web3ItemsDataProps[] => !!item?.length)
+                .filter((item): item is TabsNFTsDataProps[] => !!item?.length)
                 .flat()
             );
           }
@@ -251,19 +252,19 @@ export default function Web3() {
     {
       key: 0,
       data: game.data || [],
-      component: (data: Web3GamesDataProps[]) => <Web3Games data={data} />,
+      component: (data: TabsGamesDataProps[]) => <TabsGames data={data} />,
     },
     {
       key: 1,
       data: collection.data || [],
-      component: (data: Web3CollectionsDataProps[]) => (
-        <Web3Collections data={data} />
+      component: (data: TabsCollectionsDataProps[]) => (
+        <TabsCollections data={data} />
       ),
     },
     {
       key: 2,
       data: item.data || [],
-      component: (data: Web3ItemsDataProps[]) => <Web3Items data={data} />,
+      component: (data: TabsNFTsDataProps[]) => <TabsNFTs data={data} />,
     },
   ];
 
@@ -298,7 +299,7 @@ export default function Web3() {
                   <Tab>Collections {collection.data?.length}</Tab>
 
                   <Tab>
-                    Items&nbsp;
+                    NFTs&nbsp;
                     {item.data?.length || 0}
                   </Tab>
                 </Flex>
@@ -370,7 +371,7 @@ export default function Web3() {
             </Tabs>
           </DefaultWeb3>
         ) : (
-          <Web3FirstBuild />
+          <TabsFirstBuild />
         )
       ) : (
         <Outlet />

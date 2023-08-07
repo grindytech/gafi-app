@@ -1,11 +1,9 @@
 import React from 'react';
-import ExplorerIcon from 'public/assets/line/compass.svg';
 import GridIcon from 'public/assets/line/layout-grid.svg';
 import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import { Center, Icon, List, ListItem, Text } from '@chakra-ui/react';
 import { useLocation, Link, Outlet, useNavigate } from 'react-router-dom';
-import Explorer from './Explorer';
 import HomeMarketPlace from './Home';
 
 export const ListMarketPlace = [
@@ -15,13 +13,6 @@ export const ListMarketPlace = [
     link: 'home',
     element: <HomeMarketPlace />,
   },
-  {
-    icon: ExplorerIcon,
-    text: 'Explorer',
-    link: 'explorer',
-    element: <Explorer />,
-  },
-
   {
     icon: PickaxeIcon,
     text: 'Minting pools',

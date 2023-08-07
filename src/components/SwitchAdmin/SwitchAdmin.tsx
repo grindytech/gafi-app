@@ -16,12 +16,12 @@ import CardBox from 'components/CardBox';
 import React, { useState } from 'react';
 import Chevron01Icon from 'public/assets//line/chevron-01.svg';
 
-import NewGamesProfile from 'layouts/Web3/NewGames/components/NewGamesProfile';
 import { UseFormSetValue } from 'react-hook-form';
 import { useAppSelector } from 'hooks/useRedux';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
 import SwitchAdminAdd from './SwitchAdminAdd';
+import AuthorizeProfile from 'layouts/AuthorizeProfile';
 
 export type TypeSwitchAdmin = Record<
   'role',
@@ -96,7 +96,7 @@ export default function SwitchAdmin({
               flexWrap="wrap-reverse"
               gap={4}
             >
-              <NewGamesProfile
+              <AuthorizeProfile
                 hash={watch?.address || currentAccount.address}
                 account={watch?.name || String(currentAccount.name)}
               />
@@ -163,7 +163,7 @@ export default function SwitchAdmin({
                       setCurrentAccount(account);
                     }}
                   >
-                    <NewGamesProfile
+                    <AuthorizeProfile
                       hash={account.address}
                       account={String(account.name)}
                     />
