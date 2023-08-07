@@ -2,14 +2,14 @@ import { Center, Flex, IconButton, Text } from '@chakra-ui/react';
 
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import Pools from 'layouts/Blockchain/Pools';
-import GameCreator from 'layouts/Blockchain/GameCreator';
-import DeployContract from 'layouts/Blockchain/DeployContract';
+import DeployContract from 'pages/Blockchain/DeployContract';
 import { useEffect } from 'react';
 
 import PoolsIcon from 'public/assets/line/pools.svg';
 import CreatorIcon from 'public/assets/fill/creator.svg';
 import RocketIcon from 'public/assets/fill/rocket.svg';
+import Pools from './Pools';
+import GameCreator from './GameCreator';
 
 export const ListBlockchain = [
   {

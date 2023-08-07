@@ -8,10 +8,11 @@ import ItemIcon from 'public/assets/fill/item.svg';
 import MetadataIcon from 'public/assets/fill/metadata.svg';
 import PoolsIcon from 'public/assets/line/pools.svg';
 import UpgradeIcon from 'public/assets/fill/upgrade.svg';
-import Items from 'layouts/Web3/Items';
-import Collections from 'layouts/Web3/Collections';
-import Pools from 'layouts/Web3/Pools';
-import NewGames from 'layouts/Web3/NewGames';
+import Collections from 'pages/Web3/Collections';
+import NewGames from 'pages/Web3/NewGames';
+
+import Pools from 'pages/Web3/Pools';
+import NFTs from 'pages/Web3/NFTs';
 
 export const ListWeb3Item = [
   {
@@ -29,10 +30,10 @@ export const ListWeb3Item = [
     background: 'gradient.linear.3',
   },
   {
-    title: 'Items',
+    title: 'NFTs',
     icon: <ItemIcon />,
-    element: <Items />,
-    link: '/web3/items',
+    element: <NFTs />,
+    link: '/web3/nft',
     background: 'gradient.linear.4',
   },
   {

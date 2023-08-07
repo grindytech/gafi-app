@@ -2,18 +2,17 @@ import { Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
 
 import { UseFormSetValue, useForm } from 'react-hook-form';
 
-import MintModal from './components/MintModal';
-
 import SwitchAdmin, {
   TypeSwitchAdmin,
 } from 'components/SwitchAdmin/SwitchAdmin';
 
-import MintWeight from './components/MintWeight';
 import NumberInput from 'components/NumberInput';
 import CardBox from 'components/CardBox';
-import MintBanner from './components/MintBanner';
+import MintBanner from './MintBanner';
 import NumberInputMaxLength from 'components/NumberInput/NumberInputMaxLength';
 import { isNull } from '@polkadot/util';
+import MintWeight from './MintWeight';
+import MintModal from './MintModal';
 
 export interface MintFieldProps extends TypeSwitchAdmin {
   amount: string;

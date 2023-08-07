@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAppSelector } from './useRedux';
 
-export default function useBlockTime(
-  number: 'bestNumberFinalized' | 'bestNumber'
-) {
+export type TypeUseBlockTime = 'bestNumberFinalized' | 'bestNumber';
+
+export default function useBlockTime(number: TypeUseBlockTime) {
   const { api } = useAppSelector(state => state.substrate);
 
   const chainBlock = api?.derive.chain[number];
