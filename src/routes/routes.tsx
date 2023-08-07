@@ -12,6 +12,7 @@ import NFTDetail from 'pages/MarketPlace/NFTDetail';
 
 import Account from 'pages/Account';
 import AccountSetting from 'pages/Account/AccountSetting';
+import BundleDetail from 'pages/MarketPlace/BundleDetail';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
           {
             path: 'collection/:collection_id',
             element: <CollectionDetail />,
+          },
+          {
+            path: 'bundle/:id',
+            element: <BundleDetail />,
           },
         ],
       },

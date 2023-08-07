@@ -44,7 +44,7 @@ export default function AccountOwnerSubmit({
 
         product.forEach(({ collection, nft }) => {
           if (collection.id === collection_id && item_id === nft.id) {
-            navigation(`/marketplace/trade/${trade_id}`);
+            navigation(`/marketplace/bundle/${trade_id}`);
           }
         });
 
