@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import TrendingCollection from './TrendingCollection';
 import Extraordinary from './Extraordinary';
+import TopBundle from './TopBundle';
 
 export default function HomeMarketPlace() {
   return (
@@ -8,6 +9,8 @@ export default function HomeMarketPlace() {
       <Extraordinary />
 
       <TrendingCollection />
+
+      <TopBundle />
     </Flex>
   );
 }
