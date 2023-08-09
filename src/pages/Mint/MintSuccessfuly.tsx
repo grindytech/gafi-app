@@ -15,7 +15,7 @@ import {
 import RatioPicture from 'components/RatioPicture';
 import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { MintFieldProps } from '../index';
+
 import useSubscribeSystem from 'hooks/useSubscribeSystem';
 import React from 'react';
 
@@ -24,6 +24,8 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import StartIcon from 'public/assets/line/start.svg';
 import { stringToHex } from '@polkadot/util';
 import { useAppSelector } from 'hooks/useRedux';
+import { MintFieldProps } from '.';
+import SuccessIcon from 'public/assets/Illustration/success.svg';
 
 interface MintSuccessfulyProps {
   onClose: () => void;
@@ -70,13 +72,15 @@ export default function MintSuccessfuly({
           const meta = JSON.parse(eventValue)[3];
           const sums: Partial<metaProps> = {};
 
-          meta.forEach(({ item, collection }: any) => {
-            const key = `${collection}/${item}` as keyof metaProps;
-            const notFound = 0;
+          meta.forEach(
+            ({ item, collection }: { item: number; collection: number }) => {
+              const key = `${collection}/${item}` as keyof typeof sums;
+              const notFound = 0;
 
-            // unique key object { 0/10: n++ } this collection/nft_id: amount
-            sums[key] = (sums[key] || notFound) + 1;
-          });
+              // unique key object { 0/10: n++ } this collection/nft_id: amount
+              sums[key] = (sums[key] || notFound) + 1;
+            }
+          );
 
           const getMinted = Object.entries(sums).map(data => {
             const [collection, item] = data[0].split('/');
@@ -90,8 +94,9 @@ export default function MintSuccessfuly({
 
           if (role.address === who) {
             setGetNFT(getMinted);
-            setEvent([]);
           }
+
+          setEvent([]);
         });
       }
     };
@@ -114,8 +119,15 @@ export default function MintSuccessfuly({
       <ModalOverlay />
 
       <ModalContent borderRadius="2xl">
-        <ModalHeader>
-          <Heading fontSize="20px" fontWeight="semibold" color="shader.a.900">
+        <ModalHeader textAlign="center">
+          <Icon as={SuccessIcon} width={16} height={16} />
+
+          <Heading
+            fontSize="xl"
+            lineHeight={4}
+            fontWeight="semibold"
+            color="shader.a.900"
+          >
             Minted Successful
           </Heading>
         </ModalHeader>
@@ -164,7 +176,7 @@ export default function MintSuccessfuly({
                         <Center gap={1} color="second.orange">
                           <Icon as={StartIcon} width={4} height={4} />
 
-                          <Text>-</Text>
+                          <Text>{meta.nft_id}</Text>
                         </Center>
 
                         <Text

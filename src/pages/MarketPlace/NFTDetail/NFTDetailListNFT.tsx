@@ -39,7 +39,10 @@ export default function NFTDetailListNFT() {
   return (
     <>
       <Heading fontSize="xl" fontWeight="semibold" color="shader.a.900" mt={10}>
-        {metaCollection?.[0]?.title || '-'}
+        More from&nbsp;
+        <Text as="span" color="primary.a.500">
+          {metaCollection?.[0]?.title || '-'}
+        </Text>
       </Heading>
 
       <Grid

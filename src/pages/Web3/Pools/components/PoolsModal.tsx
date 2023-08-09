@@ -31,10 +31,11 @@ import {
   unitGAFI,
 } from 'utils/utils';
 import { PoolsCreateFieldProps, PoolsCreateProps } from './PoolsCreate';
-import { useAppSelector } from 'hooks/useRedux';
+
 import useBlockTime from 'hooks/useBlockTime';
 import { isUndefined } from '@polkadot/util';
 import AuthorizeProfile from 'layouts/AuthorizeProfile';
+import { useAppSelector } from 'hooks/useRedux';
 
 interface PoolsModalProps extends PoolsCreateProps {
   onClose: () => void;

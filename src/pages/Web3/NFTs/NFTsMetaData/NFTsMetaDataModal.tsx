@@ -44,7 +44,7 @@ export default function NFTsMetaDataModal({
 
   const { setIsLoading, isLoading, mutation } = useSignAndSend({
     address: role.address,
-    key: ['CollectionMetadataSet', String(collection_id)],
+    key: ['NFTMetadataSet', String(collection_id)],
     onSuccess() {
       reset({
         role: { ...role },
@@ -79,7 +79,7 @@ export default function NFTsMetaDataModal({
         <ModalHeader px={0} pt={0} pb={6}>
           <Center justifyContent="space-between" pb={8}>
             <Heading fontWeight="bold" fontSize="xl" color="shader.a.900">
-              Add Metadata Collection
+              Add Metadata NFT
             </Heading>
 
             <ModalCloseButton

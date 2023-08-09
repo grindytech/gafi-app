@@ -1,6 +1,8 @@
-import { Flex } from '@chakra-ui/react';
+import { Divider, Flex } from '@chakra-ui/react';
 import TrendingCollection from './TrendingCollection';
 import Extraordinary from './Extraordinary';
+
+import SectionTop from './SectionTop';
 
 export default function HomeMarketPlace() {
   return (
@@ -8,6 +10,10 @@ export default function HomeMarketPlace() {
       <Extraordinary />
 
       <TrendingCollection />
+
+      <Divider bg="shader.a.300" opacity={1} />
+
+      <SectionTop />
     </Flex>
   );
 }
