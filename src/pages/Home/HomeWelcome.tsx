@@ -1,7 +1,7 @@
 import { Box, Text, Heading, Icon, Center } from '@chakra-ui/react';
 import CardBox from 'components/CardBox';
 
-import GafiIcon from 'public/assets/art/gaki.svg';
+import GakiIcon from 'public/assets/art/gaki.svg';
 import { convertHex } from 'utils/utils';
 
 export default function HomeWelcome() {
@@ -50,7 +50,7 @@ export default function HomeWelcome() {
         </Box>
 
         <Box width="full">
-          <Icon as={GafiIcon} width="full" height="full" />
+          <Icon as={GakiIcon} width="full" height="full" />
         </Box>
       </Center>
     </CardBox>
