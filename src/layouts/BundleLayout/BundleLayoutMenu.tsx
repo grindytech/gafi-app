@@ -1,4 +1,5 @@
 import {
+  As,
   Icon,
   IconButton,
   Menu,
@@ -8,46 +9,22 @@ import {
   Text,
 } from '@chakra-ui/react';
 import MenuIcon from 'public/assets/line/menu.svg';
-import ShareIcon from 'public/assets/line/share.svg';
 
-import { useNavigate } from 'react-router-dom';
 import { convertHex } from 'utils/utils';
 import { Swiper } from 'swiper/types';
-import { GafiSupportGameTypesPackage } from '@polkadot/types/lookup';
+import React from 'react';
 
-interface BundleDetailMenuProps {
+interface BundleLayoutMenuProps {
   swiperRef: React.MutableRefObject<Swiper | undefined>;
-  data: GafiSupportGameTypesPackage[];
+  menu: {
+    key: string | number;
+    heading: string;
+    icon?: As;
+    onClick: () => void;
+  }[];
 }
 
-export default function BundleDetailMenu({
-  swiperRef,
-  data,
-}: BundleDetailMenuProps) {
-  const navigation = useNavigate();
-
-  const ListMenu = [
-    {
-      key: 0,
-      heading: 'Detail',
-      icon: ShareIcon,
-      onClick: () => {
-        if (swiperRef.current) {
-          const response = data[swiperRef.current.realIndex];
-
-          navigation({
-            pathname: `/marketplace/nft/${response.item.toNumber()}/${response.collection.toNumber()}`,
-          });
-        }
-      },
-    },
-    {
-      key: 1,
-      heading: 'Share',
-      icon: ShareIcon,
-    },
-  ];
-
+export default function BundleLayoutMenu({ menu }: BundleLayoutMenuProps) {
   return (
     <Menu placement="bottom-end">
       <MenuButton
@@ -70,7 +47,7 @@ export default function BundleDetailMenu({
         overflow="hidden"
         borderRadius="lg"
       >
-        {ListMenu.map(menu => (
+        {menu.map(menu => (
           <MenuItem
             key={menu.key}
             padding={2}
@@ -80,7 +57,7 @@ export default function BundleDetailMenu({
             onClick={menu.onClick}
             _hover={{ bg: 'shader.a.200' }}
           >
-            <Icon width={5} height={5} as={menu.icon} />
+            {menu.icon && <Icon width={5} height={5} as={menu.icon} />}
 
             <Text pr={24}>{menu.heading}</Text>
           </MenuItem>

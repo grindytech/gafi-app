@@ -1,4 +1,4 @@
-import { Box, Grid, VStack } from '@chakra-ui/react';
+import { Box, Flex, Grid, VStack } from '@chakra-ui/react';
 
 import CardBox from 'components/CardBox';
 
@@ -11,52 +11,58 @@ import { useAppSelector } from 'hooks/useRedux';
 import { Option, Vec } from '@polkadot/types';
 import {
   GafiSupportGameTypesPackage,
-  PalletGameTradeConfig,
+  PalletGameAuctionConfig,
 } from '@polkadot/types/lookup';
 
 import useMetaNFT from 'hooks/useMetaNFT';
-
-import BundleDetailBid from './BundleDetailBid';
 
 import { Swiper as SwiperType } from 'swiper/types';
 
 import BundleLayoutModel from 'layouts/BundleLayout/BundleLayoutModel';
 import BundleLayoutMenu from 'layouts/BundleLayout/BundleLayoutMenu';
 import BundleLayoutDuration from 'layouts/BundleLayout/BundleLayoutDuration';
-import BundleLayoutOwner from 'layouts/BundleLayout/BundleLayoutOwner';
 import BundleLayoutItems from 'layouts/BundleLayout/BundleLayoutItems';
+import BundleLayoutOwner from 'layouts/BundleLayout/BundleLayoutOwner';
+import AuctionDetailBid from './AuctionDetailBid';
+import useHighestBidOf from 'hooks/useHighestBidOf';
+import AuctionDetailClaim from './AuctionDetailClaim';
 
-export default function BundleDetail() {
+export default function AuctionDetail() {
   const { api } = useAppSelector(state => state.substrate);
   const { id } = useParams();
   const navigation = useNavigate();
 
   const { data, isError } = useQuery({
-    queryKey: ['bundleOf', id],
+    queryKey: ['auctionOf', id],
     queryFn: async () => {
       if (api) {
         const service = (await api.query.game.bundleOf(
           id
         )) as Vec<GafiSupportGameTypesPackage>;
 
-        const configOf = (await api.query.game.tradeConfigOf(
+        const configOf = (await api.query.game.auctionConfigOf(
           id
-        )) as Option<PalletGameTradeConfig>;
+        )) as Option<PalletGameAuctionConfig>;
 
-        if (configOf.value.trade.isBundle) {
-          return {
-            owner: configOf.value.owner.toString(),
-            maybePrice: configOf.value.maybePrice.toString(),
-            endBlock: configOf.value.endBlock.value.toNumber(),
-            meta: service.map(meta => meta),
-          };
-        }
+        return {
+          owner: configOf.value.owner.toString(),
+          maybePrice: configOf.value.maybePrice.toString(),
+          endBlock: configOf.value.duration.toNumber(),
+          startBlock: configOf.value.startBlock.toNumber(),
+          meta: service.map(meta => meta),
+        };
       }
     },
   });
 
+  const { getHighestBidOf } = useHighestBidOf({
+    key: id,
+    group: [Number(id)],
+    filter: 'only',
+  });
+
   const { metaNFT } = useMetaNFT({
-    key: `bundle/${id}`,
+    key: `auction/${id}`,
     group: data?.meta.map(meta => ({
       nft_id: meta.item.toNumber(),
       collection_id: meta.collection.toNumber(),
@@ -103,19 +109,25 @@ export default function BundleDetail() {
                 <BundleLayoutOwner owner={data?.owner} />
 
                 <BundleLayoutDuration
-                  maybePrice={data.maybePrice}
+                  maybePrice={
+                    getHighestBidOf?.[0]?.maybePrice || data.maybePrice
+                  }
                   duration={{
                     heading: 'Auction end at',
                     endBlock: data.endBlock,
                   }}
                 >
-                  <BundleDetailBid maybePrice={data.maybePrice} />
+                  <Flex gap={3}>
+                    <AuctionDetailBid />
+
+                    <AuctionDetailClaim />
+                  </Flex>
                 </BundleLayoutDuration>
               </CardBox>
 
               <BundleLayoutItems
-                queryKey={`bundle/${id}`}
-                heading="Bundles detail"
+                queryKey={`auction/${id}`}
+                heading="Auctions detail"
                 data={data.meta}
                 setThumbsSwiper={setThumbsSwiper}
               />

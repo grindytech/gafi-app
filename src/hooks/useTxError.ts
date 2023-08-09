@@ -9,7 +9,12 @@ interface useTxErrorProps {
 }
 
 export default function useTxError({ onSuccess, onError }: useTxErrorProps) {
-  const toast = useToast();
+  const toast = useToast({
+    position: 'top-right',
+    isClosable: true,
+    duration: 3000,
+  });
+
   const { api } = useAppSelector(state => state.substrate);
 
   const txError = (result: ISubmittableResult) => {
@@ -38,7 +43,6 @@ export default function useTxError({ onSuccess, onError }: useTxErrorProps) {
         }
 
         toast({
-          position: 'top-right',
           status: 'error',
           description: errorInfo,
         });
@@ -48,15 +52,12 @@ export default function useTxError({ onSuccess, onError }: useTxErrorProps) {
     });
 
     toast({
-      position: 'top-right',
-      status: result.isCompleted ? 'success' : 'loading',
+      status: status.isFinalized || status.isInBlock ? 'success' : 'loading',
       title: status.type,
       description: status.type,
-      isClosable: true,
-      duration: 3000,
     });
 
-    if (result.isCompleted && isError === false) {
+    if (result.isInBlock && isError === false) {
       onSuccess();
     }
   };

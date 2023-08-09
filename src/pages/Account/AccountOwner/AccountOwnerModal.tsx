@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Tab,
@@ -25,9 +24,12 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import AccountOwnerIncrement from './AccountOwnerIncrement';
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { AccountOwnerFieldProps } from '.';
-import AccountOwnerSell from './AccountOwnerSell';
-import AccountOwnerSubmit from './AccountOwnerSubmit';
-import { useState } from 'react';
+
+import React, { useState } from 'react';
+import AccountOwnerSale from './AccountOwnerSale';
+import AccountOwnerAuction from './AccountOwnerAuction';
+import { BLOCK_TIME } from 'utils/constants';
+import { ListDurationProps } from 'components/DurationBlock';
 
 interface AccountOwnerModalProps {
   onClose: () => void;
@@ -44,8 +46,41 @@ export default function AccountOwnerModal({
   onClose,
   onSuccess,
 }: AccountOwnerModalProps) {
-  const { duration, price, product: productState } = formState.watch();
+  const { product: productState } = formState.watch();
   const product = Object.values(productState).map(meta => ({ ...meta }));
+
+  const ListDuration: ListDurationProps[] = [
+    {
+      text: '1 Minutes',
+      time: 60 / BLOCK_TIME,
+    },
+    {
+      text: '5 Minutes',
+      time: 300 / BLOCK_TIME,
+    },
+    {
+      text: '1 Hours',
+      time: 3600 / BLOCK_TIME,
+    },
+    {
+      text: '1 Day',
+      time: (86400 * 1) / BLOCK_TIME,
+    },
+    {
+      text: '1 Week',
+      time: (86400 * 7) / BLOCK_TIME,
+    },
+    {
+      text: '2 Weeks',
+      time: (86400 * 14) / BLOCK_TIME,
+    },
+    {
+      text: '1 Month',
+      time: (86400 * 30) / BLOCK_TIME,
+    },
+  ];
+
+  const [duration, setDuration] = React.useState(ListDuration[0]);
 
   const [tab, setTab] = useState(0);
 
@@ -55,10 +90,13 @@ export default function AccountOwnerModal({
       heading: 'Ordinary Sale',
       body: `Sale your NFTs with your set price.`,
       submit: (
-        <AccountOwnerSell
-          setValue={formState.setValue}
-          price={price}
+        <AccountOwnerSale
+          watch={formState.watch}
           control={formState.control}
+          onSuccess={onSuccess}
+          duration={duration}
+          setDuration={setDuration}
+          listDuration={ListDuration}
         />
       ),
     },
@@ -67,10 +105,13 @@ export default function AccountOwnerModal({
       heading: 'Auction',
       body: `The highest bid wins when the auction ends.`,
       submit: (
-        <AccountOwnerSell
-          setValue={formState.setValue}
-          price={price}
+        <AccountOwnerAuction
+          watch={formState.watch}
           control={formState.control}
+          onSuccess={onSuccess}
+          duration={duration}
+          setDuration={setDuration}
+          listDuration={ListDuration}
         />
       ),
     },
@@ -234,7 +275,7 @@ export default function AccountOwnerModal({
               ))}
             </TabList>
 
-            <TabPanels pt={2} px={6} pb={6}>
+            <TabPanels>
               {ListTab.map(meta => (
                 <TabPanel key={meta.id} padding={0}>
                   {meta.id === tab ? meta.submit : null}
@@ -243,38 +284,6 @@ export default function AccountOwnerModal({
             </TabPanels>
           </Tabs>
         </ModalBody>
-
-        <ModalFooter
-          display="block"
-          borderTop="0.0625rem solid"
-          borderColor="shader.a.300"
-        >
-          {(function () {
-            if (tab === 0) {
-              return (
-                <AccountOwnerSubmit
-                  onSuccess={onSuccess}
-                  price={price}
-                  product={product}
-                  duration={duration}
-                  type={product.length >= 2 ? 'Bundle' : 'SetPrice'}
-                />
-              );
-            }
-
-            if (tab === 1) {
-              return (
-                <AccountOwnerSubmit
-                  onSuccess={onSuccess}
-                  price={price}
-                  product={product}
-                  duration={duration}
-                  type="Auction"
-                />
-              );
-            }
-          })()}
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

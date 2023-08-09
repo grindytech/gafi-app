@@ -23,12 +23,13 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import { Link } from 'react-router-dom';
 import useMetaCollection from 'hooks/useMetaCollection';
 import RatioPicture from 'components/RatioPicture';
+import TrendingCollectionLoading from './TrendingCollectionLoading';
 
 export default function TrendingCollection() {
   const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['trendingCollection', account?.address],
     queryFn: async () => {
       if (api) {
@@ -91,68 +92,74 @@ export default function TrendingCollection() {
       </Center>
 
       <Box mt={6}>
-        <Swiper
-          modules={[Mousewheel, Grid]}
-          spaceBetween={32}
-          slidesPerView={4}
-          grid={{
-            rows: 3,
-            fill: 'row',
-          }}
-          mousewheel={{
-            forceToAxis: true,
-          }}
-        >
-          {data && data.length ? (
-            React.Children.toArray(
-              data.map(({ collection_id }, index) => (
-                <SwiperSlide>
-                  <HStack
-                    as={Link}
-                    to={`/marketplace/collection/${collection_id}`}
-                    position="relative"
-                    _hover={{
-                      textDecoration: 'none',
-                    }}
-                  >
-                    <Text
-                      position="absolute"
-                      left={0}
-                      textAlign="left"
-                      fontWeight="medium"
-                    >
-                      {collection_id}
-                    </Text>
+        {isLoading && <TrendingCollectionLoading />}
 
-                    <RatioPicture
-                      alt={collection_id}
-                      src={
-                        metaCollection?.[index]?.image
-                          ? cloundinary_link(metaCollection?.[index]?.image)
-                          : null
-                      }
-                      sx={{
-                        pt: 'unset',
-                        width: 14,
-                        height: 14,
+        {data?.length ? (
+          <Swiper
+            modules={[Mousewheel, Grid]}
+            spaceBetween={32}
+            slidesPerView={4}
+            grid={{
+              rows: 3,
+              fill: 'row',
+            }}
+            mousewheel={{
+              forceToAxis: true,
+            }}
+          >
+            {data && data.length ? (
+              React.Children.toArray(
+                data.map(({ collection_id }, index) => (
+                  <SwiperSlide>
+                    <HStack
+                      as={Link}
+                      to={`/marketplace/collection/${collection_id}`}
+                      position="relative"
+                      _hover={{
+                        textDecoration: 'none',
                       }}
-                    />
-
-                    <Text
-                      color="shader.a.900"
-                      fontSize="lg"
-                      fontWeight="medium"
                     >
-                      {metaCollection?.[index]?.title || '-'}
-                    </Text>
-                  </HStack>
-                </SwiperSlide>
-              ))
-            )
-          ) : (
-            <Center>Empty</Center>
-          )}
-        </Swiper>
+                      <Text
+                        position="absolute"
+                        left={0}
+                        textAlign="left"
+                        fontWeight="medium"
+                      >
+                        {collection_id}
+                      </Text>
+
+                      <RatioPicture
+                        alt={collection_id}
+                        src={
+                          metaCollection?.[index]?.image
+                            ? cloundinary_link(metaCollection?.[index]?.image)
+                            : null
+                        }
+                        sx={{
+                          pt: 'unset',
+                          width: 14,
+                          height: 14,
+                        }}
+                      />
+
+                      <Text
+                        color="shader.a.900"
+                        fontSize="lg"
+                        fontWeight="medium"
+                      >
+                        {metaCollection?.[index]?.title || '-'}
+                      </Text>
+                    </HStack>
+                  </SwiperSlide>
+                ))
+              )
+            ) : (
+              <Center>Empty</Center>
+            )}
+          </Swiper>
+        ) : (
+          <Center>Empty</Center>
+        )}
       </Box>
     </Box>
   );

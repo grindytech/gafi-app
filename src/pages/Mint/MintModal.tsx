@@ -74,7 +74,12 @@ export default function MintModal({
           getValues={getValues}
         />
       ) : (
-        <Modal isOpen={true} onClose={onClose} size="2xl">
+        <Modal
+          isOpen={true}
+          onClose={onClose}
+          size="2xl"
+          closeOnOverlayClick={!isLoading}
+        >
           <ModalOverlay />
 
           <ModalContent

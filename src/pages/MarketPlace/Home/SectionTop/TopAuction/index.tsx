@@ -16,27 +16,28 @@ import RatioPicture from 'components/RatioPicture';
 import { Option, StorageKey, Vec, u128, u32 } from '@polkadot/types';
 import {
   GafiSupportGameTypesPackage,
-  PalletGameTradeConfig,
+  PalletGameAuctionConfig,
 } from '@polkadot/types/lookup';
-import useMetaNFT, { useMetaNFTProps } from 'hooks/useMetaNFT';
+import useMetaNFT from 'hooks/useMetaNFT';
 import CardBox from 'components/CardBox';
 import DateBlock from 'components/DateBlock';
 import GafiAmount from 'components/GafiAmount';
+import useHighestBidOf from 'hooks/useHighestBidOf';
 
-interface gameBundleOfProps {
-  endBlock: Option<u32>;
+interface gameAuctionOf {
+  endBlock: u32;
   maybePrice: Option<u128>;
   trade_id: number;
   collection_id: number;
   nft_id: number;
 }
 
-export default function TopBundle() {
+export default function TopAuction() {
   const { api } = useAppSelector(state => state.substrate);
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   const { data } = useQuery({
-    queryKey: ['game_bundleOf', account?.address],
+    queryKey: ['top_auctions', account?.address],
     queryFn: async () => {
       if (api) {
         const service = await api.query.game.bundleOf.entries();
@@ -47,14 +48,14 @@ export default function TopBundle() {
               StorageKey<[u32]>,
               Vec<GafiSupportGameTypesPackage>
             ]) => {
-              const tradeConfigOf = (await api.query.game.tradeConfigOf(
+              const auctionConfigOf = (await api.query.game.auctionConfigOf(
                 trade_id.args[0].toNumber()
-              )) as Option<PalletGameTradeConfig>;
+              )) as Option<PalletGameAuctionConfig>;
 
-              if (tradeConfigOf.value.trade?.isBundle) {
+              if (auctionConfigOf.isSome) {
                 return {
-                  endBlock: tradeConfigOf.value.endBlock,
-                  maybePrice: tradeConfigOf.value.maybePrice,
+                  endBlock: auctionConfigOf.value.duration,
+                  maybePrice: auctionConfigOf.value.maybePrice,
                   trade_id: trade_id.args[0].toNumber(),
                   collection_id: meta[0].collection.toNumber(),
                   nft_id: meta[0].item.toNumber(),
@@ -62,19 +63,23 @@ export default function TopBundle() {
               }
             }
           )
-        ).then(data =>
-          data.filter((item): item is gameBundleOfProps => !!item)
-        );
+        ).then(data => data.filter((item): item is gameAuctionOf => !!item));
       }
     },
   });
 
+  const { getHighestBidOf } = useHighestBidOf({
+    key: '1',
+    group: data?.map(({ trade_id }) => trade_id) as number[],
+    filter: 'every',
+  });
+
   const { metaNFT } = useMetaNFT({
-    key: `bundleOf`,
+    key: `auctionOf`,
     group: data?.map(item => ({
       nft_id: item?.nft_id,
       collection_id: item?.collection_id,
-    })) as useMetaNFTProps['group'],
+    })),
   });
 
   return (
@@ -90,7 +95,7 @@ export default function TopBundle() {
             },
           }}
         />
-        <Heading variant="sub02">Top Bundles</Heading>
+        <Heading variant="sub02">Top Auctions</Heading>
       </Flex>
 
       <Box mt={6}>
@@ -113,7 +118,7 @@ export default function TopBundle() {
 
                   return (
                     <SwiperSlide>
-                      <Link to={`/marketplace/bundle/${trade_id}`}>
+                      <Link to={`/marketplace/auction/${trade_id}`}>
                         <CardBox variant="baseStyle" padding={0}>
                           <Box>
                             <RatioPicture
@@ -158,7 +163,7 @@ export default function TopBundle() {
                                 <Text color="shader.a.600">Finish:</Text>
 
                                 <DateBlock
-                                  endBlock={endBlock.value.toNumber()}
+                                  endBlock={endBlock.toNumber()}
                                   sx={{
                                     as: 'span',
                                     fontSize: 'sm',
@@ -174,7 +179,11 @@ export default function TopBundle() {
                                 </Text>
 
                                 <GafiAmount
-                                  amount={maybePrice.toString()}
+                                  amount={
+                                    getHighestBidOf?.find(
+                                      meta => meta?.trade_id === trade_id
+                                    )?.maybePrice || maybePrice.toString()
+                                  }
                                   sx={{
                                     sx: {
                                       '&, span': {

@@ -13,6 +13,7 @@ import NFTDetail from 'pages/MarketPlace/NFTDetail';
 import Account from 'pages/Account';
 import AccountSetting from 'pages/Account/AccountSetting';
 import BundleDetail from 'pages/MarketPlace/BundleDetail';
+import AuctionDetail from 'pages/MarketPlace/AuctionDetail';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
           {
             path: 'bundle/:id',
             element: <BundleDetail />,
+          },
+          {
+            path: 'auction/:id',
+            element: <AuctionDetail />,
           },
         ],
       },

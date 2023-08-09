@@ -45,10 +45,12 @@ import React from 'react';
 import useSubscribeSystem from 'hooks/useSubscribeSystem';
 import useMetaCollection from 'hooks/useMetaCollection';
 import useMetaNFT from 'hooks/useMetaNFT';
-import { shorten } from 'utils/utils';
+import { formatCurrency, shorten } from 'utils/utils';
 import NFTDetailListNFT from './NFTDetailListNFT';
 import useGetNFT, { nftsItemProps } from 'hooks/useGetNFT';
 import RatioPicture from 'components/RatioPicture';
+
+import DateBlock from 'components/DateBlock';
 
 export interface getTradeConfigProps {
   trade: GafiSupportGameTypesTradeType;
@@ -181,6 +183,8 @@ export default function NFTDetail() {
       (a, b) => a.maybePrice.value.toNumber() - b.maybePrice.value.toNumber()
     );
 
+  const isSelled = newestSetPrice?.[0]?.maybePrice.isSome || false;
+
   return (
     <>
       {!!data && (
@@ -211,10 +215,7 @@ export default function NFTDetail() {
                 }
                 sx={{
                   pt: 'unset',
-                  aspectRatio: {
-                    base: 16 / 9,
-                    lg: 1 / 1,
-                  },
+                  aspectRatio: { base: 16 / 9, lg: 1 / 1 },
 
                   sx: {
                     img: {
@@ -285,9 +286,14 @@ export default function NFTDetail() {
                     {metaCollection?.[0]?.title || '-'}
                   </Heading>
 
-                  <Text fontSize="2xl" color="shader.a.900" fontWeight="bold">
+                  <Heading
+                    as="h6"
+                    fontSize="2xl"
+                    color="shader.a.900"
+                    fontWeight="bold"
+                  >
                     {metaNFT?.[0]?.title || '-'}
-                  </Text>
+                  </Heading>
                 </Box>
 
                 <Text color="shader.a.500">
@@ -312,6 +318,23 @@ export default function NFTDetail() {
 
               <CardBox variant="baseStyle" mt={6}>
                 <Stack spacing={6}>
+                  {isSelled && (
+                    <Text color="shader.a.500" fontSize="sm">
+                      Sell end at&nbsp;
+                      <DateBlock
+                        endBlock={Number(
+                          newestSetPrice?.[0].endBlock.value.toNumber()
+                        )}
+                        sx={{
+                          as: 'span',
+                          color: 'shader.a.900',
+                          fontWeight: 'medium',
+                          fontSize: 'md',
+                        }}
+                      />
+                    </Text>
+                  )}
+
                   <Box
                     padding={4}
                     border="0.0625rem solid"
@@ -319,37 +342,30 @@ export default function NFTDetail() {
                     bg="shader.a.200"
                     borderRadius="xl"
                   >
-                    {newestSetPrice?.[0]?.maybePrice.isSome ? (
+                    {isSelled ? (
                       <Stack spacing={0.5}>
-                        <Heading
-                          as="h6"
+                        <Text
                           fontSize="xl"
                           color="shader.a.900"
                           fontWeight="semibold"
                         >
-                          {newestSetPrice[0].maybePrice.toString()}
-                        </Heading>
+                          {newestSetPrice?.[0].maybePrice.toString()}
+                        </Text>
 
                         <Text fontSize="sm" color="shader.a.500">
-                          {Intl.NumberFormat(undefined, {
-                            style: 'currency',
-                            currencyDisplay: 'narrowSymbol',
-                            currency: 'usd',
-                          }).format(
-                            newestSetPrice[0].maybePrice.value.toNumber()
+                          {formatCurrency(
+                            Number(
+                              newestSetPrice?.[0].maybePrice.value.toNumber()
+                            ),
+                            'usd'
                           )}
                         </Text>
                       </Stack>
                     ) : (
                       <Stack spacing={0.5}>
-                        <Heading
-                          as="h6"
-                          fontSize="sm"
-                          color="shader.a.500"
-                          fontWeight="normal"
-                        >
+                        <Text fontSize="sm" color="shader.a.500">
                           Price
-                        </Heading>
+                        </Text>
 
                         <Text
                           fontSize="lg"
@@ -363,24 +379,21 @@ export default function NFTDetail() {
                   </Box>
 
                   <Flex gap={2}>
-                    {account?.address !== getNFT?.owner && (
-                      <>
-                        {newestSetPrice?.[0]?.trade.isEmpty && (
-                          <NFTDetailOffer
-                            fee={lowestSetBuy?.[0]?.maybePrice.value.toNumber()}
-                            amount={newestSetPrice[0].amount}
-                          />
-                        )}
-
-                        {newestSetPrice?.[0]?.trade.isEmpty && (
-                          <NFTDetailBuy
-                            trade_id={newestSetPrice[0].trade_id}
-                            fee={newestSetPrice[0].maybePrice.value.toNumber()}
-                            amount={newestSetPrice[0].amount}
-                          />
-                        )}
-                      </>
+                    {newestSetPrice?.[0]?.trade.isEmpty && (
+                      <NFTDetailOffer
+                        fee={lowestSetBuy?.[0]?.maybePrice.value.toNumber()}
+                        amount={newestSetPrice[0].amount}
+                      />
                     )}
+
+                    {account?.address !== getNFT?.owner &&
+                      newestSetPrice?.[0]?.trade.isEmpty && (
+                        <NFTDetailBuy
+                          trade_id={newestSetPrice[0].trade_id}
+                          fee={newestSetPrice[0].maybePrice.value.toNumber()}
+                          amount={newestSetPrice[0].amount}
+                        />
+                      )}
 
                     {account?.address === getNFT?.owner && <NFTDetailSell />}
                   </Flex>

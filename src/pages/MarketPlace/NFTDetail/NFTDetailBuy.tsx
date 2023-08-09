@@ -88,6 +88,8 @@ export default function NFTDetailBuy({
     },
   });
 
+  const { amount: supply } = watch();
+
   return (
     <Button
       variant="primary"
@@ -244,7 +246,7 @@ export default function NFTDetailBuy({
 
                 <Box textAlign="right">
                   <GafiAmount
-                    amount={watch().price || 0}
+                    amount={supply * fee || 0}
                     sx={{
                       className: 'amount-gafi',
                       sx: {
@@ -258,7 +260,7 @@ export default function NFTDetailBuy({
                   />
 
                   <Text as="span">
-                    {formatCurrency(Number(watch().price || 0), 'usd')}
+                    {formatCurrency(supply * fee || 0, 'usd')}
                   </Text>
                 </Box>
               </Flex>

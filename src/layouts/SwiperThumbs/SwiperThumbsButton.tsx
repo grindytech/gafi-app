@@ -1,13 +1,15 @@
-import { IconButton } from '@chakra-ui/react';
+import { ButtonProps, Icon, IconButton } from '@chakra-ui/react';
 import Chevron01Icon from 'public/assets/line/chevron-01.svg';
 import { Swiper as SwiperType } from 'swiper/types';
 
 interface SwiperThumbsButtonProps {
   swiperRef: React.MutableRefObject<SwiperType | undefined>;
+  sx?: ButtonProps;
 }
 
 export default function SwiperThumbsButton({
   swiperRef,
+  sx,
 }: SwiperThumbsButtonProps) {
   return (
     <>
@@ -22,13 +24,14 @@ export default function SwiperThumbsButton({
             aria-label={meta}
             variant="unstyled"
             display="flex"
-            color="shader.a.900"
             position="absolute"
             zIndex="docked"
             bg="white"
+            color="primary.a.500"
             borderRadius="full"
             transitionDuration="ultra-slow"
-            icon={<Chevron01Icon />}
+            boxShadow="0px 0px 0.625rem 0px rgba(0, 0, 0, 0.15)"
+            icon={<Icon as={Chevron01Icon} width={6} height={6} />}
             _groupHover={{
               opacity: 1,
               pointerEvents: 'unset',
@@ -38,7 +41,7 @@ export default function SwiperThumbsButton({
                 return swiperRef.current?.slideNext();
               }
 
-              swiperRef.current?.slidePrev();
+              return swiperRef.current?.slidePrev();
             }}
             inset={isNext ? '50% 0 auto auto' : '50% auto auto 0'}
             transform={
@@ -46,6 +49,7 @@ export default function SwiperThumbsButton({
                 ? 'translate(-25%, -50%) rotate(-90deg)'
                 : 'translate(25%, -50%) rotate(90deg)'
             }
+            {...sx}
           />
         );
       })}
