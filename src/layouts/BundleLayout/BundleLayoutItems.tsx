@@ -95,16 +95,14 @@ export default function BundleLayoutItems({
                     borderColor="shader.a.300"
                   >
                     <Flex gap={4}>
-                      <Box>
-                        <RatioPicture
-                          src={
-                            currentMetaNFT?.image
-                              ? cloundinary_link(currentMetaNFT.image)
-                              : null
-                          }
-                          sx={{ pt: 'unset', width: 12, height: 12 }}
-                        />
-                      </Box>
+                      <RatioPicture
+                        src={
+                          currentMetaNFT?.image
+                            ? cloundinary_link(currentMetaNFT.image)
+                            : null
+                        }
+                        sx={{ width: 12 }}
+                      />
 
                       <Box>
                         <Text

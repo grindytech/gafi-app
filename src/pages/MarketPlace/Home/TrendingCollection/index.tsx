@@ -64,9 +64,7 @@ export default function TrendingCollection() {
             h={6}
             w={6}
             sx={{
-              path: {
-                stroke: 'url(#CollectionLinear06)',
-              },
+              path: { stroke: 'url(#CollectionLinear06)' },
             }}
           />
           <Heading variant="sub02">Trending Collections</Heading>
@@ -99,59 +97,60 @@ export default function TrendingCollection() {
             modules={[Mousewheel, Grid]}
             spaceBetween={32}
             slidesPerView={4}
-            grid={{
-              rows: 3,
-              fill: 'row',
-            }}
-            mousewheel={{
-              forceToAxis: true,
-            }}
+            grid={{ rows: 3, fill: 'row' }}
+            mousewheel={{ forceToAxis: true }}
           >
             {data && data.length ? (
               React.Children.toArray(
-                data.map(({ collection_id }, index) => (
-                  <SwiperSlide>
-                    <HStack
-                      as={Link}
-                      to={`/marketplace/collection/${collection_id}`}
-                      position="relative"
-                      _hover={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      <Text
-                        position="absolute"
-                        left={0}
-                        textAlign="left"
+                data.map(({ collection_id }) => {
+                  const currentMetaCollection = metaCollection?.find(
+                    meta => meta?.collection_id === collection_id
+                  );
+
+                  return (
+                    <SwiperSlide>
+                      <HStack
+                        spacing={4}
+                        as={Link}
+                        to={`/marketplace/collection/${collection_id}`}
                         fontWeight="medium"
-                      >
-                        {collection_id}
-                      </Text>
-
-                      <RatioPicture
-                        alt={collection_id}
-                        src={
-                          metaCollection?.[index]?.image
-                            ? cloundinary_link(metaCollection?.[index]?.image)
-                            : null
-                        }
-                        sx={{
-                          pt: 'unset',
-                          width: 14,
-                          height: 14,
-                        }}
-                      />
-
-                      <Text
                         color="shader.a.900"
-                        fontSize="lg"
-                        fontWeight="medium"
+                        _hover={{
+                          textDecoration: 'none',
+                        }}
                       >
-                        {metaCollection?.[index]?.title || '-'}
-                      </Text>
-                    </HStack>
-                  </SwiperSlide>
-                ))
+                        <Text>{collection_id}</Text>
+
+                        <RatioPicture
+                          alt={collection_id}
+                          src={
+                            currentMetaCollection?.image
+                              ? cloundinary_link(currentMetaCollection.image)
+                              : null
+                          }
+                          sx={{ width: 14, height: 14 }}
+                        />
+
+                        <Box>
+                          <Text fontSize="lg">
+                            {currentMetaCollection?.title || '-'}
+                          </Text>
+
+                          <Text fontSize="sm" color="shader.a.600">
+                            Floor Price:&nbsp;
+                            <Text
+                              as="span"
+                              color="shader.a.900"
+                              fontWeight="medium"
+                            >
+                              0.00 GAFI
+                            </Text>
+                          </Text>
+                        </Box>
+                      </HStack>
+                    </SwiperSlide>
+                  );
+                })
               )
             ) : (
               <Center>Empty</Center>

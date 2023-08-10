@@ -180,7 +180,7 @@ export default function AccountOwnerModal({
                     src={
                       meta.nft?.image ? cloundinary_link(meta.nft.image) : null
                     }
-                    sx={{ pt: 0, width: 20, height: 20 }}
+                    sx={{ width: 20, height: 20 }}
                   />
 
                   <Box

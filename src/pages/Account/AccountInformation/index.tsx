@@ -49,7 +49,7 @@ export default function AccountInformation() {
             onClick={() => console.log('edit background')}
           />
 
-          <RatioPicture src={null} sx={{ pt: 'unset', height: 52 }} />
+          <RatioPicture src={null} sx={{ height: 52 }} />
         </Box>
 
         <Box
