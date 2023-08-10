@@ -83,7 +83,6 @@ export default function CollectionDetail() {
                   : null
               }
               sx={{
-                pt: 'unset',
                 height: 32,
                 width: 32,
                 border: '0.625rem solid white',

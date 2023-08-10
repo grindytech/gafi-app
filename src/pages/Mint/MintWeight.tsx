@@ -238,8 +238,7 @@ export default function MintWeight({ pool_id }: MintWeightProps) {
                         alt={`collection-${item.collection_id}`}
                         sx={{
                           ml: 4,
-                          mb: -3.5,
-                          pt: 'unset',
+                          mb: -4,
                           width: 14,
                           height: 14,
                           position: 'absolute',

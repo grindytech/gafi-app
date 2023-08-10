@@ -193,17 +193,15 @@ export default function NFTDetailOffer({ fee, amount }: NFTDetailOfferProps) {
             >
               <HStack alignItems="flex-start" spacing={4}>
                 <Flex gap={4}>
-                  <Box>
-                    <RatioPicture
-                      alt={nft_id}
-                      src={
-                        metaNFT?.[0]?.image
-                          ? cloundinary_link(metaNFT?.[0]?.image)
-                          : null
-                      }
-                      sx={{ width: 32 }}
-                    />
-                  </Box>
+                  <RatioPicture
+                    alt={nft_id}
+                    src={
+                      metaNFT?.[0]?.image
+                        ? cloundinary_link(metaNFT?.[0]?.image)
+                        : null
+                    }
+                    sx={{ width: 32 }}
+                  />
 
                   <Box>
                     <Text color="primary.a.500" fontWeight="medium">
