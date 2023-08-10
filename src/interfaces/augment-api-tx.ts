@@ -543,7 +543,8 @@ declare module '@polkadot/api-base/types/submittable' {
        * 
        * - `bundle`: A group of items may be from different collections to set price for.
        * - `price`: The price the `bundle`.
-       * - `start_block`: The block to start setting the price, `None` indicates the current block.
+       * - `start_block`: The block to start setting the price, `None` indicates the current
+       * block.
        * - `end_block`: The block to end setting the price, `None` indicates no end.
        * 
        * Emits `BundleSet`.
@@ -617,7 +618,8 @@ declare module '@polkadot/api-base/types/submittable' {
        * 
        * - `package`: a number of an item in a collection to set the price for.
        * - `unit_price`: The price for each item.
-       * - `start_block`: The block to start setting the price, `None` indicates the current block.
+       * - `start_block`: The block to start setting the price, `None` indicates the current
+       * block.
        * - `end_block`: The block to end setting the price, `None` indicates no end.
        * 
        * Emits `PriceSet`.
@@ -697,17 +699,6 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       setWishlist: AugmentedSubmittable<(bundle: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], price: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesPackage>, u128, Option<u32>, Option<u32>]>;
       /**
-       * Submit random seed from offchain-worker to runtime.
-       * 
-       * Only called by offchain-worker.
-       * 
-       * Arguments:
-       * - `seed`: random seed value.
-       * 
-       * Weight: `O(1)`
-       **/
-      submitRandomSeedUnsigned: AugmentedSubmittable<(seed: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [U8aFixed]>;
-      /**
        * Move an item from the sender account to another.
        * 
        * Origin must be Signed and the signing account must be the owner of the `item`.
@@ -754,6 +745,24 @@ declare module '@polkadot/api-base/types/submittable' {
        * Weight: `O(1)`
        **/
       upgradeItem: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u32]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
+    gameRandomness: {
+      /**
+       * Submit a new random seed.
+       * 
+       * This function sets a new `seed` for randomness in every `T::UnsignedInterval` blocks.
+       * 
+       * # Parameters
+       * 
+       * - `origin`: Accepted only by the off-chain worker.
+       * - `block_number`: Current block number.
+       * - `seed`: New random seed.
+       **/
+      submitRandomSeedUnsigned: AugmentedSubmittable<(blockNumber: u32 | AnyNumber | Uint8Array, seed: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, U8aFixed]>;
       /**
        * Generic tx
        **/

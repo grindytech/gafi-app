@@ -6,7 +6,7 @@
 import '@polkadot/api-base/types/events';
 
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
-import type { Bytes, Null, Option, Result, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
 
@@ -129,7 +129,7 @@ declare module '@polkadot/api-base/types/events' {
       ItemAdded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
       ItemBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128 }>;
       ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32>], { who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32> }>;
-      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot> }>;
+      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot> }>;
       Minted: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>], { pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft> }>;
       PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
       SetBuyClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128 }>;
@@ -141,6 +141,16 @@ declare module '@polkadot/api-base/types/events' {
       UpgradeSet: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32 }>;
       WishlistFilled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, askPrice: u128], { trade: u32, who: AccountId32, askPrice: u128 }>;
       WishlistSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    gameRandomness: {
+      /**
+       * Event generated when a new price is submitted.
+       **/
+      NewSeed: AugmentedEvent<ApiType, [blockNumber: u32, seed: U8aFixed], { blockNumber: u32, seed: U8aFixed }>;
       /**
        * Generic event
        **/

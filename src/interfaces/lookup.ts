@@ -698,7 +698,7 @@ export default {
       MiningPoolCreated: {
         pool: 'u32',
         who: 'AccountId32',
-        poolType: 'PalletGamePoolType',
+        poolType: 'GafiSupportGameTypesPoolType',
         table: 'Vec<GafiSupportGameTypesLoot>'
       }
     }
@@ -719,9 +719,9 @@ export default {
     amount: 'u32'
   },
   /**
-   * Lookup60: pallet_game::types::PoolType
+   * Lookup60: gafi_support::game::types::PoolType
    **/
-  PalletGamePoolType: {
+  GafiSupportGameTypesPoolType: {
     _enum: ['Dynamic', 'Stable']
   },
   /**
@@ -732,7 +732,18 @@ export default {
     weight: 'u32'
   },
   /**
-   * Lookup64: pallet_faucet::pallet::Event<T>
+   * Lookup64: game_randomness::pallet::Event<T>
+   **/
+  GameRandomnessEvent: {
+    _enum: {
+      NewSeed: {
+        blockNumber: 'u32',
+        seed: '[u8;32]'
+      }
+    }
+  },
+  /**
+   * Lookup65: pallet_faucet::pallet::Event<T>
    **/
   PalletFaucetEvent: {
     _enum: {
@@ -740,11 +751,11 @@ export default {
     }
   },
   /**
-   * Lookup65: pallet_cache::pallet::Event<T, I>
+   * Lookup66: pallet_cache::pallet::Event<T, I>
    **/
   PalletCacheEvent: 'Null',
   /**
-   * Lookup66: frame_system::Phase
+   * Lookup67: frame_system::Phase
    **/
   FrameSystemPhase: {
     _enum: {
@@ -754,14 +765,14 @@ export default {
     }
   },
   /**
-   * Lookup70: frame_system::LastRuntimeUpgradeInfo
+   * Lookup71: frame_system::LastRuntimeUpgradeInfo
    **/
   FrameSystemLastRuntimeUpgradeInfo: {
     specVersion: 'Compact<u32>',
     specName: 'Text'
   },
   /**
-   * Lookup73: frame_system::pallet::Call<T>
+   * Lookup74: frame_system::pallet::Call<T>
    **/
   FrameSystemCall: {
     _enum: {
@@ -796,7 +807,7 @@ export default {
     }
   },
   /**
-   * Lookup77: frame_system::limits::BlockWeights
+   * Lookup78: frame_system::limits::BlockWeights
    **/
   FrameSystemLimitsBlockWeights: {
     baseBlock: 'SpWeightsWeightV2Weight',
@@ -804,7 +815,7 @@ export default {
     perClass: 'FrameSupportDispatchPerDispatchClassWeightsPerClass'
   },
   /**
-   * Lookup78: frame_support::dispatch::PerDispatchClass<frame_system::limits::WeightsPerClass>
+   * Lookup79: frame_support::dispatch::PerDispatchClass<frame_system::limits::WeightsPerClass>
    **/
   FrameSupportDispatchPerDispatchClassWeightsPerClass: {
     normal: 'FrameSystemLimitsWeightsPerClass',
@@ -812,7 +823,7 @@ export default {
     mandatory: 'FrameSystemLimitsWeightsPerClass'
   },
   /**
-   * Lookup79: frame_system::limits::WeightsPerClass
+   * Lookup80: frame_system::limits::WeightsPerClass
    **/
   FrameSystemLimitsWeightsPerClass: {
     baseExtrinsic: 'SpWeightsWeightV2Weight',
@@ -821,13 +832,13 @@ export default {
     reserved: 'Option<SpWeightsWeightV2Weight>'
   },
   /**
-   * Lookup81: frame_system::limits::BlockLength
+   * Lookup82: frame_system::limits::BlockLength
    **/
   FrameSystemLimitsBlockLength: {
     max: 'FrameSupportDispatchPerDispatchClassU32'
   },
   /**
-   * Lookup82: frame_support::dispatch::PerDispatchClass<T>
+   * Lookup83: frame_support::dispatch::PerDispatchClass<T>
    **/
   FrameSupportDispatchPerDispatchClassU32: {
     normal: 'u32',
@@ -835,14 +846,14 @@ export default {
     mandatory: 'u32'
   },
   /**
-   * Lookup83: sp_weights::RuntimeDbWeight
+   * Lookup84: sp_weights::RuntimeDbWeight
    **/
   SpWeightsRuntimeDbWeight: {
     read: 'u64',
     write: 'u64'
   },
   /**
-   * Lookup84: sp_version::RuntimeVersion
+   * Lookup85: sp_version::RuntimeVersion
    **/
   SpVersionRuntimeVersion: {
     specName: 'Text',
@@ -855,13 +866,13 @@ export default {
     stateVersion: 'u8'
   },
   /**
-   * Lookup90: frame_system::pallet::Error<T>
+   * Lookup91: frame_system::pallet::Error<T>
    **/
   FrameSystemError: {
     _enum: ['InvalidSpecName', 'SpecVersionNeedsToIncrease', 'FailedToExtractRuntimeVersion', 'NonDefaultComposite', 'NonZeroRefCount', 'CallFiltered']
   },
   /**
-   * Lookup92: pallet_timestamp::pallet::Call<T>
+   * Lookup93: pallet_timestamp::pallet::Call<T>
    **/
   PalletTimestampCall: {
     _enum: {
@@ -871,7 +882,7 @@ export default {
     }
   },
   /**
-   * Lookup93: pallet_grandpa::StoredState<N>
+   * Lookup94: pallet_grandpa::StoredState<N>
    **/
   PalletGrandpaStoredState: {
     _enum: {
@@ -888,7 +899,7 @@ export default {
     }
   },
   /**
-   * Lookup94: pallet_grandpa::StoredPendingChange<N, Limit>
+   * Lookup95: pallet_grandpa::StoredPendingChange<N, Limit>
    **/
   PalletGrandpaStoredPendingChange: {
     scheduledAt: 'u32',
@@ -897,7 +908,7 @@ export default {
     forced: 'Option<u32>'
   },
   /**
-   * Lookup96: pallet_grandpa::pallet::Call<T>
+   * Lookup97: pallet_grandpa::pallet::Call<T>
    **/
   PalletGrandpaCall: {
     _enum: {
@@ -916,14 +927,14 @@ export default {
     }
   },
   /**
-   * Lookup97: sp_consensus_grandpa::EquivocationProof<primitive_types::H256, N>
+   * Lookup98: sp_consensus_grandpa::EquivocationProof<primitive_types::H256, N>
    **/
   SpConsensusGrandpaEquivocationProof: {
     setId: 'u64',
     equivocation: 'SpConsensusGrandpaEquivocation'
   },
   /**
-   * Lookup98: sp_consensus_grandpa::Equivocation<primitive_types::H256, N>
+   * Lookup99: sp_consensus_grandpa::Equivocation<primitive_types::H256, N>
    **/
   SpConsensusGrandpaEquivocation: {
     _enum: {
@@ -932,7 +943,7 @@ export default {
     }
   },
   /**
-   * Lookup99: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Prevote<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
+   * Lookup100: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Prevote<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
    **/
   FinalityGrandpaEquivocationPrevote: {
     roundNumber: 'u64',
@@ -941,22 +952,22 @@ export default {
     second: '(FinalityGrandpaPrevote,SpConsensusGrandpaAppSignature)'
   },
   /**
-   * Lookup100: finality_grandpa::Prevote<primitive_types::H256, N>
+   * Lookup101: finality_grandpa::Prevote<primitive_types::H256, N>
    **/
   FinalityGrandpaPrevote: {
     targetHash: 'H256',
     targetNumber: 'u32'
   },
   /**
-   * Lookup101: sp_consensus_grandpa::app::Signature
+   * Lookup102: sp_consensus_grandpa::app::Signature
    **/
   SpConsensusGrandpaAppSignature: 'SpCoreEd25519Signature',
   /**
-   * Lookup102: sp_core::ed25519::Signature
+   * Lookup103: sp_core::ed25519::Signature
    **/
   SpCoreEd25519Signature: '[u8;64]',
   /**
-   * Lookup105: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Precommit<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
+   * Lookup106: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Precommit<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
    **/
   FinalityGrandpaEquivocationPrecommit: {
     roundNumber: 'u64',
@@ -965,24 +976,24 @@ export default {
     second: '(FinalityGrandpaPrecommit,SpConsensusGrandpaAppSignature)'
   },
   /**
-   * Lookup106: finality_grandpa::Precommit<primitive_types::H256, N>
+   * Lookup107: finality_grandpa::Precommit<primitive_types::H256, N>
    **/
   FinalityGrandpaPrecommit: {
     targetHash: 'H256',
     targetNumber: 'u32'
   },
   /**
-   * Lookup108: sp_core::Void
+   * Lookup109: sp_core::Void
    **/
   SpCoreVoid: 'Null',
   /**
-   * Lookup109: pallet_grandpa::pallet::Error<T>
+   * Lookup110: pallet_grandpa::pallet::Error<T>
    **/
   PalletGrandpaError: {
     _enum: ['PauseFailed', 'ResumeFailed', 'ChangePending', 'TooSoon', 'InvalidKeyOwnershipProof', 'InvalidEquivocationProof', 'DuplicateOffenceReport']
   },
   /**
-   * Lookup111: pallet_balances::types::BalanceLock<Balance>
+   * Lookup112: pallet_balances::types::BalanceLock<Balance>
    **/
   PalletBalancesBalanceLock: {
     id: '[u8;8]',
@@ -990,27 +1001,27 @@ export default {
     reasons: 'PalletBalancesReasons'
   },
   /**
-   * Lookup112: pallet_balances::types::Reasons
+   * Lookup113: pallet_balances::types::Reasons
    **/
   PalletBalancesReasons: {
     _enum: ['Fee', 'Misc', 'All']
   },
   /**
-   * Lookup115: pallet_balances::types::ReserveData<ReserveIdentifier, Balance>
+   * Lookup116: pallet_balances::types::ReserveData<ReserveIdentifier, Balance>
    **/
   PalletBalancesReserveData: {
     id: '[u8;8]',
     amount: 'u128'
   },
   /**
-   * Lookup118: pallet_balances::types::IdAmount<Id, Balance>
+   * Lookup119: pallet_balances::types::IdAmount<Id, Balance>
    **/
   PalletBalancesIdAmount: {
     id: 'Null',
     amount: 'u128'
   },
   /**
-   * Lookup120: pallet_balances::pallet::Call<T, I>
+   * Lookup121: pallet_balances::pallet::Call<T, I>
    **/
   PalletBalancesCall: {
     _enum: {
@@ -1054,19 +1065,19 @@ export default {
     }
   },
   /**
-   * Lookup126: pallet_balances::pallet::Error<T, I>
+   * Lookup127: pallet_balances::pallet::Error<T, I>
    **/
   PalletBalancesError: {
     _enum: ['VestingBalance', 'LiquidityRestrictions', 'InsufficientBalance', 'ExistentialDeposit', 'Expendability', 'ExistingVestingSchedule', 'DeadAccount', 'TooManyReserves', 'TooManyHolds', 'TooManyFreezes']
   },
   /**
-   * Lookup128: pallet_transaction_payment::Releases
+   * Lookup129: pallet_transaction_payment::Releases
    **/
   PalletTransactionPaymentReleases: {
     _enum: ['V1Ancient', 'V2']
   },
   /**
-   * Lookup129: pallet_sudo::pallet::Call<T>
+   * Lookup130: pallet_sudo::pallet::Call<T>
    **/
   PalletSudoCall: {
     _enum: {
@@ -1090,7 +1101,7 @@ export default {
     }
   },
   /**
-   * Lookup131: pallet_game::pallet::Call<T, I>
+   * Lookup132: pallet_game::pallet::Call<T, I>
    **/
   PalletGameCall: {
     _enum: {
@@ -1152,9 +1163,7 @@ export default {
         item: 'u32',
         amount: 'u32',
       },
-      submit_random_seed_unsigned: {
-        seed: '[u8;32]',
-      },
+      __Unused12: 'Null',
       set_price: {
         package: 'GafiSupportGameTypesPackage',
         unitPrice: 'u128',
@@ -1289,25 +1298,25 @@ export default {
     }
   },
   /**
-   * Lookup132: pallet_nfts::types::ItemConfig
+   * Lookup133: pallet_nfts::types::ItemConfig
    **/
   PalletNftsItemConfig: {
     settings: 'u64'
   },
   /**
-   * Lookup134: pallet_nfts::types::ItemSetting
+   * Lookup135: pallet_nfts::types::ItemSetting
    **/
   PalletNftsItemSetting: {
     _enum: ['__Unused0', 'Transferable', 'UnlockedMetadata', '__Unused3', 'UnlockedAttributes']
   },
   /**
-   * Lookup135: gafi_support::game::types::TradeType
+   * Lookup136: gafi_support::game::types::TradeType
    **/
   GafiSupportGameTypesTradeType: {
     _enum: ['SetPrice', 'SetBuy', 'Bundle', 'Wishlist', 'Auction', 'Swap']
   },
   /**
-   * Lookup137: gafi_support::game::types::MintSettings<Price, BlockNumber, CollectionId>
+   * Lookup138: gafi_support::game::types::MintSettings<Price, BlockNumber, CollectionId>
    **/
   GafiSupportGameTypesMintSettings: {
     mintType: 'GafiSupportGameTypesMintType',
@@ -1316,7 +1325,7 @@ export default {
     endBlock: 'Option<u32>'
   },
   /**
-   * Lookup138: gafi_support::game::types::MintType<CollectionId>
+   * Lookup139: gafi_support::game::types::MintType<CollectionId>
    **/
   GafiSupportGameTypesMintType: {
     _enum: {
@@ -1325,7 +1334,30 @@ export default {
     }
   },
   /**
-   * Lookup139: pallet_faucet::pallet::Call<T>
+   * Lookup140: game_randomness::pallet::Call<T>
+   **/
+  GameRandomnessCall: {
+    _enum: {
+      __Unused0: 'Null',
+      __Unused1: 'Null',
+      __Unused2: 'Null',
+      __Unused3: 'Null',
+      __Unused4: 'Null',
+      __Unused5: 'Null',
+      __Unused6: 'Null',
+      __Unused7: 'Null',
+      __Unused8: 'Null',
+      __Unused9: 'Null',
+      __Unused10: 'Null',
+      __Unused11: 'Null',
+      submit_random_seed_unsigned: {
+        blockNumber: 'u32',
+        seed: '[u8;32]'
+      }
+    }
+  },
+  /**
+   * Lookup141: pallet_faucet::pallet::Call<T>
    **/
   PalletFaucetCall: {
     _enum: {
@@ -1336,13 +1368,13 @@ export default {
     }
   },
   /**
-   * Lookup140: pallet_sudo::pallet::Error<T>
+   * Lookup142: pallet_sudo::pallet::Error<T>
    **/
   PalletSudoError: {
     _enum: ['RequireSudo']
   },
   /**
-   * Lookup141: pallet_nfts::types::CollectionDetails<sp_core::crypto::AccountId32, DepositBalance>
+   * Lookup143: pallet_nfts::types::CollectionDetails<sp_core::crypto::AccountId32, DepositBalance>
    **/
   PalletNftsCollectionDetails: {
     owner: 'AccountId32',
@@ -1353,13 +1385,13 @@ export default {
     attributes: 'u32'
   },
   /**
-   * Lookup146: pallet_nfts::types::CollectionRole
+   * Lookup148: pallet_nfts::types::CollectionRole
    **/
   PalletNftsCollectionRole: {
     _enum: ['__Unused0', 'Issuer', 'Freezer', '__Unused3', 'Admin']
   },
   /**
-   * Lookup147: pallet_nfts::types::ItemDetails<sp_core::crypto::AccountId32, pallet_nfts::types::ItemDeposit<DepositBalance, sp_core::crypto::AccountId32>, bounded_collections::bounded_btree_map::BoundedBTreeMap<sp_core::crypto::AccountId32, Option<T>, S>>
+   * Lookup149: pallet_nfts::types::ItemDetails<sp_core::crypto::AccountId32, pallet_nfts::types::ItemDeposit<DepositBalance, sp_core::crypto::AccountId32>, bounded_collections::bounded_btree_map::BoundedBTreeMap<sp_core::crypto::AccountId32, Option<T>, S>>
    **/
   PalletNftsItemDetails: {
     owner: 'AccountId32',
@@ -1367,42 +1399,42 @@ export default {
     deposit: 'PalletNftsItemDeposit'
   },
   /**
-   * Lookup148: pallet_nfts::types::ItemDeposit<DepositBalance, sp_core::crypto::AccountId32>
+   * Lookup150: pallet_nfts::types::ItemDeposit<DepositBalance, sp_core::crypto::AccountId32>
    **/
   PalletNftsItemDeposit: {
     account: 'AccountId32',
     amount: 'u128'
   },
   /**
-   * Lookup153: pallet_nfts::types::CollectionMetadata<Deposit, StringLimit>
+   * Lookup155: pallet_nfts::types::CollectionMetadata<Deposit, StringLimit>
    **/
   PalletNftsCollectionMetadata: {
     deposit: 'u128',
     data: 'Bytes'
   },
   /**
-   * Lookup154: pallet_nfts::types::ItemMetadata<pallet_nfts::types::ItemMetadataDeposit<DepositBalance, sp_core::crypto::AccountId32>, StringLimit>
+   * Lookup156: pallet_nfts::types::ItemMetadata<pallet_nfts::types::ItemMetadataDeposit<DepositBalance, sp_core::crypto::AccountId32>, StringLimit>
    **/
   PalletNftsItemMetadata: {
     deposit: 'PalletNftsItemMetadataDeposit',
     data: 'Bytes'
   },
   /**
-   * Lookup155: pallet_nfts::types::ItemMetadataDeposit<DepositBalance, sp_core::crypto::AccountId32>
+   * Lookup157: pallet_nfts::types::ItemMetadataDeposit<DepositBalance, sp_core::crypto::AccountId32>
    **/
   PalletNftsItemMetadataDeposit: {
     account: 'Option<AccountId32>',
     amount: 'u128'
   },
   /**
-   * Lookup158: pallet_nfts::types::AttributeDeposit<DepositBalance, sp_core::crypto::AccountId32>
+   * Lookup160: pallet_nfts::types::AttributeDeposit<DepositBalance, sp_core::crypto::AccountId32>
    **/
   PalletNftsAttributeDeposit: {
     account: 'Option<AccountId32>',
     amount: 'u128'
   },
   /**
-   * Lookup162: pallet_nfts::types::PendingSwap<CollectionId, ItemId, pallet_nfts::types::PriceWithDirection<Amount>, Deadline>
+   * Lookup164: pallet_nfts::types::PendingSwap<CollectionId, ItemId, pallet_nfts::types::PriceWithDirection<Amount>, Deadline>
    **/
   PalletNftsPendingSwap: {
     desiredCollection: 'u32',
@@ -1411,7 +1443,7 @@ export default {
     deadline: 'u32'
   },
   /**
-   * Lookup163: pallet_nfts::types::CollectionConfig<Price, BlockNumber, CollectionId>
+   * Lookup165: pallet_nfts::types::CollectionConfig<Price, BlockNumber, CollectionId>
    **/
   PalletNftsCollectionConfig: {
     settings: 'u64',
@@ -1419,13 +1451,13 @@ export default {
     mintSettings: 'PalletNftsMintSettings'
   },
   /**
-   * Lookup165: pallet_nfts::types::CollectionSetting
+   * Lookup167: pallet_nfts::types::CollectionSetting
    **/
   PalletNftsCollectionSetting: {
     _enum: ['__Unused0', 'TransferableItems', 'UnlockedMetadata', '__Unused3', 'UnlockedAttributes', '__Unused5', '__Unused6', '__Unused7', 'UnlockedMaxSupply', '__Unused9', '__Unused10', '__Unused11', '__Unused12', '__Unused13', '__Unused14', '__Unused15', 'DepositRequired']
   },
   /**
-   * Lookup166: pallet_nfts::types::MintSettings<Price, BlockNumber, CollectionId>
+   * Lookup168: pallet_nfts::types::MintSettings<Price, BlockNumber, CollectionId>
    **/
   PalletNftsMintSettings: {
     mintType: 'PalletNftsMintType',
@@ -1435,7 +1467,7 @@ export default {
     defaultItemSettings: 'u64'
   },
   /**
-   * Lookup167: pallet_nfts::types::MintType<CollectionId>
+   * Lookup169: pallet_nfts::types::MintType<CollectionId>
    **/
   PalletNftsMintType: {
     _enum: {
@@ -1445,19 +1477,19 @@ export default {
     }
   },
   /**
-   * Lookup169: pallet_nfts::types::PalletFeature
+   * Lookup171: pallet_nfts::types::PalletFeature
    **/
   PalletNftsPalletFeature: {
     _enum: ['__Unused0', 'Trading', 'Attributes', '__Unused3', 'Approvals', '__Unused5', '__Unused6', '__Unused7', 'Swaps']
   },
   /**
-   * Lookup170: pallet_nfts::pallet::Error<T, I>
+   * Lookup172: pallet_nfts::pallet::Error<T, I>
    **/
   PalletNftsError: {
     _enum: ['NoPermission', 'UnknownCollection', 'AlreadyExists', 'ApprovalExpired', 'WrongOwner', 'BadWitness', 'CollectionIdInUse', 'ItemsNonTransferable', 'NotDelegate', 'WrongDelegate', 'Unapproved', 'Unaccepted', 'ItemLocked', 'LockedItemAttributes', 'LockedCollectionAttributes', 'LockedItemMetadata', 'LockedCollectionMetadata', 'MaxSupplyReached', 'MaxSupplyLocked', 'MaxSupplyTooSmall', 'UnknownItem', 'UnknownSwap', 'MetadataNotFound', 'AttributeNotFound', 'NotForSale', 'BidTooLow', 'ReachedApprovalLimit', 'DeadlineExpired', 'WrongDuration', 'MethodDisabled', 'WrongSetting', 'InconsistentItemConfig', 'NoConfig', 'RolesNotCleared', 'MintNotStarted', 'MintEnded', 'AlreadyClaimed', 'IncorrectData', 'WrongOrigin', 'WrongSignature', 'IncorrectMetadata', 'MaxAttributesLimitReached', 'WrongNamespace', 'CollectionNotEmpty']
   },
   /**
-   * Lookup171: pallet_game::types::GameDetails<sp_core::crypto::AccountId32, DepositBalance>
+   * Lookup173: pallet_game::types::GameDetails<sp_core::crypto::AccountId32, DepositBalance>
    **/
   PalletGameGameDetails: {
     owner: 'AccountId32',
@@ -1466,24 +1498,24 @@ export default {
     admin: 'AccountId32'
   },
   /**
-   * Lookup175: pallet_game::types::PoolDetails<sp_core::crypto::AccountId32, Balance, BlockNumber, CollectionId>
+   * Lookup177: pallet_game::types::PoolDetails<sp_core::crypto::AccountId32, Balance, BlockNumber, CollectionId>
    **/
   PalletGamePoolDetails: {
-    poolType: 'PalletGamePoolType',
+    poolType: 'GafiSupportGameTypesPoolType',
     owner: 'AccountId32',
     ownerDeposit: 'u128',
     admin: 'AccountId32',
     mintSettings: 'GafiSupportGameTypesMintSettings'
   },
   /**
-   * Lookup177: pallet_game::types::UpgradeItemConfig<ItemId, Price>
+   * Lookup179: pallet_game::types::UpgradeItemConfig<ItemId, Price>
    **/
   PalletGameUpgradeItemConfig: {
     item: 'u32',
     fee: 'u128'
   },
   /**
-   * Lookup179: pallet_game::types::TradeConfig<sp_core::crypto::AccountId32, Price, bounded_collections::bounded_vec::BoundedVec<gafi_support::game::types::Package<CollectionId, ItemId>, S>, BlockNumber>
+   * Lookup181: pallet_game::types::TradeConfig<sp_core::crypto::AccountId32, Price, bounded_collections::bounded_vec::BoundedVec<gafi_support::game::types::Package<CollectionId, ItemId>, S>, BlockNumber>
    **/
   PalletGameTradeConfig: {
     trade: 'GafiSupportGameTypesTradeType',
@@ -1494,7 +1526,7 @@ export default {
     endBlock: 'Option<u32>'
   },
   /**
-   * Lookup181: pallet_game::types::AuctionConfig<sp_core::crypto::AccountId32, Price, BlockNumber>
+   * Lookup183: pallet_game::types::AuctionConfig<sp_core::crypto::AccountId32, Price, BlockNumber>
    **/
   PalletGameAuctionConfig: {
     owner: 'AccountId32',
@@ -1503,40 +1535,53 @@ export default {
     duration: 'u32'
   },
   /**
-   * Lookup182: frame_support::PalletId
-   **/
-  FrameSupportPalletId: '[u8;8]',
-  /**
-   * Lookup183: pallet_game::pallet::Error<T, I>
+   * Lookup184: pallet_game::pallet::Error<T, I>
    **/
   PalletGameError: {
     _enum: ['NoPermission', 'UnknownGame', 'UnknownCollection', 'UnknownItem', 'UnknownTrade', 'UnknownUpgrade', 'UnknownAuction', 'UnknownBid', 'UnknownAcceptance', 'UnknownMiningPool', 'ExceedMaxItem', 'ExceedTotalAmount', 'ExceedAllowedAmount', 'ExceedMaxCollection', 'ExceedMaxGameShare', 'ExceedMaxBundle', 'ExceedMaxLoot', 'SoldOut', 'WithdrawReserveFailed', 'UpgradeExists', 'CollectionExists', 'InsufficientItemBalance', 'InsufficientReservedBalance', 'InvalidAmount', 'ItemLocked', 'BidTooLow', 'AskTooHigh', 'GameIdInUse', 'TradeIdInUse', 'PoolIdInUse', 'TradeNotStarted', 'TradeEnded', 'IncorrectCollection', 'IncorrectItem', 'AuctionInProgress', 'AuctionNotStarted', 'AuctionEnded', 'NotSetPrice', 'NotBundle', 'NotWishlist', 'NotSwap', 'NotAuction', 'NotSetBuy', 'InfiniteSupply', 'NotInfiniteSupply', 'MintFailed', 'MintNotStarted', 'MintEnded', 'NotWhitelisted']
   },
   /**
-   * Lookup185: pallet_faucet::pallet::Error<T>
+   * Lookup185: game_randomness::SeedPayload<BlockNumber, Seed>
+   **/
+  GameRandomnessSeedPayload: {
+    blockNumber: 'u32',
+    seed: '[u8;32]'
+  },
+  /**
+   * Lookup186: frame_support::PalletId
+   **/
+  FrameSupportPalletId: '[u8;8]',
+  /**
+   * Lookup187: game_randomness::pallet::Error<T>
+   **/
+  GameRandomnessError: {
+    _enum: ['InvalidSeed']
+  },
+  /**
+   * Lookup189: pallet_faucet::pallet::Error<T>
    **/
   PalletFaucetError: {
     _enum: ['SelfTransfer', 'NotEnoughBalance', 'DontBeGreedy', 'PleaseWait', 'OutOfFaucet']
   },
   /**
-   * Lookup186: pallet_cache::pallet::Flag
+   * Lookup190: pallet_cache::pallet::Flag
    **/
   PalletCacheFlag: {
     _enum: ['Left', 'Right']
   },
   /**
-   * Lookup188: pallet_cache::pallet::WrapData<Data>
+   * Lookup192: pallet_cache::pallet::WrapData<Data>
    **/
   PalletCacheWrapData: {
     data: 'u128',
     timestamp: 'u128'
   },
   /**
-   * Lookup189: pallet_cache::pallet::Error<T, I>
+   * Lookup193: pallet_cache::pallet::Error<T, I>
    **/
   PalletCacheError: 'Null',
   /**
-   * Lookup191: sp_runtime::MultiSignature
+   * Lookup195: sp_runtime::MultiSignature
    **/
   SpRuntimeMultiSignature: {
     _enum: {
@@ -1546,43 +1591,43 @@ export default {
     }
   },
   /**
-   * Lookup192: sp_core::sr25519::Signature
+   * Lookup196: sp_core::sr25519::Signature
    **/
   SpCoreSr25519Signature: '[u8;64]',
   /**
-   * Lookup193: sp_core::ecdsa::Signature
+   * Lookup197: sp_core::ecdsa::Signature
    **/
   SpCoreEcdsaSignature: '[u8;65]',
   /**
-   * Lookup196: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
+   * Lookup200: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
    **/
   FrameSystemExtensionsCheckNonZeroSender: 'Null',
   /**
-   * Lookup197: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
+   * Lookup201: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
    **/
   FrameSystemExtensionsCheckSpecVersion: 'Null',
   /**
-   * Lookup198: frame_system::extensions::check_tx_version::CheckTxVersion<T>
+   * Lookup202: frame_system::extensions::check_tx_version::CheckTxVersion<T>
    **/
   FrameSystemExtensionsCheckTxVersion: 'Null',
   /**
-   * Lookup199: frame_system::extensions::check_genesis::CheckGenesis<T>
+   * Lookup203: frame_system::extensions::check_genesis::CheckGenesis<T>
    **/
   FrameSystemExtensionsCheckGenesis: 'Null',
   /**
-   * Lookup202: frame_system::extensions::check_nonce::CheckNonce<T>
+   * Lookup206: frame_system::extensions::check_nonce::CheckNonce<T>
    **/
   FrameSystemExtensionsCheckNonce: 'Compact<u32>',
   /**
-   * Lookup203: frame_system::extensions::check_weight::CheckWeight<T>
+   * Lookup207: frame_system::extensions::check_weight::CheckWeight<T>
    **/
   FrameSystemExtensionsCheckWeight: 'Null',
   /**
-   * Lookup204: pallet_transaction_payment::ChargeTransactionPayment<T>
+   * Lookup208: pallet_transaction_payment::ChargeTransactionPayment<T>
    **/
   PalletTransactionPaymentChargeTransactionPayment: 'Compact<u128>',
   /**
-   * Lookup205: game3_runtime::Runtime
+   * Lookup209: game3_runtime::Runtime
    **/
   Game3RuntimeRuntime: 'Null'
 };
