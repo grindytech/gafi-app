@@ -3,6 +3,7 @@ import TrendingCollection from './TrendingCollection';
 import Extraordinary from './Extraordinary';
 
 import SectionTop from './SectionTop';
+import TopPools from './TopPools';
 
 export default function HomeMarketPlace() {
   return (
@@ -14,6 +15,10 @@ export default function HomeMarketPlace() {
       <Divider bg="shader.a.300" opacity={1} />
 
       <SectionTop />
+
+      <Divider bg="shader.a.300" opacity={1} />
+
+      <TopPools />
     </Flex>
   );
 }

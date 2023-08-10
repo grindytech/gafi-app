@@ -1,5 +1,6 @@
 import {
   Center,
+  CenterProps,
   FormControl,
   FormLabel,
   Heading,
@@ -21,12 +22,14 @@ interface NumberInputMaxLengthProps {
   };
   placeholder?: string;
   heading?: string;
+  sx?: CenterProps;
 }
 
 export default function NumberInputMaxLength({
   formState,
   heading,
   placeholder,
+  sx,
 }: NumberInputMaxLengthProps) {
   return (
     <FormControl
@@ -34,6 +37,8 @@ export default function NumberInputMaxLength({
       isRequired={formState?.isRequired}
       isInvalid={formState?.isInvalid}
       as={Center}
+      className="okfen"
+      {...sx}
     >
       {heading ? (
         <FormLabel>
@@ -51,7 +56,9 @@ export default function NumberInputMaxLength({
             value={field.value || ''}
             max={formState?.max}
             min={formState?.min || 0}
-            onChange={field.onChange}
+            onChange={event =>
+              event.length ? field.onChange(event) : field.onChange(null)
+            }
           >
             <NumberInputField
               placeholder={placeholder || 'Ex: 0'}

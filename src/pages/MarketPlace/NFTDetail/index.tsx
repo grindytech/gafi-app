@@ -213,16 +213,7 @@ export default function NFTDetail() {
                     ? cloundinary_link(metaNFT?.[0]?.image)
                     : null
                 }
-                sx={{
-                  pt: 'unset',
-                  aspectRatio: { base: 16 / 9, lg: 1 / 1 },
-
-                  sx: {
-                    img: {
-                      objectFit: metaNFT?.[0]?.image ? 'contain' : 'none',
-                    },
-                  },
-                }}
+                sx={{ ratio: { base: 16 / 9, lg: 1 / 1 } }}
               />
 
               <List
