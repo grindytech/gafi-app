@@ -6,13 +6,6 @@ export const CHROME_EXT_URL =
 export const FIREFOX_ADDON_URL =
   'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/';
 
-export const breakpointsContainer = {
-  base: 'container.sm',
-  md: 'container.md',
-  lg: 'container.lg',
-  xl: 'container.xl',
-};
-
 export const chainDecimal = 18;
 
 export const BLOCK_TIME = 6;

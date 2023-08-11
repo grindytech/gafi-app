@@ -3,75 +3,112 @@ import { useAppSelector } from './useRedux';
 import { TypeMetadataOfCollection } from 'types';
 import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
-
-interface groupMetaNFTProps {
-  collection_id: number;
-}
+import { Option, StorageKey, u32 } from '@polkadot/types';
+import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 
 export interface useMetaCollectionProps {
-  key?: string;
-  group: groupMetaNFTProps[] | undefined;
+  filter: 'entries' | number[];
+  key: string | string[] | number | number[];
 }
 
 export default function useMetaCollection({
+  filter,
   key,
-  group,
 }: useMetaCollectionProps) {
   const { event, setEvent } = useSubscribeSystem('nfts::CollectionMetadataSet');
 
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data, refetch } = useQuery({
-    queryKey: [`nfts_collectionMetadataOf/${key}`],
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: [`collectionMetadataOf`, key],
     queryFn: async () => {
-      if (api && group?.length) {
-        const response = Promise.all(
-          group.map(async ({ collection_id }) => {
-            const service = await api.query.nfts.collectionMetadataOf(
-              collection_id
-            );
+      if (api) {
+        if (filter === 'entries') {
+          const service = await api.query.nfts.collectionMetadataOf.entries();
 
-            if (service.isEmpty) return null;
+          return service.map(
+            ([collection_id, meta]: [
+              StorageKey<[u32]>,
+              Option<PalletNftsCollectionMetadata>
+            ]) => {
+              const { external_url, image, title } = JSON.parse(
+                meta.value.data.toHuman() as string
+              );
 
-            return {
-              ...JSON.parse(service.value.data.toHuman()),
-              collection_id,
-            };
-          })
-        );
+              const response: TypeMetadataOfCollection = {
+                collection_id: collection_id.args[0].toNumber(),
+                external_url,
+                image,
+                title,
+              };
 
-        return (await response).filter(
-          (item): item is TypeMetadataOfCollection => !!item
-        );
+              return response;
+            }
+          );
+        }
+
+        if (filter) {
+          return Promise.all(
+            filter.map(async collection_id => {
+              const service = await api.query.nfts.collectionMetadataOf(
+                collection_id
+              );
+
+              if (service.isEmpty) return;
+
+              const { external_url, image, title } = JSON.parse(
+                service.value.data.toHuman() as string
+              );
+
+              const response: TypeMetadataOfCollection = {
+                collection_id: collection_id,
+                external_url,
+                image,
+                title,
+              };
+
+              return response;
+            })
+          );
+        }
       }
 
       // not found group
       return [];
     },
-    enabled: !!group,
+    enabled: !!filter,
   });
 
   useEffect(() => {
-    if (event && group?.length) {
+    if (event) {
       event.forEach(({ eventValue }) => {
         const [collection] = JSON.parse(eventValue);
 
-        group.forEach(({ collection_id }) => {
-          if (collection === collection_id) {
+        if (filter === 'entries') {
+          refetch();
+          setEvent([]);
+
+          return;
+        }
+
+        if (filter) {
+          filter.forEach(collection_id => {
+            if (collection === collection_id) {
+              refetch();
+            }
+
             setEvent([]);
-            refetch();
-          }
-        });
+          });
+
+          return;
+        }
       });
     }
   }, [event]);
 
-  const currentMetaCollection = ({ collection_id }: groupMetaNFTProps) => {
-    return data?.find(meta => meta?.collection_id === collection_id);
-  };
-
   return {
-    metaCollection: data,
-    currentMetaCollection,
+    MetaCollection: data,
+    isLoading,
+    isError,
   };
 }

@@ -7,7 +7,7 @@ export type TypeReturnJSXElement = {
 // substrate
 export type TypeMetadataOfCollection =
   | {
-      description: string;
+      // description: string;
       external_url: string;
       image: string;
       title: string;

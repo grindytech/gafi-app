@@ -12,28 +12,18 @@ import React from 'react';
 import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
 
 import { Link, useLocation } from 'react-router-dom';
-import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import ConnectWallet from 'components/ConnectWallet';
 import Notification from 'components/Notification';
 
 const ListHeader = [
   {
-    title: 'Web3 Games',
-    link: '/web3',
+    title: 'Home',
+    link: '/',
   },
   {
-    title: 'Mint',
-    link: '/mint',
-    icon: PickaxeIcon,
-  },
-  {
-    title: 'Blockchain',
-    link: '/blockchain',
-  },
-  {
-    title: 'Marketplace',
-    link: '/marketplace',
+    title: 'Explorer',
+    link: '/explorer',
   },
 ];
 

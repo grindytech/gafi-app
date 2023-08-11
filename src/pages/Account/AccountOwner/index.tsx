@@ -25,7 +25,6 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import useToggleMultiple from 'hooks/useToggleMultiple';
 import { colors } from 'theme/theme';
 import { hexToString } from '@polkadot/util';
-import { breakpointsContainer } from 'utils/constants';
 import AccountOwnerModal from './AccountOwnerModal';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -306,11 +305,7 @@ export default function AccountOwner() {
             bg="white"
             zIndex="dropdown"
           >
-            <Container
-              maxWidth={breakpointsContainer}
-              as={Center}
-              justifyContent="space-between"
-            >
+            <Container as={Center} justifyContent="space-between">
               <Button
                 variant="cancel"
                 px={6}

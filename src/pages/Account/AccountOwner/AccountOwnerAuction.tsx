@@ -57,7 +57,7 @@ export default function AccountOwnerAuction({
         const [trade_id, who] = JSON.parse(eventValue);
 
         if (account.address === who) {
-          return navigate(`/marketplace/auction/${trade_id}`);
+          return navigate(`/auction/${trade_id}`);
         }
 
         setEvent([]);

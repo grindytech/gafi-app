@@ -61,7 +61,7 @@ export default function AccountOwnerSale({
 
         if (account.address === who) {
           if (isBundle) {
-            return navigate(`/marketplace/bundle/${trade_id}`);
+            return navigate(`/bundle/${trade_id}`);
           }
 
           return navigate(

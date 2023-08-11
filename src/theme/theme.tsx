@@ -424,11 +424,32 @@ export const Modal: ComponentStyleConfig = {
   },
 };
 
+export const breakpoints = {
+  sm: '30rem', // 480px
+  md: '48rem', // 768px
+  lg: '62rem', // 992px
+  xl: '80rem', // 1280px
+  '2xl': '96rem', // 1536px
+  '3xl': '120rem', // 1920px
+};
+
+export const Container: ComponentStyleConfig = {
+  baseStyle: {
+    maxWidth: breakpoints['3xl'],
+    px: {
+      base: 8,
+      md: 20,
+    },
+  },
+};
+
 const theme = extendTheme({
   colors,
   styles,
   fonts,
+  breakpoints,
   components: {
+    Container,
     CardBox,
     Button,
     Select,
