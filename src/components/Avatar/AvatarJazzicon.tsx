@@ -3,12 +3,12 @@ import { Box, BoxProps } from '@chakra-ui/react';
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 
-interface AccountJazziconProps {
+interface AvatarJazziconProps {
   address: string;
   sx?: BoxProps;
 }
 
-export default function AccountJazzicon({ address, sx }: AccountJazziconProps) {
+export default function AvatarJazzicon({ address, sx }: AvatarJazziconProps) {
   return (
     <Box title={address} display="inline-flex" as="figure">
       <Jazzicon

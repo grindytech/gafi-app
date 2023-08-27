@@ -4,8 +4,9 @@ import RatioPicture from 'components/RatioPicture';
 import SelectMenu from 'components/SelectMenu';
 import TabsEmptyData from '../TabsEmptyData';
 import AvatarPopover from 'components/Avatar/AvatarPopover';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+
 import { TabsGameDataProps } from '.';
+import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 
 interface TabsGamePanelProps {
   meta: TabsGameDataProps[] | undefined;
@@ -47,14 +48,14 @@ export default ({ meta }: TabsGamePanelProps) => {
 
               <Flex position="absolute" bottom={0} margin={3}>
                 <AvatarPopover type="Owner" address={meta.owner} name="-">
-                  <AccountJazzicon
+                  <AvatarJazzicon
                     address={meta.owner}
                     sx={{ width: '100%', height: '100%' }}
                   />
                 </AvatarPopover>
 
                 <AvatarPopover type="Admin" address={meta.role} name="-">
-                  <AccountJazzicon
+                  <AvatarJazzicon
                     address={meta.role}
                     sx={{ width: '100%', height: '100%' }}
                   />

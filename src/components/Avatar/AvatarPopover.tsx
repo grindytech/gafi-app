@@ -9,9 +9,9 @@ import {
   PopoverTrigger,
   Text,
 } from '@chakra-ui/react';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
+import AvatarJazzicon from './AvatarJazzicon';
 
 interface AvatarPopoverProps extends React.PropsWithChildren {
   type: 'Owner' | 'Admin';
@@ -47,7 +47,7 @@ export default function AvatarPopover({
           <Text>{type}</Text>
 
           <HStack spacing={3} mt={3}>
-            <AccountJazzicon address={address} />
+            <AvatarJazzicon address={address} />
 
             <Box>
               <Text>{name}</Text>

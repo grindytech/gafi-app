@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+
 import AvatarPopover from 'components/Avatar/AvatarPopover';
 import RatioPicture from 'components/RatioPicture';
 import TabsEmptyData from '../TabsEmptyData';
@@ -18,6 +18,7 @@ import { TabsCollectionDataProps } from '.';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
+import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 
 interface TabsCollectionPanelProps {
   meta: TabsCollectionDataProps[] | undefined;
@@ -71,14 +72,14 @@ function TabsCollectionPanelService({
 
               <Flex position="absolute" bottom={0} margin={3}>
                 <AvatarPopover type="Owner" address={owner} name="-">
-                  <AccountJazzicon
+                  <AvatarJazzicon
                     address={owner}
                     sx={{ width: '100%', height: '100%' }}
                   />
                 </AvatarPopover>
 
                 <AvatarPopover type="Admin" address={role} name="-">
-                  <AccountJazzicon
+                  <AvatarJazzicon
                     address={role}
                     sx={{ width: '100%', height: '100%' }}
                   />

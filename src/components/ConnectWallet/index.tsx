@@ -14,7 +14,6 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
 
@@ -35,6 +34,7 @@ import { Link } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 import React from 'react';
 import ConnectSubstrate from 'components/ConnectSubstrate';
+import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
@@ -91,7 +91,7 @@ export default function ConnectWallet() {
     <>
       {account && account.address ? (
         <Button onClick={onToggle} variant="unstyled">
-          <AccountJazzicon address={account.address} />
+          <AvatarJazzicon address={account.address} />
         </Button>
       ) : (
         <ConnectSubstrate />
