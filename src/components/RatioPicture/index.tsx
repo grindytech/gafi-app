@@ -1,4 +1,12 @@
-import { AspectRatio, AspectRatioProps, Image } from '@chakra-ui/react';
+import {
+  AspectRatio,
+  AspectRatioProps,
+  Box,
+  Icon,
+  Image,
+} from '@chakra-ui/react';
+
+import ItemIcon from 'public/assets/fill/item.svg';
 
 interface RatioPictureProps {
   src: string | null;
@@ -11,18 +19,22 @@ export default function RatioPicture({ src, alt, sx }: RatioPictureProps) {
     <AspectRatio
       ratio={16 / 9}
       padding={2}
-      bg="shader.a.300"
+      bg="shader.a.800"
       borderRadius="lg"
-      sx={{
-        img: { objectFit: src ? 'cover' : 'none' },
-      }}
       {...sx}
     >
-      <Image
-        borderRadius="inherit"
-        src={src || '/assets/fill/item.png'}
-        alt={`${alt}`}
-      />
+      {src ? (
+        <Image
+          objectFit="cover"
+          borderRadius="inherit"
+          src={src}
+          alt={`${alt}`}
+        />
+      ) : (
+        <Box>
+          <Icon color="shader.a.700" width={10} height={10} as={ItemIcon} />
+        </Box>
+      )}
     </AspectRatio>
   );
 }

@@ -1,5 +1,4 @@
 import { Center, Heading, Spinner } from '@chakra-ui/react';
-import ConnectSubstrate from 'components/ConnectSubstrate';
 import { connectAPI } from 'components/ConnectSubstrate/ConnectSubstrateUtils';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
@@ -27,11 +26,5 @@ export default function App() {
     );
   }
 
-  return (
-    <>
-      <ConnectSubstrate />
-
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }

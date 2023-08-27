@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import React from 'react';
@@ -29,6 +30,7 @@ import CloverWallet from 'public/assets/wallet/clover.svg';
 
 import { loadAccounts } from './ConnectSubstrateUtils';
 import { injectedAccount } from 'redux/injected';
+import { getInjectedWeb3 } from 'utils/utils';
 
 export default function ConnectSubstrate() {
   const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
@@ -38,53 +40,93 @@ export default function ConnectSubstrate() {
     ? JSON.parse(accountName)
     : undefined;
 
-  const dispatch = useAppDispatch();
   const { apiState } = useAppSelector(state => state.substrate);
   const { keyringState } = useAppSelector(state => state.injected);
+
+  const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  React.useEffect(() => {
+    // load all accounts extension
+    if (apiState === 'READY' && extensionName) {
+      loadAccounts({ extensionName, dispatch });
+    }
+
+    // parse pair account
+    if (pairsAccount) {
+      const { address, name } = pairsAccount;
+
+      dispatch(injectedAccount({ polkadot: { account: { address, name } } }));
+    }
+  }, [apiState]);
 
   const wallets = [
     {
       title: 'Polkadot Wallet',
       icon: PolkadotIcon,
       extensionName: 'polkadot-js',
+      onClick: async () => {
+        loadAccounts({ extensionName: 'polkadot-js', dispatch });
+
+        const injected = await getInjectedWeb3('polkadot-js');
+
+        const account = await injected?.accounts.get();
+
+        if (account) {
+          const address = account[0].address;
+          const name = account[0].name;
+
+          localStorage.setItem(
+            GAFI_WALLET_ACCOUNT_KEY,
+            JSON.stringify({ address, name })
+          );
+
+          dispatch(
+            injectedAccount({ polkadot: { account: { address, name } } })
+          );
+        }
+      },
     },
     {
       title: 'SubWallet',
       icon: SubWalletIcon,
       extensionName: 'subwallet-js',
+      onClick: () => {
+        loadAccounts({ extensionName: 'subwallet-js', dispatch });
+      },
     },
     {
       title: 'CloverWallet',
       icon: CloverWallet,
       extensionName: 'clover',
+      onClick: () => {
+        loadAccounts({ extensionName: 'clover', dispatch });
+      },
     },
   ];
 
-  React.useEffect(() => {
-    if (apiState === 'READY' && !keyringState && extensionName) {
-      loadAccounts({
-        extensionName,
-        dispatch,
-      });
-    }
-
-    if (pairsAccount) {
-      const { address, name } = pairsAccount;
-
-      dispatch(
-        injectedAccount({
-          polkadot: {
-            account: { address, name },
-          },
-        })
-      );
-    }
-  }, [apiState]);
-
   return (
     <>
-      {extensionName ? null : (
-        <Modal isOpen={keyringState !== 'READY'} onClose={() => ({})}>
+      <Button
+        variant="unstyled"
+        borderRadius="3xl"
+        py={3}
+        px={6}
+        minWidth="auto"
+        height="auto"
+        border="0.0625rem solid"
+        borderColor="shader.a.700"
+        fontSize="sm"
+        fontWeight="medium"
+        color="shader.a.200"
+        bg="shader.a.800"
+        onClick={onOpen}
+      >
+        Connect Wallet
+      </Button>
+
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
 
           <ModalContent p={4}>
@@ -96,25 +138,15 @@ export default function ConnectSubstrate() {
                 spacing={0}
                 gap={4}
                 variant="ghost"
-                size="md"
               >
                 {React.Children.toArray(
                   wallets.map(button => (
                     <Button
                       justifyContent="start"
-                      w="full"
+                      width="full"
                       iconSpacing={4}
-                      onClick={async () => {
-                        loadAccounts({
-                          extensionName: button.extensionName,
-                          dispatch,
-                        });
-                      }}
+                      onClick={button.onClick}
                       leftIcon={<Icon as={button.icon} width={8} height={8} />}
-                      disabled={
-                        !window.injectedWeb3 ||
-                        !window.injectedWeb3[button.extensionName]
-                      }
                     >
                       {button.title}
                     </Button>

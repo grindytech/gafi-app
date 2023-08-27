@@ -1,4 +1,5 @@
-import { Center, IconButton, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Center, Icon, SimpleGrid, Text } from '@chakra-ui/react';
+import LineAddIcon from 'public/assets/line/add.svg';
 import React, { PropsWithChildren } from 'react';
 
 import { Link } from 'react-router-dom';
@@ -55,7 +56,7 @@ export const ListWeb3Item = [
     icon: <UpgradeIcon />,
     link: '/web3/upgrade',
     element: <>comming soon</>,
-    background: 'linear-gradient(135deg, #3EDBFF 0%, #00B2FF 100%)',
+    background: 'gradient.linear.7',
   },
 ];
 
@@ -66,10 +67,11 @@ export default function DefaultWeb3({ children }: PropsWithChildren) {
         columns={{
           base: 2,
           sm: 3,
-          md: ListWeb3Item.length,
+          xl: ListWeb3Item.length,
         }}
         gap={4}
-        mb={10}
+        mt={5}
+        mb={12}
       >
         {React.Children.toArray(
           ListWeb3Item.map(project => (
@@ -79,28 +81,29 @@ export default function DefaultWeb3({ children }: PropsWithChildren) {
               padding={3}
               gap={3}
               border="0.0625rem solid"
-              borderColor="shader.a.400"
-              bg="white"
+              borderColor="shader.a.800"
               borderRadius="xl"
+              color="white"
+              fontWeight="medium"
+              bg="shader.a.900"
               justifyContent="flex-start"
               flexDirection={{
                 base: 'column',
-                lg: 'row',
+                md: 'row',
               }}
             >
-              <IconButton
-                variant="unstyled"
-                minWidth="auto"
-                height="auto"
-                aria-label={`icon-${project.title}`}
-                borderRadius="lg"
+              <Box
                 padding={1}
+                bg={project.background}
+                borderRadius="lg"
                 color="white"
-                background={project.background}
-                icon={project.icon}
-              />
+              >
+                {project.icon}
+              </Box>
 
-              <Text fontWeight="medium">{project.title}</Text>
+              <Text flex={1}>{project.title}</Text>
+
+              <Icon as={LineAddIcon} width={6} height={6} />
             </Center>
           ))
         )}

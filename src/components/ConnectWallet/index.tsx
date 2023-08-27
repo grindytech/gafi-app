@@ -13,7 +13,6 @@ import {
   IconButton,
   Text,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 
@@ -25,20 +24,17 @@ import ChartIcon from 'public/assets/line/chart-02.svg';
 import CartIcon from 'public/assets/line/cart-02.svg';
 import LoveIcon from 'public/assets/line/heart.svg';
 import SettingIcon from 'public/assets/line/setting.svg';
-
-import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
-
 import useSignAndSend from 'hooks/useSignAndSend';
 import ConnectWalletProfile from './ConnectWalletProfile';
 import useBalance from 'hooks/useBalance';
 import GafiAmount from 'components/GafiAmount';
 import ConnectWalletSwitch from './ConnectWalletSwitch';
 import ConnectWalletLogOut from './ConnectWalletLogOut';
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
-import { injectedAccount } from 'redux/injected';
+import { useAppSelector } from 'hooks/useRedux';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from 'utils/utils';
 import React from 'react';
+import ConnectSubstrate from 'components/ConnectSubstrate';
 
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
@@ -75,8 +71,6 @@ export default function ConnectWallet() {
     },
   ];
 
-  const dispatch = useAppDispatch();
-
   const { isLoading, mutation } = useSignAndSend({
     address: account?.address as string,
     key: ['faucet'],
@@ -86,7 +80,6 @@ export default function ConnectWallet() {
     account: account?.address as string,
   });
 
-  const toast = useToast();
   const { isOpen, onClose, onToggle } = useDisclosure();
   const {
     isOpen: isOpenSwitch,
@@ -101,36 +94,7 @@ export default function ConnectWallet() {
           <AccountJazzicon address={account.address} />
         </Button>
       ) : (
-        <Button
-          variant="baseStyle"
-          onClick={() => {
-            if (allAccount && allAccount.length) {
-              const { address, name } = allAccount[0];
-
-              localStorage.setItem(
-                GAFI_WALLET_ACCOUNT_KEY,
-                JSON.stringify({ address, name })
-              );
-
-              return dispatch(
-                injectedAccount({
-                  polkadot: {
-                    account: { address, name },
-                  },
-                })
-              );
-            }
-
-            toast({
-              title: 'not found account ',
-              position: 'top-right',
-              status: 'warning',
-              isClosable: true,
-            });
-          }}
-        >
-          Connect Wallet
-        </Button>
+        <ConnectSubstrate />
       )}
 
       {account && account.address && account.name && allAccount ? (
