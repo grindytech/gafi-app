@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, Text } from '@chakra-ui/react';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
+import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 
 import { shorten } from 'utils/utils';
@@ -18,7 +18,7 @@ export default function ConnectWalletProfile({
   return (
     <Flex gap={4} px={4} py={2} {...sx}>
       <Box width={8} height={8}>
-        <AccountJazzicon
+        <AvatarJazzicon
           address={address}
           sx={{ width: 'inherit', height: 'inherit' }}
         />

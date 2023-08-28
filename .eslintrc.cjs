@@ -53,6 +53,9 @@ module.exports = {
   },
   plugins: ['react-refresh', '@typescript-eslint', 'jsx-a11y', 'prettier'],
   rules: {
+    // (allow export default none name) export default = () => {}
+    'react/display-name': 'off',
+
     // disabled react-refresh of vite
     'react-refresh/only-export-components': 'off',
 

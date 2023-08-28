@@ -15,7 +15,8 @@ const development = {
 
 const production = {
   PROVIDER_SOCKETS: [
-    'wss://ws-testnet.gafi.network',
+    // 'wss://ws-testnet.gafi.network',
+    'ws://192.168.1.28:9944',
     'wss://ws-test.gafi.network',
   ],
 };

@@ -1,96 +1,81 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from './useRedux';
-import { useEffect } from 'react';
-import useSubscribeSystem from './useSubscribeSystem';
+import { StorageKey, u32 } from '@polkadot/types';
+import { AccountId32 } from '@polkadot/types/interfaces';
+import { Codec } from '@polkadot/types/types';
 
-interface groupMetaProps {
-  amount: number;
+export interface ItemBalanceOfProps {
   owner: string;
   collection_id: number;
   nft_id: number;
+  amount: string;
 }
 
-interface useItemBalanceOfProps {
-  key?: string;
-  group: Omit<groupMetaProps, 'amount'>[];
+export interface useItemBalanceOfProps {
+  filter?: 'entries' | 'address';
+  arg?: string[];
+  key: string | string[] | number | number[];
 }
 
 export default function useItemBalanceOf({
+  filter,
+  arg,
   key,
-  group,
 }: useItemBalanceOfProps) {
-  const { event, setEvent } = useSubscribeSystem('game::PriceSet');
-
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data, refetch } = useQuery({
-    queryKey: [`itemBalanceOf/${key}`],
+  const { data, isLoading } = useQuery({
+    queryKey: ['itemBalanceOf', key],
     queryFn: async () => {
-      if (api && group?.length) {
-        const response = await Promise.all(
-          group.map(async ({ nft_id, collection_id, owner }) => {
-            const service = await api.query.game.itemBalanceOf.entries(
-              owner,
-              collection_id
-            );
+      if (api) {
+        if (filter === 'entries') {
+          const service = await api.query.game.itemBalanceOf.entries();
 
-            return service.map(([meta, amount]) => {
-              const [who, collection, item] = meta.args;
+          return service.map(
+            ([option, meta]: [StorageKey<[AccountId32, u32, u32]>, Codec]) => {
+              return {
+                owner: option.args[0].toString(),
+                collection_id: option.args[1].toNumber(),
+                nft_id: option.args[2].toNumber(),
+                amount: meta.toHuman() as string,
+              };
+            }
+          ) as ItemBalanceOfProps[];
+        }
 
-              if (
-                nft_id === item.toNumber() &&
-                collection_id === collection.toNumber()
-              ) {
-                return {
-                  owner: who.toString(),
-                  amount: amount.toNumber(),
-                  nft_id,
-                  collection_id,
-                };
-              }
-            });
-          })
-        ).then(data =>
-          data.map(child =>
-            child.find((item): item is groupMetaProps => !!item)
-          )
-        );
+        if (filter === 'address' && arg) {
+          return Promise.all(
+            arg.map(async address => {
+              const service = await api.query.game.itemBalanceOf.entries(
+                address
+              );
 
-        return response.filter(item => !!item);
+              return service.map(
+                ([option, meta]: [
+                  StorageKey<[AccountId32, u32, u32]>,
+                  Codec
+                ]) => {
+                  return {
+                    owner: option.args[0].toString(),
+                    collection_id: option.args[1].toNumber(),
+                    nft_id: option.args[2].toNumber(),
+                    amount: meta.toHuman() as string,
+                  };
+                }
+              );
+            })
+          ).then(meta => meta.flat() as ItemBalanceOfProps[]);
+        }
       }
 
       // not found group
       return [];
     },
-    enabled: !!group,
+    enabled: !!arg || !!filter,
   });
 
-  useEffect(() => {
-    if (event && group?.length) {
-      event.forEach(({ eventValue }) => {
-        const [, , collection, item] = JSON.parse(eventValue);
-
-        group.forEach(({ collection_id, nft_id }) => {
-          if (collection === collection_id && nft_id === item) {
-            refetch();
-            setEvent([]);
-          }
-        });
-      });
-    }
-  }, [event]);
-
-  const currentItemBalanceOf = ({
-    collection_id,
-    nft_id,
-  }: Omit<groupMetaProps, 'owner' | 'amount'>) => {
-    return data?.find(
-      meta => meta?.collection_id === collection_id && meta?.nft_id === nft_id
-    );
-  };
-
   return {
-    getItemBalanceOf: data,
-    currentItemBalanceOf,
+    itemBalanceOf: data,
+    isLoading,
   };
 }

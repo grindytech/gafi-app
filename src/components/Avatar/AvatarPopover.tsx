@@ -1,22 +1,23 @@
 import {
   Box,
   Button,
+  ButtonProps,
   HStack,
-  Heading,
   Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@chakra-ui/react';
-import AccountJazzicon from 'components/AccountJazzicon/AccountJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { shorten } from 'utils/utils';
+import AvatarJazzicon from './AvatarJazzicon';
 
 interface AvatarPopoverProps extends React.PropsWithChildren {
   type: 'Owner' | 'Admin';
   name: string;
   address: string;
+  sx?: ButtonProps;
 }
 
 export default function AvatarPopover({
@@ -24,64 +25,41 @@ export default function AvatarPopover({
   name,
   address,
   children,
+  sx,
 }: AvatarPopoverProps) {
   return (
     <Popover placement="top-start" trigger="hover">
       <PopoverTrigger>
-        <Button variant="unstyled" minWidth="auto" width={8} height={8}>
+        <Button variant="unstyled" minWidth="auto" width={8} height={8} {...sx}>
           {children}
         </Button>
       </PopoverTrigger>
 
       <PopoverContent
         width="inherit"
-        borderRadius="lg"
-        border="0.0625rem solid"
-        borderColor="shader.a.300"
         fontSize="sm"
         fontWeight="medium"
+        bg="shader.a.800"
+        borderColor="shader.a.600"
+        color="white"
       >
         <PopoverBody>
-          <Heading
-            as="h6"
-            color="primary.a.500"
-            fontSize="inherit"
-            fontWeight="inherit"
-          >
-            {type}
-          </Heading>
+          <Text>{type}</Text>
 
           <HStack spacing={3} mt={3}>
-            <AccountJazzicon address={address} />
+            <AvatarJazzicon address={address} />
 
             <Box>
-              <Heading
-                as="h6"
-                color="shader.a.900"
-                fontSize="inherit"
-                fontWeight="inherit"
-              >
-                {name}
-              </Heading>
+              <Text>{name}</Text>
 
-              <Text
-                fontSize="inherit"
-                fontWeight="normal"
-                color="shader.a.500"
-                display="flex"
-                alignItems="center"
-                gap={1}
-              >
+              <Text display="flex" alignItems="center" gap={1}>
                 {shorten(address, 12)}
                 <ButtonCopy
                   value={address}
                   sx={{
                     'aria-label': 'copy-icon',
                     sx: {
-                      svg: {
-                        width: 4,
-                        height: 4,
-                      },
+                      svg: { width: 4, height: 4 },
                     },
                   }}
                 />

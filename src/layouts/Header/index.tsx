@@ -1,39 +1,25 @@
-import {
-  Box,
-  Button,
-  Center,
-  Icon,
-  IconButton,
-  List,
-  ListItem,
-} from '@chakra-ui/react';
-import React from 'react';
+import { Center, Heading, Icon, List, ListItem, Text } from '@chakra-ui/react';
 
-import GafiAppIcon from 'public/assets/logo/gafi-app.svg';
+import GearIcon from 'public/assets/logo/gear.svg';
 
 import { Link, useLocation } from 'react-router-dom';
-import PickaxeIcon from 'public/assets/line/pickaxe.svg';
 
 import ConnectWallet from 'components/ConnectWallet';
-import Notification from 'components/Notification';
 
 const ListHeader = [
   {
-    title: 'Web3 Games',
+    title: 'Creator',
     link: '/web3',
   },
   {
-    title: 'Mint',
-    link: '/mint',
-    icon: PickaxeIcon,
-  },
-  {
     title: 'Blockchain',
-    link: '/blockchain',
+    link: 'https://gafi.network/',
+    target: '_blank',
   },
   {
-    title: 'Marketplace',
-    link: '/marketplace',
+    title: 'Market Place',
+    link: 'https://gafi.network/2',
+    target: '_blank',
   },
 ];
 
@@ -41,102 +27,76 @@ export default function Header() {
   const { pathname } = useLocation();
 
   return (
-    <Box
+    <Center
       as="header"
       position="sticky"
-      top={0}
-      py={4}
-      mb={6}
-      height="4.5rem"
-      bg="white"
+      justifyContent="space-between"
       zIndex="dropdown"
+      top={0}
+      padding={5}
       _before={{
         content: `''`,
-        position: 'fixed',
-        bg: 'inherit',
-        width: 'full',
-        height: 'inherit',
-        inset: '0 0 auto 0',
-        pointerEvents: 'none',
-        zIndex: 'inherit',
-        borderBottom: '0.0625rem solid',
-        borderColor: 'shader.a.200',
+        bg: 'shader.a.900',
+        position: 'absolute',
+        inset: '50% auto auto 50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100vw',
+        height: '100%',
       }}
     >
-      <Center
-        as="nav"
-        justifyContent="space-between"
-        height="full"
-        position="relative"
-        zIndex="inherit"
-      >
-        <Center>
-          <IconButton
-            variant="unstyled"
-            height="auto"
-            as={Link}
-            to="/"
-            mr={16}
-            aria-label="gafi-app-logo"
-            icon={<GafiAppIcon />}
-          />
+      <Center position="relative" as="nav" gap={8}>
+        <Heading as="h1" fontWeight="bold" fontSize="md" color="primary.a.300">
+          <Center as={Link} to="/">
+            <Icon
+              as={GearIcon}
+              width={8}
+              height={8}
+              mr={2}
+              sx={{
+                g: {
+                  path: {
+                    _first: { color: 'shader.a.900' },
+                    _last: { fill: 'url(#paint0_linear_1734_14538)' },
+                  },
+                },
+              }}
+            />
+            GAFI&nbsp;
+            <Text as="span" color="#FAFAFA">
+              CREATOR
+            </Text>
+          </Center>
+        </Heading>
 
-          <List
-            display={{
-              base: 'none',
-              md: 'flex',
-            }}
-            gap={8}
-            padding={0}
-          >
-            {React.Children.toArray(
-              ListHeader.map(header => {
-                const isActive = pathname.includes(header.link);
+        <List display={{ base: 'none', md: 'flex' }} gap={8}>
+          {ListHeader.map(header => {
+            const isActive = pathname.includes(header.link);
 
-                return (
-                  <Button
-                    as={Link}
-                    to={header.link}
-                    display="flex"
-                    color={isActive ? 'primary.a.500' : 'shader.a.900'}
-                    fontSize="md"
-                    fontWeight={isActive ? 'bold' : 'medium'}
-                    gap={1}
-                    variant="unstyled"
-                    height="auto"
-                    minWidth="auto"
-                    sx={{
-                      svg: {
-                        path: {
-                          fill: isActive
-                            ? 'currentColor'
-                            : 'url(#PickAxeDefaultColor)',
-                        },
-                      },
-                    }}
-                  >
-                    {header.icon && (
-                      <Icon as={header.icon} width={4} height={4} />
-                    )}
-
+            return (
+              <ListItem
+                key={header.link}
+                color={isActive ? 'primary.a.300' : '#FAFAFA'}
+                fontSize="md"
+                fontWeight="medium"
+              >
+                {header.target ? (
+                  <a href={header.link} target={header.target}>
                     {header.title}
-                  </Button>
-                );
-              })
-            )}
-          </List>
-        </Center>
-
-        <List display="flex" alignItems="center" gap={6}>
-          <ListItem>
-            <Notification />
-          </ListItem>
-
-          <ListItem>
-            <ConnectWallet />
-          </ListItem>
+                  </a>
+                ) : (
+                  <Link to={header.link}>{header.title}</Link>
+                )}
+              </ListItem>
+            );
+          })}
         </List>
       </Center>
-    </Box>
+
+      <List>
+        <ListItem>
+          <ConnectWallet />
+        </ListItem>
+      </List>
+    </Center>
   );
 }
