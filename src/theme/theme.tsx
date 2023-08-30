@@ -1,4 +1,5 @@
 import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
+import { convertHex } from 'utils/utils';
 
 export const backgrounds = {
   gradient: {
@@ -19,6 +20,7 @@ export const colors = {
       200: '#AADAFB',
       300: '#7DBEF3',
       400: '#5BA2E7',
+      500: '#2A7AD7',
     },
   },
   shader: {
@@ -86,6 +88,28 @@ const Button: ComponentStyleConfig = {
       minWidth: 'auto',
       display: 'flex',
     },
+    primary: {
+      height: 10,
+      px: 4,
+      color: 'white',
+      bg: 'primary.a.500',
+      borderRadius: 'lg',
+      fontSize: 'sm',
+      fontWeight: 'medium',
+
+      _disabled: {
+        color: '#71717A',
+        bg: '#3F3F46',
+
+        ['&:hover[disabled]']: {
+          background: '#3F3F46',
+        },
+      },
+
+      _hover: {
+        bg: convertHex(colors.primary.a[500], 0.65),
+      },
+    },
   },
 };
 
@@ -110,6 +134,33 @@ export const Container: ComponentStyleConfig = {
   },
 };
 
+export const Input: ComponentStyleConfig = {
+  variants: {
+    validate: {
+      field: {
+        border: 'unset',
+        borderRadius: 'xl',
+        bg: 'shader.a.900',
+        color: 'shader.a.300',
+        py: 3,
+        px: 4,
+
+        _placeholder: {
+          color: 'shader.a.600',
+        },
+
+        focusBorderColor: {
+          boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
+        },
+
+        _invalid: {
+          boxShadow: '0 0 0 1px var(--chakra-colors-red-500)',
+        },
+      },
+    },
+  },
+};
+
 const theme = extendTheme({
   colors,
   styles,
@@ -119,6 +170,7 @@ const theme = extendTheme({
     Container,
     CardBox,
     Button,
+    Input,
   },
 });
 
