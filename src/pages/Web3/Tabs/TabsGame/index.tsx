@@ -73,13 +73,9 @@ export default ({ setMeta }: TabsGameProps) => {
 
   return (
     <>
-      {data?.length ? (
-        <>
-          <Text>Game</Text>
+      <Text>Game</Text>
 
-          <Text as="span">{data.length}</Text>
-        </>
-      ) : null}
+      <Text as="span">{data?.length}</Text>
     </>
   );
 };

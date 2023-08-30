@@ -79,13 +79,9 @@ export default ({ setMeta }: TabsCollectionProps) => {
 
   return (
     <>
-      {data?.length ? (
-        <>
-          <Text>Collection</Text>
+      <Text>Collection</Text>
 
-          <Text as="span">{data.length}</Text>
-        </>
-      ) : null}
+      <Text as="span">{data?.length}</Text>
     </>
   );
 };

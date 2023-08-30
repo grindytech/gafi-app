@@ -35,7 +35,9 @@ export const colors = {
       900: '#27272A',
     },
   },
-
+  second: {
+    green: '#4ADE80',
+  },
   ...backgrounds,
 };
 

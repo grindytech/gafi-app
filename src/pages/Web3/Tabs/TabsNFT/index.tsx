@@ -75,13 +75,9 @@ export default ({ setMeta }: TabsCollectionProps) => {
 
   return (
     <>
-      {data?.length ? (
-        <>
-          <Text>NFT</Text>
+      <Text>NFT</Text>
 
-          <Text as="span">{data.length}</Text>
-        </>
-      ) : null}
+      <Text as="span">{data?.length}</Text>
     </>
   );
 };
