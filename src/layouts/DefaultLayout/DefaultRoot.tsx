@@ -7,7 +7,7 @@ export default function DefaultMain() {
   const header = '4.5rem';
 
   return (
-    <Flex flexDirection="column" height="100vh">
+    <Flex flexDirection="column" overflow="hidden">
       <Container as="article">
         <Header />
 

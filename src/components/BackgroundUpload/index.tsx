@@ -4,7 +4,6 @@ import { convertHex } from 'utils/utils';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 import CameraIcon from 'public/assets/fill/camera.svg';
-import { useState } from 'react';
 
 export interface BackgroundAvatarProps {
   name: 'Background Avatar' | 'Background Banner' | 'Background Cover';
@@ -23,18 +22,14 @@ export default ({
   isRequired,
   sx,
 }: BackgroundAvatarProps) => {
-  const [preview, setPreview] = useState('');
-
   const handleUpload = (file: File) => {
-    if (preview) URL.revokeObjectURL(preview);
+    if (background) URL.revokeObjectURL(background as never);
 
     setBackground(file);
-    setPreview(URL.createObjectURL(file));
   };
 
   const handleRemove = () => {
-    URL.revokeObjectURL(preview);
-    setPreview('');
+    URL.revokeObjectURL(background as never);
     setBackground(undefined);
   };
 
@@ -70,7 +65,7 @@ export default ({
         {background && (
           <>
             <RatioPicture
-              src={preview || null}
+              src={URL.createObjectURL(background) || null}
               sx={{
                 width: 'full',
                 height: 'full',

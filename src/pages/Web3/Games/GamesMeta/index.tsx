@@ -23,9 +23,10 @@ interface fieldsSetMediaProps extends Pick<fieldsSetProps, 'isRequired'> {
 }
 
 export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
-  const [avatar, setAvatar] = useState<File | undefined>();
-  const [banner, setBanner] = useState<File | undefined>();
-  const [cover, setCover] = useState<File | undefined>();
+  const { media_avatar, media_banner, media_cover } = watch();
+  const [avatar, setAvatar] = useState(media_avatar);
+  const [banner, setBanner] = useState(media_banner);
+  const [cover, setCover] = useState(media_cover);
 
   const fieldsSet: fieldsSetMediaProps[] = [
     {
