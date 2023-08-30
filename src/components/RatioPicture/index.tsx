@@ -16,25 +16,26 @@ interface RatioPictureProps {
 
 export default function RatioPicture({ src, alt, sx }: RatioPictureProps) {
   return (
-    <AspectRatio
-      ratio={16 / 9}
-      padding={2}
-      bg="shader.a.800"
-      borderRadius="lg"
-      {...sx}
-    >
-      {src ? (
-        <Image
-          objectFit="cover"
-          borderRadius="inherit"
-          src={src}
-          alt={`${alt}`}
-        />
-      ) : (
-        <Box>
-          <Icon color="shader.a.700" width={10} height={10} as={ItemIcon} />
-        </Box>
-      )}
-    </AspectRatio>
+    <Box {...sx}>
+      <AspectRatio
+        ratio={16 / 9}
+        padding={2}
+        bg="shader.a.800"
+        borderRadius="lg"
+      >
+        {src ? (
+          <Image
+            objectFit="cover"
+            borderRadius="inherit"
+            src={src}
+            alt={`${alt}`}
+          />
+        ) : (
+          <Box>
+            <Icon color="shader.a.700" width={10} height={10} as={ItemIcon} />
+          </Box>
+        )}
+      </AspectRatio>
+    </Box>
   );
 }

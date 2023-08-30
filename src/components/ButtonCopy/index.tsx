@@ -16,7 +16,7 @@ export default function ButtonCopy({ value, sx }: ButtonCopyProps) {
       height="auto"
       minWidth="auto"
       aria-label="button-copy"
-      color="primary.a.500"
+      color="primary.a.300"
       onClick={onCopy}
       sx={{
         svg: {

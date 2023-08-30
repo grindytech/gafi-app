@@ -9,12 +9,13 @@ import ItemIcon from 'public/assets/fill/item.svg';
 import MetadataIcon from 'public/assets/fill/metadata.svg';
 import PoolsIcon from 'public/assets/line/pools.svg';
 import UpgradeIcon from 'public/assets/fill/upgrade.svg';
+import Games from 'pages/Web3/Games';
 
 export const ListWeb3Item = [
   {
     title: 'Games',
     icon: <GameIcon />,
-    element: <>comming soon</>,
+    element: <Games />,
     link: '/web3/games',
     background: 'gradient.linear.2',
   },
