@@ -10,6 +10,7 @@ import MetadataIcon from 'public/assets/fill/metadata.svg';
 import PoolsIcon from 'public/assets/line/pools.svg';
 import UpgradeIcon from 'public/assets/fill/upgrade.svg';
 import Games from 'pages/Web3/Games';
+import Collections from 'pages/Web3/Collections';
 
 export const ListWeb3Item = [
   {
@@ -22,7 +23,7 @@ export const ListWeb3Item = [
   {
     title: 'Collections',
     icon: <CollectionIcon />,
-    element: <>comming soon</>,
+    element: <Collections />,
     link: '/web3/collections',
     background: 'gradient.linear.3',
   },

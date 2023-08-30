@@ -13,38 +13,24 @@ import { useForm } from 'react-hook-form';
 import StepValidate from 'components/StepValidate';
 import React from 'react';
 
-import GamesGeneral from './GamesGeneral';
-import GamesMeta from './GamesMeta';
-import GamesModal from './GamesModal';
 import Collaborators from 'layouts/Collaborators';
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
+import CollectionsGeneral from './CollectionsGeneral';
+import CollectionsMedia from './CollectionsMedia';
+import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
 
-export interface GamesFieldProps {
-  general_game_title: string;
-  general_categories: string;
+export interface CollectionsFieldProps {
+  general_collection_title: string;
   general_description: string;
-  general_website: string;
-  general_twitter: string;
-  general_discord: string;
+  general_external_url: string;
+  general_join_game: { game_id: number }[];
 
   // media
   media_avatar: File | undefined;
   media_banner: File | undefined;
   media_cover: File | undefined;
-
-  collaborators: {
-    address: string;
-    role: string;
-  }[];
-}
-
-export interface fieldsSetProps {
-  label: string;
-  fieldName: keyof GamesFieldProps;
-  form: JSX.Element;
-  isRequired?: boolean;
 }
 
 export default () => {
@@ -53,7 +39,7 @@ export default () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<GamesFieldProps>();
+  } = useForm<CollectionsFieldProps>();
 
   const [required, setRequired] = React.useState<Record<number, number>>({});
 
@@ -62,10 +48,10 @@ export default () => {
       id: 0,
       heading: 'General info',
       element: (
-        <GamesGeneral
+        <CollectionsGeneral
+          setValue={setValue}
           errors={errors}
           register={register}
-          setValue={setValue}
           watch={watch}
           setRequired={setRequired}
         />
@@ -75,7 +61,7 @@ export default () => {
       id: 1,
       heading: 'Media data',
       element: (
-        <GamesMeta
+        <CollectionsMedia
           setValue={setValue}
           watch={watch}
           setRequired={setRequired}
@@ -87,10 +73,11 @@ export default () => {
   const { activeStep, goToNext, goToPrevious } = useSteps({
     index: 0,
   });
+  console.log(watch());
 
   return (
     <>
-      <GoBack heading="Create Game" />
+      <GoBack heading="Create Collection" />
 
       <StepValidate
         activeStep={activeStep}
@@ -125,7 +112,7 @@ export default () => {
                 </Button>
               </Flex>
 
-              <GamesModal
+              <CollectionsModal
                 watch={watch}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]

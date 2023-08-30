@@ -61,7 +61,7 @@ export default function Web3() {
   ];
 
   const isLoading = isUndefined(meta.game) || isUndefined(meta.collection);
-  const isEmpty = !meta.game?.length || !meta.collection?.length; // nft is not unnecessary to check (because nft in collection)
+  const isEmpty = !meta.game?.length && !meta.collection?.length; // nft is not unnecessary to check (because nft in collection)
   const isFirstBuild = !isLoading && isEmpty; // loading should completed && isEmpty equal true
 
   return (

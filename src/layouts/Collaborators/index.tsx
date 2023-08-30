@@ -1,4 +1,4 @@
-import { Center, Icon } from '@chakra-ui/react';
+import { Box, Center, Icon } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
 
 import CloseIcon from 'public/assets/fill/close.svg';
@@ -58,7 +58,7 @@ CollaboratorsServiceProps) {
   }, [collaborators]);
 
   return (
-    <>
+    <Box>
       {React.Children.toArray(
         collaborators.map((meta, index) => (
           <Center
@@ -69,9 +69,6 @@ CollaboratorsServiceProps) {
             px={6}
             py={4}
             gap={2}
-            _notFirst={{
-              mt: 2,
-            }}
           >
             <AvatarCollaborators
               address={shorten(meta.address, 12)}
@@ -108,6 +105,6 @@ CollaboratorsServiceProps) {
       )}
 
       <CollaboratorsAdd />
-    </>
+    </Box>
   );
 }

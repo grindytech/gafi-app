@@ -1,20 +1,21 @@
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { GamesFieldProps, fieldsSetProps } from '..';
 import { BoxProps, Flex } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
 import BackgroundUpload, {
   BackgroundAvatarProps,
 } from 'components/BackgroundUpload';
+import { CollectionsFieldProps } from '..';
 
-interface GamesMetaProps {
-  setValue: UseFormSetValue<GamesFieldProps>;
-  watch: UseFormWatch<GamesFieldProps>;
+interface CollectionsMedia {
+  setValue: UseFormSetValue<CollectionsFieldProps>;
+  watch: UseFormWatch<CollectionsFieldProps>;
   setRequired: React.Dispatch<React.SetStateAction<Record<number, number>>>;
 }
 
-interface fieldsSetMediaProps extends Pick<fieldsSetProps, 'isRequired'> {
-  fieldName: keyof GamesFieldProps;
+interface fieldsSetMediaProps {
+  fieldName: keyof CollectionsFieldProps;
+  isRequired?: boolean;
   size: BackgroundAvatarProps['size'];
   name: BackgroundAvatarProps['name'];
   onChange: React.Dispatch<React.SetStateAction<File | undefined>>;
@@ -22,8 +23,9 @@ interface fieldsSetMediaProps extends Pick<fieldsSetProps, 'isRequired'> {
   sx?: BoxProps;
 }
 
-export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
+export default ({ setValue, watch, setRequired }: CollectionsMedia) => {
   const { media_avatar, media_banner, media_cover } = watch();
+
   const [avatar, setAvatar] = useState(media_avatar);
   const [banner, setBanner] = useState(media_banner);
   const [cover, setCover] = useState(media_cover);
@@ -76,7 +78,7 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
     setValue('media_avatar', avatar);
     setValue('media_banner', banner);
     setValue('media_cover', cover);
-  }, [avatar, banner, cover]);
+  }, [avatar, cover, banner]);
 
   // update setRequired
   useEffect(() => {
@@ -95,7 +97,7 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
   }, [avatar, banner, cover]);
 
   return (
-    <Flex gap={6} flexWrap="wrap">
+    <Flex gap={6} flexWrap="wrap" width="full">
       {fieldsSet.map(meta => (
         <BackgroundUpload
           key={meta.fieldName}
