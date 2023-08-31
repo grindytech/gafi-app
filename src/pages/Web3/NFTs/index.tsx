@@ -16,25 +16,25 @@ import React from 'react';
 import Collaborators from 'layouts/Collaborators';
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
-import CollectionsGeneral from './CollectionsGeneral';
-import CollectionsMedia from './CollectionsMedia';
-import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
+import NFTsGeneral from './NFTsGeneral';
 import { TypeMetadataOfCollection } from 'types';
+import NFTsMedia from './NFTsMedia';
+import NFTsModal from './NFTsModal';
 
-export interface CollectionsFieldProps {
-  general_collection_title: string;
+export interface NFTsFieldProps {
+  // general
+  general_nft_title: string;
+  general_amount: number | null;
   general_description: string;
   general_external_url: string;
-  general_join_game?: {
-    game_id: number;
-    option?: TypeMetadataOfCollection | null;
-  }[];
+  general_join_collection?: {
+    collection_id: number;
+    option: TypeMetadataOfCollection;
+  };
 
   // media
   media_avatar: File | undefined;
-  media_banner: File | undefined;
-  media_cover: File | undefined;
 }
 
 export default () => {
@@ -43,7 +43,7 @@ export default () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<CollectionsFieldProps>();
+  } = useForm<NFTsFieldProps>();
 
   const [required, setRequired] = React.useState<Record<number, number>>({});
 
@@ -52,7 +52,7 @@ export default () => {
       id: 0,
       heading: 'General info',
       element: (
-        <CollectionsGeneral
+        <NFTsGeneral
           setValue={setValue}
           errors={errors}
           register={register}
@@ -65,7 +65,7 @@ export default () => {
       id: 1,
       heading: 'Media data',
       element: (
-        <CollectionsMedia
+        <NFTsMedia
           setValue={setValue}
           watch={watch}
           setRequired={setRequired}
@@ -77,11 +77,10 @@ export default () => {
   const { activeStep, goToNext, goToPrevious } = useSteps({
     index: 0,
   });
-  console.log(watch());
 
   return (
     <>
-      <GoBack heading="Create Collection" />
+      <GoBack heading="Create NFT" />
 
       <StepValidate
         activeStep={activeStep}
@@ -116,7 +115,7 @@ export default () => {
                 </Button>
               </Flex>
 
-              <CollectionsModal
+              <NFTsModal
                 watch={watch}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]

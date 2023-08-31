@@ -7,7 +7,7 @@ import CameraIcon from 'public/assets/fill/camera.svg';
 
 export interface BackgroundAvatarProps {
   name: 'Background Avatar' | 'Background Banner' | 'Background Cover';
-  size: '320x320px' | '320x192px' | '1400x280px';
+  size: '320x320px' | '320x192px' | '512x512px' | '1400x280px';
   background: File | undefined;
   setBackground: React.Dispatch<React.SetStateAction<File | undefined>>;
   isRequired?: boolean;
@@ -22,10 +22,12 @@ export default ({
   isRequired,
   sx,
 }: BackgroundAvatarProps) => {
-  const handleUpload = (file: File) => {
+  const handleUpload = (file: FileList | null) => {
     if (background) URL.revokeObjectURL(background as never);
 
-    setBackground(file);
+    if (file) {
+      setBackground(file[0]);
+    }
   };
 
   const handleRemove = () => {
@@ -129,9 +131,7 @@ export default ({
           type="file"
           cursor="pointer"
           opacity={0}
-          onChange={event =>
-            event.target.files ? handleUpload(event.target.files[0]) : undefined
-          }
+          onChange={event => handleUpload(event.target.files)}
         />
       </Center>
     </Box>
