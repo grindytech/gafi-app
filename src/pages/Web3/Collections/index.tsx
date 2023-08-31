@@ -20,12 +20,16 @@ import CollectionsGeneral from './CollectionsGeneral';
 import CollectionsMedia from './CollectionsMedia';
 import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
+import { TypeMetadataOfCollection } from 'types';
 
 export interface CollectionsFieldProps {
   general_collection_title: string;
   general_description: string;
   general_external_url: string;
-  general_join_game: { game_id: number }[];
+  general_join_game?: {
+    game_id: number;
+    option?: TypeMetadataOfCollection | null;
+  }[];
 
   // media
   media_avatar: File | undefined;

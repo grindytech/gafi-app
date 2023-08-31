@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, FlexProps, Icon, IconButton, Text } from '@chakra-ui/react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 import CloseIcon from 'public/assets/fill/close.svg';
@@ -8,9 +8,10 @@ interface JohnProps {
   name: string;
   id: number;
   remove?: () => void;
+  sx?: FlexProps;
 }
 
-export default ({ image, name, id, remove }: JohnProps) => {
+export default ({ image, name, id, remove, sx }: JohnProps) => {
   return (
     <Flex
       position="relative"
@@ -20,6 +21,7 @@ export default ({ image, name, id, remove }: JohnProps) => {
       paddingRight={20}
       borderRadius="xl"
       bg="shader.a.800"
+      {...sx}
     >
       <RatioPicture
         src={image ? cloundinary_link(image) : null}
@@ -36,14 +38,15 @@ export default ({ image, name, id, remove }: JohnProps) => {
         </Text>
       </Box>
 
-      <Box
+      <IconButton
+        onClick={remove}
+        variant="unstyled"
         position="absolute"
         inset="0 auto auto 0"
         transform="translate(-25%, -25%)"
-        onClick={remove}
-      >
-        <Icon as={CloseIcon} width={4} height={4} color="shader.a.300" />
-      </Box>
+        aria-label="remove-john"
+        icon={<Icon as={CloseIcon} width={4} height={4} color="shader.a.300" />}
+      />
     </Flex>
   );
 };

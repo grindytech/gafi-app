@@ -1,11 +1,11 @@
 import {
   Box,
-  BoxProps,
   Icon,
   IconButton,
   Popover,
   PopoverBody,
   PopoverContent,
+  PopoverContentProps,
   PopoverTrigger,
 } from '@chakra-ui/react';
 
@@ -17,7 +17,7 @@ import { PropsWithChildren } from 'react';
 
 interface JohnPopoverProps extends PropsWithChildren {
   allowToggle?: boolean;
-  sx?: BoxProps;
+  sx?: PopoverContentProps;
 }
 
 export default ({ allowToggle, sx, children }: JohnPopoverProps) => {
@@ -45,12 +45,11 @@ export default ({ allowToggle, sx, children }: JohnPopoverProps) => {
                 minWidth: 'auto !important',
               },
             }}
-            {...sx}
           >
             <PopoverContent
               bg={convertHex(colors.shader.a[800], 0.25)}
               width="full"
-              height="full"
+              height="10rem"
               border="unset"
               borderTop="0.0625rem solid"
               borderColor="shader.a.800"
@@ -60,6 +59,7 @@ export default ({ allowToggle, sx, children }: JohnPopoverProps) => {
                   onClose();
                 }
               }}
+              {...sx}
             >
               <PopoverBody padding={0} wordBreak="break-word" height="full">
                 {children}

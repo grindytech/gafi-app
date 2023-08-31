@@ -72,7 +72,12 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
     : null;
 
   return (
-    <JohnPopover allowToggle>
+    <JohnPopover
+      allowToggle
+      sx={{
+        height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+      }}
+    >
       {filter?.length ? (
         filter.map(meta => (
           <JohnPopoverJSX
