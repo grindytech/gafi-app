@@ -11,6 +11,7 @@ import PoolsIcon from 'public/assets/line/pools.svg';
 import UpgradeIcon from 'public/assets/fill/upgrade.svg';
 import Games from 'pages/Web3/Games';
 import Collections from 'pages/Web3/Collections';
+import NFTs from 'pages/Web3/NFTs';
 
 export const ListWeb3Item = [
   {
@@ -30,7 +31,7 @@ export const ListWeb3Item = [
   {
     title: 'NFTs',
     icon: <ItemIcon />,
-    element: <>comming soon</>,
+    element: <NFTs />,
     link: '/web3/nft',
     background: 'gradient.linear.4',
   },
