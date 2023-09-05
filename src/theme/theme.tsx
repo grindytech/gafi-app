@@ -33,10 +33,13 @@ export const colors = {
       700: '#52525B',
       800: '#3F3F46',
       900: '#27272A',
+      1000: '#18181B',
     },
   },
   second: {
     green: '#4ADE80',
+    orange: '#FF7B00',
+    purple: '#8338EC',
   },
   ...backgrounds,
 };

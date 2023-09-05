@@ -32,93 +32,91 @@ export default () => {
   });
 
   return (
-    <>
-      <Box borderRadius="xl" bg="shader.a.900" fontWeight="bold">
-        {account?.address ? (
-          <>
-            <Flex
-              gap={4}
-              padding={6}
-              borderBottom="0.0625rem solid"
-              borderColor="shader.a.800"
-            >
-              <AvatarJazzicon
-                address={account.address}
-                sx={{ width: '2.25rem', height: '2.25rem' }}
-              />
+    <Box borderRadius="xl" bg="shader.a.900" fontWeight="bold">
+      {account?.address ? (
+        <>
+          <Flex
+            gap={4}
+            padding={6}
+            borderBottom="0.0625rem solid"
+            borderColor="shader.a.800"
+          >
+            <AvatarJazzicon
+              address={account.address}
+              sx={{ width: '2.25rem', height: '2.25rem' }}
+            />
 
-              <Box>
-                <Flex gap={2}>
-                  <Text color="white">{account.name}</Text>
+            <Box>
+              <Flex gap={2}>
+                <Text color="white">{account.name}</Text>
 
-                  <Center
-                    color="second.green"
-                    borderRadius="2xl"
-                    fontSize="xs"
-                    bg={convertHex(colors.second.green, 0.15)}
-                    px={2}
-                    py={1}
-                    gap={1}
-                  >
-                    <ShieldIcon />
-                    Owner
-                  </Center>
-                </Flex>
-
-                <Flex mt={2} fontSize="sm" color="shader.a.400">
-                  {shorten(account.address, 12)}&nbsp;
-                  <ButtonCopy value={account.address} />
-                </Flex>
-              </Box>
-            </Flex>
-
-            <Center
-              justifyContent="space-between"
-              bg={convertHex(colors.shader.a[800], 0.25)}
-              py={4}
-              px={6}
-            >
-              <Text color="white">Balance</Text>
-
-              <Box textAlign="right">
-                <Center gap={1}>
-                  <Icon as={GafiTokenIcon} width={4} height={4} />
-
-                  <Text color="white" fontSize="lg">
-                    {balance}
-                  </Text>
+                <Center
+                  color="second.green"
+                  borderRadius="2xl"
+                  fontSize="xs"
+                  bg={convertHex(colors.second.green, 0.15)}
+                  px={2}
+                  py={1}
+                  gap={1}
+                >
+                  <ShieldIcon />
+                  Owner
                 </Center>
+              </Flex>
 
-                <Text fontSize="sm" color="shader.a.500">
-                  {formatCurrency(Number(balance?.replaceAll(',', '')))}
+              <Flex mt={2} fontSize="sm" color="shader.a.400">
+                {shorten(account.address, 12)}&nbsp;
+                <ButtonCopy value={account.address} />
+              </Flex>
+            </Box>
+          </Flex>
+
+          <Center
+            justifyContent="space-between"
+            bg={convertHex(colors.shader.a[800], 0.25)}
+            py={4}
+            px={6}
+          >
+            <Text color="white">Balance</Text>
+
+            <Box textAlign="right">
+              <Center gap={1}>
+                <Icon as={GafiTokenIcon} width={4} height={4} />
+
+                <Text color="white" fontSize="lg">
+                  {balance}
                 </Text>
-              </Box>
-            </Center>
-          </>
-        ) : (
-          <>
-            <Flex gap={4} padding={6}>
-              <Box>
-                <SkeletonCircle size="2.25rem" />
-              </Box>
+              </Center>
 
-              <Box width="full">
-                <Skeleton height={2} />
-                <Skeleton height={2} mt={2} />
-              </Box>
-            </Flex>
+              <Text fontSize="sm" color="shader.a.500">
+                {formatCurrency(Number(balance?.replaceAll(',', '')))}
+              </Text>
+            </Box>
+          </Center>
+        </>
+      ) : (
+        <>
+          <Flex gap={4} padding={6}>
+            <Box>
+              <SkeletonCircle size="2.25rem" />
+            </Box>
 
-            <Flex justifyContent="space-between" py={4} px={6}>
+            <Box width="full">
+              <Skeleton height={2} />
+              <Skeleton height={2} mt={2} />
+            </Box>
+          </Flex>
+
+          <Flex justifyContent="space-between" py={4} px={6}>
+            <Skeleton width="3.625rem" height={2} />
+
+            <Box>
               <Skeleton width="3.625rem" height={2} />
-
-              <Box>
-                <Skeleton width="3.625rem" height={2} />
-                <Skeleton width="3.625rem" height={2} mt={2} />
-              </Box>
-            </Flex>
-          </>
-        )}
-      </Box>
-    </>
+              <Skeleton width="3.625rem" height={2} mt={2} />
+            </Box>
+          </Flex>
+        </>
+      )}
+    </Box>
   );
 };

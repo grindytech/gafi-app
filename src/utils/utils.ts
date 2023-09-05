@@ -103,13 +103,18 @@ export function sumGAFI(
 }
 
 export const ColorOfRarity = (weight: number | string) => {
-  const easy = 100;
-  const medium = 35;
-  const hard = 10;
+  const level = {
+    none: 0,
+    hard: 10,
+    medium: 50,
+    easy: 100,
+  };
 
-  if (Number(weight) <= hard) return colors.second.purple;
-  if (Number(weight) <= medium) return colors.second.orange;
-  if (Number(weight) <= easy) return colors.primary.a[500];
+  // 'if' necessary sort orderby decremental
+  if (Number(weight) <= level.none) return '#ffffff';
+  if (Number(weight) <= level.hard) return colors.second.purple;
+  if (Number(weight) <= level.medium) return colors.second.orange;
+  if (Number(weight) <= level.easy) return colors.second.green;
 };
 
 export const CalculatorOfRarity = (weight: number, weights: number[]) => {

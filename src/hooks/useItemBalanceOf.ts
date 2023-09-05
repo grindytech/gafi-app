@@ -71,7 +71,7 @@ export default function useItemBalanceOf({
       // not found group
       return [];
     },
-    enabled: !!arg || !!filter,
+    enabled: !!api?.query.game || !!arg,
   });
 
   return {

@@ -1,19 +1,10 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Stack,
-  VStack,
-  useSteps,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Flex, VStack, useSteps } from '@chakra-ui/react';
 
 import { useForm } from 'react-hook-form';
 
 import StepValidate from 'components/StepValidate';
 import React from 'react';
 
-import Collaborators from 'layouts/Collaborators';
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
@@ -125,11 +116,9 @@ export default () => {
           </VStack>
         </Box>
 
-        <Stack spacing={6}>
+        <Box>
           <Owner />
-
-          <Collaborators setValue={setValue} />
-        </Stack>
+        </Box>
       </DefaultForm>
     </>
   );

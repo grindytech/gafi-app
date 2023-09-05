@@ -11,6 +11,7 @@ import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 import JohnPopover from 'layouts/John/JohnPopover';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
+import { useDisclosure } from '@chakra-ui/react';
 
 interface CollectionsJohnGameMenuProps {
   setValue: UseFormSetValue<NFTsFieldProps>;
@@ -20,6 +21,7 @@ interface CollectionsJohnGameMenuProps {
 
 export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
   const { api } = useAppSelector(state => state.substrate);
+  const { isOpen, onClose, onToggle } = useDisclosure();
   const { general_join_collection } = watch();
 
   const { data } = useQuery({
@@ -73,9 +75,15 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
 
   return (
     <JohnPopover
-      allowToggle
+      isOpen={isOpen}
+      onToggle={onToggle}
+      onClose={onClose}
       sx={{
-        height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+        sx: {
+          '.chakra-popover__content': {
+            height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+          },
+        },
       }}
     >
       {filter?.length ? (
@@ -86,6 +94,7 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
             name={meta.option?.title || '-'}
             image={meta.option?.image || null}
             onClick={() => {
+              onClose();
               setValue(`general_join_collection`, meta);
             }}
           />

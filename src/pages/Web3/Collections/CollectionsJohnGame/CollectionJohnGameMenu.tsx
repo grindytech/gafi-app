@@ -8,6 +8,7 @@ import { CollectionsFieldProps } from '..';
 import JohnPopover from 'layouts/John/JohnPopover';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
+import { useDisclosure } from '@chakra-ui/react';
 
 interface CollectionsJohnGameMenuProps {
   setValue: UseFormSetValue<CollectionsFieldProps>;
@@ -17,6 +18,7 @@ interface CollectionsJohnGameMenuProps {
 
 export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
   const { api } = useAppSelector(state => state.substrate);
+  const { isOpen, onClose, onToggle } = useDisclosure();
   const { general_join_game } = watch();
 
   const { data } = useQuery({
@@ -62,8 +64,15 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
 
   return (
     <JohnPopover
+      isOpen={isOpen}
+      onToggle={onToggle}
+      onClose={onClose}
       sx={{
-        height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+        sx: {
+          '.chakra-popover__content': {
+            height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+          },
+        },
       }}
     >
       {filter?.length ? (
