@@ -12,6 +12,7 @@ import UpgradeIcon from 'public/assets/fill/upgrade.svg';
 import Games from 'pages/Web3/Games';
 import Collections from 'pages/Web3/Collections';
 import NFTs from 'pages/Web3/NFTs';
+import Pools from 'pages/Web3/Pools';
 
 export const ListWeb3Item = [
   {
@@ -38,7 +39,7 @@ export const ListWeb3Item = [
   {
     title: 'Pools',
     icon: <PoolsIcon />,
-    element: <>comming soon</>,
+    element: <Pools />,
     link: '/web3/pools',
     background: 'gradient.linear.6',
   },

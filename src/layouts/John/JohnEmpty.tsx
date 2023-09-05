@@ -1,5 +1,13 @@
-import { Box } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
 
-export default () => {
-  return <Box color="shader.a.600">Empty</Box>;
+interface JohnEmptyProps {
+  sx?: BoxProps;
+}
+
+export default ({ sx }: JohnEmptyProps) => {
+  return (
+    <Box color="shader.a.600" {...sx}>
+      Empty
+    </Box>
+  );
 };

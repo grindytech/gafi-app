@@ -3,25 +3,25 @@ import {
   Center,
   Flex,
   FlexProps,
-  Icon,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import AvatarJazzicon from './AvatarJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { colors } from 'theme/theme';
-import { convertHex } from 'utils/utils';
+import { convertHex, shorten } from 'utils/utils';
 
-import Chevron01Icon from 'public/assets/line/chevron-01.svg';
+import JohnPopover from 'layouts/John/JohnPopover';
 
 interface AvatarProfileProps {
-  address: string;
-  name: string;
-  division: 'Admin' | 'Freezer' | 'Issuer';
+  meta: string[];
+  options?: string[];
   sx?: FlexProps;
 }
 
-export default ({ address, name, division, sx }: AvatarProfileProps) => {
+export default ({ meta, options, sx }: AvatarProfileProps) => {
+  const [role, address, name] = meta;
+
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const getColor = (type: string): string => {
@@ -31,12 +31,6 @@ export default ({ address, name, division, sx }: AvatarProfileProps) => {
 
     return 'undefined';
   };
-
-  const getDivision: AvatarProfileProps['division'][] = [
-    'Admin',
-    'Freezer',
-    'Issuer',
-  ];
 
   return (
     <Flex gap={4} {...sx}>
@@ -53,52 +47,57 @@ export default ({ address, name, division, sx }: AvatarProfileProps) => {
             py={1}
             px={2}
             borderRadius="2xl"
-            color={getColor(division)}
-            bg={convertHex(getColor(division), 0.15)}
-            onClick={onToggle}
-            cursor="pointer"
+            color={getColor(role)}
+            bg={convertHex(getColor(role), 0.15)}
           >
-            {division}&nbsp;
-            <Icon as={Chevron01Icon} width={4} height={4} />
-          </Center>
+            {role}
 
-          <Box
-            opacity={isOpen ? 1 : 0}
-            pointerEvents={isOpen ? undefined : 'none'}
-            position="absolute"
-            inset="auto 0 0 0"
-            transform="translateY(98%)"
-            zIndex="docked"
-            bg="shader.a.900"
-            borderRadius="0 0 0.75rem 0.75rem"
-            transitionDuration="ultra-slow"
-            overflow="hidden"
-          >
-            {getDivision
-              .filter(data => data !== division)
-              .map(meta => (
-                <Text
-                  key={meta}
-                  color={getColor(meta)}
-                  bg={convertHex(getColor(meta), 0.15)}
-                  transitionDuration="ultra-slow"
-                  cursor="pointer"
-                  padding={2}
-                  _hover={{
-                    bg: 'shader.a.700',
-                  }}
-                  onClick={() => {
-                    onClose();
+            {options?.length ? (
+              <>
+                &nbsp;
+                <JohnPopover
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  onToggle={onToggle}
+                  sx={{
+                    sx: {
+                      '> button': {
+                        svg: {
+                          width: 5,
+                          height: 5,
+                          color: getColor(role),
+                        },
+                      },
+                      '.chakra-popover__content': {
+                        height: 'auto',
+                      },
+                    },
                   }}
                 >
-                  {meta}
-                </Text>
-              ))}
-          </Box>
+                  {options
+                    .filter(meta => meta !== role)
+                    .map(option => (
+                      <Text
+                        key={option}
+                        color={getColor(option)}
+                        bg={convertHex(getColor(option), 0.15)}
+                        cursor="pointer"
+                        padding={2}
+                        onClick={() => {
+                          onClose();
+                        }}
+                      >
+                        {option}
+                      </Text>
+                    ))}
+                </JohnPopover>
+              </>
+            ) : null}
+          </Center>
         </Flex>
 
-        <Flex gap={1} mt={2} color="shader.a.400" fontSize="sm">
-          {address}
+        <Flex gap={2} mt={2} color="shader.a.400" fontSize="sm">
+          {shorten(address, 12)}
           <ButtonCopy value={address} />
         </Flex>
       </Box>

@@ -1,40 +1,46 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Stack,
-  VStack,
-  useSteps,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Flex, VStack, useSteps } from '@chakra-ui/react';
 
 import { useForm } from 'react-hook-form';
 
 import StepValidate from 'components/StepValidate';
 import React from 'react';
 
-import Collaborators from 'layouts/Collaborators';
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
-import CollectionsGeneral from './CollectionsGeneral';
-import CollectionsMedia from './CollectionsMedia';
-import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
-import { TypeMetadataOfCollection } from 'types';
+import PoolsGeneral from './PoolsGeneral';
+import PoolsAddItem from './PoolsAddItem';
+import PoolsModal from './PoolsModal';
 
-export interface CollectionsFieldProps {
-  general_collection_title: string;
+export interface PoolsFieldProps {
+  // general
+  general_type: 'Dynamic Pool' | 'Stable Pool';
+  general_title: string;
+  general_duration: {
+    time: number;
+    text: string;
+  };
   general_description: string;
-  general_external_url: string;
-  general_join_game?: {
-    game_id: number;
-    option?: TypeMetadataOfCollection | null;
-  }[];
 
-  // media
-  media_avatar: File | undefined;
-  media_banner: File | undefined;
-  media_cover: File | undefined;
+  // Add item
+  add_item_fee: number;
+  add_item_failed: number | undefined | null;
+  add_item_supply?: {
+    weight: number;
+    amount: number | string;
+    nft: {
+      id: number;
+      title: string;
+      image: string;
+    };
+    collection: {
+      id: number;
+      title: string;
+      image: string;
+    };
+  }[];
+  add_item_dynamic?: PoolsFieldProps['add_item_supply'] | null;
+  add_item_stable?: PoolsFieldProps['add_item_supply'] | null;
 }
 
 export default () => {
@@ -42,8 +48,9 @@ export default () => {
     register,
     setValue,
     watch,
+    reset,
     formState: { errors },
-  } = useForm<CollectionsFieldProps>();
+  } = useForm<PoolsFieldProps>();
 
   const [required, setRequired] = React.useState<Record<number, number>>({});
 
@@ -52,7 +59,7 @@ export default () => {
       id: 0,
       heading: 'General info',
       element: (
-        <CollectionsGeneral
+        <PoolsGeneral
           setValue={setValue}
           errors={errors}
           register={register}
@@ -63,10 +70,12 @@ export default () => {
     },
     {
       id: 1,
-      heading: 'Media data',
+      heading: 'Add item',
       element: (
-        <CollectionsMedia
+        <PoolsAddItem
           setValue={setValue}
+          errors={errors}
+          register={register}
           watch={watch}
           setRequired={setRequired}
         />
@@ -74,13 +83,13 @@ export default () => {
     },
   ];
 
-  const { activeStep, goToNext, goToPrevious } = useSteps({
+  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
   });
 
   return (
     <>
-      <GoBack heading="Create Collection" />
+      <GoBack heading="Create mint pool" />
 
       <StepValidate
         activeStep={activeStep}
@@ -115,7 +124,9 @@ export default () => {
                 </Button>
               </Flex>
 
-              <CollectionsModal
+              <PoolsModal
+                setActiveStep={setActiveStep}
+                reset={reset}
                 watch={watch}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]
@@ -125,11 +136,9 @@ export default () => {
           </VStack>
         </Box>
 
-        <Stack spacing={6}>
+        <Box>
           <Owner />
-
-          <Collaborators setValue={setValue} />
-        </Stack>
+        </Box>
       </DefaultForm>
     </>
   );
