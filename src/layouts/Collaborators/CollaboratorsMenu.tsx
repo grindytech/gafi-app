@@ -7,26 +7,29 @@ import {
   InputRightElement,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
 import { useAppSelector } from 'hooks/useRedux';
-import { useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import { shorten } from 'utils/utils';
 import AddIcon from 'public/assets/line/add.svg';
 import JohnPopover from 'layouts/John/JohnPopover';
+import { TypeCollaboratorsState } from './CollaboratorsUtils';
 
 interface CollaboratorsMenuProps {
-  setCollaborators: React.Dispatch<React.SetStateAction<Set<string[]>>>;
-  meta: string[];
   address: string;
+  index: number;
+  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorsState>>;
 }
 
 export default ({
-  meta,
+  index,
   address,
   setCollaborators,
 }: CollaboratorsMenuProps) => {
+  const toast = useToast();
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   const { allAccount } = useAppSelector(state => state.injected.polkadot);
@@ -34,14 +37,18 @@ export default ({
   const ref_input = useRef<HTMLInputElement>(null);
 
   const onChange = (address: string, name: string) => {
+    if (address.length < 48) {
+      return toast({
+        description: `address should be than 48 characters (you only ${address.length})`,
+        position: 'top-right',
+        isClosable: true,
+        status: 'error',
+      });
+    }
+
     setCollaborators(prev => {
-      const instance = new Set(prev);
-
-      // remove old
-      instance.delete(meta);
-
-      // add new
-      instance.add([meta[0], address, name]);
+      const instance = [...prev];
+      instance[index].account = { address, name };
 
       return instance;
     });

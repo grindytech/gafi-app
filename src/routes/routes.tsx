@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultRoot from 'layouts/DefaultLayout/DefaultRoot';
-import Web3 from 'pages/Web3';
 
 import Home from 'pages/Home';
-import { ListWeb3Item } from 'layouts/DefaultLayout/DefaultWeb3';
+
+import Creator from 'pages/Creator';
+import { ListCreatorItem } from 'layouts/DefaultLayout/DefaultCreator';
 
 const router = createBrowserRouter([
   {
@@ -15,11 +16,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'web3',
-        element: <Web3 />,
-        children: ListWeb3Item.map(web3 => ({
-          path: web3.link,
-          element: web3.element,
+        path: 'creator',
+        element: <Creator />,
+        children: ListCreatorItem.map(({ link, element }) => ({
+          path: link,
+          element,
         })),
       },
     ],

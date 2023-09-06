@@ -9,19 +9,17 @@ import ConnectWallet from 'components/ConnectWallet';
 const ListHeader = [
   {
     title: 'Creator',
-    link: '/web3',
+    link: '/creator',
   },
   {
     title: 'Blockchain',
-    link: 'https://gafi.network/',
+    link: 'https://gafi-market-fe-demo.web.app/blockchain/pools',
     target: '_blank',
-    isDisabled: true,
   },
   {
     title: 'Market Place',
-    link: 'https://gafi.network/2',
+    link: 'https://gafi-market-fe-demo.web.app/',
     target: '_blank',
-    isDisabled: true,
   },
 ];
 
@@ -80,8 +78,6 @@ export default function Header() {
                 color={isActive ? 'primary.a.300' : '#FAFAFA'}
                 fontSize="md"
                 fontWeight="medium"
-                opacity={header.isDisabled ? 0.4 : undefined}
-                pointerEvents={header.isDisabled ? 'none' : undefined}
               >
                 {header.target ? (
                   <a href={header.link} target={header.target}>
