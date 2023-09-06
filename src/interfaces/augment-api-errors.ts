@@ -162,13 +162,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    gameRandomness: {
-      InvalidSeed: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     grandpa: {
       /**
        * Attempt to signal GRANDPA change with one already pending.

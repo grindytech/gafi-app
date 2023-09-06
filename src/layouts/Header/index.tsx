@@ -15,11 +15,13 @@ const ListHeader = [
     title: 'Blockchain',
     link: 'https://gafi.network/',
     target: '_blank',
+    isDisabled: true,
   },
   {
     title: 'Market Place',
     link: 'https://gafi.network/2',
     target: '_blank',
+    isDisabled: true,
   },
 ];
 
@@ -78,6 +80,8 @@ export default function Header() {
                 color={isActive ? 'primary.a.300' : '#FAFAFA'}
                 fontSize="md"
                 fontWeight="medium"
+                opacity={header.isDisabled ? 0.4 : undefined}
+                pointerEvents={header.isDisabled ? 'none' : undefined}
               >
                 {header.target ? (
                   <a href={header.link} target={header.target}>

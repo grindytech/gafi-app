@@ -1,19 +1,13 @@
 import { Text as PolText } from '@polkadot/types';
-import {
-  Flex,
-  Text,
-  HStack,
-  Select,
-  Icon,
-  IconProps,
-  Box,
-} from '@chakra-ui/react';
-import CardBox from 'components/CardBox';
+import { Text, HStack, Select, Icon, IconProps, Box } from '@chakra-ui/react';
+
 import { useState, useEffect } from 'react';
 import SettingIcon from 'public/assets/line/setting.svg';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import config from 'config';
 import { setConnectSocket } from 'redux/substrate';
+import { convertHex } from 'utils/utils';
+import { colors } from 'theme/theme';
 
 interface nodeInfoProps {
   chain: PolText;
@@ -71,22 +65,43 @@ export default function HomeSubstrateNode() {
   };
 
   return (
-    <CardBox variant="baseStyle">
-      <Flex flexDirection="column">
-        <HStack mb={6}>
-          <Text color="shader.a.900" fontWeight="medium" fontSize="lg">
-            Substrate Node
+    <Box
+      borderRadius="xl"
+      border="0.0625rem solid"
+      borderColor="shader.a.800"
+      bg="shader.a.900"
+      width="full"
+      padding={4}
+    >
+      <HStack mb={6} color="white">
+        <Text color="white" fontWeight="medium" fontSize="lg">
+          Substrate Node
+        </Text>
+
+        <Box
+          width="0.3125rem"
+          height="0.3125rem"
+          bg="primary.a.400"
+          borderRadius="full"
+        />
+
+        <Text>
+          Total nodes:&nbsp;
+          <Text as="span" color="primary.a.400" fontWeight="medium">
+            {nodeInfo?.peers}
           </Text>
+        </Text>
+      </HStack>
 
-          <Box width={2} height={2} bg="primary.a.500" borderRadius="full" />
-
-          <Text>Total nodes: </Text>
-          <Text color="primary.a.500">{nodeInfo?.peers}</Text>
-        </HStack>
-
+      <Box>
         <Select
-          mb={3}
           defaultValue={socket}
+          color="white"
+          fontWeight="medium"
+          borderColor="shader.a.800"
+          bg={convertHex(colors.shader.a[800], 0.25)}
+          borderRadius="xl"
+          outline="unset"
           onChange={event => {
             setConnect(event.target.value);
           }}
@@ -98,11 +113,14 @@ export default function HomeSubstrateNode() {
           ))}
         </Select>
 
-        <HStack>
+        <HStack mt={3}>
           <Icon as={SettingIcon} width={4} height={4} color="primary.a.500" />
-          <Text color="shader.a.500">{nodeInfo?.nodeVersion}</Text>
+
+          <Text fontSize="sm" color="shader.a.500">
+            {nodeInfo?.nodeVersion}
+          </Text>
         </HStack>
-      </Flex>
-    </CardBox>
+      </Box>
+    </Box>
   );
 }

@@ -1,7 +1,6 @@
 import {
   Button,
   HStack,
-  Heading,
   useDisclosure,
   Text,
   Icon,
@@ -11,13 +10,13 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Box,
 } from '@chakra-ui/react';
 import { Metadata } from '@polkadot/types/metadata';
 import { useAppSelector } from 'hooks/useRedux';
 import SettingIcon from 'public/assets/line/setting.svg';
 import ReactJson from 'react-json-view';
 import { useState, useEffect } from 'react';
-import CardBox from 'components/CardBox';
 
 interface MetadataProps {
   data: Metadata | undefined;
@@ -45,20 +44,30 @@ export default function HomeMetaData() {
 
   return (
     <>
-      <CardBox variant="baseStyle">
-        <Heading as="h6" fontSize="lg" color="shader.a.900" mb={6}>
+      <Box
+        borderRadius="xl"
+        border="0.0625rem solid"
+        borderColor="shader.a.800"
+        bg="shader.a.900"
+        width="full"
+        padding={4}
+      >
+        <Text color="white" fontWeight="medium">
           Metadata
-        </Heading>
+        </Text>
 
-        <Button variant="primary" mb={3} width="full" onClick={onOpen}>
+        <Button mt={6} width="full" variant="primary" onClick={onOpen}>
           Show metadata
         </Button>
 
-        <HStack>
+        <HStack mt={3}>
           <Icon as={SettingIcon} width={4} height={4} color="primary.a.500" />
-          <Text color="shader.a.500">v{metadata?.version}</Text>
+
+          <Text fontSize="sm" color="shader.a.500">
+            v{metadata?.version}
+          </Text>
         </HStack>
-      </CardBox>
+      </Box>
 
       <Modal
         isOpen={isOpen}

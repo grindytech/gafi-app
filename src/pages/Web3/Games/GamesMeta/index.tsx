@@ -95,7 +95,7 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
   }, [avatar, banner, cover]);
 
   return (
-    <Flex gap={6} flexWrap="wrap">
+    <Flex width="full" gap={6} flexWrap="wrap">
       {fieldsSet.map(meta => (
         <BackgroundUpload
           key={meta.fieldName}

@@ -3,14 +3,9 @@ import AddIcon from 'public/assets/line/add.svg';
 
 interface CollaboratorsAddProps {
   options: string[];
-  collaborators: Set<(string | null)[]>;
-  setCollaborators: React.Dispatch<
-    React.SetStateAction<Set<(string | null)[]>>
-  >;
-  account: {
-    address: string;
-    name: string | null;
-  };
+  collaborators: Set<string[]>;
+  setCollaborators: React.Dispatch<React.SetStateAction<Set<string[]>>>;
+  account: { address: string; name: string };
 }
 
 export default ({

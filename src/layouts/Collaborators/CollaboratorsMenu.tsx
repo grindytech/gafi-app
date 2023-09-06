@@ -17,10 +17,8 @@ import AddIcon from 'public/assets/line/add.svg';
 import JohnPopover from 'layouts/John/JohnPopover';
 
 interface CollaboratorsMenuProps {
-  setCollaborators: React.Dispatch<
-    React.SetStateAction<Set<(string | null)[]>>
-  >;
-  meta: (string | null)[];
+  setCollaborators: React.Dispatch<React.SetStateAction<Set<string[]>>>;
+  meta: string[];
   address: string;
 }
 

@@ -12,13 +12,14 @@ export default function Home() {
       <HomeWelcome />
 
       <Grid
-        mt={4}
+        my={4}
         gridTemplateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
         gap={5}
       >
         <VStack gap={4}>
           <HStack width="full" flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
             <HomeBlockInfo type="bestNumber" />
+
             <HomeBlockInfo type="bestNumberFinalized" />
           </HStack>
 
