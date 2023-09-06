@@ -9,7 +9,6 @@ import {
   Button,
   Flex,
   HStack,
-  Heading,
   Text,
 } from '@chakra-ui/react';
 import { formatDistanceToNowStrict } from 'date-fns';
@@ -23,18 +22,25 @@ export default function HomeRecentEvent() {
     <Box
       height="fit-content"
       borderRadius="xl"
-      bg="white"
       border="0.0625rem solid"
-      borderColor="shader.a.300"
+      borderColor="shader.a.800"
+      bg="shader.a.900"
+      width="full"
+      color="white"
+      fontWeight="medium"
     >
-      <HStack justifyContent="space-between" padding={6}>
-        <Text color="shader.a.900" fontWeight="medium">
-          Recent events
-        </Text>
+      <HStack
+        justifyContent="space-between"
+        padding={6}
+        borderBottom="0.0625rem solid"
+        borderColor="shader.a.800"
+      >
+        <Text>Recent events</Text>
 
         <Button
           variant="unstyled"
-          color="primary.a.500"
+          color="primary.a.400"
+          fontSize="sm"
           height="auto"
           minWidth="auto"
           onClick={() => setEvent([])}
@@ -62,16 +68,11 @@ export default function HomeRecentEvent() {
                   gap={2}
                   alignItems="flex-start"
                 >
-                  <Heading
-                    as="h6"
-                    fontSize="md"
-                    fontWeight="medium"
-                    color="shader.a.600"
-                  >
+                  <Text>
                     {formatDistanceToNowStrict(timestamp, { addSuffix: true })}
                     &nbsp;
                     {eventName}
-                  </Heading>
+                  </Text>
 
                   <AccordionButton width="auto" padding={0} _hover={{}}>
                     <AccordionIcon />

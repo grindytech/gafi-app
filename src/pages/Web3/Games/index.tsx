@@ -16,10 +16,11 @@ import React from 'react';
 import GamesGeneral from './GamesGeneral';
 import GamesMeta from './GamesMeta';
 import GamesModal from './GamesModal';
-import Collaborators from 'layouts/Collaborators';
+
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
+import GamesCollaborator from './GamesCollaborator';
 
 export interface GamesFieldProps {
   general_game_title: string;
@@ -138,7 +139,7 @@ export default () => {
         <Stack spacing={6}>
           <Owner />
 
-          <Collaborators setValue={setValue} />
+          <GamesCollaborator />
         </Stack>
       </DefaultForm>
     </>

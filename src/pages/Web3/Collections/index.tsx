@@ -13,7 +13,6 @@ import { useForm } from 'react-hook-form';
 import StepValidate from 'components/StepValidate';
 import React from 'react';
 
-import Collaborators from 'layouts/Collaborators';
 import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import CollectionsGeneral from './CollectionsGeneral';
@@ -21,6 +20,7 @@ import CollectionsMedia from './CollectionsMedia';
 import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
 import { TypeMetadataOfCollection } from 'types';
+import CollectionAdmin from './CollectionAdmin';
 
 export interface CollectionsFieldProps {
   general_collection_title: string;
@@ -128,7 +128,7 @@ export default () => {
         <Stack spacing={6}>
           <Owner />
 
-          <Collaborators setValue={setValue} />
+          <CollectionAdmin />
         </Stack>
       </DefaultForm>
     </>

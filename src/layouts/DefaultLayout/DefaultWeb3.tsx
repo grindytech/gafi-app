@@ -47,14 +47,14 @@ export const ListWeb3Item = [
     title: 'Metadata',
     icon: <MetadataIcon />,
     link: '/web3/metadata',
-    element: <>comming soon</>,
+    element: <Box color="white">comming soon</Box>,
     background: 'gradient.linear.5',
   },
   {
     title: 'Upgrade',
     icon: <UpgradeIcon />,
     link: '/web3/upgrade',
-    element: <>comming soon</>,
+    element: <Box color="white">comming soon</Box>,
     background: 'gradient.linear.7',
   },
 ];

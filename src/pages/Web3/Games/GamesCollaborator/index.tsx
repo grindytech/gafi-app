@@ -1,44 +1,40 @@
 import { Box, Center, Icon } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
+import { useAppSelector } from 'hooks/useRedux';
+import CollaboratorsAdd from 'layouts/Collaborators/CollaboratorsAdd';
+import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
+import { useState } from 'react';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 
-import CollaboratorsMenu from './CollaboratorsMenu';
-import { useAppSelector } from 'hooks/useRedux';
+import GamesCollaboratorAdding from './GamesCollaboratorAdding';
 
-import { useState } from 'react';
-import CollaboratorsAdd from './CollaboratorsAdd';
-import { UseFormSetValue } from 'react-hook-form';
-
-export interface CollaboratorsServiceProps {
-  setValue: UseFormSetValue<any>;
+interface GamesCollaboratorPropsServiceProps {
   account: {
     address: string;
-    name: string | null;
+    name: string;
   };
 }
 
-interface CollaboratorsProps {
-  setValue: UseFormSetValue<any>;
-}
-
-export default ({ setValue }: CollaboratorsProps) => {
+export default () => {
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
     <>
-      {account?.address && account?.name ? (
-        <CollaboratorsService
-          setValue={setValue}
-          account={account as CollaboratorsServiceProps['account']}
+      {account?.address && account.name ? (
+        <GamesCollaboratorPropsService
+          account={account as GamesCollaboratorPropsServiceProps['account']}
         />
       ) : null}
     </>
   );
 };
 
-function CollaboratorsService({ account }: CollaboratorsServiceProps) {
+function GamesCollaboratorPropsService({
+  account,
+}: GamesCollaboratorPropsServiceProps) {
   const options = ['Admin', 'Freezer', 'Issuer'];
+
   const [collaborators, setCollaborators] = useState(
     new Set([['Admin', account.address, account.name]])
   );
@@ -47,7 +43,12 @@ function CollaboratorsService({ account }: CollaboratorsServiceProps) {
   const remove_collaborators = [...collaborators.keys()].length >= 2;
 
   return (
-    <Box color="white">
+    <Box>
+      <GamesCollaboratorAdding
+        length_collaborator={[...collaborators.keys()].length}
+        options={options}
+      />
+
       {[...collaborators.keys()].map(meta => (
         <Center
           key={meta[0]}
@@ -59,7 +60,7 @@ function CollaboratorsService({ account }: CollaboratorsServiceProps) {
           py={4}
           gap={2}
         >
-          <AvatarCollaborators meta={meta as string[]} options={options} />
+          <AvatarCollaborators meta={meta} options={options} />
 
           {remove_collaborators ? (
             <Icon
@@ -85,7 +86,7 @@ function CollaboratorsService({ account }: CollaboratorsServiceProps) {
 
           <CollaboratorsMenu
             meta={meta}
-            address={meta[1] as string}
+            address={meta[1]}
             setCollaborators={setCollaborators}
           />
         </Center>

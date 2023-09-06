@@ -1,5 +1,4 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
-import CardBox from 'components/CardBox';
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 
 import useBlockTime, { TypeUseBlockTime } from 'hooks/useBlockTime';
 
@@ -30,8 +29,15 @@ export default function HomeBlockInfo({ type }: HomeBlockInfoProps) {
   }, [blockNumber]);
 
   return (
-    <CardBox variant="baseStyle">
-      <HStack gap={6}>
+    <Box
+      borderRadius="xl"
+      border="0.0625rem solid"
+      borderColor="shader.a.800"
+      bg="shader.a.900"
+      width="full"
+      padding={4}
+    >
+      <HStack spacing={4}>
         {type === 'bestNumberFinalized' ? (
           <FinalizeBlockSVG />
         ) : (
@@ -39,23 +45,27 @@ export default function HomeBlockInfo({ type }: HomeBlockInfoProps) {
         )}
 
         <VStack alignItems="start" flex={1}>
-          <HStack justifyContent="space-between" width="full">
-            <Text color="shader.a.900" fontSize="md" fontWeight="medium">
+          <HStack
+            justifyContent="space-between"
+            width="full"
+            fontWeight="medium"
+          >
+            <Text color="white">
               {type === 'bestNumberFinalized'
                 ? 'Finalized Block'
                 : 'Current Block'}
             </Text>
 
-            <Text color="primary.a.500" fontSize="sm">
+            <Text color="primary.a.400" fontSize="sm">
               {blockNumberTimer}s
             </Text>
           </HStack>
 
-          <Text fontWeight="bold" color="primary.a.500">
+          <Text fontSize="2xl" fontWeight="bold" color="primary.a.400">
             {blockNumber}
           </Text>
         </VStack>
       </HStack>
-    </CardBox>
+    </Box>
   );
 }
