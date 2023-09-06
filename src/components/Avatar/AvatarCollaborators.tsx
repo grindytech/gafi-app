@@ -1,58 +1,42 @@
-import {
-  Box,
-  Center,
-  Flex,
-  FlexProps,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Center, Flex, FlexProps, Text } from '@chakra-ui/react';
 import AvatarJazzicon from './AvatarJazzicon';
 import ButtonCopy from 'components/ButtonCopy';
-import { colors } from 'theme/theme';
-import { convertHex, shorten } from 'utils/utils';
 
-import JohnPopover from 'layouts/John/JohnPopover';
+import { ColorOfCollaborator, convertHex, shorten } from 'utils/utils';
+
+import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
+import React from 'react';
 
 interface AvatarProfileProps {
-  meta: string[];
-  options?: string[];
+  role: TypeCollaboratorsRole;
+  account: { address: string; name: string };
+  changeRole?: React.ReactNode;
   sx?: FlexProps;
 }
 
-export default ({ meta, options, sx }: AvatarProfileProps) => {
-  const [role, address, name] = meta;
-
-  const { isOpen, onToggle, onClose } = useDisclosure();
-
-  const getColor = (type: string): string => {
-    if (type === 'Admin') return colors.primary.a[300];
-    if (type === 'Freezer') return '#ffffff';
-    if (type === 'Issuer') return '#ff7b00';
-
-    return 'undefined';
-  };
-
+export default ({ role, account, changeRole, sx }: AvatarProfileProps) => {
   return (
     <Flex gap={4} {...sx}>
       <AvatarJazzicon
-        address={address}
+        address={account.address}
         sx={{ width: '2.25rem', height: '2.25rem' }}
       />
 
       <Box fontWeight="bold">
         <Flex gap={2}>
-          <Text color="white">{name}</Text>
+          <Text color="white">{account.name}</Text>
 
           <Center
             py={1}
             px={2}
             borderRadius="2xl"
-            color={getColor(role)}
-            bg={convertHex(getColor(role), 0.15)}
+            color={ColorOfCollaborator(role)}
+            bg={convertHex(ColorOfCollaborator(role), 0.15)}
           >
             {role}
 
-            {options?.length ? (
+            {changeRole ? changeRole : null}
+            {/* {options?.length ? (
               <>
                 &nbsp;
                 <JohnPopover
@@ -92,13 +76,13 @@ export default ({ meta, options, sx }: AvatarProfileProps) => {
                     ))}
                 </JohnPopover>
               </>
-            ) : null}
+            ) : null} */}
           </Center>
         </Flex>
 
         <Flex gap={2} mt={2} color="shader.a.400" fontSize="sm">
-          {shorten(address, 12)}
-          <ButtonCopy value={address} />
+          {shorten(account.address, 12)}
+          <ButtonCopy value={account.address} />
         </Flex>
       </Box>
     </Flex>

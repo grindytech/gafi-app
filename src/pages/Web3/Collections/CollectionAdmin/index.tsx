@@ -2,6 +2,7 @@ import { Center } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
 import { useAppSelector } from 'hooks/useRedux';
 import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
+import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 import { useState } from 'react';
 
 interface CollectionAdminServiceProps {
@@ -26,15 +27,17 @@ export default () => {
 };
 
 function CollectionAdminService({ account }: CollectionAdminServiceProps) {
-  const [collaborators, setCollaborators] = useState(
-    new Set([['Admin', account.address, account.name]])
-  );
+  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>([
+    { role: 'Admin', account },
+  ]);
+
+  console.log('collaborators', collaborators);
 
   return (
     <>
-      {[...collaborators.keys()].map(meta => (
+      {collaborators.map((meta, index) => (
         <Center
-          key={meta[0]}
+          key={meta.role}
           position="relative"
           justifyContent="space-between"
           borderRadius="xl"
@@ -43,11 +46,11 @@ function CollectionAdminService({ account }: CollectionAdminServiceProps) {
           py={4}
           gap={2}
         >
-          <AvatarCollaborators meta={meta} />
+          <AvatarCollaborators account={meta.account} role={meta.role} />
 
           <CollaboratorsMenu
-            meta={meta}
-            address={meta[1]}
+            address={account.address}
+            index={index}
             setCollaborators={setCollaborators}
           />
         </Center>

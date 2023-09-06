@@ -1,10 +1,15 @@
 import { Center, Icon, Text } from '@chakra-ui/react';
 import AddIcon from 'public/assets/line/add.svg';
+import {
+  TypeCollaboratorsRole,
+  TypeCollaboratorsState,
+} from './CollaboratorsUtils';
+import { Dispatch, SetStateAction } from 'react';
 
 interface CollaboratorsAddProps {
-  options: string[];
-  collaborators: Set<string[]>;
-  setCollaborators: React.Dispatch<React.SetStateAction<Set<string[]>>>;
+  options: TypeCollaboratorsRole[];
+  collaborators: TypeCollaboratorsState;
+  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorsState>>;
   account: { address: string; name: string };
 }
 
@@ -36,19 +41,15 @@ export default ({
         cursor="pointer"
         onClick={() => {
           for (let i = 0; i < options.length; i++) {
-            // value existed ['owner', address] that mean item[0] === options[i]
-            const map_existed = [...collaborators].some(
-              meta => meta[0] === options[i]
+            const map_existed = collaborators.some(
+              ({ role }) => role === options[i]
             );
 
             if (!map_existed) {
-              // The option does not exist in metaSet, so add it.
-              setCollaborators(prev => {
-                const instance = new Set(prev);
-                instance.add([options[i], account.address, account.name]);
-
-                return instance;
-              });
+              setCollaborators(prev => [
+                ...prev,
+                { role: options[i], account },
+              ]);
               break;
             }
           }

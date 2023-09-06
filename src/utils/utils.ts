@@ -2,6 +2,7 @@ import config from 'config';
 import { chainDecimal } from './constants';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
+import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
 
 /** 
   @function convertHex(color: string, opacity: number)
@@ -131,4 +132,12 @@ export const CalculatorOfRarity = (weight: number, weights: number[]) => {
   const [prefix, suffixed] = calculatorTotal.split('.');
 
   return suffixed ? Number(calculatorTotal).toFixed(1) : prefix;
+};
+
+export const ColorOfCollaborator = (type: TypeCollaboratorsRole): string => {
+  if (type === 'Admin') return colors.primary.a[300];
+  if (type === 'Freezer') return '#ffffff';
+  if (type === 'Issuer') return '#ff7b00';
+
+  return 'undefined';
 };

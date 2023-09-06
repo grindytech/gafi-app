@@ -8,6 +8,11 @@ import { useState } from 'react';
 import CloseIcon from 'public/assets/fill/close.svg';
 
 import GamesCollaboratorAdding from './GamesCollaboratorAdding';
+import CollaboratorsRoleSwitch from 'layouts/Collaborators/CollaboratorsRoleSwitch';
+import {
+  TypeCollaboratorsRole,
+  TypeCollaboratorsState,
+} from 'layouts/Collaborators/CollaboratorsUtils';
 
 interface GamesCollaboratorPropsServiceProps {
   account: {
@@ -33,25 +38,25 @@ export default () => {
 function GamesCollaboratorPropsService({
   account,
 }: GamesCollaboratorPropsServiceProps) {
-  const options = ['Admin', 'Freezer', 'Issuer'];
+  const options: TypeCollaboratorsRole[] = ['Admin', 'Freezer', 'Issuer'];
 
-  const [collaborators, setCollaborators] = useState(
-    new Set([['Admin', account.address, account.name]])
-  );
+  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>([
+    { role: 'Admin', account },
+  ]);
 
-  const full_role = [...collaborators.keys()].length < 3;
-  const remove_collaborators = [...collaborators.keys()].length >= 2;
+  const remove_collaborators = collaborators.length >= 2;
+  const full_role = collaborators.length < 3;
 
   return (
     <Box>
       <GamesCollaboratorAdding
-        length_collaborator={[...collaborators.keys()].length}
+        length_collaborator={collaborators.length}
         options={options}
       />
 
-      {[...collaborators.keys()].map(meta => (
+      {collaborators.map(({ role, account }, index) => (
         <Center
-          key={meta[0]}
+          key={role}
           justifyContent="space-between"
           borderRadius="xl"
           bg="shader.a.900"
@@ -60,7 +65,18 @@ function GamesCollaboratorPropsService({
           py={4}
           gap={2}
         >
-          <AvatarCollaborators meta={meta} options={options} />
+          <AvatarCollaborators
+            role={role}
+            account={account}
+            changeRole={
+              <CollaboratorsRoleSwitch
+                options={options.filter(meta => meta !== role)}
+                role={role}
+                setCollaborators={setCollaborators}
+                index={index}
+              />
+            }
+          />
 
           {remove_collaborators ? (
             <Icon
@@ -74,19 +90,17 @@ function GamesCollaboratorPropsService({
               transform="translate(25%, -25%)"
               onClick={() => {
                 setCollaborators(prev => {
-                  const instance = new Set(prev);
+                  const filter = prev.filter(meta => meta.role !== role);
 
-                  instance.delete(meta);
-
-                  return instance;
+                  return filter;
                 });
               }}
             />
           ) : null}
 
           <CollaboratorsMenu
-            meta={meta}
-            address={meta[1]}
+            address={account.address}
+            index={index}
             setCollaborators={setCollaborators}
           />
         </Center>
