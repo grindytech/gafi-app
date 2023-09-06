@@ -22,7 +22,7 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
   const { general_join_game } = watch();
 
   const { data } = useQuery({
-    queryKey: ['web3_collection_menu', address],
+    queryKey: ['creator_collection_menu', address],
     queryFn: async () => {
       if (api && address) {
         const service = await api.query.game.game.entries();

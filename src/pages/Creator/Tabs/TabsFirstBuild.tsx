@@ -14,7 +14,7 @@ import LineAddIcon from 'public/assets/line/add.svg';
 import File05Icon from 'public/assets/files/file-05.svg';
 
 import { Link } from 'react-router-dom';
-import { ListWeb3Item } from 'layouts/DefaultLayout/DefaultWeb3';
+import { ListCreatorItem } from 'layouts/DefaultLayout/DefaultCreator';
 
 export default () => {
   return (
@@ -80,7 +80,7 @@ export default () => {
         }}
       >
         {React.Children.toArray(
-          ListWeb3Item.map(project => (
+          ListCreatorItem.map(project => (
             <Center
               as={Link}
               to={project.link}

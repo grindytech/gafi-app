@@ -21,13 +21,13 @@ export default ({ meta }: TabsNFTPanelProps) => {
 
 function TabsNFTPanelService({ meta }: { meta: TabsNFTDataProps[] }) {
   const { MetaCollection } = useMetaCollection({
-    key: `web3_tab_nft`,
+    key: `creator_tab_nft`,
     filter: 'collection_id',
     arg: meta.map(({ collection_id }) => collection_id),
   });
 
   const { metaNFT } = useMetaNFT({
-    key: `web3_tab_nft`,
+    key: `creator_tab_nft`,
     filter: 'collection_id',
     arg: meta.map(({ collection_id, nft_id }) => ({
       collection_id,
@@ -36,7 +36,7 @@ function TabsNFTPanelService({ meta }: { meta: TabsNFTDataProps[] }) {
   });
 
   const { itemBalanceOf } = useItemBalanceOf({
-    key: `web3_tab_nft`,
+    key: `creator_tab_nft`,
     filter: 'address',
     arg: meta.map(({ owner }) => owner),
   });

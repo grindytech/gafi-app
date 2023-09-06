@@ -9,8 +9,6 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 
-import DefaultWeb3 from 'layouts/DefaultLayout/DefaultWeb3';
-
 import React from 'react';
 
 import TabsGame, { TabsGameDataProps } from './Tabs/TabsGame';
@@ -23,17 +21,18 @@ import { isUndefined } from '@polkadot/util';
 import TabsFirstBuild from './Tabs/TabsFirstBuild';
 import ChakraBox from 'components/ChakraBox';
 import { Outlet, useLocation } from 'react-router-dom';
+import DefaultCreator from 'layouts/DefaultLayout/DefaultCreator';
 
-export interface Web3MetaProps {
+export interface CreatorProps {
   game?: TabsGameDataProps[] | undefined;
   collection?: TabsCollectionDataProps[] | undefined;
   nft?: TabsNFTDataProps[] | undefined;
 }
 
-export default function Web3() {
+export default () => {
   const { pathname } = useLocation();
   const [tab, setTab] = React.useState(0);
-  const [meta, setMeta] = React.useState<Web3MetaProps>({
+  const [meta, setMeta] = React.useState<CreatorProps>({
     game: undefined,
     collection: undefined,
     nft: undefined,
@@ -66,7 +65,7 @@ export default function Web3() {
 
   return (
     <>
-      {pathname === '/web3' ? (
+      {pathname === '/creator' ? (
         <>
           {isLoading && (
             <Center height="100vh">
@@ -83,7 +82,7 @@ export default function Web3() {
             overflow="hidden"
             pb={24}
           >
-            <DefaultWeb3>
+            <DefaultCreator>
               <Tabs
                 variant="unstyled"
                 onChange={index => setTab(index)}
@@ -168,7 +167,7 @@ export default function Web3() {
                   ))}
                 </TabPanels>
               </Tabs>
-            </DefaultWeb3>
+            </DefaultCreator>
           </Box>
         </>
       ) : (
@@ -178,4 +177,4 @@ export default function Web3() {
       )}
     </>
   );
-}
+};

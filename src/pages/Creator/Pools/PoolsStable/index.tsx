@@ -23,13 +23,13 @@ export default ({
   product,
 }: PoolsDynamicProp) => {
   const { MetaCollection } = useMetaCollection({
-    key: `web3_pool`,
+    key: `creator_pool`,
     filter: 'collection_id',
     arg: itemBalanceOf.map(({ collection_id }) => collection_id),
   });
 
   const { metaNFT } = useMetaNFT({
-    key: `web3_pool`,
+    key: `creator_pool`,
     filter: 'collection_id',
     arg: itemBalanceOf.map(({ nft_id, collection_id }) => ({
       nft_id,
@@ -38,7 +38,7 @@ export default ({
   });
 
   const { supplyOf } = useSupplyOf({
-    key: `web3_pool`,
+    key: `creator_pool`,
     filter: 'collection_id',
     arg: [...new Set(itemBalanceOf.map(item => item.collection_id))].map(
       collection_id => collection_id

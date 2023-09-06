@@ -42,7 +42,7 @@ function TabsCollectionPanelService({
   meta: TabsCollectionDataProps[];
 }) {
   const { MetaCollection } = useMetaCollection({
-    key: `web3_tab_collection`,
+    key: `creator_tab_collection`,
     filter: 'collection_id',
     arg: meta.map(({ collection_id }) => collection_id),
   });

@@ -3,7 +3,7 @@ import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
-import { Web3MetaProps } from 'pages/Web3';
+import { CreatorProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
 export interface TabsCollectionDataProps {
@@ -15,7 +15,7 @@ export interface TabsCollectionDataProps {
 }
 
 interface TabsCollectionProps {
-  setMeta: React.Dispatch<React.SetStateAction<Web3MetaProps>>;
+  setMeta: React.Dispatch<React.SetStateAction<CreatorProps>>;
 }
 
 export default ({ setMeta }: TabsCollectionProps) => {
@@ -23,7 +23,7 @@ export default ({ setMeta }: TabsCollectionProps) => {
   const { api } = useAppSelector(state => state.substrate);
 
   const { data } = useQuery({
-    queryKey: ['web3_tab_collection', account?.address],
+    queryKey: ['creator_tab_collection', account?.address],
     queryFn: async () => {
       if (api && account?.address) {
         const service = await api.query.nfts.collection.entries();

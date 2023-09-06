@@ -9,71 +9,71 @@ import ItemIcon from 'public/assets/fill/item.svg';
 import MetadataIcon from 'public/assets/fill/metadata.svg';
 import PoolsIcon from 'public/assets/line/pools.svg';
 import UpgradeIcon from 'public/assets/fill/upgrade.svg';
-import Games from 'pages/Web3/Games';
-import Collections from 'pages/Web3/Collections';
-import NFTs from 'pages/Web3/NFTs';
-import Pools from 'pages/Web3/Pools';
+import Games from 'pages/Creator/Games';
+import Collections from 'pages/Creator/Collections';
+import NFTs from 'pages/Creator/NFTs';
+import Pools from 'pages/Creator/Pools';
 
-export const ListWeb3Item = [
+export const ListCreatorItem = [
   {
     title: 'Games',
     icon: <GameIcon />,
     element: <Games />,
-    link: '/web3/games',
+    link: '/creator/games',
     background: 'gradient.linear.2',
   },
   {
     title: 'Collections',
     icon: <CollectionIcon />,
     element: <Collections />,
-    link: '/web3/collections',
+    link: '/creator/collections',
     background: 'gradient.linear.3',
   },
   {
     title: 'NFTs',
     icon: <ItemIcon />,
     element: <NFTs />,
-    link: '/web3/nft',
+    link: '/creator/nft',
     background: 'gradient.linear.4',
   },
   {
     title: 'Pools',
     icon: <PoolsIcon />,
     element: <Pools />,
-    link: '/web3/pools',
+    link: '/creator/pools',
     background: 'gradient.linear.6',
   },
   {
     title: 'Metadata',
     icon: <MetadataIcon />,
-    link: '/web3/metadata',
+    link: '/creator/metadata',
     element: <Box color="white">comming soon</Box>,
     background: 'gradient.linear.5',
   },
   {
     title: 'Upgrade',
     icon: <UpgradeIcon />,
-    link: '/web3/upgrade',
+    link: '/creator/upgrade',
     element: <Box color="white">comming soon</Box>,
     background: 'gradient.linear.7',
   },
 ];
 
-export default function DefaultWeb3({ children }: PropsWithChildren) {
+export default ({ children }: PropsWithChildren) => {
   return (
     <>
       <SimpleGrid
         columns={{
           base: 2,
           sm: 3,
-          xl: ListWeb3Item.length,
+          xl: ListCreatorItem.length,
         }}
         gap={4}
         mt={5}
         mb={12}
       >
         {React.Children.toArray(
-          ListWeb3Item.map(project => (
+          ListCreatorItem.map(project => (
             <Center
               as={Link}
               to={project.link}
@@ -111,4 +111,4 @@ export default function DefaultWeb3({ children }: PropsWithChildren) {
       {children}
     </>
   );
-}
+};

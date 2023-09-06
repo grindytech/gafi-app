@@ -4,7 +4,8 @@ import { PalletGameGameDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 
 import { useAppSelector } from 'hooks/useRedux';
-import { Web3MetaProps } from 'pages/Web3';
+import { CreatorProps } from 'pages/Creator';
+
 import { useEffect } from 'react';
 
 export interface TabsGameDataProps {
@@ -15,7 +16,7 @@ export interface TabsGameDataProps {
 }
 
 interface TabsGameProps {
-  setMeta: React.Dispatch<React.SetStateAction<Web3MetaProps>>;
+  setMeta: React.Dispatch<React.SetStateAction<CreatorProps>>;
 }
 
 export default ({ setMeta }: TabsGameProps) => {
@@ -23,7 +24,7 @@ export default ({ setMeta }: TabsGameProps) => {
   const { api } = useAppSelector(state => state.substrate);
 
   const { data } = useQuery({
-    queryKey: ['web3_tab_game', account?.address],
+    queryKey: ['creator_tab_game', account?.address],
     queryFn: async () => {
       if (api && account?.address) {
         const service = await api.query.game.game.entries();

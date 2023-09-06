@@ -80,7 +80,7 @@ export default ({
   };
 
   const { mutation, isLoading } = useSignAndSend({
-    key: [`web3_pool_create/${general_type}`],
+    key: [`creator_pool_create/${general_type}`],
     address: account?.address as string,
     onSuccess() {
       onClose();

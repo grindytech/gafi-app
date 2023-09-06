@@ -9,7 +9,7 @@ import ConnectWallet from 'components/ConnectWallet';
 const ListHeader = [
   {
     title: 'Creator',
-    link: '/web3',
+    link: '/creator',
   },
   {
     title: 'Blockchain',

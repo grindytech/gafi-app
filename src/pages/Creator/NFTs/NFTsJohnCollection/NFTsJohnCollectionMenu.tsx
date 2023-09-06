@@ -25,7 +25,7 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
   const { general_join_collection } = watch();
 
   const { data } = useQuery({
-    queryKey: ['web3_nft_menu', address],
+    queryKey: ['creator_nft_menu', address],
     queryFn: async () => {
       if (api && address) {
         const service = await api.query.nfts.collection.entries();
