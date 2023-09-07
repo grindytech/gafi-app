@@ -1,11 +1,4 @@
-import {
-  Box,
-  Center,
-  Input,
-  Switch,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Center, Input, Text, useDisclosure } from '@chakra-ui/react';
 import ChakraBox from 'components/ChakraBox';
 import { AnimatePresence } from 'framer-motion';
 import {
@@ -17,6 +10,7 @@ import { colors } from 'theme/theme';
 import { convertHex } from 'utils/utils';
 import { PoolsFieldProps } from '..';
 import { useEffect } from 'react';
+import SwitchMode from 'components/SwitchMode';
 
 interface NFTsAmountProps {
   register: UseFormRegister<PoolsFieldProps>;
@@ -62,23 +56,7 @@ export default ({ register, setValue, watch }: NFTsAmountProps) => {
           </Text>
         </Box>
 
-        <Box
-          sx={{
-            span: {
-              '--switch-bg': '#3F3F46',
-              border: '0.0625rem solid',
-              borderColor: 'shader.a.600',
-              borderRadius: 'xl',
-              padding: 1,
-
-              '&[data-checked]': {
-                '--switch-bg': '#71717A',
-              },
-            },
-          }}
-        >
-          <Switch id="isReadOnly" isChecked={isOpen} onChange={onToggle} />
-        </Box>
+        <SwitchMode isChecked={isOpen} onChange={onToggle} />
       </Center>
 
       <AnimatePresence>

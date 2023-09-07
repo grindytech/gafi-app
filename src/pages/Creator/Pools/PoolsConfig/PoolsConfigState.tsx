@@ -1,9 +1,10 @@
-import { Box, Center, Switch, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Center, Text, useDisclosure } from '@chakra-ui/react';
 import ChakraBox from 'components/ChakraBox';
 import { AnimatePresence } from 'framer-motion';
 import { PropsWithChildren, useEffect } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { PoolsFieldProps } from '..';
+import SwitchMode from 'components/SwitchMode';
 
 interface PoolsConfigStateProps extends PropsWithChildren {
   watch: PoolsFieldProps['add_item_supply'] | null;
@@ -51,23 +52,7 @@ export default ({
           </Text>
         </Box>
 
-        <Box
-          sx={{
-            span: {
-              '--switch-bg': '#3F3F46',
-              border: '0.0625rem solid',
-              borderColor: 'shader.a.600',
-              borderRadius: 'xl',
-              padding: 1,
-
-              '&[data-checked]': {
-                '--switch-bg': '#71717A',
-              },
-            },
-          }}
-        >
-          <Switch id="isReadOnly" isChecked={isOpen} onChange={onToggle} />
-        </Box>
+        <SwitchMode isChecked={isOpen} onChange={onToggle} />
       </Center>
 
       <AnimatePresence>

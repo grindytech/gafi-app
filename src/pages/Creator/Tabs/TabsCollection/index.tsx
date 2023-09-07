@@ -1,9 +1,9 @@
 import { Text } from '@chakra-ui/react';
-import { Option, StorageKey, u32 } from '@polkadot/types';
+import { Option, StorageKey, u32, u8 } from '@polkadot/types';
 import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
-import { CreatorProps } from 'pages/Creator';
+import { CreatorLoadingProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
 export interface TabsCollectionDataProps {
@@ -15,14 +15,14 @@ export interface TabsCollectionDataProps {
 }
 
 interface TabsCollectionProps {
-  setMeta: React.Dispatch<React.SetStateAction<CreatorProps>>;
+  setLoading: React.Dispatch<React.SetStateAction<CreatorLoadingProps>>;
 }
 
-export default ({ setMeta }: TabsCollectionProps) => {
+export default ({ setLoading }: TabsCollectionProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['creator_tab_collection', account?.address],
     queryFn: async () => {
       if (api && account?.address) {
@@ -41,19 +41,17 @@ export default ({ setMeta }: TabsCollectionProps) => {
               const getOwner =
                 option.value.owner.toString() === account.address;
 
-              const getRole = await api.query.nfts.collectionRoleOf.entries(
-                collection_id.args[0].toNumber()
-              );
+              const getRole = (await api.query.nfts.collectionRoleOf(
+                collection_id.args[0].toNumber(),
+                account.address
+              )) as Option<u8>;
 
-              if (
-                getOwner ||
-                getRole[0][0].args[1].toString() === account.address
-              ) {
+              if (getOwner || getRole.isSome) {
                 return {
                   game: game.toJSON(),
                   collection_id: collection_id.args[0].toNumber(),
                   owner: option.value.owner.toString(),
-                  role: getRole[0][0].args[1].toString(),
+                  role: account.address,
                   items: option.value.items.toNumber(),
                 } as TabsCollectionDataProps;
               }
@@ -71,9 +69,12 @@ export default ({ setMeta }: TabsCollectionProps) => {
   });
 
   useEffect(() => {
-    setMeta(prev => ({
+    setLoading(prev => ({
       ...prev,
-      collection: data,
+      collection: {
+        loading: isLoading,
+        data,
+      },
     }));
   }, [data]);
 
@@ -81,7 +82,7 @@ export default ({ setMeta }: TabsCollectionProps) => {
     <>
       <Text>Collection</Text>
 
-      <Text as="span">{data?.length}</Text>
+      <Text as="span">{data?.length || 0}</Text>
     </>
   );
 };

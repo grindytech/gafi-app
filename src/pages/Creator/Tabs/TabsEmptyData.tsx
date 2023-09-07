@@ -4,6 +4,7 @@ import ServicesIcon from 'public/assets/services.svg';
 export default () => {
   return (
     <Center
+      gridColumn="span 4"
       flexDirection="column"
       height="50vh"
       fontWeight="medium"
