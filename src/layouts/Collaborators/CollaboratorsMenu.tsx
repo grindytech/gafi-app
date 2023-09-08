@@ -4,19 +4,22 @@ import {
   Icon,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
   Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
-import ButtonCopy from 'components/ButtonCopy';
+
 import { useAppSelector } from 'hooks/useRedux';
-import { Dispatch, SetStateAction, useRef } from 'react';
-import { shorten } from 'utils/utils';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { convertHex, shorten } from 'utils/utils';
 import AddIcon from 'public/assets/line/add.svg';
 import JohnPopover from 'layouts/John/JohnPopover';
 import { TypeCollaboratorsState } from './CollaboratorsUtils';
+import UserIcon from 'public/assets/line/user.svg';
+import { colors } from 'theme/theme';
 
 interface CollaboratorsMenuProps {
   address: string;
@@ -34,7 +37,7 @@ export default ({
 
   const { allAccount } = useAppSelector(state => state.injected.polkadot);
 
-  const ref_input = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState('');
 
   const onChange = (address: string, name: string) => {
     if (address.length < 48) {
@@ -53,6 +56,7 @@ export default ({
       return instance;
     });
 
+    setText('');
     onClose();
   };
 
@@ -77,28 +81,46 @@ export default ({
             }}
           >
             <Box padding={6}>
-              <InputGroup>
+              <InputGroup height={10}>
+                <InputLeftElement height="full">
+                  <Icon
+                    as={UserIcon}
+                    width={5}
+                    height={5}
+                    color="shader.a.500"
+                  />
+                </InputLeftElement>
+
                 <Input
-                  variant="validate"
-                  placeholder="Ex: 0x100"
+                  variant="unstyled"
+                  placeholder="Add more collaborators"
+                  color="shader.a.300"
+                  _placeholder={{ color: 'shader.a.500' }}
                   border="0.0625rem solid"
-                  borderColor="shader.a.700"
+                  borderColor="shader.a.800"
+                  bg={convertHex(colors.shader.a[800], 0.25)}
+                  pl={9}
+                  pr={9}
                   borderRadius="lg"
-                  ref={ref_input}
+                  _focusVisible={{
+                    borderColor: 'primary.a.400',
+                  }}
+                  value={text}
+                  onChange={({ target }) => setText(target.value)}
                 />
 
-                <InputRightElement>
+                <InputRightElement
+                  height="full"
+                  opacity={text ? 1 : 0}
+                  pointerEvents={text ? undefined : 'none'}
+                >
                   <Icon
                     as={AddIcon}
                     width={6}
                     height={6}
                     color="primary.a.300"
                     cursor="pointer"
-                    onClick={() => {
-                      if (ref_input.current) {
-                        onChange(ref_input.current.value, '-');
-                      }
-                    }}
+                    onClick={() => onChange(text, '')}
                   />
                 </InputRightElement>
               </InputGroup>
@@ -127,10 +149,9 @@ export default ({
                   <Box fontWeight="bold">
                     <Text color="white">{meta.name}</Text>
 
-                    <Flex gap={1} mt={2} color="shader.a.400" fontSize="sm">
+                    <Text mt={2} color="shader.a.400" fontSize="sm">
                       {shorten(meta.address, 12)}
-                      <ButtonCopy value={meta.address} />
-                    </Flex>
+                    </Text>
                   </Box>
                 </Flex>
               ))}

@@ -1,4 +1,12 @@
-import { Box, Center, Input, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import ChakraBox from 'components/ChakraBox';
 import { AnimatePresence } from 'framer-motion';
 import {
@@ -71,15 +79,41 @@ export default ({ register, setValue, watch }: NFTsAmountProps) => {
             borderRadius="0 0 0.75rem 0.75rem"
             padding={4}
           >
-            <Input
-              type="number"
-              variant="validate"
-              placeholder="Enter weight"
+            <Text mb={4} fontSize="sm" fontWeight="medium" color="shader.a.400">
+              Weight
+            </Text>
+
+            <InputGroup
+              borderRadius="xl"
               border="0.0625rem solid"
-              borderColor="shader.a.800"
-              bg={convertHex(colors.shader.a[800], 0.25)}
-              {...register('add_item_failed')}
-            />
+              borderColor="shader.a.700"
+              height={12}
+            >
+              <Input
+                type="number"
+                variant="unstyled"
+                placeholder="Enter weight"
+                px={3}
+                color="shader.a.300"
+                _placeholder={{ color: 'shader.a.500' }}
+                {...register('add_item_failed')}
+              />
+
+              <InputRightAddon
+                color="shader.a.300"
+                bg={convertHex(colors.shader.a[800], 0.25)}
+                border="unset"
+                borderLeft="0.0625rem solid"
+                borderColor="shader.a.800"
+                px={3.5}
+                height="full"
+              >
+                Rarity:&nbsp;
+                <Text as="span" color="white" fontWeight="medium">
+                  {add_item_failed || 0}%
+                </Text>
+              </InputRightAddon>
+            </InputGroup>
           </ChakraBox>
         ) : null}
       </AnimatePresence>

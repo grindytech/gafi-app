@@ -15,18 +15,17 @@ interface StepValidateProps {
 
 export default ({ steps, activeStep }: StepValidateProps) => {
   return (
-    <Stepper justifyContent="unset" index={activeStep}>
+    <Stepper gap={2} justifyContent="unset" index={activeStep}>
       {steps.map((step, index) => (
         <Step style={{ flex: 'unset' }} key={index}>
           <StepIndicator
             width="auto"
-            height="auto"
+            height={8}
             border="0.125rem solid transparent"
             transitionDuration="ultra-slow"
             cursor="pointer"
             fontSize="sm"
             px={3}
-            py={2}
             sx={{
               '&[data-status=active]': {
                 borderColor: 'primary.a.500',
@@ -37,7 +36,7 @@ export default ({ steps, activeStep }: StepValidateProps) => {
                 color: 'white',
               },
               '&[data-status=incomplete]': {
-                bg: 'shader.a.600',
+                bg: 'shader.a.700',
                 color: 'shader.a.500',
               },
             }}
@@ -45,13 +44,15 @@ export default ({ steps, activeStep }: StepValidateProps) => {
             <StepStatus active={step} complete={step} incomplete={step} />
           </StepIndicator>
 
-          <Icon
-            as={Chevron01Icon}
-            width={4}
-            height={4}
-            transform="rotate(-90deg)"
-            color="shader.a.700"
-          />
+          {index < steps.length - 1 ? (
+            <Icon
+              as={Chevron01Icon}
+              width={4}
+              height={4}
+              transform="rotate(-90deg)"
+              color={activeStep === index ? 'shader.a.700' : 'primary.a.500'}
+            />
+          ) : null}
         </Step>
       ))}
     </Stepper>
