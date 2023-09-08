@@ -8,8 +8,13 @@ import { CollectionsFieldProps } from '..';
 import JohnPopover from 'layouts/John/JohnPopover';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
-import { useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
+import useMetaGame from 'hooks/useMetaGame';
 
+interface CollectionJohnGamesMenuServiceProps
+  extends Omit<CollectionsJohnGameMenuProps, 'address'> {
+  data: { game_id: number }[];
+}
 interface CollectionsJohnGameMenuProps {
   setValue: UseFormSetValue<CollectionsFieldProps>;
   watch: UseFormWatch<CollectionsFieldProps>;
@@ -18,8 +23,6 @@ interface CollectionsJohnGameMenuProps {
 
 export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
   const { api } = useAppSelector(state => state.substrate);
-  const { isOpen, onClose, onToggle } = useDisclosure();
-  const { general_join_game } = watch();
 
   const { data } = useQuery({
     queryKey: ['creator_collection_menu', address],
@@ -39,7 +42,6 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
               if (getOwner || getRole) {
                 return {
                   game_id: game_id.args[0].toNumber(),
-                  option: null,
                 };
               }
             }
@@ -55,12 +57,38 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
     enabled: !!api?.query.nfts,
   });
 
-  const filter = data?.length
-    ? data.filter(
-        meta =>
-          !general_join_game?.some(({ game_id }) => meta.game_id === game_id)
-      )
-    : null;
+  return (
+    <Flex justifyContent={data?.length ? 'flex-end' : undefined} flex={1}>
+      {data?.length ? (
+        <CollectionJohnGamesMenuService
+          watch={watch}
+          data={data}
+          setValue={setValue}
+        />
+      ) : (
+        <JohnPopoverEmpty />
+      )}
+    </Flex>
+  );
+};
+
+function CollectionJohnGamesMenuService({
+  data,
+  setValue,
+  watch,
+}: CollectionJohnGamesMenuServiceProps) {
+  const { isOpen, onClose, onToggle } = useDisclosure();
+  const { general_join_game } = watch();
+
+  const unique_john_game = data.filter(
+    ({ game_id }) => general_join_game?.game_id !== game_id
+  );
+
+  const { MetaGame } = useMetaGame({
+    key: `creator_create_collection`,
+    filter: 'game_id',
+    arg: data.map(({ game_id }) => game_id),
+  });
 
   return (
     <JohnPopover
@@ -70,25 +98,32 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
       sx={{
         sx: {
           '.chakra-popover__content': {
-            height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+            height: unique_john_game.length >= 3 ? '10rem' : 'fit-content',
           },
         },
       }}
     >
-      {filter?.length ? (
-        filter.map(meta => (
+      {unique_john_game.map(({ game_id }) => {
+        const currentMetaGame = MetaGame?.find(
+          meta => meta.game_id === game_id
+        );
+
+        return (
           <JohnPopoverJSX
-            key={meta.game_id}
-            id={meta.game_id}
-            name="-"
+            key={game_id}
+            id={game_id}
+            image={currentMetaGame?.avatar}
+            name={currentMetaGame?.title}
             onClick={() => {
-              setValue(`general_join_game.${meta.game_id}`, meta);
+              onClose();
+              setValue(`general_join_game`, {
+                game_id,
+                option: currentMetaGame,
+              });
             }}
           />
-        ))
-      ) : (
-        <JohnPopoverEmpty />
-      )}
+        );
+      })}
     </JohnPopover>
   );
-};
+}

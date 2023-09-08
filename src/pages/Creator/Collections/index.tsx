@@ -19,7 +19,7 @@ import CollectionsGeneral from './CollectionsGeneral';
 import CollectionsMedia from './CollectionsMedia';
 import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
-import { TypeMetadataOfCollection } from 'types';
+import { TypeMetadataOfGame } from 'types';
 import CollectionAdmin from './CollectionAdmin';
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 
@@ -29,8 +29,8 @@ export interface CollectionsFieldProps {
   general_external_url: string;
   general_join_game?: {
     game_id: number;
-    option?: TypeMetadataOfCollection | null;
-  }[];
+    option?: TypeMetadataOfGame;
+  };
 
   // role
   collaborator: TypeCollaboratorsState;

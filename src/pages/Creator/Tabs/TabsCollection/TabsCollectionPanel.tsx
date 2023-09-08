@@ -19,6 +19,7 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
+import useMetaGame from 'hooks/useMetaGame';
 
 interface TabsCollectionPanelProps {
   meta: TabsCollectionDataProps[] | undefined;
@@ -45,6 +46,15 @@ function TabsCollectionPanelService({
     key: `creator_tab_collection`,
     filter: 'collection_id',
     arg: meta.map(({ collection_id }) => collection_id),
+  });
+
+  const { MetaGame } = useMetaGame({
+    key: `creator_tab_collection`,
+    filter: `game_id`,
+    arg: meta
+      .filter(({ game }) => game.length)
+      .map(meta => meta.game)
+      .flat(),
   });
 
   return (
@@ -136,36 +146,44 @@ function TabsCollectionPanelService({
                         Joined games
                       </Text>
 
-                      {game.map(meta => (
-                        <MenuItem
-                          key={meta}
-                          bg="transparent"
-                          display="flex"
-                          gap={3}
-                          padding={2}
-                          borderRadius="lg"
-                          _hover={{
-                            bg: convertHex(colors.shader.a[800], 0.65),
-                          }}
-                        >
-                          <RatioPicture
-                            src={`https://picsum.photos/id/${Math.round(
-                              Math.random() * 50
-                            )}/200/300`}
-                            sx={{ width: 10, height: 10 }}
-                          />
+                      {game.map(game_id => {
+                        const currentMetaGame = MetaGame?.find(
+                          meta => meta.game_id === game_id
+                        );
 
-                          <Box pr={32}>
-                            <Text color="white">
-                              {Math.random().toString(36).slice(2, 10)}
-                            </Text>
+                        return (
+                          <MenuItem
+                            key={game_id}
+                            bg="transparent"
+                            display="flex"
+                            gap={3}
+                            padding={2}
+                            borderRadius="lg"
+                            _hover={{
+                              bg: convertHex(colors.shader.a[800], 0.65),
+                            }}
+                          >
+                            <RatioPicture
+                              src={
+                                currentMetaGame?.avatar
+                                  ? cloundinary_link(currentMetaGame.avatar)
+                                  : null
+                              }
+                              sx={{ width: 10, height: 10 }}
+                            />
 
-                            <Text as="span" fontWeight="normal" fontSize="sm">
-                              ID: {meta}
-                            </Text>
-                          </Box>
-                        </MenuItem>
-                      ))}
+                            <Box pr={32}>
+                              <Text color="white">
+                                {currentMetaGame?.title}
+                              </Text>
+
+                              <Text as="span" fontWeight="normal" fontSize="sm">
+                                ID: {game_id}
+                              </Text>
+                            </Box>
+                          </MenuItem>
+                        );
+                      })}
                     </MenuList>
                   ) : null}
                 </Menu>
