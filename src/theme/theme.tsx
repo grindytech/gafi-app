@@ -104,11 +104,10 @@ const Button: ComponentStyleConfig = {
       fontWeight: 'medium',
 
       _disabled: {
-        color: '#71717A',
-        bg: '#3F3F46',
-
-        ['&:hover[disabled]']: {
-          background: '#3F3F46',
+        // & mean it's me
+        ['&, &:hover[disabled]']: {
+          color: '#71717A',
+          bg: '#3F3F46',
         },
       },
 

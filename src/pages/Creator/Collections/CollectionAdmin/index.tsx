@@ -6,21 +6,28 @@ import {
   TypeCollaboratorsRole,
   TypeCollaboratorsState,
 } from 'layouts/Collaborators/CollaboratorsUtils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CollaboratorsRoleSwitch from 'layouts/Collaborators/CollaboratorsRoleSwitch';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 import CollaboratorsAdd from 'layouts/Collaborators/CollaboratorsAdd';
+import { UseFormSetValue } from 'react-hook-form';
+import { CollectionsFieldProps } from '..';
 
 interface CollectionAdminServiceProps {
   account: {
     address: string;
     name: string;
   };
+  setValue: UseFormSetValue<CollectionsFieldProps>;
 }
 
-export default () => {
+interface CollectionAdminProps {
+  setValue: UseFormSetValue<CollectionsFieldProps>;
+}
+
+export default ({ setValue }: CollectionAdminProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
@@ -28,18 +35,26 @@ export default () => {
       {account?.address && account.name && (
         <CollectionAdminService
           account={account as CollectionAdminServiceProps['account']}
+          setValue={setValue}
         />
       )}
     </>
   );
 };
 
-function CollectionAdminService({ account }: CollectionAdminServiceProps) {
+function CollectionAdminService({
+  account,
+  setValue,
+}: CollectionAdminServiceProps) {
   const options: TypeCollaboratorsRole[] = ['Admin', 'Freezer', 'Issuer'];
 
   const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>([
     { role: 'Admin', account },
   ]);
+
+  useEffect(() => {
+    setValue(`collaborator`, collaborators);
+  }, [collaborators]);
 
   const remove_collaborators = collaborators.length >= 2;
   const full_role = collaborators.length < 3;

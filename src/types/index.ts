@@ -5,15 +5,14 @@ export type TypeReturnJSXElement = {
 };
 
 // substrate
-export type TypeMetadataOfCollection =
-  | {
-      description: string;
-      external_url: string;
-      image: string;
-      title: string;
-      collection_id: number;
-    }
-  | undefined;
+export type TypeMetadataOfCollection = {
+  title: string;
+  description: string;
+  external_url: string;
+  avatar: string;
+  banner?: string;
+  cover?: string;
+};
 
 export type TypeMetadataOfItem =
   | {

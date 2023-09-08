@@ -36,7 +36,7 @@ export default ({ setValue, watch, setRequired }: CollectionsMedia) => {
       isRequired: true,
       name: 'Background Avatar',
       size: '320x320px',
-      onChange: setAvatar,
+      onChange: setAvatar as never,
       value: avatar,
       sx: {
         width: { base: 'full', md: '11.25rem' },
@@ -94,7 +94,7 @@ export default ({ setValue, watch, setRequired }: CollectionsMedia) => {
       ...prev,
       1: fieldsRequired(),
     }));
-  }, [avatar, banner, cover]);
+  }, [media_avatar, media_banner, media_cover]);
 
   return (
     <Flex gap={6} flexWrap="wrap" width="full">

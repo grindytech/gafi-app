@@ -1,4 +1,4 @@
-import { UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import { CollectionsFieldProps } from '..';
 import {
   Button,
@@ -14,14 +14,47 @@ import {
 } from '@chakra-ui/react';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
+import { useAppSelector } from 'hooks/useRedux';
+import useSignAndSend from 'hooks/useSignAndSend';
+import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
+import cloudinary_axios, {
+  cloudinary_config,
+  cloudinary_upload_type,
+} from 'axios/cloudinary_axios';
 
 interface CollectionsModalProps {
   isDisabled: boolean;
-  watch: UseFormWatch<CollectionsFieldProps>;
+  getValues: UseFormGetValues<CollectionsFieldProps>;
+  onSuccess: () => void;
 }
 
-export default ({ isDisabled }: CollectionsModalProps) => {
+export default ({
+  onSuccess,
+  getValues,
+  isDisabled,
+}: CollectionsModalProps) => {
+  const {
+    general_collection_title,
+    general_description,
+    general_external_url,
+    media_avatar,
+    media_banner,
+    media_cover,
+    collaborator,
+  } = getValues();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAppSelector(state => state.injected.polkadot);
+
+  const { isLoading, setIsLoading, mutation } = useSignAndSend({
+    key: [`create_collection`, account?.address as string],
+    address: account?.address as string,
+    onSuccess() {
+      onSuccess();
+      onClose();
+    },
+  });
 
   return (
     <>
@@ -69,8 +102,47 @@ export default ({ isDisabled }: CollectionsModalProps) => {
             <Button
               width="full"
               variant="primary"
+              isLoading={isLoading}
               onClick={() => {
-                alert('cooming soon');
+                if (api) {
+                  const formData = new FormData();
+                  formData.append('file', media_avatar);
+                  formData.append(
+                    'upload_preset',
+                    String(cloudinary_config.preset_key)
+                  );
+
+                  setIsLoading(true);
+
+                  cloudinary_axios
+                    .post(cloudinary_upload_type.image, formData)
+                    .then(item => {
+                      const parse = JSON.stringify({
+                        title: general_collection_title,
+                        description: general_description,
+                        external_url: general_external_url,
+                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
+                        banner: media_banner,
+                        cover: media_cover,
+                      });
+
+                      mutation(
+                        api?.tx.game.createCollectionWithData(
+                          group('Admin') as string,
+                          parse,
+                          group('Issuer'),
+                          group('Freezer')
+                        )
+                      );
+                    });
+                }
+
+                const group = (type: TypeCollaboratorsRole) => {
+                  return (
+                    collaborator.find(({ role }) => role === type)?.account
+                      .address || null
+                  );
+                };
               }}
             >
               Sign & Submit

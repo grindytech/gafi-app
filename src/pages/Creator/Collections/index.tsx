@@ -21,6 +21,7 @@ import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
 import { TypeMetadataOfCollection } from 'types';
 import CollectionAdmin from './CollectionAdmin';
+import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 
 export interface CollectionsFieldProps {
   general_collection_title: string;
@@ -31,8 +32,11 @@ export interface CollectionsFieldProps {
     option?: TypeMetadataOfCollection | null;
   }[];
 
+  // role
+  collaborator: TypeCollaboratorsState;
+
   // media
-  media_avatar: File | undefined;
+  media_avatar: File;
   media_banner: File | undefined;
   media_cover: File | undefined;
 }
@@ -43,6 +47,8 @@ export default () => {
     setValue,
     watch,
     formState: { errors },
+    getValues,
+    reset,
   } = useForm<CollectionsFieldProps>();
 
   const [required, setRequired] = React.useState<Record<number, number>>({});
@@ -74,7 +80,7 @@ export default () => {
     },
   ];
 
-  const { activeStep, goToNext, goToPrevious } = useSteps({
+  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
   });
 
@@ -116,7 +122,11 @@ export default () => {
               </Flex>
 
               <CollectionsModal
-                watch={watch}
+                getValues={getValues}
+                onSuccess={() => {
+                  setActiveStep(0);
+                  reset();
+                }}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]
                 }
@@ -128,7 +138,7 @@ export default () => {
         <Stack spacing={6}>
           <Owner />
 
-          <CollectionAdmin />
+          <CollectionAdmin setValue={setValue} watch={watch} />
         </Stack>
       </DefaultForm>
     </>

@@ -64,8 +64,8 @@ function TabsCollectionPanelService({
             <Box position="relative">
               <RatioPicture
                 src={
-                  currentMetaCollection?.image
-                    ? cloundinary_link(currentMetaCollection.image)
+                  currentMetaCollection?.avatar
+                    ? cloundinary_link(currentMetaCollection.avatar)
                     : null
                 }
               />
