@@ -12,7 +12,7 @@ export default ({ length, onToggle }: PoolsConfigEditProps) => {
     <Center
       position="sticky"
       top={0}
-      py={4}
+      mb={4}
       bg="shader.a.900"
       justifyContent="space-between"
       zIndex="docked"

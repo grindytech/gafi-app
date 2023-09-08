@@ -4,7 +4,7 @@ import { PalletNftsItemDetails } from '@polkadot/types/lookup';
 import { isNull } from '@polkadot/util';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from 'hooks/useRedux';
-import { CreatorProps } from 'pages/Creator';
+import { CreatorLoadingProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
 export interface TabsNFTDataProps {
@@ -15,14 +15,14 @@ export interface TabsNFTDataProps {
 }
 
 interface TabsCollectionProps {
-  setMeta: React.Dispatch<React.SetStateAction<CreatorProps>>;
+  setLoading: React.Dispatch<React.SetStateAction<CreatorLoadingProps>>;
 }
 
-export default ({ setMeta }: TabsCollectionProps) => {
+export default ({ setLoading }: TabsCollectionProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['creator_tab_nft', account?.address],
     queryFn: async () => {
       if (api && account?.address) {
@@ -67,9 +67,12 @@ export default ({ setMeta }: TabsCollectionProps) => {
   });
 
   useEffect(() => {
-    setMeta(prev => ({
+    setLoading(prev => ({
       ...prev,
-      nft: data,
+      nft: {
+        loading: isLoading,
+        data,
+      },
     }));
   }, [data]);
 
@@ -77,7 +80,7 @@ export default ({ setMeta }: TabsCollectionProps) => {
     <>
       <Text>NFT</Text>
 
-      <Text as="span">{data?.length}</Text>
+      <Text as="span">{data?.length || 0}</Text>
     </>
   );
 };

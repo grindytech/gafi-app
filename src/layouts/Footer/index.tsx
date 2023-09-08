@@ -1,8 +1,11 @@
-import { Center, Flex, Text } from '@chakra-ui/react';
+import { Center, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
 
-import FooterSwitchMode from './FooterSwitchMode';
+import SunIcon from 'public/assets/sun.svg';
+import SwitchMode from 'components/SwitchMode';
 
 export default function Footer() {
+  const { isOpen, onToggle } = useDisclosure();
+
   return (
     <Center
       as="footer"
@@ -49,7 +52,16 @@ export default function Footer() {
 
         <Text>Terms of Service</Text>
 
-        <FooterSwitchMode />
+        <Flex gap={2}>
+          <SwitchMode isChecked={isOpen} onChange={onToggle} />
+
+          <Icon
+            color={isOpen ? 'red' : undefined}
+            as={SunIcon}
+            width={6}
+            height={6}
+          />
+        </Flex>
       </Flex>
     </Center>
   );

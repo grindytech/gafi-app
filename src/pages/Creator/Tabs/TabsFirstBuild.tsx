@@ -28,6 +28,7 @@ export default () => {
         lg: 24,
         xl: 40,
       }}
+      bg="shader.a.900"
       border="0.0625rem solid"
       borderColor="shader.a.800"
       borderRadius="xl"
@@ -38,7 +39,6 @@ export default () => {
         py={10}
         borderBottom="0.0625rem solid"
         borderColor="shader.a.800"
-        bg="linear-gradient(180deg, #3F3F46 0%, #27272A 100%)"
         position="relative"
       >
         <Box position="absolute" bottom={0}>
@@ -71,12 +71,11 @@ export default () => {
       </Center>
 
       <Grid
-        bg="shader.a.900"
         boxShadow="0px 0.5rem 1rem 0px rgba(0, 0, 0, 0.03)"
         padding={6}
         gap={4}
         gridTemplateColumns={{
-          '2sm': 'repeat(2, 1fr)',
+          '2sm': 'repeat(3, 1fr)',
         }}
       >
         {React.Children.toArray(
@@ -84,19 +83,19 @@ export default () => {
             <Center
               as={Link}
               to={project.link}
-              border="0.0625rem solid"
-              borderColor="shader.a.600"
-              borderRadius="xl"
               color="shader.a.400"
+              border="0.0625rem solid"
+              borderColor="shader.a.800"
+              borderRadius="xl"
               fontWeight="medium"
               padding={5}
               gap={3}
               role="group"
               transitionDuration="ultra-slow"
               _hover={{
-                bg: 'shader.a.800',
-                borderColor: 'primary.a.300',
                 color: 'white',
+                borderColor: 'primary.a.300',
+                bg: 'shader.a.800',
               }}
             >
               <Box

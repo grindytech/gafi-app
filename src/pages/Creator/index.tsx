@@ -17,7 +17,7 @@ import TabsCollection, { TabsCollectionDataProps } from './Tabs/TabsCollection';
 import TabsCollectionPanel from './Tabs/TabsCollection/TabsCollectionPanel';
 import TabsNFT, { TabsNFTDataProps } from './Tabs/TabsNFT';
 import TabsNFTPanel from './Tabs/TabsNFT/TabsNFTPanel';
-import { isUndefined } from '@polkadot/util';
+
 import TabsFirstBuild from './Tabs/TabsFirstBuild';
 import ChakraBox from 'components/ChakraBox';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -29,10 +29,25 @@ export interface CreatorProps {
   nft?: TabsNFTDataProps[] | undefined;
 }
 
+export interface CreatorLoadingProps {
+  game?: {
+    loading: boolean;
+    data: TabsGameDataProps[] | undefined;
+  };
+  collection?: {
+    loading: boolean;
+    data: TabsCollectionDataProps[] | undefined;
+  };
+  nft?: {
+    loading: boolean;
+    data: TabsNFTDataProps[] | undefined;
+  };
+}
+
 export default () => {
   const { pathname } = useLocation();
   const [tab, setTab] = React.useState(0);
-  const [meta, setMeta] = React.useState<CreatorProps>({
+  const [loading, setLoading] = React.useState<CreatorLoadingProps>({
     game: undefined,
     collection: undefined,
     nft: undefined,
@@ -41,41 +56,55 @@ export default () => {
   const ListTab = [
     {
       id: 0,
-      tab: <TabsGame setMeta={setMeta} />,
-      panel: <TabsGamePanel meta={meta?.game} />,
+      tab: <TabsGame setLoading={setLoading} />,
+      panel: <TabsGamePanel meta={loading?.game?.data} />,
       background: 'gradient.linear.2',
     },
     {
       id: 1,
-      tab: <TabsCollection setMeta={setMeta} />,
-      panel: <TabsCollectionPanel meta={meta?.collection} />,
+      tab: <TabsCollection setLoading={setLoading} />,
+      panel: <TabsCollectionPanel meta={loading?.collection?.data} />,
       background: 'gradient.linear.3',
     },
     {
       id: 2,
-      tab: <TabsNFT setMeta={setMeta} />,
-      panel: <TabsNFTPanel meta={meta?.nft} />,
+      tab: <TabsNFT setLoading={setLoading} />,
+      panel: <TabsNFTPanel meta={loading?.nft?.data} />,
       background: 'gradient.linear.4',
     },
   ];
 
-  const isLoading = isUndefined(meta.game) || isUndefined(meta.collection);
-  const isEmpty = !meta.game?.length && !meta.collection?.length; // nft is not unnecessary to check (because nft in collection)
-  const isFirstBuild = !isLoading && isEmpty; // loading should completed && isEmpty equal true
+  const isLoading = loading.game?.loading || loading.collection?.loading;
+
+  // nft is not unnecessary to check (because nft in collection)
+  const isEmpty =
+    !loading.game?.data?.length && !loading.collection?.data?.length;
+
+  const isFirstBuild =
+    !loading?.game?.data?.length &&
+    !loading?.collection?.data?.length &&
+    isEmpty; // loading should completed && isEmpty equal true
+
+  const transition: any = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5 },
+  };
 
   return (
     <>
       {pathname === '/creator' ? (
         <>
-          {isLoading && (
+          {isLoading ? (
             <Center height="100vh">
               <CircularProgress isIndeterminate color="primary.a.400" />
             </Center>
-          )}
+          ) : isFirstBuild ? (
+            <TabsFirstBuild />
+          ) : null}
 
-          {isFirstBuild && <TabsFirstBuild />}
-
-          <Box
+          <ChakraBox
+            {...transition}
             width={isLoading && isEmpty ? 0 : undefined}
             height={isLoading && isEmpty ? 0 : undefined}
             hidden={isFirstBuild}
@@ -145,20 +174,7 @@ export default () => {
                             lg: 'repeat(3, 1fr)',
                             xl: 'repeat(4, 1fr)',
                           }}
-                          initial={{
-                            opacity: 0,
-                            transform: 'translateX(-25%)',
-                          }}
-                          animate={{
-                            opacity: 1,
-                            transform: 'translateX(0%)',
-                          }}
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore
-                          transition={{
-                            type: 'spring',
-                            delay: 0.15,
-                          }}
+                          {...transition}
                         >
                           {meta.panel}
                         </ChakraBox>
@@ -168,11 +184,13 @@ export default () => {
                 </TabPanels>
               </Tabs>
             </DefaultCreator>
-          </Box>
+          </ChakraBox>
         </>
       ) : (
         <Box mt={5} pb={24}>
-          <Outlet />
+          <ChakraBox {...transition}>
+            <Outlet />
+          </ChakraBox>
         </Box>
       )}
     </>

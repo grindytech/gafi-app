@@ -4,7 +4,7 @@ import { PalletGameGameDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 
 import { useAppSelector } from 'hooks/useRedux';
-import { CreatorProps } from 'pages/Creator';
+import { CreatorLoadingProps } from 'pages/Creator';
 
 import { useEffect } from 'react';
 
@@ -16,14 +16,14 @@ export interface TabsGameDataProps {
 }
 
 interface TabsGameProps {
-  setMeta: React.Dispatch<React.SetStateAction<CreatorProps>>;
+  setLoading: React.Dispatch<React.SetStateAction<CreatorLoadingProps>>;
 }
 
-export default ({ setMeta }: TabsGameProps) => {
+export default ({ setLoading }: TabsGameProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['creator_tab_game', account?.address],
     queryFn: async () => {
       if (api && account?.address) {
@@ -66,9 +66,12 @@ export default ({ setMeta }: TabsGameProps) => {
   });
 
   useEffect(() => {
-    setMeta(prev => ({
+    setLoading(prev => ({
       ...prev,
-      game: data,
+      game: {
+        loading: isLoading,
+        data,
+      },
     }));
   }, [data]);
 
@@ -76,7 +79,7 @@ export default ({ setMeta }: TabsGameProps) => {
     <>
       <Text>Game</Text>
 
-      <Text as="span">{data?.length}</Text>
+      <Text as="span">{data?.length || 0}</Text>
     </>
   );
 };

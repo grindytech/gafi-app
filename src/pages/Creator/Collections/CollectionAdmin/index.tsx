@@ -7,7 +7,7 @@ import {
   TypeCollaboratorsState,
 } from 'layouts/Collaborators/CollaboratorsUtils';
 import { useState } from 'react';
-import CollectionAdminAdding from './CollectionAdminAdding';
+
 import CollaboratorsRoleSwitch from 'layouts/Collaborators/CollaboratorsRoleSwitch';
 
 import CloseIcon from 'public/assets/fill/close.svg';
@@ -47,11 +47,6 @@ function CollectionAdminService({ account }: CollectionAdminServiceProps) {
   return (
     <>
       <Box>
-        <CollectionAdminAdding
-          length_collaborator={collaborators.length}
-          options={options}
-        />
-
         {collaborators.map(({ role, account }, index) => (
           <Center
             key={role}
