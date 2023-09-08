@@ -10,18 +10,49 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import { GamesFieldProps } from '..';
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
+import { useAppSelector } from 'hooks/useRedux';
+import useSignAndSend from 'hooks/useSignAndSend';
+import cloudinary_axios, {
+  cloudinary_config,
+  cloudinary_upload_type,
+} from 'axios/cloudinary_axios';
 
 interface GamesModalProps {
   isDisabled: boolean;
-  watch: UseFormWatch<GamesFieldProps>;
+  getValues: UseFormGetValues<GamesFieldProps>;
+  onSuccess: () => void;
 }
 
-export default ({ isDisabled }: GamesModalProps) => {
+export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
+  const {
+    collaborator,
+    general_categories,
+    general_description,
+    general_discord,
+    general_game_title,
+    general_twitter,
+    general_website,
+    media_avatar,
+    media_banner,
+    media_cover,
+  } = getValues();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAppSelector(state => state.injected.polkadot);
+
+  const { isLoading, setIsLoading, mutation } = useSignAndSend({
+    key: [`create_collection`, account?.address as string],
+    address: account?.address as string,
+    onSuccess() {
+      onSuccess();
+      onClose();
+    },
+  });
 
   return (
     <>
@@ -69,8 +100,41 @@ export default ({ isDisabled }: GamesModalProps) => {
             <Button
               width="full"
               variant="primary"
+              isLoading={isLoading}
               onClick={() => {
-                alert('cooming soon');
+                if (api) {
+                  const formData = new FormData();
+                  formData.append('file', media_avatar);
+                  formData.append(
+                    'upload_preset',
+                    String(cloudinary_config.preset_key)
+                  );
+
+                  setIsLoading(true);
+
+                  cloudinary_axios
+                    .post(cloudinary_upload_type.image, formData)
+                    .then(item => {
+                      const parse = JSON.stringify({
+                        title: general_game_title,
+                        categories: general_categories,
+                        description: general_description,
+                        website: general_website,
+                        twitter: general_twitter,
+                        discord: general_discord,
+                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
+                        banner: media_banner,
+                        cover: media_cover,
+                      });
+
+                      mutation(
+                        api?.tx.game.createGameWithData(
+                          collaborator.account.address,
+                          parse
+                        )
+                      );
+                    });
+                }
               }}
             >
               Sign & Submit

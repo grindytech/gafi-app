@@ -3,37 +3,60 @@ import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
 import { useAppSelector } from 'hooks/useRedux';
 
 import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { GamesFieldProps } from '..';
 
-interface GamesCollaboratorPropsServiceProps {
+interface GamesCollaboratorProps {
+  setValue: UseFormSetValue<GamesFieldProps>;
+  watch: UseFormWatch<GamesFieldProps>;
+}
+
+interface GamesCollaboratorServiceProps extends GamesCollaboratorProps {
   account: {
     address: string;
     name: string;
   };
 }
 
-export default () => {
+export default ({ setValue, watch }: GamesCollaboratorProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
     <>
       {account?.address && account.name ? (
-        <GamesCollaboratorPropsService
-          account={account as GamesCollaboratorPropsServiceProps['account']}
+        <GamesCollaboratorsService
+          account={account as GamesCollaboratorServiceProps['account']}
+          setValue={setValue}
+          watch={watch}
         />
       ) : null}
     </>
   );
 };
 
-function GamesCollaboratorPropsService({
+function GamesCollaboratorsService({
   account,
-}: GamesCollaboratorPropsServiceProps) {
-  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>([
-    { role: 'Admin', account },
-  ]);
+  setValue,
+  watch,
+}: GamesCollaboratorServiceProps) {
+  const { collaborator: watch_collaborator } = watch();
+  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>(
+    []
+  );
+
+  // when reset form hook & initial value for 'collaborators'
+  useEffect(() => {
+    if (!watch_collaborator) {
+      setCollaborators([{ role: 'Admin', account }]);
+    }
+  }, [watch_collaborator]);
+
+  useEffect(() => {
+    setValue(`collaborator`, collaborators[0]);
+  }, [collaborators]);
 
   return (
     <>

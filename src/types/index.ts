@@ -14,6 +14,18 @@ export type TypeMetadataOfCollection = {
   cover?: string;
 };
 
+export type TypeMetadataOfGame = {
+  title: string;
+  categories: string;
+  description: string;
+  website: string;
+  twitter: string;
+  discord: string;
+  avatar: string;
+  banner: string;
+  cover: string;
+};
+
 export type TypeMetadataOfItem =
   | {
       image: string;

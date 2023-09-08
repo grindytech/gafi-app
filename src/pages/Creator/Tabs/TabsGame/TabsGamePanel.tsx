@@ -7,12 +7,28 @@ import AvatarPopover from 'components/Avatar/AvatarPopover';
 
 import { TabsGameDataProps } from '.';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
+import useMetaGame from 'hooks/useMetaGame';
+import { cloundinary_link } from 'axios/cloudinary_axios';
 
 interface TabsGamePanelProps {
   meta: TabsGameDataProps[] | undefined;
 }
 
 export default ({ meta }: TabsGamePanelProps) => {
+  return (
+    <>
+      {meta?.length ? <TabsGamesPanelService meta={meta} /> : <TabsEmptyData />}
+    </>
+  );
+};
+
+function TabsGamesPanelService({ meta }: { meta: TabsGameDataProps[] }) {
+  const { MetaGame } = useMetaGame({
+    key: `creator_tab_game`,
+    filter: 'game_id',
+    arg: meta.map(({ game_id }) => game_id),
+  });
+
   const menu = [
     {
       heading: 'Select',
@@ -30,33 +46,38 @@ export default ({ meta }: TabsGamePanelProps) => {
 
   return (
     <>
-      {meta?.length ? (
-        meta.map(meta => (
+      {meta.map(({ collection, game_id, owner, role }) => {
+        const currentMetaGame = MetaGame?.find(
+          meta => meta.game_id === game_id
+        );
+
+        return (
           <Box
-            key={meta.game_id}
+            key={game_id}
             fontWeight="medium"
             bg="shader.a.900"
             borderRadius="xl"
           >
             <Box position="relative">
               <RatioPicture
-                src={`https://picsum.photos/id/${Math.round(
-                  Math.random() * 50
-                )}/200/300`}
-                alt={`game-picture-${meta.game_id}`}
+                src={
+                  currentMetaGame?.avatar
+                    ? cloundinary_link(currentMetaGame.avatar)
+                    : null
+                }
               />
 
               <Flex position="absolute" bottom={0} margin={3}>
-                <AvatarPopover type="Owner" address={meta.owner} name="-">
+                <AvatarPopover type="Owner" address={owner} name="-">
                   <AvatarJazzicon
-                    address={meta.owner}
+                    address={owner}
                     sx={{ width: '100%', height: '100%' }}
                   />
                 </AvatarPopover>
 
-                <AvatarPopover type="Admin" address={meta.role} name="-">
+                <AvatarPopover type="Admin" address={role} name="-">
                   <AvatarJazzicon
-                    address={meta.role}
+                    address={role}
                     sx={{ width: '100%', height: '100%' }}
                   />
                 </AvatarPopover>
@@ -68,20 +89,20 @@ export default ({ meta }: TabsGamePanelProps) => {
             <Stack padding={4}>
               <Center justifyContent="space-between">
                 <Text as="strong" color="white">
-                  {Math.random().toString(36).slice(2, 10)}
+                  {currentMetaGame?.title}
                 </Text>
 
                 <Text color="shader.a.300" fontSize="sm">
                   ID:&nbsp;
                   <Text as="span" color="primary.a.400">
-                    0
+                    {game_id}
                   </Text>
                 </Text>
               </Center>
 
               <Center justifyContent="space-between">
                 <Text fontSize="sm" color="primary.a.400">
-                  {meta.collection.length} collections
+                  {collection.length} collections
                 </Text>
 
                 <Text color="shader.a.500" fontWeight="normal" fontSize="xs">
@@ -90,10 +111,8 @@ export default ({ meta }: TabsGamePanelProps) => {
               </Center>
             </Stack>
           </Box>
-        ))
-      ) : (
-        <TabsEmptyData />
-      )}
+        );
+      })}
     </>
   );
-};
+}
