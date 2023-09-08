@@ -12,6 +12,10 @@ export interface useMetaCollectionProps {
   key: string | string[] | number | number[];
 }
 
+export interface MetaCollectionFieldProps extends TypeMetadataOfCollection {
+  collection_id: number;
+}
+
 export default function useMetaCollection({
   filter,
   arg,
@@ -33,16 +37,19 @@ export default function useMetaCollection({
               StorageKey<[u32]>,
               Option<PalletNftsCollectionMetadata>
             ]) => {
-              const { external_url, image, title } = JSON.parse(
-                meta.value.data.toHuman() as string
-              );
+              const metadata = JSON.parse(
+                String(meta.value.data.toHuman())
+              ) as TypeMetadataOfCollection;
 
               return {
+                title: metadata.title,
+                description: metadata.description,
+                external_url: metadata.external_url,
+                avatar: metadata.avatar,
+                banner: metadata.banner,
+                cover: metadata.cover,
                 collection_id: collection_id.args[0].toNumber(),
-                external_url,
-                image,
-                title,
-              } as TypeMetadataOfCollection;
+              } as MetaCollectionFieldProps;
             }
           );
         }
@@ -56,19 +63,22 @@ export default function useMetaCollection({
 
               if (service.isEmpty) return;
 
-              const { external_url, image, title } = JSON.parse(
-                service.value.data.toHuman() as string
-              );
+              const metadata = JSON.parse(
+                String(service.value.data.toHuman())
+              ) as TypeMetadataOfCollection;
 
               return {
-                collection_id: collection_id,
-                external_url,
-                image,
-                title,
-              } as TypeMetadataOfCollection;
+                title: metadata.title,
+                description: metadata.description,
+                external_url: metadata.external_url,
+                avatar: metadata.avatar,
+                banner: metadata.banner,
+                cover: metadata.cover,
+                collection_id,
+              } as MetaCollectionFieldProps;
             })
           ).then(data =>
-            data.filter((meta): meta is TypeMetadataOfCollection => !!meta)
+            data.filter((meta): meta is MetaCollectionFieldProps => !!meta)
           );
         }
       }

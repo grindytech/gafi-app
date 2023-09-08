@@ -6,7 +6,7 @@
 import '@polkadot/api-base/types/events';
 
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
-import type { Bytes, Null, Option, Result, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
 
@@ -116,31 +116,43 @@ declare module '@polkadot/api-base/types/events' {
     game: {
       AddingAcceptanceSet: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       AuctionClaimed: AugmentedEvent<ApiType, [trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>>], { trade: u32, maybeBid: Option<ITuple<[AccountId32, u128]>> }>;
-      AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: u32, duration: u32 }>;
+      AuctionSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, duration: u32], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, duration: u32 }>;
       Bid: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bid: u128], { trade: u32, who: AccountId32, bid: u128 }>;
       BundleBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bidPrice: u128], { trade: u32, who: AccountId32, bidPrice: u128 }>;
-      BundleSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
+      BundleSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, bundle: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
       Burned: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
-      BuySet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
+      BuySet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
       CollectionAdded: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       CollectionCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32], { who: AccountId32, collection: u32 }>;
       CollectionRemoved: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       GameCreated: AugmentedEvent<ApiType, [who: AccountId32, game: u32], { who: AccountId32, game: u32 }>;
+      GameSetMetadata: AugmentedEvent<ApiType, [who: Option<AccountId32>, game: u32, data: Bytes], { who: Option<AccountId32>, game: u32, data: Bytes }>;
       ItemAdded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
       ItemBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128 }>;
       ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32>], { who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32> }>;
-      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: PalletGamePoolType, table: Vec<GafiSupportGameTypesLoot> }>;
-      Minted: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>], { pool: u32, who: AccountId32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft> }>;
-      PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128 }>;
+      MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot> }>;
+      Minted: AugmentedEvent<ApiType, [who: AccountId32, pool: u32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>, price: u128, amount: u32], { who: AccountId32, pool: u32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>, price: u128, amount: u32 }>;
+      PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
+      RequestMint: AugmentedEvent<ApiType, [who: AccountId32, pool: u32, target: AccountId32, blockNumber: u32], { who: AccountId32, pool: u32, target: AccountId32, blockNumber: u32 }>;
       SetBuyClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128 }>;
       SwapClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, maybeBidPrice: Option<u128>], { trade: u32, who: AccountId32, maybeBidPrice: Option<u128> }>;
-      SwapSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128> }>;
+      SwapSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, source: Vec<GafiSupportGameTypesPackage>, required: Vec<GafiSupportGameTypesPackage>, maybePrice: Option<u128>, startBlock: Option<u32>, endBlock: Option<u32> }>;
       TradeCanceled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32], { trade: u32, who: AccountId32 }>;
       Transferred: AugmentedEvent<ApiType, [from: AccountId32, collection: u32, item: u32, dest: AccountId32, amount: u32], { from: AccountId32, collection: u32, item: u32, dest: AccountId32, amount: u32 }>;
       Upgraded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, amount: u32 }>;
       UpgradeSet: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32 }>;
       WishlistFilled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, askPrice: u128], { trade: u32, who: AccountId32, askPrice: u128 }>;
-      WishlistSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128], { trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128 }>;
+      WishlistSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    gameRandomness: {
+      /**
+       * Event generated when a new price is submitted.
+       **/
+      NewSeed: AugmentedEvent<ApiType, [blockNumber: u32, seed: U8aFixed], { blockNumber: u32, seed: U8aFixed }>;
       /**
        * Generic event
        **/

@@ -4,8 +4,8 @@ import RatioPicture from 'components/RatioPicture';
 import CloseIcon from 'public/assets/fill/close.svg';
 
 interface JohnProps {
-  image?: string | null;
-  name: string;
+  image: string | undefined;
+  name: string | undefined;
   id: number;
   remove?: () => void;
   sx?: FlexProps;
@@ -18,7 +18,6 @@ export default ({ image, name, id, remove, sx }: JohnProps) => {
       display="inline-flex"
       gap={2}
       padding={2}
-      paddingRight={20}
       borderRadius="xl"
       bg="shader.a.800"
       {...sx}

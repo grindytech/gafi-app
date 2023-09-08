@@ -83,7 +83,7 @@ export default ({
               <PoolsConfigModalOuter
                 key={key}
                 id={key}
-                image={currentMetaCollection?.image}
+                image={currentMetaCollection?.avatar}
                 name={currentMetaCollection?.title || '-'}
                 length={meta.length}
               >
@@ -124,7 +124,7 @@ export default ({
                                 collection: {
                                   id: collection_id,
                                   title: currentMetaCollection?.title || '-',
-                                  image: currentMetaCollection?.image,
+                                  image: currentMetaCollection?.avatar,
                                 },
                               });
                             }

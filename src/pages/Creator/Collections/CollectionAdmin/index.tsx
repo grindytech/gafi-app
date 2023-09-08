@@ -6,21 +6,28 @@ import {
   TypeCollaboratorsRole,
   TypeCollaboratorsState,
 } from 'layouts/Collaborators/CollaboratorsUtils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CollaboratorsRoleSwitch from 'layouts/Collaborators/CollaboratorsRoleSwitch';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 import CollaboratorsAdd from 'layouts/Collaborators/CollaboratorsAdd';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { CollectionsFieldProps } from '..';
 
-interface CollectionAdminServiceProps {
+interface CollectionAdminProps {
+  setValue: UseFormSetValue<CollectionsFieldProps>;
+  watch: UseFormWatch<CollectionsFieldProps>;
+}
+
+interface CollectionAdminServiceProps extends CollectionAdminProps {
   account: {
     address: string;
     name: string;
   };
 }
 
-export default () => {
+export default ({ setValue, watch }: CollectionAdminProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
@@ -28,18 +35,36 @@ export default () => {
       {account?.address && account.name && (
         <CollectionAdminService
           account={account as CollectionAdminServiceProps['account']}
+          setValue={setValue}
+          watch={watch}
         />
       )}
     </>
   );
 };
 
-function CollectionAdminService({ account }: CollectionAdminServiceProps) {
+function CollectionAdminService({
+  account,
+  setValue,
+  watch,
+}: CollectionAdminServiceProps) {
   const options: TypeCollaboratorsRole[] = ['Admin', 'Freezer', 'Issuer'];
 
-  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>([
-    { role: 'Admin', account },
-  ]);
+  const { collaborator: watch_collaborator } = watch();
+  const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>(
+    []
+  );
+
+  // when reset form hook & initial value for 'collaborators'
+  useEffect(() => {
+    if (!watch_collaborator) {
+      setCollaborators([{ role: 'Admin', account }]);
+    }
+  }, [watch_collaborator]);
+
+  useEffect(() => {
+    setValue(`collaborator`, collaborators);
+  }, [collaborators]);
 
   const remove_collaborators = collaborators.length >= 2;
   const full_role = collaborators.length < 3;

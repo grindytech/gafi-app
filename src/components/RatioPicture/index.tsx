@@ -22,6 +22,8 @@ export default function RatioPicture({ src, alt, sx }: RatioPictureProps) {
         padding={2}
         bg="shader.a.800"
         borderRadius="lg"
+        width="full"
+        height="full"
       >
         {src ? (
           <Image

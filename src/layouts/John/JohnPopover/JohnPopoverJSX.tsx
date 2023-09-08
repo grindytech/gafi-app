@@ -3,8 +3,8 @@ import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 
 interface JohnPopoverJSXProps {
-  image?: string | null;
-  name: string;
+  image?: string;
+  name?: string;
   id: number;
   onClick?: () => void;
   sx?: FlexProps;
