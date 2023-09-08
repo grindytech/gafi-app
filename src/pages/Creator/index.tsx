@@ -80,10 +80,11 @@ export default () => {
   const isEmpty =
     !loading.game?.data?.length && !loading.collection?.data?.length;
 
+  // data should equal 0 && isEmpty equal true
   const isFirstBuild =
     !loading?.game?.data?.length &&
     !loading?.collection?.data?.length &&
-    isEmpty; // loading should completed && isEmpty equal true
+    isEmpty;
 
   const transition: any = {
     initial: { opacity: 0 },

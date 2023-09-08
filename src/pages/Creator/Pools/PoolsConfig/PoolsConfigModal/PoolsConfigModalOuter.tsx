@@ -28,10 +28,10 @@ export default ({
     >
       <Center justifyContent="space-between">
         <Flex gap={2}>
-          <Box>
+          <Box height={10} width={10}>
             <RatioPicture
               src={image ? cloundinary_link(image) : null}
-              sx={{ height: 10, width: 10 }}
+              sx={{ height: 'full', width: 'full' }}
             />
           </Box>
 
