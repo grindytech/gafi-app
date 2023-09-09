@@ -89,7 +89,7 @@ function TabsGamesPanelService({ meta }: { meta: TabsGameDataProps[] }) {
             <Stack padding={4}>
               <Flex gap={4} justifyContent="space-between">
                 <Text as="strong" color="white" wordBreak="break-word">
-                  {currentMetaGame?.title}
+                  {currentMetaGame?.title || 'unknown'}
                 </Text>
 
                 <Text color="shader.a.500" fontSize="sm">

@@ -113,7 +113,7 @@ function CollectionJohnGamesMenuService({
             key={game_id}
             id={game_id}
             image={currentMetaGame?.avatar}
-            name={currentMetaGame?.title}
+            name={currentMetaGame?.title || 'unknown'}
             onClick={() => {
               onClose();
               setValue(`general_join_game`, {

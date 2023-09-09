@@ -68,8 +68,8 @@ export default ({
           <PoolsConfigModalOuter
             key={key}
             id={key}
+            name={currentMetaCollection?.title || 'unknown'}
             image={currentMetaCollection?.avatar}
-            name={currentMetaCollection?.title}
             length={meta.length}
           >
             {React.Children.toArray(
@@ -93,8 +93,8 @@ export default ({
                   <PoolsConfigModalCard
                     amount={amount}
                     id={nft_id}
+                    name={currentMetaNFT?.title || 'unknown'}
                     image={currentMetaNFT?.avatar}
-                    name={currentMetaNFT?.title}
                     sx={{
                       borderColor: isActive ? 'primary.a.400' : undefined,
                       onClick: () => {
@@ -103,12 +103,12 @@ export default ({
                             amount,
                             nft: {
                               id: nft_id,
-                              title: currentMetaNFT?.title,
+                              title: currentMetaNFT?.title || 'unknown',
                               image: currentMetaNFT?.avatar,
                             },
                             collection: {
                               id: collection_id,
-                              title: currentMetaCollection?.title,
+                              title: currentMetaCollection?.title || 'unknown',
                               image: currentMetaCollection?.avatar,
                             },
                           });

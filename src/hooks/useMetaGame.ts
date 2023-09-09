@@ -34,12 +34,12 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
               ) as TypeMetadataOfGame;
 
               return {
-                title: metadata.title,
-                categories: metadata.categories,
-                description: metadata.description,
-                website: metadata.website,
-                twitter: metadata.twitter,
-                discord: metadata.discord,
+                title: metadata.title || 'unknown',
+                categories: metadata.categories || 'unknown',
+                description: metadata.description || 'unknown',
+                website: metadata.website || 'unknown',
+                twitter: metadata.twitter || 'unknown',
+                discord: metadata.discord || 'unknown',
                 avatar: metadata.avatar,
                 banner: metadata.banner,
                 cover: metadata.cover,

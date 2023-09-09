@@ -75,12 +75,12 @@ function TabsNFTPanelService({ meta }: { meta: TabsNFTDataProps[] }) {
 
             <Stack padding={4}>
               <Text fontSize="sm" color="primary.a.300">
-                {currentMetaCollection?.title}
+                {currentMetaCollection?.title || 'unknown'}
               </Text>
 
               <Flex gap={4} justifyContent="space-between">
                 <Text as="strong" color="white" wordBreak="break-word">
-                  {currentMetaNFT?.title}
+                  {currentMetaNFT?.title || 'unknown'}
                 </Text>
 
                 <Text color="shader.a.500" fontSize="sm">

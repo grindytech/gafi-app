@@ -107,8 +107,8 @@ function PoolsStableService({
             <PoolsConfigModalOuter
               key={key}
               id={key}
+              name={currentMetaCollection?.title || 'unknown'}
               image={currentMetaCollection?.avatar}
-              name={currentMetaCollection?.title}
               length={meta.length}
             >
               {React.Children.toArray(
@@ -133,7 +133,7 @@ function PoolsStableService({
                       amount={amount}
                       id={nft_id}
                       image={currentMetaNFT?.avatar}
-                      name={currentMetaNFT?.title}
+                      name={currentMetaNFT?.title || 'unknown'}
                       sx={{
                         borderColor: isActive ? 'primary.a.400' : undefined,
                         onClick: () => {
@@ -142,12 +142,13 @@ function PoolsStableService({
                               amount: 'infinity',
                               nft: {
                                 id: nft_id,
-                                title: currentMetaNFT?.title,
+                                title: currentMetaNFT?.title || 'unknown',
                                 image: currentMetaNFT?.avatar,
                               },
                               collection: {
                                 id: collection_id,
-                                title: currentMetaCollection?.title,
+                                title:
+                                  currentMetaCollection?.title || 'unknown',
                                 image: currentMetaCollection?.avatar,
                               },
                             });

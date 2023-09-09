@@ -100,7 +100,7 @@ function TabsCollectionPanelService({
             <Stack padding={4}>
               <Flex gap={4} justifyContent="space-between">
                 <Text as="strong" color="white" wordBreak="break-word">
-                  {currentMetaCollection?.title}
+                  {currentMetaCollection?.title || 'unknown'}
                 </Text>
 
                 <Text color="shader.a.500" fontSize="sm">
@@ -174,7 +174,7 @@ function TabsCollectionPanelService({
 
                             <Box pr={32}>
                               <Text color="white">
-                                {currentMetaGame?.title}
+                                {currentMetaGame?.title || 'unknown'}
                               </Text>
 
                               <Text as="span" fontWeight="normal" fontSize="sm">

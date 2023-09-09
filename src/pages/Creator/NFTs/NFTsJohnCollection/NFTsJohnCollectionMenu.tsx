@@ -120,7 +120,7 @@ function NFTsJohnCollectionService({
           <JohnPopoverJSX
             key={collection_id}
             id={collection_id}
-            name={currentMetaCollection?.title}
+            name={currentMetaCollection?.title || 'unknown'}
             image={currentMetaCollection?.avatar}
             onClick={() => {
               onClose();

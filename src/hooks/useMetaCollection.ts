@@ -42,9 +42,9 @@ export default function useMetaCollection({
               ) as TypeMetadataOfCollection;
 
               return {
-                title: metadata.title,
-                description: metadata.description,
-                external_url: metadata.external_url,
+                title: metadata.title || 'unknown',
+                description: metadata.description || 'unknown',
+                external_url: metadata.external_url || 'unknown',
                 avatar: metadata.avatar,
                 banner: metadata.banner,
                 cover: metadata.cover,

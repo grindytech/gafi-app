@@ -63,9 +63,9 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
               ) as TypeMetadataOfItem;
 
               return {
-                title: metadata.title,
-                description: metadata.description,
-                external_url: metadata.external_url,
+                title: metadata.title || 'unknown',
+                description: metadata.description || 'unknown',
+                external_url: metadata.external_url || 'unknown',
                 avatar: metadata.avatar,
                 collection_id,
                 nft_id,
