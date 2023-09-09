@@ -18,6 +18,7 @@ export default ({ image, name, id, remove, sx }: JohnProps) => {
       display="inline-flex"
       gap={2}
       padding={2}
+      pr={4}
       borderRadius="xl"
       bg="shader.a.800"
       {...sx}
@@ -37,15 +38,19 @@ export default ({ image, name, id, remove, sx }: JohnProps) => {
         </Text>
       </Box>
 
-      <IconButton
-        onClick={remove}
-        variant="unstyled"
-        position="absolute"
-        inset="0 auto auto 0"
-        transform="translate(-25%, -25%)"
-        aria-label="remove-john"
-        icon={<Icon as={CloseIcon} width={4} height={4} color="shader.a.300" />}
-      />
+      {remove ? (
+        <IconButton
+          onClick={remove}
+          variant="unstyled"
+          position="absolute"
+          inset="0 auto auto 0"
+          transform="translate(-25%, -25%)"
+          aria-label="remove-john"
+          icon={
+            <Icon as={CloseIcon} width={4} height={4} color="shader.a.300" />
+          }
+        />
+      ) : null}
     </Flex>
   );
 };

@@ -1,11 +1,10 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from 'hooks/useRedux';
 
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { NFTsFieldProps } from '..';
 import NFTsJohnCollectionMenu from './NFTsJohnCollectionMenu';
-import JohnEmpty from 'layouts/John/JohnEmpty';
 import John from 'layouts/John';
 
 interface NFTsJohnCollectionProps {
@@ -29,15 +28,12 @@ export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
       <Box flex={1}>
         {general_join_collection ? (
           <John
-            name={general_join_collection.option?.title || '-'}
+            name={general_join_collection.option?.title}
             id={general_join_collection.collection_id}
-            image={general_join_collection.option?.image}
-            remove={() => {
-              setValue(`general_join_collection`, undefined);
-            }}
+            image={general_join_collection.option?.avatar}
           />
         ) : (
-          <JohnEmpty />
+          <Text color="shader.a.600">Choose a collection to join</Text>
         )}
       </Box>
 

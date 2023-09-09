@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from 'hooks/useRedux';
 
@@ -25,16 +25,20 @@ export default ({ setValue, watch }: CollectionsJohnGameProps) => {
       borderRadius="xl"
       alignItems="flex-start"
     >
-      {general_join_game ? (
-        <John
-          name={general_join_game.option?.title}
-          image={general_join_game.option?.avatar}
-          id={general_join_game.game_id}
-          remove={() => {
-            setValue(`general_join_game`, undefined);
-          }}
-        />
-      ) : null}
+      <Box flex={1}>
+        {general_join_game ? (
+          <John
+            name={general_join_game.option?.title}
+            image={general_join_game.option?.avatar}
+            id={general_join_game.game_id}
+            remove={() => {
+              setValue(`general_join_game`, undefined);
+            }}
+          />
+        ) : (
+          <Text color="shader.a.600">Choose a game to join.</Text>
+        )}
+      </Box>
 
       {account?.address ? (
         <CollectionJohnGameMenu

@@ -12,6 +12,11 @@ export interface useMetaNFTProps {
   key: string | string[] | number | number[];
 }
 
+interface MetaNFTFieldProps extends TypeMetadataOfItem {
+  collection_id: number;
+  nft_id: number;
+}
+
 export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
   const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
 
@@ -27,16 +32,18 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
           return service.map(([key, option]) => {
             const meta = option as Option<PalletNftsItemMetadata>;
 
-            const { title, image } = JSON.parse(
-              meta.value.data.toHuman() as string
-            );
+            const metadata = JSON.parse(
+              String(meta.value.data.toHuman())
+            ) as TypeMetadataOfItem;
 
             return {
+              title: metadata.title,
+              description: metadata.description,
+              external_url: metadata.external_url,
+              avatar: metadata.avatar,
               collection_id: key.args[0].toNumber(),
               nft_id: key.args[1].toNumber(),
-              image,
-              title,
-            } as TypeMetadataOfItem;
+            } as MetaNFTFieldProps;
           });
         }
 
@@ -51,19 +58,21 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
               // not found
               if (service.isEmpty) return;
 
-              const { title, image } = JSON.parse(
-                service.value.data.toHuman() as string
-              );
+              const metadata = JSON.parse(
+                String(service.value.data.toHuman())
+              ) as TypeMetadataOfItem;
 
               return {
+                title: metadata.title,
+                description: metadata.description,
+                external_url: metadata.external_url,
+                avatar: metadata.avatar,
                 collection_id,
                 nft_id,
-                image,
-                title,
-              };
+              } as MetaNFTFieldProps;
             })
           ).then(data =>
-            data.filter((meta): meta is TypeMetadataOfItem => !!meta)
+            data.filter((meta): meta is MetaNFTFieldProps => !!meta)
           );
         }
       }

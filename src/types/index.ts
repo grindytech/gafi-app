@@ -26,11 +26,9 @@ export type TypeMetadataOfGame = {
   cover: string;
 };
 
-export type TypeMetadataOfItem =
-  | {
-      image: string;
-      title: string;
-      collection_id: number;
-      nft_id: number;
-    }
-  | undefined;
+export type TypeMetadataOfItem = {
+  title: string;
+  description: string;
+  external_url: string;
+  avatar: string;
+};

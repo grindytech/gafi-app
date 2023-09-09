@@ -15,7 +15,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { colors } from 'theme/theme';
-import { convertHex } from 'utils/utils';
+import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils/utils';
 import { PoolsFieldProps } from '..';
 import { useEffect } from 'react';
 import SwitchMode from 'components/SwitchMode';
@@ -27,11 +27,29 @@ interface NFTsAmountProps {
 }
 
 export default ({ register, setValue, watch }: NFTsAmountProps) => {
-  const { add_item_failed } = watch();
+  const { general_type, add_item_failed, add_item_dynamic, add_item_stable } =
+    watch();
 
   const { isOpen, onToggle } = useDisclosure({
     defaultIsOpen: !!add_item_failed,
   });
+
+  const RarityWeight = () => {
+    const type =
+      general_type === 'Dynamic Pool'
+        ? add_item_dynamic || []
+        : add_item_stable || [];
+
+    const product = Object.values(type)
+      .filter(meta => !!meta)
+      .concat({ weight: add_item_failed } as never)
+      .map(meta => ({ ...meta, weight: meta.weight || 0 }));
+
+    return CalculatorOfRarity(
+      add_item_failed as number,
+      product.map(meta => meta.weight)
+    );
+  };
 
   useEffect(() => {
     // null mean variable not exist
@@ -109,8 +127,12 @@ export default ({ register, setValue, watch }: NFTsAmountProps) => {
                 height="full"
               >
                 Rarity:&nbsp;
-                <Text as="span" color="white" fontWeight="medium">
-                  {add_item_failed || 0}%
+                <Text
+                  as="span"
+                  color={ColorOfRarity(RarityWeight())}
+                  fontWeight="medium"
+                >
+                  {RarityWeight()}%
                 </Text>
               </InputRightAddon>
             </InputGroup>

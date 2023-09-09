@@ -17,7 +17,7 @@ export default function ConnectWalletProfile({
 }: ConnectWalletProfileProps) {
   return (
     <Flex gap={4} px={4} py={2} {...sx}>
-      <Box width={8} height={8}>
+      <Box>
         <AvatarJazzicon
           address={address}
           sx={{ width: 'inherit', height: 'inherit' }}
@@ -29,19 +29,16 @@ export default function ConnectWalletProfile({
           {name || 'unknown'}
         </Text>
 
-        <Text color="shader.a.500" fontSize="sm">
+        <Text gap={2} display="flex" color="shader.a.500" fontSize="sm">
           {shorten(address, 6)}
 
           <ButtonCopy
             value={address}
             sx={{
               'aria-label': 'copy-icon',
-              ml: 1,
+
               sx: {
-                svg: {
-                  width: '1.125rem',
-                  height: '1.125rem',
-                },
+                svg: { width: '1.125rem', height: '1.125rem' },
               },
             }}
           />

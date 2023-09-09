@@ -6,26 +6,29 @@ import { useAppSelector } from 'hooks/useRedux';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 import { NFTsFieldProps } from '..';
-import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 
 import JohnPopover from 'layouts/John/JohnPopover';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import { useDisclosure } from '@chakra-ui/react';
+import useMetaCollection from 'hooks/useMetaCollection';
 
-interface CollectionsJohnGameMenuProps {
+interface NFTsJohnCollectionServiceProps
+  extends Omit<NFTsJohnCollectionProps, 'address'> {
+  data: { collection_id: number }[];
+}
+
+interface NFTsJohnCollectionProps {
   setValue: UseFormSetValue<NFTsFieldProps>;
   watch: UseFormWatch<NFTsFieldProps>;
   address: string;
 }
 
-export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
+export default ({ setValue, watch, address }: NFTsJohnCollectionProps) => {
   const { api } = useAppSelector(state => state.substrate);
-  const { isOpen, onClose, onToggle } = useDisclosure();
-  const { general_join_collection } = watch();
 
   const { data } = useQuery({
-    queryKey: ['creator_nft_menu', address],
+    queryKey: ['creator_create_nft_menu', address],
     queryFn: async () => {
       if (api && address) {
         const service = await api.query.nfts.collection.entries();
@@ -36,22 +39,15 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
               StorageKey<[u32]>,
               Option<PalletNftsCollectionDetails>
             ]) => {
-              const meta: Option<PalletNftsCollectionMetadata> =
-                await api.query.nfts.collectionMetadataOf(
-                  collection_id.args[0].toNumber()
-                );
-
               const getOwner = option.value.owner.toString() === address;
-              const getRole = await api.query.nfts.collectionRoleOf.entries(
-                collection_id.args[0].toNumber()
+              const getRole = await api.query.nfts.collectionRoleOf(
+                collection_id.args[0].toNumber(),
+                address
               );
 
-              if (getOwner || getRole[0][0].args[1].toString() === address) {
+              if (getOwner || getRole.isSome) {
                 return {
                   collection_id: collection_id.args[0].toNumber(),
-                  option: meta.isSome
-                    ? JSON.parse(meta.value.data.toHuman() as string)
-                    : null,
                 };
               }
             }
@@ -67,11 +63,39 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
     enabled: !!api?.query.nfts,
   });
 
-  const filter = data?.length
-    ? data.filter(
-        meta => meta.collection_id !== general_join_collection?.collection_id
-      )
-    : null;
+  return (
+    <>
+      {data?.length ? (
+        <NFTsJohnCollectionService
+          watch={watch}
+          data={data}
+          setValue={setValue}
+        />
+      ) : (
+        <JohnPopoverEmpty />
+      )}
+    </>
+  );
+};
+
+function NFTsJohnCollectionService({
+  data,
+  setValue,
+  watch,
+}: NFTsJohnCollectionServiceProps) {
+  const { isOpen, onClose, onToggle } = useDisclosure();
+  const { general_join_collection } = watch();
+
+  const unique_john_collection = data.filter(
+    ({ collection_id }) =>
+      general_join_collection?.collection_id !== collection_id
+  );
+
+  const { MetaCollection } = useMetaCollection({
+    key: `creator_create_nft`,
+    filter: 'collection_id',
+    arg: data.map(({ collection_id }) => collection_id),
+  });
 
   return (
     <JohnPopover
@@ -81,27 +105,33 @@ export default ({ setValue, watch, address }: CollectionsJohnGameMenuProps) => {
       sx={{
         sx: {
           '.chakra-popover__content': {
-            height: filter && filter?.length >= 2 ? '10rem' : '5rem',
+            height:
+              unique_john_collection.length >= 3 ? '10rem' : 'fit-content',
           },
         },
       }}
     >
-      {filter?.length ? (
-        filter.map(meta => (
+      {unique_john_collection.map(({ collection_id }) => {
+        const currentMetaCollection = MetaCollection?.find(
+          meta => meta.collection_id === collection_id
+        );
+
+        return (
           <JohnPopoverJSX
-            key={meta.collection_id}
-            id={meta.collection_id}
-            name={meta.option?.title || '-'}
-            image={meta.option?.image || null}
+            key={collection_id}
+            id={collection_id}
+            name={currentMetaCollection?.title}
+            image={currentMetaCollection?.avatar}
             onClick={() => {
               onClose();
-              setValue(`general_join_collection`, meta);
+              setValue(`general_join_collection`, {
+                collection_id,
+                option: currentMetaCollection,
+              });
             }}
           />
-        ))
-      ) : (
-        <JohnPopoverEmpty />
-      )}
+        );
+      })}
     </JohnPopover>
   );
-};
+}

@@ -98,9 +98,9 @@ function TabsCollectionPanelService({
             </Box>
 
             <Stack padding={4}>
-              <Center justifyContent="space-between">
-                <Text as="strong" color="white">
-                  {currentMetaCollection?.title || '-'}
+              <Flex gap={4} justifyContent="space-between">
+                <Text as="strong" color="white" wordBreak="break-word">
+                  {currentMetaCollection?.title}
                 </Text>
 
                 <Text color="shader.a.500" fontSize="sm">
@@ -109,7 +109,7 @@ function TabsCollectionPanelService({
                     {collection_id}
                   </Text>
                 </Text>
-              </Center>
+              </Flex>
 
               <Center justifyContent="space-between">
                 <Text fontSize="sm" color="shader.a.400">

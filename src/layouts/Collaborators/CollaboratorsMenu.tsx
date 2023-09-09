@@ -34,13 +34,26 @@ export default ({
 }: CollaboratorsMenuProps) => {
   const toast = useToast();
   const { isOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: isError,
+    onOpen: onError,
+    onClose: closeError,
+  } = useDisclosure();
 
   const { allAccount } = useAppSelector(state => state.injected.polkadot);
 
   const [text, setText] = useState('');
 
+  const onReset = () => {
+    closeError();
+    setText('');
+    onClose();
+  };
+
   const onChange = (address: string, name: string) => {
     if (address.length < 48) {
+      onError();
+
       return toast({
         description: `address should be than 48 characters (you only ${address.length})`,
         position: 'top-right',
@@ -56,8 +69,7 @@ export default ({
       return instance;
     });
 
-    setText('');
-    onClose();
+    onReset();
   };
 
   return (
@@ -67,7 +79,10 @@ export default ({
           <JohnPopover
             isOpen={isOpen}
             onToggle={onToggle}
-            onClose={onClose}
+            onClose={() => {
+              onClose();
+              onReset();
+            }}
             sx={{
               sx: {
                 button: {
@@ -97,7 +112,7 @@ export default ({
                   color="shader.a.300"
                   _placeholder={{ color: 'shader.a.500' }}
                   border="0.0625rem solid"
-                  borderColor="shader.a.800"
+                  borderColor={isError ? 'second.red!' : 'shader.a.800'}
                   bg={convertHex(colors.shader.a[800], 0.25)}
                   pl={9}
                   pr={9}

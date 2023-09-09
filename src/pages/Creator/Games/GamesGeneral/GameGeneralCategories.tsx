@@ -40,7 +40,10 @@ export default ({ setValue, watch }: GamesCategoriesProps) => {
               py={3}
               px={4}
             >
-              <Text fontSize="sm" color="shader.a.600">
+              <Text
+                fontSize="sm"
+                color={categories?.length ? 'white' : 'shader.a.600'}
+              >
                 {categories || 'Select categories'}
               </Text>
 

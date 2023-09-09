@@ -1,4 +1,12 @@
-import { Box, Button, Center, Flex, VStack, useSteps } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Stack,
+  VStack,
+  useSteps,
+} from '@chakra-ui/react';
 
 import { useForm } from 'react-hook-form';
 
@@ -11,6 +19,8 @@ import Owner from 'layouts/Owner';
 import PoolsGeneral from './PoolsGeneral';
 import PoolsAddItem from './PoolsAddItem';
 import PoolsModal from './PoolsModal';
+import PoolsAdmin from './PoolsAdmin';
+import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 
 export interface PoolsFieldProps {
   // general
@@ -21,6 +31,8 @@ export interface PoolsFieldProps {
     text: string;
   };
   general_description: string;
+
+  collaborator: TypeCollaboratorsState[number];
 
   // Add item
   add_item_fee: number;
@@ -49,6 +61,7 @@ export default () => {
     setValue,
     watch,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<PoolsFieldProps>();
 
@@ -125,9 +138,11 @@ export default () => {
               </Flex>
 
               <PoolsModal
-                setActiveStep={setActiveStep}
-                reset={reset}
-                watch={watch}
+                getValues={getValues}
+                onSuccess={() => {
+                  setActiveStep(0);
+                  reset();
+                }}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]
                 }
@@ -136,9 +151,11 @@ export default () => {
           </VStack>
         </Box>
 
-        <Box>
+        <Stack spacing={6}>
           <Owner />
-        </Box>
+
+          <PoolsAdmin setValue={setValue} watch={watch} />
+        </Stack>
       </DefaultForm>
     </>
   );

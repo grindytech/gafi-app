@@ -1,4 +1,4 @@
-import { Box, BoxProps, Center, Icon, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Center, Flex, Icon, Text } from '@chakra-ui/react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 import { convertHex } from 'utils/utils';
@@ -6,7 +6,7 @@ import BlockIcon from 'public/assets/line/block.svg';
 
 interface PoolsConfigModalCard {
   image: string | undefined;
-  name: string;
+  name: string | undefined;
   id: number | string;
   amount: string | number | null;
   sx?: BoxProps;
@@ -27,14 +27,15 @@ export default ({ id, image, name, amount, sx }: PoolsConfigModalCard) => {
         sx={{ width: 'full' }}
       />
 
-      <Center
+      <Flex
         justifyContent="space-between"
         color="white"
         fontWeight="medium"
         py={3}
         px={4}
+        gap={2}
       >
-        <Text>{name}</Text>
+        <Text wordBreak="break-word">{name}</Text>
 
         <Text color="shader.a.500" fontSize="sm">
           ID:&nbsp;
@@ -42,7 +43,7 @@ export default ({ id, image, name, amount, sx }: PoolsConfigModalCard) => {
             {id}
           </Text>
         </Text>
-      </Center>
+      </Flex>
 
       <Center
         borderRadius="md"

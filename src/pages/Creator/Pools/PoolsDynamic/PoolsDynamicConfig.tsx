@@ -22,7 +22,7 @@ interface PoolsDynamicConfigProps {
 export default ({ setValue, watch, register }: PoolsDynamicConfigProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { add_item_dynamic } = watch();
+  const { add_item_failed, add_item_dynamic } = watch();
   const toast = useToast();
 
   const { itemBalanceOf } = useItemBalanceOf({
@@ -58,6 +58,7 @@ export default ({ setValue, watch, register }: PoolsDynamicConfigProps) => {
           register={register}
           product={product}
           onToggle={onToggle}
+          add_item_failed={add_item_failed}
         />
       </PoolsConfigState>
 

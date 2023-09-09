@@ -54,6 +54,18 @@ export default ({
       ),
     },
     {
+      label: 'NFT ID',
+      fieldName: 'general_nft_id',
+      isRequired: true,
+      form: (
+        <Input
+          variant="validate"
+          placeholder="Ex: 0"
+          {...register('general_nft_id', { required: true })}
+        />
+      ),
+    },
+    {
       label: 'Amount',
       fieldName: 'general_amount',
       form: <NFTsAmount register={register} setValue={setValue} />,
@@ -86,12 +98,18 @@ export default ({
     {
       fieldName: 'general_join_collection',
       label: 'Join collection',
+      isRequired: true,
       form: <NFTsJohnCollection setValue={setValue} watch={watch} />,
     },
   ];
 
-  const { general_nft_title, general_description, general_external_url } =
-    watch();
+  const {
+    general_nft_title,
+    general_description,
+    general_external_url,
+    general_join_collection,
+    general_nft_id,
+  } = watch();
 
   useEffect(() => {
     const fieldsRequired = () => {
@@ -105,7 +123,13 @@ export default ({
     setRequired({
       0: fieldsRequired(),
     });
-  }, [general_nft_title, general_description, general_external_url]);
+  }, [
+    general_nft_title,
+    general_nft_id,
+    general_description,
+    general_external_url,
+    general_join_collection,
+  ]);
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

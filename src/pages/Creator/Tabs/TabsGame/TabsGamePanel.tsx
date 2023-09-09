@@ -87,18 +87,18 @@ function TabsGamesPanelService({ meta }: { meta: TabsGameDataProps[] }) {
             </Box>
 
             <Stack padding={4}>
-              <Center justifyContent="space-between">
-                <Text as="strong" color="white">
+              <Flex gap={4} justifyContent="space-between">
+                <Text as="strong" color="white" wordBreak="break-word">
                   {currentMetaGame?.title}
                 </Text>
 
-                <Text color="shader.a.300" fontSize="sm">
+                <Text color="shader.a.500" fontSize="sm">
                   ID:&nbsp;
-                  <Text as="span" color="primary.a.400">
+                  <Text as="span" color="white">
                     {game_id}
                   </Text>
                 </Text>
-              </Center>
+              </Flex>
 
               <Center justifyContent="space-between">
                 <Text fontSize="sm" color="primary.a.400">

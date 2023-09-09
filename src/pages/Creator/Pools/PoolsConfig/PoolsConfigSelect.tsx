@@ -20,6 +20,7 @@ interface PoolsConfigSelectProps {
   product: PoolsFieldProps['add_item_supply'];
   register: UseFormRegister<PoolsFieldProps>;
   add_key: keyof PoolsFieldProps;
+  add_item_failed: number | null | undefined;
 }
 
 export default ({
@@ -27,6 +28,7 @@ export default ({
   product,
   register,
   add_key,
+  add_item_failed,
 }: PoolsConfigSelectProps) => {
   return (
     <>
@@ -36,8 +38,11 @@ export default ({
 
           const getWeight = CalculatorOfRarity(
             weight,
-            product.map(meta => meta.weight)
+            product
+              .concat({ weight: add_item_failed || 0 } as never)
+              .map(meta => meta.weight)
           );
+
           return (
             <Center
               key={`${collection.id}/${nft.id}`}
@@ -48,10 +53,7 @@ export default ({
               padding={3}
               justifyContent="space-between"
               flexWrap="wrap"
-              gap={{
-                base: 3,
-                md: 'unset',
-              }}
+              gap={3}
               _notFirst={{
                 mt: 2,
               }}
@@ -71,10 +73,10 @@ export default ({
 
                 <Box fontSize="sm">
                   <Text color="shader.a.300" fontSize="xs">
-                    {collection?.title || '-'}
+                    {collection?.title}
                   </Text>
                   <Text color="white" fontWeight="medium">
-                    {nft?.title || '-'}
+                    {nft?.title}
                   </Text>
 
                   <Text color="primary.a.300">

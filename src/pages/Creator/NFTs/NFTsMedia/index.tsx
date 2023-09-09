@@ -21,7 +21,7 @@ export default ({ setValue, setRequired, watch }: NFTsMediaProps) => {
 
   useEffect(() => {
     const fieldsRequired = () => {
-      return watch().media_avatar ? 0 : 1;
+      return media_avatar ? 0 : 1;
     };
 
     setRequired({
@@ -34,7 +34,7 @@ export default ({ setValue, setRequired, watch }: NFTsMediaProps) => {
       <BackgroundUpload
         name="Background Avatar"
         size="512x512px"
-        setBackground={setAvatar}
+        setBackground={setAvatar as never}
         background={avatar}
         isRequired={true}
         sx={{

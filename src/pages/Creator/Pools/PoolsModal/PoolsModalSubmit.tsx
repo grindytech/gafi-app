@@ -1,4 +1,4 @@
-import { UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import { PoolsFieldProps } from '..';
 import { Button } from '@chakra-ui/react';
 import { useAppSelector } from 'hooks/useRedux';
@@ -7,27 +7,28 @@ import useBlockTime from 'hooks/useBlockTime';
 import { unitGAFI } from 'utils/utils';
 
 interface PoolsModalSubmitProps {
-  getValues?: {
+  get_value_type?: {
     weight: number;
     amount: string | number;
     nft: { id: number; title: string; image: string };
     collection: { id: number; title: string; image: string };
   }[];
-  mutation: (submit: any) => void;
   isLoading: boolean;
-  watch: UseFormWatch<PoolsFieldProps>;
+  mutation: (submit: any) => void;
+  getValues: UseFormGetValues<PoolsFieldProps>;
 }
 
 export default ({
-  getValues,
   isLoading,
   mutation,
-  watch,
+  get_value_type,
+  getValues,
 }: PoolsModalSubmitProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
-  const { add_item_fee, general_duration, general_type } = watch();
+  const { add_item_fee, general_duration, general_type, collaborator } =
+    getValues();
 
   const { blockNumber } = useBlockTime('bestNumber');
 
@@ -39,24 +40,23 @@ export default ({
       isLoading={isLoading}
       _hover={{}}
       onClick={() => {
-        if (getValues && account?.address) {
+        if (account?.address && get_value_type?.length) {
           const start = general_duration?.time ? blockNumber : null;
 
           const end = general_duration?.time
             ? blockNumber + general_duration.time
             : null;
 
-          const modifield = getValues.map(meta => ({
-            weight: meta.weight,
-            maybeNft: meta.collection
-              ? {
-                  collection: meta.collection.id,
-                  item: meta.nft.id,
-                }
-              : null,
-          }));
+          const modifield = get_value_type
+            .filter(meta => !!meta)
+            .map(meta => ({
+              weight: meta.weight,
+              maybeNft: meta?.collection
+                ? { collection: meta.collection.id, item: meta.nft.id }
+                : null,
+            }));
 
-          const mintSetting = {
+          const mintSettings = {
             minType: 'Public',
             price: unitGAFI(String(add_item_fee)),
             startBlock: start,
@@ -67,8 +67,8 @@ export default ({
             mutation(
               api?.tx.game.createDynamicPool(
                 modifield,
-                account.address,
-                mintSetting
+                collaborator.account.address,
+                mintSettings
               )
             );
           }
@@ -77,8 +77,8 @@ export default ({
             mutation(
               api?.tx.game.createStablePool(
                 modifield,
-                account.address,
-                mintSetting
+                collaborator.account.address,
+                mintSettings
               )
             );
           }
