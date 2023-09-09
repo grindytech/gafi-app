@@ -16,16 +16,17 @@ import NFTsModal from './NFTsModal';
 export interface NFTsFieldProps {
   // general
   general_nft_title: string;
+  general_nft_id: number;
   general_amount: number | null;
   general_description: string;
   general_external_url: string;
-  general_join_collection?: {
+  general_join_collection: {
     collection_id: number;
-    option: TypeMetadataOfCollection;
+    option?: TypeMetadataOfCollection;
   };
 
   // media
-  media_avatar: File | undefined;
+  media_avatar: File;
 }
 
 export default () => {
@@ -33,6 +34,8 @@ export default () => {
     register,
     setValue,
     watch,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm<NFTsFieldProps>();
 
@@ -65,9 +68,11 @@ export default () => {
     },
   ];
 
-  const { activeStep, goToNext, goToPrevious } = useSteps({
+  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
   });
+
+  console.log(watch());
 
   return (
     <>
@@ -107,7 +112,11 @@ export default () => {
               </Flex>
 
               <NFTsModal
-                watch={watch}
+                getValues={getValues}
+                onSuccess={() => {
+                  setActiveStep(0);
+                  reset();
+                }}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]
                 }

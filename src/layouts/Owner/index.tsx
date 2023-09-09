@@ -54,9 +54,9 @@ export default () => {
                   color="second.green"
                   borderRadius="2xl"
                   fontSize="xs"
-                  bg={convertHex(colors.second.green, 0.15)}
-                  px={2}
                   py={1}
+                  px={3}
+                  bg={convertHex(colors.second.green, 0.15)}
                   gap={1}
                 >
                   <ShieldIcon />

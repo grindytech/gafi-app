@@ -1,4 +1,4 @@
-import { Box, BoxProps, Center, Icon, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Center, Flex, Icon, Text } from '@chakra-ui/react';
 import { isUndefined } from '@polkadot/util';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
@@ -29,7 +29,7 @@ export default ({
   sx,
 }: PoolsModalCardProps) => {
   const isFailed = isUndefined(amount);
-  const isInfinity = typeof amount === 'string';
+  const isInfinity = amount === 'infinity';
 
   return (
     <Box
@@ -77,7 +77,7 @@ export default ({
               {collection.name}
             </Text>
 
-            <Center justifyContent="space-between">
+            <Flex wordBreak="break-word" gap={4} justifyContent="space-between">
               <Text>{nft.name}</Text>
 
               <Text color="shader.a.500">
@@ -86,7 +86,7 @@ export default ({
                   {nft.id}
                 </Text>
               </Text>
-            </Center>
+            </Flex>
 
             <Text mt={1}>
               Rarity:&nbsp;

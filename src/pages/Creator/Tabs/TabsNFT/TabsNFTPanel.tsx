@@ -3,7 +3,7 @@ import { TabsNFTDataProps } from '.';
 import TabsEmptyData from '../TabsEmptyData';
 import useMetaNFT from 'hooks/useMetaNFT';
 import useItemBalanceOf from 'hooks/useItemBalanceOf';
-import { Box, Center, Stack, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Stack, Text } from '@chakra-ui/react';
 import RatioPicture from 'components/RatioPicture';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 
@@ -67,20 +67,20 @@ function TabsNFTPanelService({ meta }: { meta: TabsNFTDataProps[] }) {
           >
             <RatioPicture
               src={
-                currentMetaNFT?.image
-                  ? cloundinary_link(currentMetaNFT.image)
+                currentMetaNFT?.avatar
+                  ? cloundinary_link(currentMetaNFT.avatar)
                   : null
               }
             />
 
             <Stack padding={4}>
               <Text fontSize="sm" color="primary.a.300">
-                {currentMetaCollection?.title || '-'}
+                {currentMetaCollection?.title}
               </Text>
 
-              <Center justifyContent="space-between">
-                <Text as="strong" color="white">
-                  {currentMetaNFT?.title || '-'}
+              <Flex gap={4} justifyContent="space-between">
+                <Text as="strong" color="white" wordBreak="break-word">
+                  {currentMetaNFT?.title}
                 </Text>
 
                 <Text color="shader.a.500" fontSize="sm">
@@ -89,11 +89,11 @@ function TabsNFTPanelService({ meta }: { meta: TabsNFTDataProps[] }) {
                     {nft_id}
                   </Text>
                 </Text>
-              </Center>
+              </Flex>
 
               <Center justifyContent="space-between">
                 <Text fontSize="sm" color="primary.a.300">
-                  {infinity ? 'Infinity' : currentItemOfBalance?.amount}
+                  {infinity ? 'Infinity' : 'x' + currentItemOfBalance?.amount}
                 </Text>
 
                 <Text color="shader.a.500" fontWeight="normal" fontSize="xs">

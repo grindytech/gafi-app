@@ -1323,6 +1323,7 @@ export default {
         data: 'Bytes',
         issuer: 'Option<MultiAddress>',
         freezer: 'Option<MultiAddress>',
+        game: 'Option<u32>',
       },
       create_item_with_data: {
         collection: 'u32',

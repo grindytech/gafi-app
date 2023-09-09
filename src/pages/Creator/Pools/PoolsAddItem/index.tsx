@@ -118,25 +118,20 @@ export default ({
           if (add_item_fee) {
             if (add_item_failed && !add_item_dynamic) return false;
 
-            /*
-                summary logic
-                1. convert object 'add_item_dynamic' to an array { 1/2: value, 5/1: value} to [ {...spread} ]
-                2. Get every field to contain value weight
-                3. Check if the total field length of 'add_item_dynamic' than the total field contains weight length
-                  that means returns true and when equal length will false (fieldsSet.filter need false)
-            */
             if (general_type === 'Dynamic Pool' && add_item_dynamic) {
-              const key = Object.values(add_item_dynamic);
-              const weight = key.filter(meta => meta?.weight);
+              const key = Object.values(add_item_dynamic)
+                .filter(meta => !!meta)
+                .filter(meta => !meta?.weight);
 
-              return key.length > weight.length;
+              return key.length;
             }
 
             if (general_type === 'Stable Pool' && add_item_stable) {
-              const key = Object.values(add_item_stable);
-              const weight = key.filter(meta => meta?.weight);
+              const key = Object.values(add_item_stable)
+                .filter(meta => !!meta)
+                .filter(meta => !meta?.weight);
 
-              return key.length > weight.length;
+              return key.length;
             }
           }
 

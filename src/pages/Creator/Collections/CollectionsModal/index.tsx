@@ -41,6 +41,7 @@ export default ({
     media_banner,
     media_cover,
     collaborator,
+    general_join_game,
   } = getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -104,6 +105,8 @@ export default ({
               variant="primary"
               isLoading={isLoading}
               onClick={() => {
+                console.log(getValues());
+
                 if (api) {
                   const formData = new FormData();
                   formData.append('file', media_avatar);
@@ -131,7 +134,8 @@ export default ({
                           group('Admin') as string,
                           parse,
                           group('Issuer'),
-                          group('Freezer')
+                          group('Freezer'),
+                          general_join_game?.game_id || null
                         )
                       );
                     });

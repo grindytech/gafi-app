@@ -8,7 +8,7 @@ import { CollectionsFieldProps } from '..';
 import JohnPopover from 'layouts/John/JohnPopover';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import useMetaGame from 'hooks/useMetaGame';
 
 interface CollectionJohnGamesMenuServiceProps
@@ -58,7 +58,7 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
   });
 
   return (
-    <Flex justifyContent={data?.length ? 'flex-end' : undefined} flex={1}>
+    <>
       {data?.length ? (
         <CollectionJohnGamesMenuService
           watch={watch}
@@ -68,7 +68,7 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
       ) : (
         <JohnPopoverEmpty />
       )}
-    </Flex>
+    </>
   );
 };
 

@@ -41,6 +41,7 @@ export const colors = {
     green: '#4ADE80',
     orange: '#FF7B00',
     purple: '#8338EC',
+    red: '#EF4444',
   },
   ...backgrounds,
 };

@@ -12,7 +12,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { UseFormReset, UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import { colors } from 'theme/theme';
 import {
   CalculatorOfRarity,
@@ -30,29 +30,23 @@ import { useAppSelector } from 'hooks/useRedux';
 
 interface PoolsModalProps {
   isDisabled: boolean;
-  reset: UseFormReset<PoolsFieldProps>;
-  watch: UseFormWatch<PoolsFieldProps>;
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  getValues: UseFormGetValues<PoolsFieldProps>;
+  onSuccess: () => void;
 }
 
-export default ({
-  isDisabled,
-  reset,
-  setActiveStep,
-  watch,
-}: PoolsModalProps) => {
+export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   const {
-    general_type,
     add_item_failed,
+    add_item_fee,
+    general_type,
     add_item_dynamic,
     add_item_stable,
-    add_item_fee,
-  } = watch();
+  } = getValues();
 
-  const getValues = () => {
+  const get_value_type = () => {
     const getDynamic = Object.values(add_item_dynamic || []);
     const getStable = Object.values(add_item_stable || []);
 
@@ -83,9 +77,8 @@ export default ({
     key: [`creator_pool_create/${general_type}`],
     address: account?.address as string,
     onSuccess() {
+      onSuccess();
       onClose();
-      reset();
-      setActiveStep(0); // reset step
     },
   });
 
@@ -131,7 +124,7 @@ export default ({
 
             <ModalBody px={6} py={4} bg="shader.a.1000">
               <Text fontSize="sm" color="shader.a.300" fontWeight="medium">
-                Total {getValues()?.length} items
+                Total {get_value_type()?.length} items
               </Text>
 
               <Grid
@@ -143,21 +136,21 @@ export default ({
                 }}
               >
                 {React.Children.toArray(
-                  getValues()
+                  get_value_type()
                     ?.filter(meta => !!meta)
                     .map(({ amount, weight, collection, nft }) => {
                       const getRarity = CalculatorOfRarity(
                         weight,
-                        getValues()?.map(data => data?.weight) as number[]
+                        get_value_type()?.map(data => data?.weight) as number[]
                       );
 
                       return (
                         <PoolsModalCard
                           collection={{
-                            name: collection?.title || '-',
+                            name: collection?.title,
                           }}
                           nft={{
-                            name: nft?.title || '-',
+                            name: nft?.title,
                             id: nft?.id,
                             image: nft?.image,
                           }}
@@ -196,8 +189,8 @@ export default ({
               <PoolsModalSubmit
                 mutation={mutation}
                 isLoading={isLoading}
-                watch={watch}
-                getValues={getValues()}
+                get_value_type={get_value_type()}
+                getValues={getValues}
               />
             </ModalFooter>
           </ModalContent>

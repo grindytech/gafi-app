@@ -7,28 +7,28 @@ import { useEffect, useState } from 'react';
 
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { GamesFieldProps } from '..';
+import { PoolsFieldProps } from '..';
 
-interface GamesCollaboratorProps {
-  setValue: UseFormSetValue<GamesFieldProps>;
-  watch: UseFormWatch<GamesFieldProps>;
+interface PoolsAdminProps {
+  setValue: UseFormSetValue<PoolsFieldProps>;
+  watch: UseFormWatch<PoolsFieldProps>;
 }
 
-interface GamesCollaboratorServiceProps extends GamesCollaboratorProps {
+interface PoolsAdminServiceProps extends PoolsAdminProps {
   account: {
     address: string;
     name: string;
   };
 }
 
-export default ({ setValue, watch }: GamesCollaboratorProps) => {
+export default ({ setValue, watch }: PoolsAdminProps) => {
   const { account } = useAppSelector(state => state.injected.polkadot);
 
   return (
     <>
       {account?.address && account.name ? (
         <GamesCollaboratorsService
-          account={account as GamesCollaboratorServiceProps['account']}
+          account={account as PoolsAdminServiceProps['account']}
           setValue={setValue}
           watch={watch}
         />
@@ -41,7 +41,7 @@ function GamesCollaboratorsService({
   account,
   setValue,
   watch,
-}: GamesCollaboratorServiceProps) {
+}: PoolsAdminServiceProps) {
   const { collaborator: watch_collaborator } = watch();
   const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>(
     []

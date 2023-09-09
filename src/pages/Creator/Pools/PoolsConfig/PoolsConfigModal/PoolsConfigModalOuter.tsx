@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 
 interface PoolsConfigModalOuter extends PropsWithChildren {
   image: string | undefined;
-  name: string;
+  name: string | undefined;
   id: number | string;
   length: number;
 }

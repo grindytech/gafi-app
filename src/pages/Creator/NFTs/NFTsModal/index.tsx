@@ -1,4 +1,4 @@
-import { UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues } from 'react-hook-form';
 import {
   Button,
   Center,
@@ -14,14 +14,46 @@ import {
 import { convertHex } from 'utils/utils';
 import { colors } from 'theme/theme';
 import { NFTsFieldProps } from '..';
+import useSignAndSend from 'hooks/useSignAndSend';
+import { useAppSelector } from 'hooks/useRedux';
+import cloudinary_axios, {
+  cloudinary_config,
+  cloudinary_upload_type,
+} from 'axios/cloudinary_axios';
 
 interface CollectionsModalProps {
   isDisabled: boolean;
-  watch: UseFormWatch<NFTsFieldProps>;
+  getValues: UseFormGetValues<NFTsFieldProps>;
+  onSuccess: () => void;
 }
 
-export default ({ isDisabled }: CollectionsModalProps) => {
+export default ({
+  onSuccess,
+  getValues,
+  isDisabled,
+}: CollectionsModalProps) => {
+  const {
+    general_nft_id,
+    general_amount,
+    general_description,
+    general_external_url,
+    general_nft_title,
+    media_avatar,
+    general_join_collection,
+  } = getValues();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAppSelector(state => state.injected.polkadot);
+
+  const { isLoading, setIsLoading, mutation } = useSignAndSend({
+    key: [`create_nft`, account?.address as string],
+    address: account?.address as string,
+    onSuccess() {
+      onSuccess();
+      onClose();
+    },
+  });
 
   return (
     <>
@@ -69,8 +101,38 @@ export default ({ isDisabled }: CollectionsModalProps) => {
             <Button
               width="full"
               variant="primary"
+              isLoading={isLoading}
               onClick={() => {
-                alert('cooming soon');
+                if (api) {
+                  const formData = new FormData();
+                  formData.append('file', media_avatar);
+                  formData.append(
+                    'upload_preset',
+                    String(cloudinary_config.preset_key)
+                  );
+
+                  setIsLoading(true);
+
+                  cloudinary_axios
+                    .post(cloudinary_upload_type.image, formData)
+                    .then(item => {
+                      const parse = JSON.stringify({
+                        title: general_nft_title,
+                        description: general_description,
+                        external_url: general_external_url,
+                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
+                      });
+
+                      mutation(
+                        api.tx.game.createItemWithData(
+                          general_join_collection.collection_id,
+                          general_nft_id,
+                          general_amount,
+                          parse
+                        )
+                      );
+                    });
+                }
               }}
             >
               Sign & Submit

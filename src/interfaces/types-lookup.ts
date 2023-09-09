@@ -1455,6 +1455,7 @@ declare module '@polkadot/types/lookup' {
       readonly data: Bytes;
       readonly issuer: Option<MultiAddress>;
       readonly freezer: Option<MultiAddress>;
+      readonly game: Option<u32>;
     } & Struct;
     readonly isCreateItemWithData: boolean;
     readonly asCreateItemWithData: {

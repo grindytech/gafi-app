@@ -21,6 +21,7 @@ import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import GamesCollaborator from './GamesCollaborator';
+import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 
 export interface GamesFieldProps {
   general_game_title: string;
@@ -31,14 +32,11 @@ export interface GamesFieldProps {
   general_discord: string;
 
   // media
-  media_avatar: File | undefined;
+  media_avatar: File;
   media_banner: File | undefined;
   media_cover: File | undefined;
 
-  collaborators: {
-    address: string;
-    role: string;
-  }[];
+  collaborator: TypeCollaboratorsState[number];
 }
 
 export interface fieldsSetProps {
@@ -54,6 +52,8 @@ export default () => {
     setValue,
     watch,
     formState: { errors },
+    reset,
+    getValues,
   } = useForm<GamesFieldProps>();
 
   const [required, setRequired] = React.useState<Record<number, number>>({});
@@ -85,7 +85,7 @@ export default () => {
     },
   ];
 
-  const { activeStep, goToNext, goToPrevious } = useSteps({
+  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
   });
 
@@ -127,7 +127,11 @@ export default () => {
               </Flex>
 
               <GamesModal
-                watch={watch}
+                getValues={getValues}
+                onSuccess={() => {
+                  setActiveStep(0);
+                  reset();
+                }}
                 isDisabled={
                   activeStep !== steps.length - 1 || !!required[activeStep]
                 }
@@ -139,7 +143,7 @@ export default () => {
         <Stack spacing={6}>
           <Owner />
 
-          <GamesCollaborator />
+          <GamesCollaborator setValue={setValue} watch={watch} />
         </Stack>
       </DefaultForm>
     </>

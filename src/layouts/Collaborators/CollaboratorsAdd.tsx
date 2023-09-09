@@ -21,7 +21,6 @@ export default ({
 }: CollaboratorsAddProps) => {
   return (
     <Center
-      mt={2}
       justifyContent="space-between"
       borderRadius="xl"
       bg="shader.a.900"
