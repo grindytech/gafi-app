@@ -10,8 +10,8 @@ const common: commonProps = {
 };
 
 const development = {
-  PROVIDER_SOCKETS: ['ws://0.0.0.0:9944'],
-  // PROVIDER_SOCKETS: ['wss://ws-testnet.gafi.network'],
+  // PROVIDER_SOCKETS: ['ws://0.0.0.0:9944'],
+  PROVIDER_SOCKETS: ['wss://ws-testnet.gafi.network'],
   // PROVIDER_SOCKETS: ['ws://192.168.1.13:9944'],
 };
 

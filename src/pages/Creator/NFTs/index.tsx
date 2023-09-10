@@ -72,8 +72,6 @@ export default () => {
     index: 0,
   });
 
-  console.log(watch());
-
   return (
     <>
       <GoBack heading="Create NFT" />

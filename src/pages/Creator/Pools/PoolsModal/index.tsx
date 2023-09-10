@@ -73,6 +73,8 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
     }
   };
 
+  const get_value_filter = get_value_type()?.filter(meta => !!meta);
+
   const { mutation, isLoading } = useSignAndSend({
     key: [`creator_pool_create/${general_type}`],
     address: account?.address as string,
@@ -124,7 +126,7 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
 
             <ModalBody px={6} py={4} bg="shader.a.1000">
               <Text fontSize="sm" color="shader.a.300" fontWeight="medium">
-                Total {get_value_type()?.length} items
+                Total {get_value_filter?.length} items
               </Text>
 
               <Grid
@@ -136,12 +138,11 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
                 }}
               >
                 {React.Children.toArray(
-                  get_value_type()
-                    ?.filter(meta => !!meta)
-                    .map(({ amount, weight, collection, nft }) => {
+                  get_value_filter?.map(
+                    ({ amount, weight, collection, nft }) => {
                       const getRarity = CalculatorOfRarity(
                         weight,
-                        get_value_type()?.map(data => data?.weight) as number[]
+                        get_value_filter.map(data => data?.weight) as number[]
                       );
 
                       return (
@@ -158,7 +159,8 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
                           rarity={getRarity}
                         />
                       );
-                    })
+                    }
+                  )
                 )}
               </Grid>
             </ModalBody>

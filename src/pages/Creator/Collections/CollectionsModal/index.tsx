@@ -105,8 +105,6 @@ export default ({
               variant="primary"
               isLoading={isLoading}
               onClick={() => {
-                console.log(getValues());
-
                 if (api) {
                   const formData = new FormData();
                   formData.append('file', media_avatar);
