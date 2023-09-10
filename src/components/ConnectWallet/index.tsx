@@ -5,30 +5,28 @@ import {
   Drawer,
   DrawerBody,
   DrawerContent,
-  DrawerFooter,
   DrawerOverlay,
   Flex,
   Icon,
-  IconButton,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
 
-import Swap02Icon from 'public/assets/line/swap-02.svg';
 import useSignAndSend from 'hooks/useSignAndSend';
-import ConnectWalletProfile from './ConnectWalletProfile';
+
 import useBalance from 'hooks/useBalance';
-import GafiAmount from 'components/GafiAmount';
+
 import ConnectWalletSwitch from './ConnectWalletSwitch';
-import ConnectWalletLogOut from './ConnectWalletLogOut';
 import { useAppSelector } from 'hooks/useRedux';
 
-import { formatCurrency } from 'utils/utils';
+import { convertHex, formatCurrency, shorten } from 'utils/utils';
 
 import ConnectSubstrate from 'components/ConnectSubstrate';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
+import ButtonCopy from 'components/ButtonCopy';
+import { colors } from 'theme/theme';
 export default function ConnectWallet() {
   const { api } = useAppSelector(state => state.substrate);
 
@@ -46,11 +44,6 @@ export default function ConnectWallet() {
   });
 
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const {
-    isOpen: isOpenSwitch,
-    onClose: onCloseSwitch,
-    onToggle: onToggleSwitch,
-  } = useDisclosure();
 
   return (
     <>
@@ -62,97 +55,113 @@ export default function ConnectWallet() {
         <ConnectSubstrate />
       )}
 
-      {account && account.address && account.name && allAccount ? (
-        <Drawer isOpen={isOpen} onClose={onClose} size="sm">
+      {account?.address && account?.name && allAccount ? (
+        <Drawer isOpen={isOpen} onClose={onClose} size="xs">
           <DrawerOverlay />
 
-          <DrawerContent height="fit-content" borderRadius="2xl" margin={6}>
-            <DrawerBody padding={6} overflow="unset">
-              <Flex
-                flexDirection="column"
-                padding={4}
-                borderRadius="xl"
-                border="0.063rem solid "
-                borderColor="shader.a.400"
-              >
-                <Box position="relative">
-                  <Center
-                    justifyContent="space-between"
-                    gap={4}
-                    px={4}
-                    py={2}
-                    border="0.0625rem solid"
-                    borderColor="shader.a.300"
-                    borderRadius="xl"
-                  >
-                    <ConnectWalletProfile
-                      address={account.address}
-                      name={account.name}
-                      sx={{ padding: 0 }}
-                    />
-
-                    <IconButton
-                      onClick={onToggleSwitch}
-                      aria-label="switch-account"
-                      variant="unstyled"
-                      bg="primary.a.100"
-                      color="primary.a.500"
-                      borderRadius="2xl"
-                      minWidth="auto"
-                      height="auto"
-                      width="auto"
-                      _hover={{}}
-                      padding={1.5}
-                      icon={<Swap02Icon />}
-                    />
-                  </Center>
-
-                  <ConnectWalletSwitch
-                    isOpen={isOpenSwitch}
-                    onClose={onCloseSwitch}
-                    accounts={allAccount.filter(
-                      item => item.address !== account.address
-                    )}
-                  >
-                    <ConnectWalletLogOut
-                      onClose={() => {
-                        onClose();
-                        onCloseSwitch();
-                      }}
-                    />
-                  </ConnectWalletSwitch>
-                </Box>
-
-                {balance ? (
-                  <Box
-                    bg="transparent"
-                    textAlign="center"
-                    flexDirection="column"
-                    pt={10}
-                    mb={6}
-                  >
-                    <Icon as={GafiTokenIcon} width={8} height={8} />
-
-                    <Box mt={4}>
-                      <GafiAmount
-                        amount={balance}
-                        sx={{
-                          sx: {
-                            fontSize: '2xl',
-
-                            span: { fontSize: 'sm' },
-                          },
-                        }}
+          <DrawerContent
+            border="0.0625rem solid "
+            borderColor="shader.a.800"
+            bg="shader.a.900"
+            height="fit-content"
+            borderRadius="2xl"
+            margin={6}
+          >
+            <DrawerBody
+              padding={0}
+              sx={{
+                '> div': {
+                  padding: 6,
+                },
+              }}
+              overflow="unset"
+            >
+              <Box position="relative">
+                <Center
+                  justifyContent="space-between"
+                  borderRadius="xl"
+                  border="0.0625rem solid"
+                  borderColor="shader.a.800"
+                  bg={convertHex(colors.shader.a[800], 0.25)}
+                  px={4}
+                  py={2}
+                  gap={3}
+                >
+                  <Flex gap={3}>
+                    <Box>
+                      <AvatarJazzicon
+                        address={account.address}
+                        sx={{ width: '2.25rem', height: '2.25rem' }}
                       />
+                    </Box>
 
-                      <Text fontSize="sm" color="shader.a.500">
-                        {formatCurrency(Number(balance.replaceAll(',', '')))}
+                    <Box>
+                      <Text mb={0.5} color="white" fontWeight="medium">
+                        {account?.name || 'unknown'}
+                      </Text>
+
+                      <Text
+                        gap={2}
+                        display="flex"
+                        color="shader.a.500"
+                        fontSize="sm"
+                      >
+                        {shorten(account.address, 6)}
+
+                        <ButtonCopy
+                          value={account.address}
+                          sx={{
+                            'aria-label': 'copy-icon',
+
+                            sx: { svg: { width: 4, height: 4 } },
+                          }}
+                        />
                       </Text>
                     </Box>
-                  </Box>
-                ) : null}
+                  </Flex>
 
+                  <ConnectWalletSwitch
+                    accounts={allAccount.filter(
+                      meta => meta.address !== account.address
+                    )}
+                  />
+                </Center>
+              </Box>
+
+              {balance ? (
+                <Box bg="transparent" textAlign="center" py={10}>
+                  <Icon as={GafiTokenIcon} width={8} height={8} />
+
+                  <Box mt={2}>
+                    <Text
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      color="white"
+                      fontSize="2xl"
+                      fontWeight="bold"
+                    >
+                      {balance}&nbsp;
+                      <Text
+                        as="span"
+                        color="primary.a.400"
+                        fontWeight="normal"
+                        fontSize="sm"
+                      >
+                        GAFI
+                      </Text>
+                    </Text>
+
+                    <Text fontSize="sm" color="shader.a.500">
+                      {formatCurrency(Number(balance.replaceAll(',', '')))}
+                    </Text>
+                  </Box>
+                </Box>
+              ) : null}
+
+              <Box>
                 <Button
+                  width="full"
                   variant="primary"
                   isLoading={isLoading}
                   onClick={() => {
@@ -163,21 +172,8 @@ export default function ConnectWallet() {
                 >
                   Faucet
                 </Button>
-              </Flex>
+              </Box>
             </DrawerBody>
-
-            <DrawerFooter>
-              <Button
-                variant="baseStyle"
-                width="full"
-                onClick={onClose}
-                _hover={{
-                  borderColor: 'shader.a.900',
-                }}
-              >
-                Close
-              </Button>
-            </DrawerFooter>
           </DrawerContent>
         </Drawer>
       ) : null}
