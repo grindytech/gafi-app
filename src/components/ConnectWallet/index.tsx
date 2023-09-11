@@ -2,14 +2,14 @@ import {
   Box,
   Button,
   Center,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
@@ -43,90 +43,81 @@ export default function ConnectWallet() {
     account: account?.address as string,
   });
 
-  const { isOpen, onClose, onToggle } = useDisclosure();
-
   return (
     <>
-      {account && account.address ? (
-        <Button onClick={onToggle} variant="unstyled">
-          <AvatarJazzicon address={account.address} />
-        </Button>
-      ) : (
-        <ConnectSubstrate />
-      )}
-
-      {account?.address && account?.name && allAccount ? (
-        <Drawer isOpen={isOpen} onClose={onClose} size="xs">
-          <DrawerOverlay />
-
-          <DrawerContent
+      {allAccount && account && account.address ? (
+        <Menu closeOnSelect={false} placement="bottom-end">
+          <MenuButton
+            as={IconButton}
+            variant="unstyled"
+            width="2.25rem"
+            height="2.25rem"
+            sx={{
+              '> figure': {
+                width: 'full',
+                height: 'full',
+              },
+            }}
+            icon={<AvatarJazzicon address={account.address} />}
+          />
+          <MenuList
             border="0.0625rem solid "
             borderColor="shader.a.800"
             bg="shader.a.900"
-            height="fit-content"
             borderRadius="2xl"
-            margin={6}
           >
-            <DrawerBody
-              padding={0}
-              sx={{
-                '> div': {
-                  padding: 6,
-                },
-              }}
-              overflow="unset"
+            <MenuItem
+              as="div"
+              bg="transparent"
+              flexDirection="column"
+              py={2}
+              px={9}
             >
-              <Box position="relative">
-                <Center
-                  justifyContent="space-between"
-                  borderRadius="xl"
-                  border="0.0625rem solid"
-                  borderColor="shader.a.800"
-                  bg={convertHex(colors.shader.a[800], 0.25)}
-                  px={4}
-                  py={2}
-                  gap={3}
-                >
-                  <Flex gap={3}>
-                    <Box>
-                      <AvatarJazzicon
-                        address={account.address}
-                        sx={{ width: '2.25rem', height: '2.25rem' }}
+              <Center
+                justifyContent="space-between"
+                borderRadius="xl"
+                border="0.0625rem solid"
+                borderColor="shader.a.800"
+                bg={convertHex(colors.shader.a[800], 0.25)}
+                px={4}
+                py={2}
+                gap={3}
+                position="relative"
+              >
+                <Flex gap={3}>
+                  <Box>
+                    <AvatarJazzicon
+                      address={account.address}
+                      sx={{ width: '2.25rem', height: '2.25rem' }}
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text mb={0.5} color="white" fontWeight="medium">
+                      {account?.name || 'unknown'}
+                    </Text>
+
+                    <Flex gap={2} color="shader.a.500" fontSize="sm">
+                      {shorten(account.address, 6)}
+
+                      <ButtonCopy
+                        value={account.address}
+                        sx={{
+                          'aria-label': 'copy-icon',
+                          as: 'div',
+                          sx: { svg: { width: 4, height: 4 } },
+                        }}
                       />
-                    </Box>
+                    </Flex>
+                  </Box>
+                </Flex>
 
-                    <Box>
-                      <Text mb={0.5} color="white" fontWeight="medium">
-                        {account?.name || 'unknown'}
-                      </Text>
-
-                      <Text
-                        gap={2}
-                        display="flex"
-                        color="shader.a.500"
-                        fontSize="sm"
-                      >
-                        {shorten(account.address, 6)}
-
-                        <ButtonCopy
-                          value={account.address}
-                          sx={{
-                            'aria-label': 'copy-icon',
-
-                            sx: { svg: { width: 4, height: 4 } },
-                          }}
-                        />
-                      </Text>
-                    </Box>
-                  </Flex>
-
-                  <ConnectWalletSwitch
-                    accounts={allAccount.filter(
-                      meta => meta.address !== account.address
-                    )}
-                  />
-                </Center>
-              </Box>
+                <ConnectWalletSwitch
+                  accounts={allAccount.filter(
+                    meta => meta.address !== account.address
+                  )}
+                />
+              </Center>
 
               {balance ? (
                 <Box bg="transparent" textAlign="center" py={10}>
@@ -159,8 +150,9 @@ export default function ConnectWallet() {
                 </Box>
               ) : null}
 
-              <Box>
+              <Box width="full">
                 <Button
+                  as="div"
                   width="full"
                   variant="primary"
                   isLoading={isLoading}
@@ -173,10 +165,12 @@ export default function ConnectWallet() {
                   Faucet
                 </Button>
               </Box>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      ) : null}
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      ) : (
+        <ConnectSubstrate />
+      )}
     </>
   );
 }

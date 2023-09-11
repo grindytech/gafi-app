@@ -35,7 +35,7 @@ export default function ConnectWalletSwitch({
       sx={{
         '> div': {
           inset: 'auto 0 0 0!',
-          transform: 'translateY(95%) !important',
+          transform: 'translateY(100%) !important',
         },
       }}
     >
@@ -64,8 +64,8 @@ export default function ConnectWalletSwitch({
               bg="transparent"
               color="shader.a.400"
               transitionDuration="ultra-slow"
-              px={10}
-              py={4}
+              px={4}
+              py={2}
               _hover={{
                 bg: convertHex(colors.shader.a[800], 0.25),
               }}
