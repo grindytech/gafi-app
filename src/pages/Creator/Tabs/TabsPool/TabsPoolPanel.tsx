@@ -25,6 +25,7 @@ import React from 'react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import EmptyIcon from 'public/assets/fill/empty.svg';
 import { isNull } from '@polkadot/util';
+import useMetaPool from 'hooks/useMetaPool';
 
 interface TabsNFTPanelProps {
   meta?: TabsPoolDataProps[] | undefined;
@@ -50,6 +51,12 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
       })),
   });
 
+  const { MetaPool } = useMetaPool({
+    key: `creator_tab_pool`,
+    filter: 'pool_id',
+    arg: meta.map(({ pool_id }) => pool_id),
+  });
+
   return (
     <>
       {meta.map(
@@ -63,6 +70,10 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
                 );
               }
             })
+          );
+
+          const currentMetaPool = MetaPool?.find(
+            meta => meta.pool_id === pool_id
           );
 
           return (
@@ -101,7 +112,7 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
               <Stack padding={4}>
                 <Flex gap={4} justifyContent="space-between">
                   <Text as="strong" color="white" wordBreak="break-word">
-                    {(Math.random() + 1).toString(36).substring(7)}
+                    {currentMetaPool?.title || 'unknown'}
                   </Text>
 
                   <Text color="shader.a.500" fontSize="sm">
@@ -300,7 +311,7 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
                   </Menu>
                 </Center>
 
-                <Text fontWeight="normal" fontSize="xs" color="#CED1D7">
+                <Text fontWeight="normal" fontSize="xs" color="shader.a.400">
                   End in:&nbsp;
                   <DateBlock
                     end={endBlock.isEmpty ? 'Infinity' : 'Expired'}

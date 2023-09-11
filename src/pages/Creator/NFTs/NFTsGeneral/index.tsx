@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import theme from 'theme/theme';
 
-import { useEffect } from 'react';
 import { NFTsFieldProps } from '..';
 import NFTsAmount from '../NFTsAmount';
 import NFTsJohnCollection from '../NFTsJohnCollection';
@@ -103,33 +102,15 @@ export default ({
     },
   ];
 
-  const {
-    general_nft_title,
-    general_description,
-    general_external_url,
-    general_join_collection,
-    general_nft_id,
-  } = watch();
-
-  useEffect(() => {
-    const fieldsRequired = () => {
-      const findRequired = fieldsSet.filter(
-        meta => meta.isRequired && !watch()[meta.fieldName]
-      );
-
-      return findRequired.length;
-    };
+  watch(meta => {
+    const fieldsRequired = fieldsSet.filter(
+      ({ fieldName, isRequired }) => !meta[fieldName] && isRequired
+    );
 
     setRequired({
-      0: fieldsRequired(),
+      0: fieldsRequired.length,
     });
-  }, [
-    general_nft_title,
-    general_nft_id,
-    general_description,
-    general_external_url,
-    general_join_collection,
-  ]);
+  });
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

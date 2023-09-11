@@ -82,7 +82,7 @@ export default () => {
       id: 3,
       tab: <TabsPool setLoading={setLoading} />,
       panel: <TabsPoolPanel meta={loading?.pool?.data} />,
-      background: 'gradient.linear.4',
+      background: 'gradient.linear.6',
     },
   ];
 

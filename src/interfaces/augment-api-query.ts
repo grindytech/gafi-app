@@ -159,6 +159,10 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       originItemOf: AugmentedQuery<ApiType, (arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<Option<ITuple<[u32, u32]>>>, [ITuple<[u32, u32]>]> & QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
       /**
+       * Metadata of a pool.
+       **/
+      poolMetadataOf: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<Option<PalletGamePoolMetadata>>, [u32]> & QueryableStorageEntry<ApiType, [u32]>;
+      /**
        * Storing minting pool configuration
        **/
       poolOf: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<Option<PalletGamePoolDetails>>, [u32]> & QueryableStorageEntry<ApiType, [u32]>;

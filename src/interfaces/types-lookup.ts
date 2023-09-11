@@ -612,9 +612,14 @@ declare module '@polkadot/types/lookup' {
     } & Struct;
     readonly isGameSetMetadata: boolean;
     readonly asGameSetMetadata: {
-      readonly who: Option<AccountId32>;
+      readonly who: AccountId32;
       readonly game: u32;
       readonly data: Bytes;
+    } & Struct;
+    readonly isGameMetadataCleared: boolean;
+    readonly asGameMetadataCleared: {
+      readonly who: AccountId32;
+      readonly game: u32;
     } & Struct;
     readonly isCollectionCreated: boolean;
     readonly asCollectionCreated: {
@@ -814,7 +819,18 @@ declare module '@polkadot/types/lookup' {
       readonly poolType: GafiSupportGameTypesPoolType;
       readonly table: Vec<GafiSupportGameTypesLoot>;
     } & Struct;
-    readonly type: 'GameCreated' | 'GameSetMetadata' | 'CollectionCreated' | 'AddingAcceptanceSet' | 'CollectionAdded' | 'ItemCreated' | 'ItemAdded' | 'RequestMint' | 'Minted' | 'Burned' | 'Transferred' | 'UpgradeSet' | 'Upgraded' | 'PriceSet' | 'ItemBought' | 'BundleSet' | 'BundleBought' | 'TradeCanceled' | 'WishlistSet' | 'WishlistFilled' | 'CollectionRemoved' | 'SwapSet' | 'SwapClaimed' | 'AuctionSet' | 'Bid' | 'AuctionClaimed' | 'BuySet' | 'SetBuyClaimed' | 'MiningPoolCreated';
+    readonly isPoolSetMetadata: boolean;
+    readonly asPoolSetMetadata: {
+      readonly who: AccountId32;
+      readonly pool: u32;
+      readonly data: Bytes;
+    } & Struct;
+    readonly isPoolSetMetadataCleared: boolean;
+    readonly asPoolSetMetadataCleared: {
+      readonly who: AccountId32;
+      readonly pool: u32;
+    } & Struct;
+    readonly type: 'GameCreated' | 'GameSetMetadata' | 'GameMetadataCleared' | 'CollectionCreated' | 'AddingAcceptanceSet' | 'CollectionAdded' | 'ItemCreated' | 'ItemAdded' | 'RequestMint' | 'Minted' | 'Burned' | 'Transferred' | 'UpgradeSet' | 'Upgraded' | 'PriceSet' | 'ItemBought' | 'BundleSet' | 'BundleBought' | 'TradeCanceled' | 'WishlistSet' | 'WishlistFilled' | 'CollectionRemoved' | 'SwapSet' | 'SwapClaimed' | 'AuctionSet' | 'Bid' | 'AuctionClaimed' | 'BuySet' | 'SetBuyClaimed' | 'MiningPoolCreated' | 'PoolSetMetadata' | 'PoolSetMetadataCleared';
   }
 
   /** @name GafiSupportGameTypesNft (55) */
@@ -1451,8 +1467,8 @@ declare module '@polkadot/types/lookup' {
     } & Struct;
     readonly isCreateCollectionWithData: boolean;
     readonly asCreateCollectionWithData: {
-      readonly admin: MultiAddress;
       readonly data: Bytes;
+      readonly admin: Option<MultiAddress>;
       readonly issuer: Option<MultiAddress>;
       readonly freezer: Option<MultiAddress>;
       readonly game: Option<u32>;
@@ -1469,7 +1485,39 @@ declare module '@polkadot/types/lookup' {
       readonly admin: MultiAddress;
       readonly data: Bytes;
     } & Struct;
-    readonly type: 'CreateGame' | 'CreateGameCollection' | 'CreateCollection' | 'SetAcceptAdding' | 'AddGameCollection' | 'CreateItem' | 'AddSupply' | 'Burn' | 'Transfer' | 'SetUpgradeItem' | 'UpgradeItem' | 'SetPrice' | 'BuyItem' | 'AddSetPrice' | 'SetBundle' | 'BuyBundle' | 'CancelTrade' | 'OrderBundle' | 'SellBundle' | 'RemoveCollection' | 'LockItemTransfer' | 'UnlockItemTransfer' | 'CreateSwap' | 'MakeSwap' | 'SetAuction' | 'BidAuction' | 'CloseAuction' | 'SetOrder' | 'SellItem' | 'SetAttribute' | 'ClearAttribute' | 'SetMetadata' | 'ClearMetadata' | 'SetCollectionMetadata' | 'ClearCollectionMetadata' | 'SetTeam' | 'CreateDynamicPool' | 'CreateStablePool' | 'RequestMint' | 'CreateCollectionWithData' | 'CreateItemWithData' | 'CreateGameWithData';
+    readonly isSetGameMetadata: boolean;
+    readonly asSetGameMetadata: {
+      readonly data: Bytes;
+      readonly game: u32;
+    } & Struct;
+    readonly isClearGameMetadata: boolean;
+    readonly asClearGameMetadata: {
+      readonly game: u32;
+    } & Struct;
+    readonly isCreateDynamicPoolWithData: boolean;
+    readonly asCreateDynamicPoolWithData: {
+      readonly lootTable: Vec<GafiSupportGameTypesLoot>;
+      readonly admin: MultiAddress;
+      readonly mintSettings: GafiSupportGameTypesMintSettings;
+      readonly data: Bytes;
+    } & Struct;
+    readonly isCreateStablePoolWithData: boolean;
+    readonly asCreateStablePoolWithData: {
+      readonly lootTable: Vec<GafiSupportGameTypesLoot>;
+      readonly admin: MultiAddress;
+      readonly mintSettings: GafiSupportGameTypesMintSettings;
+      readonly data: Bytes;
+    } & Struct;
+    readonly isSetPoolMetadata: boolean;
+    readonly asSetPoolMetadata: {
+      readonly pool: u32;
+      readonly data: Bytes;
+    } & Struct;
+    readonly isClearPoolMetadata: boolean;
+    readonly asClearPoolMetadata: {
+      readonly pool: u32;
+    } & Struct;
+    readonly type: 'CreateGame' | 'CreateGameCollection' | 'CreateCollection' | 'SetAcceptAdding' | 'AddGameCollection' | 'CreateItem' | 'AddSupply' | 'Burn' | 'Transfer' | 'SetUpgradeItem' | 'UpgradeItem' | 'SetPrice' | 'BuyItem' | 'AddSetPrice' | 'SetBundle' | 'BuyBundle' | 'CancelTrade' | 'OrderBundle' | 'SellBundle' | 'RemoveCollection' | 'LockItemTransfer' | 'UnlockItemTransfer' | 'CreateSwap' | 'MakeSwap' | 'SetAuction' | 'BidAuction' | 'CloseAuction' | 'SetOrder' | 'SellItem' | 'SetAttribute' | 'ClearAttribute' | 'SetMetadata' | 'ClearMetadata' | 'SetCollectionMetadata' | 'ClearCollectionMetadata' | 'SetTeam' | 'CreateDynamicPool' | 'CreateStablePool' | 'RequestMint' | 'CreateCollectionWithData' | 'CreateItemWithData' | 'CreateGameWithData' | 'SetGameMetadata' | 'ClearGameMetadata' | 'CreateDynamicPoolWithData' | 'CreateStablePoolWithData' | 'SetPoolMetadata' | 'ClearPoolMetadata';
   }
 
   /** @name PalletNftsItemConfig (134) */
@@ -1707,7 +1755,12 @@ declare module '@polkadot/types/lookup' {
     readonly data: Bytes;
   }
 
-  /** @name PalletGamePoolDetails (179) */
+  /** @name PalletGamePoolMetadata (178) */
+  interface PalletGamePoolMetadata extends Struct {
+    readonly data: Bytes;
+  }
+
+  /** @name PalletGamePoolDetails (180) */
   interface PalletGamePoolDetails extends Struct {
     readonly poolType: GafiSupportGameTypesPoolType;
     readonly owner: AccountId32;
@@ -1716,7 +1769,7 @@ declare module '@polkadot/types/lookup' {
     readonly mintSettings: GafiSupportGameTypesMintSettings;
   }
 
-  /** @name PalletGameMintRequest (181) */
+  /** @name PalletGameMintRequest (182) */
   interface PalletGameMintRequest extends Struct {
     readonly miner: AccountId32;
     readonly pool: u32;
@@ -1727,13 +1780,13 @@ declare module '@polkadot/types/lookup' {
     readonly blockNumber: u32;
   }
 
-  /** @name PalletGameUpgradeItemConfig (184) */
+  /** @name PalletGameUpgradeItemConfig (185) */
   interface PalletGameUpgradeItemConfig extends Struct {
     readonly item: u32;
     readonly fee: u128;
   }
 
-  /** @name PalletGameTradeConfig (186) */
+  /** @name PalletGameTradeConfig (187) */
   interface PalletGameTradeConfig extends Struct {
     readonly trade: GafiSupportGameTypesTradeType;
     readonly owner: AccountId32;
@@ -1743,7 +1796,7 @@ declare module '@polkadot/types/lookup' {
     readonly endBlock: Option<u32>;
   }
 
-  /** @name PalletGameAuctionConfig (188) */
+  /** @name PalletGameAuctionConfig (189) */
   interface PalletGameAuctionConfig extends Struct {
     readonly owner: AccountId32;
     readonly maybePrice: Option<u128>;
@@ -1751,7 +1804,7 @@ declare module '@polkadot/types/lookup' {
     readonly duration: u32;
   }
 
-  /** @name PalletGameError (189) */
+  /** @name PalletGameError (190) */
   interface PalletGameError extends Enum {
     readonly isNoPermission: boolean;
     readonly isUnknownGame: boolean;
@@ -1763,6 +1816,7 @@ declare module '@polkadot/types/lookup' {
     readonly isUnknownBid: boolean;
     readonly isUnknownAcceptance: boolean;
     readonly isUnknownMiningPool: boolean;
+    readonly isMetadataNotFound: boolean;
     readonly isExceedMaxItem: boolean;
     readonly isExceedTotalAmount: boolean;
     readonly isExceedAllowedAmount: boolean;
@@ -1803,25 +1857,25 @@ declare module '@polkadot/types/lookup' {
     readonly isMintEnded: boolean;
     readonly isNotWhitelisted: boolean;
     readonly isOverRequest: boolean;
-    readonly type: 'NoPermission' | 'UnknownGame' | 'UnknownCollection' | 'UnknownItem' | 'UnknownTrade' | 'UnknownUpgrade' | 'UnknownAuction' | 'UnknownBid' | 'UnknownAcceptance' | 'UnknownMiningPool' | 'ExceedMaxItem' | 'ExceedTotalAmount' | 'ExceedAllowedAmount' | 'ExceedMaxCollection' | 'ExceedMaxGameShare' | 'ExceedMaxBundle' | 'ExceedMaxLoot' | 'SoldOut' | 'WithdrawReserveFailed' | 'UpgradeExists' | 'CollectionExists' | 'InsufficientItemBalance' | 'InsufficientReservedBalance' | 'InvalidAmount' | 'ItemLocked' | 'BidTooLow' | 'AskTooHigh' | 'GameIdInUse' | 'TradeIdInUse' | 'PoolIdInUse' | 'TradeNotStarted' | 'TradeEnded' | 'IncorrectCollection' | 'IncorrectItem' | 'AuctionInProgress' | 'AuctionNotStarted' | 'AuctionEnded' | 'NotSetPrice' | 'NotBundle' | 'NotWishlist' | 'NotSwap' | 'NotAuction' | 'NotSetBuy' | 'InfiniteSupply' | 'NotInfiniteSupply' | 'MintFailed' | 'MintNotStarted' | 'MintEnded' | 'NotWhitelisted' | 'OverRequest';
+    readonly type: 'NoPermission' | 'UnknownGame' | 'UnknownCollection' | 'UnknownItem' | 'UnknownTrade' | 'UnknownUpgrade' | 'UnknownAuction' | 'UnknownBid' | 'UnknownAcceptance' | 'UnknownMiningPool' | 'MetadataNotFound' | 'ExceedMaxItem' | 'ExceedTotalAmount' | 'ExceedAllowedAmount' | 'ExceedMaxCollection' | 'ExceedMaxGameShare' | 'ExceedMaxBundle' | 'ExceedMaxLoot' | 'SoldOut' | 'WithdrawReserveFailed' | 'UpgradeExists' | 'CollectionExists' | 'InsufficientItemBalance' | 'InsufficientReservedBalance' | 'InvalidAmount' | 'ItemLocked' | 'BidTooLow' | 'AskTooHigh' | 'GameIdInUse' | 'TradeIdInUse' | 'PoolIdInUse' | 'TradeNotStarted' | 'TradeEnded' | 'IncorrectCollection' | 'IncorrectItem' | 'AuctionInProgress' | 'AuctionNotStarted' | 'AuctionEnded' | 'NotSetPrice' | 'NotBundle' | 'NotWishlist' | 'NotSwap' | 'NotAuction' | 'NotSetBuy' | 'InfiniteSupply' | 'NotInfiniteSupply' | 'MintFailed' | 'MintNotStarted' | 'MintEnded' | 'NotWhitelisted' | 'OverRequest';
   }
 
-  /** @name GameRandomnessSeedPayload (190) */
+  /** @name GameRandomnessSeedPayload (191) */
   interface GameRandomnessSeedPayload extends Struct {
     readonly blockNumber: u32;
     readonly seed: U8aFixed;
   }
 
-  /** @name FrameSupportPalletId (191) */
+  /** @name FrameSupportPalletId (192) */
   interface FrameSupportPalletId extends U8aFixed {}
 
-  /** @name GameRandomnessError (192) */
+  /** @name GameRandomnessError (193) */
   interface GameRandomnessError extends Enum {
     readonly isInvalidSeed: boolean;
     readonly type: 'InvalidSeed';
   }
 
-  /** @name PalletFaucetError (194) */
+  /** @name PalletFaucetError (195) */
   interface PalletFaucetError extends Enum {
     readonly isSelfTransfer: boolean;
     readonly isNotEnoughBalance: boolean;
@@ -1831,23 +1885,23 @@ declare module '@polkadot/types/lookup' {
     readonly type: 'SelfTransfer' | 'NotEnoughBalance' | 'DontBeGreedy' | 'PleaseWait' | 'OutOfFaucet';
   }
 
-  /** @name PalletCacheFlag (195) */
+  /** @name PalletCacheFlag (196) */
   interface PalletCacheFlag extends Enum {
     readonly isLeft: boolean;
     readonly isRight: boolean;
     readonly type: 'Left' | 'Right';
   }
 
-  /** @name PalletCacheWrapData (197) */
+  /** @name PalletCacheWrapData (198) */
   interface PalletCacheWrapData extends Struct {
     readonly data: u128;
     readonly timestamp: u128;
   }
 
-  /** @name PalletCacheError (198) */
+  /** @name PalletCacheError (199) */
   type PalletCacheError = Null;
 
-  /** @name SpRuntimeMultiSignature (200) */
+  /** @name SpRuntimeMultiSignature (201) */
   interface SpRuntimeMultiSignature extends Enum {
     readonly isEd25519: boolean;
     readonly asEd25519: SpCoreEd25519Signature;
@@ -1858,34 +1912,34 @@ declare module '@polkadot/types/lookup' {
     readonly type: 'Ed25519' | 'Sr25519' | 'Ecdsa';
   }
 
-  /** @name SpCoreSr25519Signature (201) */
+  /** @name SpCoreSr25519Signature (202) */
   interface SpCoreSr25519Signature extends U8aFixed {}
 
-  /** @name SpCoreEcdsaSignature (202) */
+  /** @name SpCoreEcdsaSignature (203) */
   interface SpCoreEcdsaSignature extends U8aFixed {}
 
-  /** @name FrameSystemExtensionsCheckNonZeroSender (205) */
+  /** @name FrameSystemExtensionsCheckNonZeroSender (206) */
   type FrameSystemExtensionsCheckNonZeroSender = Null;
 
-  /** @name FrameSystemExtensionsCheckSpecVersion (206) */
+  /** @name FrameSystemExtensionsCheckSpecVersion (207) */
   type FrameSystemExtensionsCheckSpecVersion = Null;
 
-  /** @name FrameSystemExtensionsCheckTxVersion (207) */
+  /** @name FrameSystemExtensionsCheckTxVersion (208) */
   type FrameSystemExtensionsCheckTxVersion = Null;
 
-  /** @name FrameSystemExtensionsCheckGenesis (208) */
+  /** @name FrameSystemExtensionsCheckGenesis (209) */
   type FrameSystemExtensionsCheckGenesis = Null;
 
-  /** @name FrameSystemExtensionsCheckNonce (211) */
+  /** @name FrameSystemExtensionsCheckNonce (212) */
   interface FrameSystemExtensionsCheckNonce extends Compact<u32> {}
 
-  /** @name FrameSystemExtensionsCheckWeight (212) */
+  /** @name FrameSystemExtensionsCheckWeight (213) */
   type FrameSystemExtensionsCheckWeight = Null;
 
-  /** @name PalletTransactionPaymentChargeTransactionPayment (213) */
+  /** @name PalletTransactionPaymentChargeTransactionPayment (214) */
   interface PalletTransactionPaymentChargeTransactionPayment extends Compact<u128> {}
 
-  /** @name Game3RuntimeRuntime (214) */
+  /** @name Game3RuntimeRuntime (215) */
   type Game3RuntimeRuntime = Null;
 
 } // declare module

@@ -126,12 +126,15 @@ declare module '@polkadot/api-base/types/events' {
       CollectionCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32], { who: AccountId32, collection: u32 }>;
       CollectionRemoved: AugmentedEvent<ApiType, [who: AccountId32, game: u32, collection: u32], { who: AccountId32, game: u32, collection: u32 }>;
       GameCreated: AugmentedEvent<ApiType, [who: AccountId32, game: u32], { who: AccountId32, game: u32 }>;
-      GameSetMetadata: AugmentedEvent<ApiType, [who: Option<AccountId32>, game: u32, data: Bytes], { who: Option<AccountId32>, game: u32, data: Bytes }>;
+      GameMetadataCleared: AugmentedEvent<ApiType, [who: AccountId32, game: u32], { who: AccountId32, game: u32 }>;
+      GameSetMetadata: AugmentedEvent<ApiType, [who: AccountId32, game: u32, data: Bytes], { who: AccountId32, game: u32, data: Bytes }>;
       ItemAdded: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, amount: u32], { who: AccountId32, collection: u32, item: u32, amount: u32 }>;
       ItemBought: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, bidUnitPrice: u128 }>;
       ItemCreated: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32>], { who: AccountId32, collection: u32, item: u32, maybeSupply: Option<u32> }>;
       MiningPoolCreated: AugmentedEvent<ApiType, [pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot>], { pool: u32, who: AccountId32, poolType: GafiSupportGameTypesPoolType, table: Vec<GafiSupportGameTypesLoot> }>;
       Minted: AugmentedEvent<ApiType, [who: AccountId32, pool: u32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>, price: u128, amount: u32], { who: AccountId32, pool: u32, target: AccountId32, nfts: Vec<GafiSupportGameTypesNft>, price: u128, amount: u32 }>;
+      PoolSetMetadata: AugmentedEvent<ApiType, [who: AccountId32, pool: u32, data: Bytes], { who: AccountId32, pool: u32, data: Bytes }>;
+      PoolSetMetadataCleared: AugmentedEvent<ApiType, [who: AccountId32, pool: u32], { who: AccountId32, pool: u32 }>;
       PriceSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, collection: u32, item: u32, amount: u32, unitPrice: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
       RequestMint: AugmentedEvent<ApiType, [who: AccountId32, pool: u32, target: AccountId32, blockNumber: u32], { who: AccountId32, pool: u32, target: AccountId32, blockNumber: u32 }>;
       SetBuyClaimed: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128], { trade: u32, who: AccountId32, amount: u32, askUnitPrice: u128 }>;
