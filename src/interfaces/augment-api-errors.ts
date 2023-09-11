@@ -126,6 +126,7 @@ declare module '@polkadot/api-base/types/errors' {
        * Transfer is locked for any trade
        **/
       ItemLocked: AugmentedError<ApiType>;
+      MetadataNotFound: AugmentedError<ApiType>;
       MintEnded: AugmentedError<ApiType>;
       MintFailed: AugmentedError<ApiType>;
       MintNotStarted: AugmentedError<ApiType>;

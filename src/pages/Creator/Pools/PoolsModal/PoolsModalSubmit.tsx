@@ -27,8 +27,14 @@ export default ({
   const { account } = useAppSelector(state => state.injected.polkadot);
   const { api } = useAppSelector(state => state.substrate);
 
-  const { add_item_fee, general_duration, general_type, collaborator } =
-    getValues();
+  const {
+    general_title,
+    general_description,
+    add_item_fee,
+    general_duration,
+    general_type,
+    collaborator,
+  } = getValues();
 
   const { blockNumber } = useBlockTime('bestNumber');
 
@@ -63,22 +69,29 @@ export default ({
             endBlock: end,
           };
 
+          const meta = JSON.stringify({
+            title: general_title,
+            description: general_description,
+          });
+
           if (general_type === 'Dynamic Pool') {
             mutation(
-              api?.tx.game.createDynamicPool(
+              api?.tx.game.createDynamicPoolWithData(
                 modifield,
                 collaborator.account.address,
-                mintSettings
+                mintSettings,
+                meta
               )
             );
           }
 
           if (general_type === 'Stable Pool') {
             mutation(
-              api?.tx.game.createStablePool(
+              api?.tx.game.createStablePoolWithData(
                 modifield,
                 collaborator.account.address,
-                mintSettings
+                mintSettings,
+                meta
               )
             );
           }

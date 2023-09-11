@@ -549,9 +549,13 @@ export default {
         game: 'u32',
       },
       GameSetMetadata: {
-        who: 'Option<AccountId32>',
+        who: 'AccountId32',
         game: 'u32',
         data: 'Bytes',
+      },
+      GameMetadataCleared: {
+        who: 'AccountId32',
+        game: 'u32',
       },
       CollectionCreated: {
         who: 'AccountId32',
@@ -722,7 +726,16 @@ export default {
         pool: 'u32',
         who: 'AccountId32',
         poolType: 'GafiSupportGameTypesPoolType',
-        table: 'Vec<GafiSupportGameTypesLoot>'
+        table: 'Vec<GafiSupportGameTypesLoot>',
+      },
+      PoolSetMetadata: {
+        who: 'AccountId32',
+        pool: 'u32',
+        data: 'Bytes',
+      },
+      PoolSetMetadataCleared: {
+        who: 'AccountId32',
+        pool: 'u32'
       }
     }
   },
@@ -1319,8 +1332,8 @@ export default {
         amount: 'u32',
       },
       create_collection_with_data: {
-        admin: 'MultiAddress',
         data: 'Bytes',
+        admin: 'Option<MultiAddress>',
         issuer: 'Option<MultiAddress>',
         freezer: 'Option<MultiAddress>',
         game: 'Option<u32>',
@@ -1333,7 +1346,33 @@ export default {
       },
       create_game_with_data: {
         admin: 'MultiAddress',
-        data: 'Bytes'
+        data: 'Bytes',
+      },
+      set_game_metadata: {
+        data: 'Bytes',
+        game: 'u32',
+      },
+      clear_game_metadata: {
+        game: 'u32',
+      },
+      create_dynamic_pool_with_data: {
+        lootTable: 'Vec<GafiSupportGameTypesLoot>',
+        admin: 'MultiAddress',
+        mintSettings: 'GafiSupportGameTypesMintSettings',
+        data: 'Bytes',
+      },
+      create_stable_pool_with_data: {
+        lootTable: 'Vec<GafiSupportGameTypesLoot>',
+        admin: 'MultiAddress',
+        mintSettings: 'GafiSupportGameTypesMintSettings',
+        data: 'Bytes',
+      },
+      set_pool_metadata: {
+        pool: 'u32',
+        data: 'Bytes',
+      },
+      clear_pool_metadata: {
+        pool: 'u32'
       }
     }
   },
@@ -1532,7 +1571,13 @@ export default {
     data: 'Bytes'
   },
   /**
-   * Lookup179: pallet_game::types::PoolDetails<sp_core::crypto::AccountId32, Balance, BlockNumber, CollectionId>
+   * Lookup178: pallet_game::types::PoolMetadata<StringLimit>
+   **/
+  PalletGamePoolMetadata: {
+    data: 'Bytes'
+  },
+  /**
+   * Lookup180: pallet_game::types::PoolDetails<sp_core::crypto::AccountId32, Balance, BlockNumber, CollectionId>
    **/
   PalletGamePoolDetails: {
     poolType: 'GafiSupportGameTypesPoolType',
@@ -1542,7 +1587,7 @@ export default {
     mintSettings: 'GafiSupportGameTypesMintSettings'
   },
   /**
-   * Lookup181: pallet_game::types::MintRequest<sp_core::crypto::AccountId32, PoolId, Balance, BlockNumber>
+   * Lookup182: pallet_game::types::MintRequest<sp_core::crypto::AccountId32, PoolId, Balance, BlockNumber>
    **/
   PalletGameMintRequest: {
     miner: 'AccountId32',
@@ -1554,14 +1599,14 @@ export default {
     blockNumber: 'u32'
   },
   /**
-   * Lookup184: pallet_game::types::UpgradeItemConfig<ItemId, Price>
+   * Lookup185: pallet_game::types::UpgradeItemConfig<ItemId, Price>
    **/
   PalletGameUpgradeItemConfig: {
     item: 'u32',
     fee: 'u128'
   },
   /**
-   * Lookup186: pallet_game::types::TradeConfig<sp_core::crypto::AccountId32, Price, bounded_collections::bounded_vec::BoundedVec<gafi_support::game::types::Package<CollectionId, ItemId>, S>, BlockNumber>
+   * Lookup187: pallet_game::types::TradeConfig<sp_core::crypto::AccountId32, Price, bounded_collections::bounded_vec::BoundedVec<gafi_support::game::types::Package<CollectionId, ItemId>, S>, BlockNumber>
    **/
   PalletGameTradeConfig: {
     trade: 'GafiSupportGameTypesTradeType',
@@ -1572,7 +1617,7 @@ export default {
     endBlock: 'Option<u32>'
   },
   /**
-   * Lookup188: pallet_game::types::AuctionConfig<sp_core::crypto::AccountId32, Price, BlockNumber>
+   * Lookup189: pallet_game::types::AuctionConfig<sp_core::crypto::AccountId32, Price, BlockNumber>
    **/
   PalletGameAuctionConfig: {
     owner: 'AccountId32',
@@ -1581,53 +1626,53 @@ export default {
     duration: 'u32'
   },
   /**
-   * Lookup189: pallet_game::pallet::Error<T, I>
+   * Lookup190: pallet_game::pallet::Error<T, I>
    **/
   PalletGameError: {
-    _enum: ['NoPermission', 'UnknownGame', 'UnknownCollection', 'UnknownItem', 'UnknownTrade', 'UnknownUpgrade', 'UnknownAuction', 'UnknownBid', 'UnknownAcceptance', 'UnknownMiningPool', 'ExceedMaxItem', 'ExceedTotalAmount', 'ExceedAllowedAmount', 'ExceedMaxCollection', 'ExceedMaxGameShare', 'ExceedMaxBundle', 'ExceedMaxLoot', 'SoldOut', 'WithdrawReserveFailed', 'UpgradeExists', 'CollectionExists', 'InsufficientItemBalance', 'InsufficientReservedBalance', 'InvalidAmount', 'ItemLocked', 'BidTooLow', 'AskTooHigh', 'GameIdInUse', 'TradeIdInUse', 'PoolIdInUse', 'TradeNotStarted', 'TradeEnded', 'IncorrectCollection', 'IncorrectItem', 'AuctionInProgress', 'AuctionNotStarted', 'AuctionEnded', 'NotSetPrice', 'NotBundle', 'NotWishlist', 'NotSwap', 'NotAuction', 'NotSetBuy', 'InfiniteSupply', 'NotInfiniteSupply', 'MintFailed', 'MintNotStarted', 'MintEnded', 'NotWhitelisted', 'OverRequest']
+    _enum: ['NoPermission', 'UnknownGame', 'UnknownCollection', 'UnknownItem', 'UnknownTrade', 'UnknownUpgrade', 'UnknownAuction', 'UnknownBid', 'UnknownAcceptance', 'UnknownMiningPool', 'MetadataNotFound', 'ExceedMaxItem', 'ExceedTotalAmount', 'ExceedAllowedAmount', 'ExceedMaxCollection', 'ExceedMaxGameShare', 'ExceedMaxBundle', 'ExceedMaxLoot', 'SoldOut', 'WithdrawReserveFailed', 'UpgradeExists', 'CollectionExists', 'InsufficientItemBalance', 'InsufficientReservedBalance', 'InvalidAmount', 'ItemLocked', 'BidTooLow', 'AskTooHigh', 'GameIdInUse', 'TradeIdInUse', 'PoolIdInUse', 'TradeNotStarted', 'TradeEnded', 'IncorrectCollection', 'IncorrectItem', 'AuctionInProgress', 'AuctionNotStarted', 'AuctionEnded', 'NotSetPrice', 'NotBundle', 'NotWishlist', 'NotSwap', 'NotAuction', 'NotSetBuy', 'InfiniteSupply', 'NotInfiniteSupply', 'MintFailed', 'MintNotStarted', 'MintEnded', 'NotWhitelisted', 'OverRequest']
   },
   /**
-   * Lookup190: game_randomness::SeedPayload<BlockNumber, Seed>
+   * Lookup191: game_randomness::SeedPayload<BlockNumber, Seed>
    **/
   GameRandomnessSeedPayload: {
     blockNumber: 'u32',
     seed: '[u8;32]'
   },
   /**
-   * Lookup191: frame_support::PalletId
+   * Lookup192: frame_support::PalletId
    **/
   FrameSupportPalletId: '[u8;8]',
   /**
-   * Lookup192: game_randomness::pallet::Error<T>
+   * Lookup193: game_randomness::pallet::Error<T>
    **/
   GameRandomnessError: {
     _enum: ['InvalidSeed']
   },
   /**
-   * Lookup194: pallet_faucet::pallet::Error<T>
+   * Lookup195: pallet_faucet::pallet::Error<T>
    **/
   PalletFaucetError: {
     _enum: ['SelfTransfer', 'NotEnoughBalance', 'DontBeGreedy', 'PleaseWait', 'OutOfFaucet']
   },
   /**
-   * Lookup195: pallet_cache::pallet::Flag
+   * Lookup196: pallet_cache::pallet::Flag
    **/
   PalletCacheFlag: {
     _enum: ['Left', 'Right']
   },
   /**
-   * Lookup197: pallet_cache::pallet::WrapData<Data>
+   * Lookup198: pallet_cache::pallet::WrapData<Data>
    **/
   PalletCacheWrapData: {
     data: 'u128',
     timestamp: 'u128'
   },
   /**
-   * Lookup198: pallet_cache::pallet::Error<T, I>
+   * Lookup199: pallet_cache::pallet::Error<T, I>
    **/
   PalletCacheError: 'Null',
   /**
-   * Lookup200: sp_runtime::MultiSignature
+   * Lookup201: sp_runtime::MultiSignature
    **/
   SpRuntimeMultiSignature: {
     _enum: {
@@ -1637,43 +1682,43 @@ export default {
     }
   },
   /**
-   * Lookup201: sp_core::sr25519::Signature
+   * Lookup202: sp_core::sr25519::Signature
    **/
   SpCoreSr25519Signature: '[u8;64]',
   /**
-   * Lookup202: sp_core::ecdsa::Signature
+   * Lookup203: sp_core::ecdsa::Signature
    **/
   SpCoreEcdsaSignature: '[u8;65]',
   /**
-   * Lookup205: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
+   * Lookup206: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
    **/
   FrameSystemExtensionsCheckNonZeroSender: 'Null',
   /**
-   * Lookup206: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
+   * Lookup207: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
    **/
   FrameSystemExtensionsCheckSpecVersion: 'Null',
   /**
-   * Lookup207: frame_system::extensions::check_tx_version::CheckTxVersion<T>
+   * Lookup208: frame_system::extensions::check_tx_version::CheckTxVersion<T>
    **/
   FrameSystemExtensionsCheckTxVersion: 'Null',
   /**
-   * Lookup208: frame_system::extensions::check_genesis::CheckGenesis<T>
+   * Lookup209: frame_system::extensions::check_genesis::CheckGenesis<T>
    **/
   FrameSystemExtensionsCheckGenesis: 'Null',
   /**
-   * Lookup211: frame_system::extensions::check_nonce::CheckNonce<T>
+   * Lookup212: frame_system::extensions::check_nonce::CheckNonce<T>
    **/
   FrameSystemExtensionsCheckNonce: 'Compact<u32>',
   /**
-   * Lookup212: frame_system::extensions::check_weight::CheckWeight<T>
+   * Lookup213: frame_system::extensions::check_weight::CheckWeight<T>
    **/
   FrameSystemExtensionsCheckWeight: 'Null',
   /**
-   * Lookup213: pallet_transaction_payment::ChargeTransactionPayment<T>
+   * Lookup214: pallet_transaction_payment::ChargeTransactionPayment<T>
    **/
   PalletTransactionPaymentChargeTransactionPayment: 'Compact<u128>',
   /**
-   * Lookup214: game3_runtime::Runtime
+   * Lookup215: game3_runtime::Runtime
    **/
   Game3RuntimeRuntime: 'Null'
 };

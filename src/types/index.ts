@@ -32,3 +32,8 @@ export type TypeMetadataOfItem = {
   external_url: string;
   avatar: string;
 };
+
+export type TypeMetadataOfPool = {
+  title: string;
+  description: string;
+};

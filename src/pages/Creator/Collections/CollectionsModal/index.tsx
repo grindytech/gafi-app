@@ -129,8 +129,8 @@ export default ({
 
                       mutation(
                         api?.tx.game.createCollectionWithData(
-                          group('Admin') as string,
                           parse,
+                          group('Admin') as string,
                           group('Issuer'),
                           group('Freezer'),
                           general_join_game?.game_id || null

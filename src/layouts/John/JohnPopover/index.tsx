@@ -71,7 +71,12 @@ export default ({
             borderColor="shader.a.800"
             overflowY="auto"
           >
-            <PopoverBody padding={0} wordBreak="break-word" height="full">
+            <PopoverBody
+              pointerEvents={isOpen ? undefined : 'none'} // when close i don't no, why users still click good?
+              padding={0}
+              wordBreak="break-word"
+              height="full"
+            >
               {children}
             </PopoverBody>
           </PopoverContent>

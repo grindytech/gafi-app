@@ -277,6 +277,18 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       clearCollectionMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
+       * Clears the metadata for a game.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       **/
+      clearGameMetadata: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      /**
        * Clear the metadata for an item.
        * 
        * Simply re-call `clear_metadata` of `pallet-nfts`.
@@ -294,6 +306,20 @@ declare module '@polkadot/api-base/types/submittable' {
        * Weight: `O(1)`
        **/
       clearMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
+      /**
+       * Sets the metadata for a pool.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * * `pool` - The ID of the pool.
+       * * `data` - The data to set as the pool metadata.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       **/
+      clearPoolMetadata: AugmentedSubmittable<(pool: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
        * Handling an auction after it's over.
        * 
@@ -340,7 +366,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * Returns `Ok(())` if the collection is created and the metadata and team are set
        * successfully.
        **/
-      createCollectionWithData: AugmentedSubmittable<(admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, data: Bytes | string | Uint8Array, issuer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, freezer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, game: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [MultiAddress, Bytes, Option<MultiAddress>, Option<MultiAddress>, Option<u32>]>;
+      createCollectionWithData: AugmentedSubmittable<(data: Bytes | string | Uint8Array, admin: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, issuer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, freezer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, game: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Bytes, Option<MultiAddress>, Option<MultiAddress>, Option<MultiAddress>, Option<u32>]>;
       /**
        * Create a dynamic minting pool.
        * 
@@ -357,6 +383,23 @@ declare module '@polkadot/api-base/types/submittable' {
        * Weight: `O(1)`
        **/
       createDynamicPool: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings]>;
+      /**
+       * Creates a dynamic pool with the specified data.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * * `loot_table` - The loot table associated with the pool.
+       * * `admin` - The admin account for the pool.
+       * * `mint_settings` - The mint settings for the pool.
+       * * `data` - The data to set as the pool metadata.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(DispatchResultWithPostInfo)` if the operation was successful. Otherwise, an
+       * error is returned.
+       **/
+      createDynamicPoolWithData: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings, Bytes]>;
       /**
        * Create a new game.
        * 
@@ -440,6 +483,23 @@ declare module '@polkadot/api-base/types/submittable' {
        * Weight: `O(1)`
        **/
       createStablePool: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings]>;
+      /**
+       * Creates a stable pool with the specified data.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * * `loot_table` - The loot table associated with the pool.
+       * * `admin` - The admin account for the pool.
+       * * `mint_settings` - The mint settings for the pool.
+       * * `data` - The data to set as the pool metadata.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(DispatchResultWithPostInfo)` if the operation was successful. Otherwise, an
+       * error is returned.
+       **/
+      createStablePoolWithData: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings, Bytes]>;
       /**
        * Set a swap to exchange `source` to `required`.
        * 
@@ -643,6 +703,20 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       setCollectionMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Bytes]>;
       /**
+       * Sets the metadata for a game.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * * `data` - The metadata to set for the game, bounded by the `StringLimit` associated
+       * type.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       **/
+      setGameMetadata: AugmentedSubmittable<(data: Bytes | string | Uint8Array, game: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, u32]>;
+      /**
        * Set the metadata for an item.
        * 
        * Simply re-call `set_metadata` of `pallet-nfts`.
@@ -681,6 +755,20 @@ declare module '@polkadot/api-base/types/submittable' {
        * Weight: `O(1)`
        **/
       setOrder: AugmentedSubmittable<(package: GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array, unitPrice: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [GafiSupportGameTypesPackage, u128, Option<u32>, Option<u32>]>;
+      /**
+       * Sets the metadata for a pool.
+       * 
+       * # Arguments
+       * 
+       * * `origin` - The origin of the transaction.
+       * * `pool` - The ID of the pool.
+       * * `data` - The data to set as the pool metadata.
+       * 
+       * # Returns
+       * 
+       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       **/
+      setPoolMetadata: AugmentedSubmittable<(pool: u32 | AnyNumber | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Bytes]>;
       /**
        * Set the price for NFTs within a collection.
        * 
