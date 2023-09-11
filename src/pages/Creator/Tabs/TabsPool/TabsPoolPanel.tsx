@@ -163,6 +163,8 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
                                 nft_id === maybeNft.value.item?.toNumber()
                             );
 
+                            const isInfinity = isNull(supplyOf[index]);
+
                             return (
                               <MenuItem
                                 border="0.0625rem solid"
@@ -232,23 +234,25 @@ function TabsPoolPanelService({ meta }: { meta: TabsPoolDataProps[] }) {
                                         </Text>
 
                                         <Text color="white" fontWeight="medium">
-                                          {isNull(supplyOf?.[index])
-                                            ? 'Infinity'
+                                          {isInfinity
+                                            ? '∞ Infinity'
                                             : supplyOf[index]}
                                         </Text>
                                       </Center>
 
-                                      <Progress
-                                        mt={4}
-                                        borderRadius="lg"
-                                        value={80}
-                                        width="full"
-                                        height="8px"
-                                        bg="shader.a.700"
-                                        sx={{
-                                          '> div': { bg: 'primary.a.300' },
-                                        }}
-                                      />
+                                      {isInfinity ? null : (
+                                        <Progress
+                                          mt={4}
+                                          borderRadius="lg"
+                                          value={80}
+                                          width="full"
+                                          height="8px"
+                                          bg="shader.a.700"
+                                          sx={{
+                                            '> div': { bg: 'primary.a.300' },
+                                          }}
+                                        />
+                                      )}
                                     </Box>
                                   </>
                                 ) : (
