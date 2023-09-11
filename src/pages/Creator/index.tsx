@@ -22,6 +22,8 @@ import TabsFirstBuild from './Tabs/TabsFirstBuild';
 import ChakraBox from 'components/ChakraBox';
 import { Outlet, useLocation } from 'react-router-dom';
 import DefaultCreator from 'layouts/DefaultLayout/DefaultCreator';
+import TabsPool, { TabsPoolDataProps } from './Tabs/TabsPool';
+import TabsPoolPanel from './Tabs/TabsPool/TabsPoolPanel';
 
 export interface CreatorProps {
   game?: TabsGameDataProps[] | undefined;
@@ -41,6 +43,10 @@ export interface CreatorLoadingProps {
   nft?: {
     loading: boolean;
     data: TabsNFTDataProps[] | undefined;
+  };
+  pool?: {
+    loading: boolean;
+    data: TabsPoolDataProps[] | undefined;
   };
 }
 
@@ -70,6 +76,12 @@ export default () => {
       id: 2,
       tab: <TabsNFT setLoading={setLoading} />,
       panel: <TabsNFTPanel meta={loading?.nft?.data} />,
+      background: 'gradient.linear.4',
+    },
+    {
+      id: 3,
+      tab: <TabsPool setLoading={setLoading} />,
+      panel: <TabsPoolPanel meta={loading?.pool?.data} />,
       background: 'gradient.linear.4',
     },
   ];
