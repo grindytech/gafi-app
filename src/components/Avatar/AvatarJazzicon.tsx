@@ -1,32 +1,20 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import Identicon from '@polkadot/react-identicon';
+import { IdentityProps } from '@polkadot/react-identicon/types';
 
-import { jsNumberForAddress } from 'react-jazzicon';
-import Jazzicon from 'react-jazzicon/dist/Jazzicon';
-
-interface AvatarJazziconProps {
-  address: string;
-  sx?: BoxProps;
-}
-
-export default function AvatarJazzicon({ address, sx }: AvatarJazziconProps) {
+export default (props: IdentityProps) => {
+  /* 
+    but you cannot using variable as chakra 
+    Ex: borderRadius: "full" // cannot so should '100%'
+  */
   return (
-    <Box title={address} display="inline-flex" as="figure">
-      <Jazzicon
-        paperStyles={{
-          border: '0.09375rem solid',
-          borderColor: 'currentColor',
-          color: 'transparent',
-          borderRadius: '100%',
-          width: '2.5rem',
-          height: '2.5rem',
-          ...sx,
-        }}
-        svgStyles={{
-          width: '100%',
-          height: '100%',
-        }}
-        seed={jsNumberForAddress(address)}
-      />
-    </Box>
+    <Box
+      as={Identicon}
+      size={40}
+      theme="substrate"
+      overflow="hidden"
+      pointerEvents="none" // this prevent onCopy
+      {...props}
+    />
   );
-}
+};

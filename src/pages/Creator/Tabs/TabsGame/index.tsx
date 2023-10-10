@@ -2,8 +2,9 @@ import { Text } from '@chakra-ui/react';
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletGameGameDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
-import { useAppSelector } from 'hooks/useRedux';
 import { CreatorLoadingProps } from 'pages/Creator';
 
 import { useEffect } from 'react';
@@ -20,13 +21,13 @@ interface TabsGameProps {
 }
 
 export default ({ setLoading }: TabsGameProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['creator_tab_game', account?.address],
+    queryKey: ['creator_tab_game', account.current?.address],
     queryFn: async () => {
-      if (api && account?.address) {
+      if (api && account.current?.address) {
         const service = await api.query.game.game.entries();
 
         return Promise.all(
@@ -40,9 +41,10 @@ export default ({ setLoading }: TabsGameProps) => {
               );
 
               const getOwner =
-                option.value.owner.toString() === account.address;
+                option.value.owner.toString() === account.current?.address;
 
-              const getRole = option.value.admin.toString() === account.address;
+              const getRole =
+                option.value.admin.toString() === account.current?.address;
 
               if (getOwner || getRole) {
                 return {
@@ -62,7 +64,7 @@ export default ({ setLoading }: TabsGameProps) => {
       // not found
       return [];
     },
-    enabled: !!api?.query.game,
+    enabled: !!(account.current?.address && api?.query.game),
   });
 
   useEffect(() => {

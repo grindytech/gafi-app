@@ -1,7 +1,7 @@
 import { Box, BoxProps, Center, Flex, Icon, Text } from '@chakra-ui/react';
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import BlockIcon from 'public/assets/line/block.svg';
 
 interface PoolsConfigModalCard {

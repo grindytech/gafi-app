@@ -1,9 +1,9 @@
-import { InjectedWindowProvider } from '@polkadot/extension-inject/types';
-import Web3 from 'web3';
+/* eslint-disable no-unused-vars */
+
+import { InjectedWindowProvider } from 'types/polkadot.type';
 
 declare global {
   interface Window {
-    web3: Web3;
     injectedWeb3: Record<string, InjectedWindowProvider>;
   }
 }

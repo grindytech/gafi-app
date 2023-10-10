@@ -3,7 +3,7 @@ import ChakraBox from 'components/ChakraBox';
 import { AnimatePresence } from 'framer-motion';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { colors } from 'theme/theme';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import { NFTsFieldProps } from '..';
 import { useEffect } from 'react';
 import SwitchMode from 'components/SwitchMode';

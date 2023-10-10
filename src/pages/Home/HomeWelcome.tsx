@@ -1,7 +1,7 @@
 import { Box, Text, Heading, Icon, Center } from '@chakra-ui/react';
 
 import GakiIcon from 'public/assets/art/gaki.svg';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 
 export default function HomeWelcome() {
   return (

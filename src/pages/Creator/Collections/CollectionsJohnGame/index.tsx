@@ -1,11 +1,10 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-import { useAppSelector } from 'hooks/useRedux';
-
 import CollectionJohnGameMenu from './CollectionJohnGameMenu';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { CollectionsFieldProps } from '..';
 import John from 'layouts/John';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface CollectionsJohnGameProps {
   setValue: UseFormSetValue<CollectionsFieldProps>;
@@ -13,7 +12,8 @@ interface CollectionsJohnGameProps {
 }
 
 export default ({ setValue, watch }: CollectionsJohnGameProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { account } = useAccountContext();
+
   const { general_join_game } = watch();
 
   return (
@@ -40,10 +40,10 @@ export default ({ setValue, watch }: CollectionsJohnGameProps) => {
         )}
       </Box>
 
-      {account?.address ? (
+      {account.current?.address ? (
         <CollectionJohnGameMenu
           setValue={setValue}
-          address={account.address}
+          address={account.current.address}
           watch={watch}
         />
       ) : null}

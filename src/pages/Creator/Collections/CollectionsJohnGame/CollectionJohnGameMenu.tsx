@@ -1,7 +1,7 @@
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletGameGameDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from 'hooks/useRedux';
+
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 import { CollectionsFieldProps } from '..';
@@ -10,6 +10,7 @@ import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
 import { useDisclosure } from '@chakra-ui/react';
 import useMetaGame from 'hooks/useMetaGame';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface CollectionJohnGamesMenuServiceProps
   extends Omit<CollectionsJohnGameMenuProps, 'address'> {
@@ -22,7 +23,7 @@ interface CollectionsJohnGameMenuProps {
 }
 
 export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data } = useQuery({
     queryKey: ['creator_collection_menu', address],

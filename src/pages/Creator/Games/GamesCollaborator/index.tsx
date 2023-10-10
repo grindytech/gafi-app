@@ -1,6 +1,5 @@
 import { Center } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
-import { useAppSelector } from 'hooks/useRedux';
 
 import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { GamesFieldProps } from '..';
+import { useAccountContext } from 'contexts/contexts.account';
+import { InjectedAccount } from 'types/polkadot.type';
 
 interface GamesCollaboratorProps {
   setValue: UseFormSetValue<GamesFieldProps>;
@@ -15,20 +16,17 @@ interface GamesCollaboratorProps {
 }
 
 interface GamesCollaboratorServiceProps extends GamesCollaboratorProps {
-  account: {
-    address: string;
-    name: string;
-  };
+  account: InjectedAccount;
 }
 
 export default ({ setValue, watch }: GamesCollaboratorProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { account } = useAccountContext();
 
   return (
     <>
-      {account?.address && account.name ? (
+      {account.current?.address ? (
         <GamesCollaboratorsService
-          account={account as GamesCollaboratorServiceProps['account']}
+          account={account.current}
           setValue={setValue}
           watch={watch}
         />
@@ -50,7 +48,15 @@ function GamesCollaboratorsService({
   // when reset form hook & initial value for 'collaborators'
   useEffect(() => {
     if (!watch_collaborator) {
-      setCollaborators([{ role: 'Admin', account }]);
+      setCollaborators([
+        {
+          role: 'Admin',
+          account: {
+            address: account.address,
+            name: account.name as string,
+          },
+        },
+      ]);
     }
   }, [watch_collaborator]);
 

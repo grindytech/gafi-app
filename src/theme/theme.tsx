@@ -1,5 +1,5 @@
 import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 
 export const backgrounds = {
   gradient: {
@@ -51,6 +51,7 @@ export const styles = {
     body: {
       bg: '#18181B',
       overflowX: 'hidden',
+      lineHeight: 'normal',
     },
 
     '*': {

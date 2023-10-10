@@ -24,6 +24,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DefaultCreator from 'layouts/DefaultLayout/DefaultCreator';
 import TabsPool, { TabsPoolDataProps } from './Tabs/TabsPool';
 import TabsPoolPanel from './Tabs/TabsPool/TabsPoolPanel';
+import TabsEmptyData from './Tabs/TabsEmptyData';
+import { useAccountContext } from 'contexts/contexts.account';
 
 export interface CreatorProps {
   game?: TabsGameDataProps[] | undefined;
@@ -51,8 +53,11 @@ export interface CreatorLoadingProps {
 }
 
 export default () => {
+  const { account } = useAccountContext();
   const { pathname } = useLocation();
+
   const [tab, setTab] = React.useState(0);
+
   const [loading, setLoading] = React.useState<CreatorLoadingProps>({
     game: undefined,
     collection: undefined,
@@ -63,25 +68,41 @@ export default () => {
     {
       id: 0,
       tab: <TabsGame setLoading={setLoading} />,
-      panel: <TabsGamePanel meta={loading?.game?.data} />,
+      panel: loading.game?.data ? (
+        <TabsGamePanel meta={loading.game.data} />
+      ) : (
+        <TabsEmptyData />
+      ),
       background: 'gradient.linear.2',
     },
     {
       id: 1,
       tab: <TabsCollection setLoading={setLoading} />,
-      panel: <TabsCollectionPanel meta={loading?.collection?.data} />,
+      panel: loading.collection?.data ? (
+        <TabsCollectionPanel meta={loading.collection.data} />
+      ) : (
+        <TabsEmptyData />
+      ),
       background: 'gradient.linear.3',
     },
     {
       id: 2,
       tab: <TabsNFT setLoading={setLoading} />,
-      panel: <TabsNFTPanel meta={loading?.nft?.data} />,
+      panel: loading.nft?.data ? (
+        <TabsNFTPanel meta={loading.nft.data} />
+      ) : (
+        <TabsEmptyData />
+      ),
       background: 'gradient.linear.4',
     },
     {
       id: 3,
       tab: <TabsPool setLoading={setLoading} />,
-      panel: <TabsPoolPanel meta={loading?.pool?.data} />,
+      panel: loading.pool?.data ? (
+        <TabsPoolPanel meta={loading.pool.data} />
+      ) : (
+        <TabsEmptyData />
+      ),
       background: 'gradient.linear.6',
     },
   ];
@@ -108,7 +129,7 @@ export default () => {
     <>
       {pathname === '/creator' ? (
         <>
-          {isLoading ? (
+          {account.current?.address && isLoading ? (
             <Center height="100vh">
               <CircularProgress isIndeterminate color="primary.a.400" />
             </Center>

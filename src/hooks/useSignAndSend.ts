@@ -1,12 +1,13 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 
-import { getInjectedWeb3 } from 'utils/utils';
+import { getInjectedWeb3 } from 'utils';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 import useTxError from './useTxError';
 import { useState } from 'react';
-import { GAFI_WALLET_STORAGE_KEY } from 'utils/constants';
+import { getCookie } from 'utils/utils.cookie';
+import { INJECTED_EXTENSION_CONNECTED } from 'utils/utils.injected';
 
 interface useSignAndSendProps {
   address: string;
@@ -21,8 +22,8 @@ export default function useSignAndSend({
   onSuccess,
   onError,
 }: useSignAndSendProps) {
-  const extensionName = localStorage.getItem(GAFI_WALLET_STORAGE_KEY);
   const toast = useToast();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { txError } = useTxError({
@@ -49,7 +50,9 @@ export default function useSignAndSend({
     ) => {
       setIsLoading(true);
 
-      const injected = await getInjectedWeb3(extensionName as string);
+      const injected = await getInjectedWeb3(
+        getCookie(INJECTED_EXTENSION_CONNECTED) as string
+      );
 
       if (injected) {
         await parmas.signAndSend(

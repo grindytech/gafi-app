@@ -2,7 +2,6 @@ import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 
-import { useAppSelector } from 'hooks/useRedux';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 import { NFTsFieldProps } from '..';
@@ -12,6 +11,7 @@ import JohnPopoverEmpty from 'layouts/John/JohnPopover/JohnPopoverEmpty';
 import JohnPopoverJSX from 'layouts/John/JohnPopover/JohnPopoverJSX';
 import { useDisclosure } from '@chakra-ui/react';
 import useMetaCollection from 'hooks/useMetaCollection';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface NFTsJohnCollectionServiceProps
   extends Omit<NFTsJohnCollectionProps, 'address'> {
@@ -25,7 +25,7 @@ interface NFTsJohnCollectionProps {
 }
 
 export default ({ setValue, watch, address }: NFTsJohnCollectionProps) => {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data } = useQuery({
     queryKey: ['creator_create_nft_menu', address],

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useAppSelector } from './useRedux';
-import { formatGAFI } from 'utils/utils';
+
+import { formatGAFI } from 'utils';
 import useSubscribeSystem from './useSubscribeSystem';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 type TypeGetBalance = {
   data: {
@@ -14,15 +15,25 @@ interface useBalanceProps {
 }
 
 export default function useBalance({ account }: useBalanceProps) {
+  const { api } = useSubstrateContext();
   const { event } = useSubscribeSystem('balances::Endowed');
 
   const [balance, setBalance] = useState<string | undefined>();
-  const { api } = useAppSelector(state => state.substrate);
 
   React.useEffect(() => {
     const getBalance = () => {
+      if (event) {
+        event.forEach(({ eventValue }) => {
+          const [address] = JSON.parse(eventValue);
+
+          if (address === account) {
+            getBalance();
+          }
+        });
+      }
+
       const callback = async () => {
-        if (api && api.query.system && account) {
+        if (api?.query.system && account) {
           const res = await api.query.system.account(account);
 
           const getBalance = res.toPrimitive() as TypeGetBalance;
@@ -34,20 +45,10 @@ export default function useBalance({ account }: useBalanceProps) {
       callback();
     };
 
-    if (event) {
-      event.forEach(({ eventValue }) => {
-        const [address] = JSON.parse(eventValue);
-
-        if (address === account) {
-          getBalance();
-        }
-      });
-    }
-
     getBalance();
 
     return () => getBalance();
-  }, [event, account]);
+  }, [event, account, api]);
 
   return {
     balance,

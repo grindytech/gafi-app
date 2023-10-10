@@ -9,9 +9,10 @@ import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import NFTsGeneral from './NFTsGeneral';
-import { TypeMetadataOfCollection } from 'types';
+
 import NFTsMedia from './NFTsMedia';
 import NFTsModal from './NFTsModal';
+import { TypeMetaCollection } from 'types/meta.type.ts';
 
 export interface NFTsFieldProps {
   // general
@@ -22,7 +23,7 @@ export interface NFTsFieldProps {
   general_external_url: string;
   general_join_collection: {
     collection_id: number;
-    option?: TypeMetadataOfCollection;
+    option?: TypeMetaCollection;
   };
 
   // media

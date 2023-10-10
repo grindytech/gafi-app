@@ -19,9 +19,10 @@ import CollectionsGeneral from './CollectionsGeneral';
 import CollectionsMedia from './CollectionsMedia';
 import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
-import { TypeMetadataOfGame } from 'types';
+
 import CollectionAdmin from './CollectionAdmin';
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
+import { TypeMetaGame } from 'types/meta.type.ts';
 
 export interface CollectionsFieldProps {
   general_collection_title: string;
@@ -29,7 +30,7 @@ export interface CollectionsFieldProps {
   general_external_url: string;
   general_join_game?: {
     game_id: number;
-    option?: TypeMetadataOfGame;
+    option?: TypeMetaGame;
   };
 
   // role

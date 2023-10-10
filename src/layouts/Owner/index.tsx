@@ -8,13 +8,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
-import ButtonCopy from 'components/ButtonCopy';
-import { useAppSelector } from 'hooks/useRedux';
+
 import { colors } from 'theme/theme';
-import { convertHex, formatCurrency, shorten } from 'utils/utils';
+import { convertHex, formatCurrency, shorten } from 'utils';
 
 import GafiTokenIcon from 'public/assets/token/gafi-token.svg';
 import useBalance from 'hooks/useBalance';
+import { useAccountContext } from 'contexts/contexts.account';
+import Clipboard from 'components/Clipboard';
 
 const ShieldIcon = () => (
   <Icon width="12px" height="12px" viewBox="0 0 12 12">
@@ -26,14 +27,15 @@ const ShieldIcon = () => (
 );
 
 export default () => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { account } = useAccountContext();
+
   const { balance } = useBalance({
-    account: account?.address,
+    account: account.current?.address,
   });
 
   return (
     <Box borderRadius="xl" bg="shader.a.900" fontWeight="bold">
-      {account?.address ? (
+      {account.current?.address ? (
         <>
           <Flex
             gap={4}
@@ -41,14 +43,11 @@ export default () => {
             borderBottom="0.0625rem solid"
             borderColor="shader.a.800"
           >
-            <AvatarJazzicon
-              address={account.address}
-              sx={{ width: '2.25rem', height: '2.25rem' }}
-            />
+            <AvatarJazzicon value={account.current.address} size={36} />
 
             <Box>
               <Flex gap={2}>
-                <Text color="white">{account.name}</Text>
+                <Text color="white">{account.current.name}</Text>
 
                 <Center
                   color="second.green"
@@ -65,8 +64,8 @@ export default () => {
               </Flex>
 
               <Flex mt={2} fontSize="sm" color="shader.a.400">
-                {shorten(account.address, 12)}&nbsp;
-                <ButtonCopy value={account.address} />
+                {shorten(account.current.address, 12)}&nbsp;
+                <Clipboard value={account.current.address} />
               </Flex>
             </Box>
           </Flex>
@@ -79,19 +78,23 @@ export default () => {
           >
             <Text color="white">Balance</Text>
 
-            <Box textAlign="right">
-              <Center gap={1}>
-                <Icon as={GafiTokenIcon} width={4} height={4} />
+            {balance ? (
+              <Box textAlign="right">
+                <Center gap={1}>
+                  <Icon as={GafiTokenIcon} width={4} height={4} />
 
-                <Text color="white" fontSize="lg">
-                  {balance}
+                  <Text color="white" fontSize="lg">
+                    {balance}
+                  </Text>
+                </Center>
+
+                <Text fontSize="sm" color="shader.a.500">
+                  {formatCurrency(Number(balance?.replaceAll(',', '')))}
                 </Text>
-              </Center>
-
-              <Text fontSize="sm" color="shader.a.500">
-                {formatCurrency(Number(balance?.replaceAll(',', '')))}
-              </Text>
-            </Box>
+              </Box>
+            ) : (
+              <Skeleton width={10} height={4} />
+            )}
           </Center>
         </>
       ) : (

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
 
 import { GafiSupportGameTypesLoot } from '@polkadot/types/lookup';
 import { Vec } from '@polkadot/types';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface lootTableOfProps {
   weight: number;
@@ -20,7 +20,7 @@ export default function useLootTableOf({
   key,
   arg,
 }: useLootTableOfProps) {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['lootTableOf', key],

@@ -5,7 +5,9 @@ import {
   PalletGamePoolDetails,
 } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from 'hooks/useRedux';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+
 import { CreatorLoadingProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
@@ -25,13 +27,13 @@ interface TabsCollectionProps {
 }
 
 export default ({ setLoading }: TabsCollectionProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['creator_tab_pool', account?.address],
+    queryKey: ['creator_tab_pool', account.current?.address],
     queryFn: async () => {
-      if (api && account?.address) {
+      if (api && account.current?.address) {
         const service = await api.query.game.poolOf.entries();
 
         return Promise.all(
@@ -60,7 +62,10 @@ export default ({ setLoading }: TabsCollectionProps) => {
                 })
               );
 
-              if (account?.address === owner || account?.address === admin) {
+              if (
+                account.current?.address === owner ||
+                account.current?.address === admin
+              ) {
                 return {
                   pool_id: pool_id.args[0].toNumber(),
                   poolType: meta.value.poolType.toString(),
@@ -82,7 +87,7 @@ export default ({ setLoading }: TabsCollectionProps) => {
       // not found
       return [];
     },
-    enabled: !!api?.query.game,
+    enabled: !!(account.current?.address && api?.query.game),
   });
 
   useEffect(() => {

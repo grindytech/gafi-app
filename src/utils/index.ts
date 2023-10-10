@@ -1,8 +1,9 @@
 import config from 'config';
-import { chainDecimal } from './constants';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
 import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
+import { chainDecimal } from './utils.contants';
+import { InjectedWindowProvider } from 'types/polkadot.type';
 
 /** 
   @function convertHex(color: string, opacity: number)
@@ -44,7 +45,7 @@ export const shorten = (hash: string, length = 6) => {
 };
 
 export const getInjectedWeb3 = async (extension: string) => {
-  const result = await window.injectedWeb3[extension];
+  const result: InjectedWindowProvider = await window.injectedWeb3[extension];
 
   if (result.enable) {
     return result.enable(config.APP_NAME);
@@ -71,37 +72,8 @@ export const formatCurrency = (value: number, currency?: string) => {
 };
 
 export const unitGAFI = (fee: string) => {
-  const shouldZeroFirst = fee.startsWith('0.');
-
-  return shouldZeroFirst
-    ? fee.replace('.', '') + '0'.repeat(14)
-    : fee.replace('.', '') + '0'.repeat(chainDecimal);
+  return fee.replace('.', '') + '0'.repeat(chainDecimal);
 };
-
-/**
- * @type (Parameters<typeof formatBalance>[0], number | string, boolean)
- * @param (get_balance = 2555000000000000000000, amount_multiply = 2, true)
- * @description
- * 1. get get_balance and convert to number (2,555 = 2555)
- * 2. sum by multiply with get_balance and amount_multiply (2555 * 2 = 5110)
- * 3. convert to unit GAFI (5110 = 5110000000000000000000)
- * 4. convert unit GAFI to format short (5,110)
- */
-export function sumGAFI(
-  get_balance: Parameters<typeof formatBalance>[0],
-  amount_multiply: number | string,
-  replace?: boolean
-): string | number {
-  const balance_to_number = formatGAFI(get_balance).replaceAll(',', ''); // 2,555 = 2555
-  const calculate_sum = Number(balance_to_number) * Number(amount_multiply);
-  const convert_to_unitGAFI = unitGAFI(String(calculate_sum));
-
-  if (replace) {
-    return formatGAFI(convert_to_unitGAFI).replaceAll(',', '');
-  }
-
-  return formatGAFI(convert_to_unitGAFI);
-}
 
 export const ColorOfRarity = (weight: number | string) => {
   const level = {

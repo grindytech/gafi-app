@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppSelector } from './useRedux';
 import { FrameSystemEventRecord } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface StateEventProps {
   eventName: string;
@@ -16,12 +16,13 @@ interface StateEventProps {
     - show everything
 */
 export default function useSubscribeSystem(include?: string) {
+  const { api } = useSubstrateContext();
+
   const [event, setEvent] = React.useState<StateEventProps[] | undefined>([]);
-  const { api } = useAppSelector(state => state.substrate);
 
   React.useEffect(() => {
     const subscribe = () => {
-      if (api) {
+      if (api?.isConnected) {
         api.query.system.events(events => {
           events.forEach((record: FrameSystemEventRecord) => {
             const eventName = record.event.section + '::' + record.event.method;

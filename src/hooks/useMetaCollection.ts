@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
-import { TypeMetadataOfCollection } from 'types';
+
 import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { TypeMetaCollection } from 'types/meta.type.ts';
 
 export interface useMetaCollectionProps {
   filter: 'entries' | 'collection_id';
@@ -12,7 +13,7 @@ export interface useMetaCollectionProps {
   key: string | string[] | number | number[];
 }
 
-export interface MetaCollectionFieldProps extends TypeMetadataOfCollection {
+export interface MetaCollectionFieldProps extends TypeMetaCollection {
   collection_id: number;
 }
 
@@ -21,9 +22,8 @@ export default function useMetaCollection({
   arg,
   key,
 }: useMetaCollectionProps) {
+  const { api } = useSubstrateContext();
   const { event, setEvent } = useSubscribeSystem('nfts::CollectionMetadataSet');
-
-  const { api } = useAppSelector(state => state.substrate);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: [`collectionMetadataOf`, key],
@@ -39,7 +39,7 @@ export default function useMetaCollection({
             ]) => {
               const metadata = JSON.parse(
                 String(meta.value.data.toHuman())
-              ) as TypeMetadataOfCollection;
+              ) as TypeMetaCollection;
 
               return {
                 title: metadata.title || 'unknown',
@@ -65,7 +65,7 @@ export default function useMetaCollection({
 
               const metadata = JSON.parse(
                 String(service.value.data.toHuman())
-              ) as TypeMetadataOfCollection;
+              ) as TypeMetaCollection;
 
               return {
                 title: metadata.title,

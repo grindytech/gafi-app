@@ -2,7 +2,8 @@ import { Text } from '@chakra-ui/react';
 import { Option, StorageKey, u32, u8 } from '@polkadot/types';
 import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from 'hooks/useRedux';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 import { CreatorLoadingProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
@@ -19,13 +20,13 @@ interface TabsCollectionProps {
 }
 
 export default ({ setLoading }: TabsCollectionProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['creator_tab_collection', account?.address],
+    queryKey: ['creator_tab_collection', account.current?.address],
     queryFn: async () => {
-      if (api && account?.address) {
+      if (api && account.current?.address) {
         const service = await api.query.nfts.collection.entries();
 
         return Promise.all(
@@ -39,11 +40,11 @@ export default ({ setLoading }: TabsCollectionProps) => {
               );
 
               const getOwner =
-                option.value.owner.toString() === account.address;
+                option.value.owner.toString() === account.current?.address;
 
               const getRole = (await api.query.nfts.collectionRoleOf(
                 collection_id.args[0].toNumber(),
-                account.address
+                account.current?.address
               )) as Option<u8>;
 
               if (getOwner || getRole.isSome) {
@@ -51,7 +52,7 @@ export default ({ setLoading }: TabsCollectionProps) => {
                   game: game.toJSON(),
                   collection_id: collection_id.args[0].toNumber(),
                   owner: option.value.owner.toString(),
-                  role: account.address,
+                  role: account.current?.address,
                   items: option.value.items.toNumber(),
                 } as TabsCollectionDataProps;
               }
@@ -65,7 +66,7 @@ export default ({ setLoading }: TabsCollectionProps) => {
       // not found
       return [];
     },
-    enabled: !!api?.query.nfts,
+    enabled: !!(account.current?.address && api?.query.nfts),
   });
 
   useEffect(() => {
