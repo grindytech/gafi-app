@@ -12,14 +12,16 @@ import {
 } from '@chakra-ui/react';
 import { UseFormGetValues } from 'react-hook-form';
 import { GamesFieldProps } from '..';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import { colors } from 'theme/theme';
-import { useAppSelector } from 'hooks/useRedux';
+
 import useSignAndSend from 'hooks/useSignAndSend';
 import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
 } from 'axios/cloudinary_axios';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface GamesModalProps {
   isDisabled: boolean;
@@ -28,6 +30,9 @@ interface GamesModalProps {
 }
 
 export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
+
   const {
     collaborator,
     general_categories,
@@ -42,12 +47,10 @@ export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
   } = getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { api } = useAppSelector(state => state.substrate);
-  const { account } = useAppSelector(state => state.injected.polkadot);
 
   const { isLoading, setIsLoading, mutation } = useSignAndSend({
-    key: [`create_collection`, account?.address as string],
-    address: account?.address as string,
+    key: [`create_collection`, account.current?.address as string],
+    address: account.current?.address as string,
     onSuccess() {
       onSuccess();
       onClose();

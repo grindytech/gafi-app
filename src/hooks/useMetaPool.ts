@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
-import { TypeMetadataOfPool } from 'types';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { TypeMetaPool } from 'types/meta.type.ts';
 
 export interface useMetaPoolProps {
   filter: 'entries' | 'pool_id';
@@ -8,12 +8,12 @@ export interface useMetaPoolProps {
   key: string | string[] | number | number[];
 }
 
-interface MetaPoolFieldProps extends TypeMetadataOfPool {
+interface MetaPoolFieldProps extends TypeMetaPool {
   pool_id: number;
 }
 
 export default ({ filter, arg, key }: useMetaPoolProps) => {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data } = useQuery({
     queryKey: ['poolMetadataOf', key],
@@ -29,7 +29,7 @@ export default ({ filter, arg, key }: useMetaPoolProps) => {
 
               const metadata = JSON.parse(
                 String(service.value.data.toHuman())
-              ) as TypeMetadataOfPool;
+              ) as TypeMetaPool;
 
               return {
                 title: metadata.title || 'unknown',

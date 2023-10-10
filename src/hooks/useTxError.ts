@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { EventRecord } from '@polkadot/types/interfaces';
 import { ISubmittableResult } from '@polkadot/types/types';
-import { useAppSelector } from './useRedux';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface useTxErrorProps {
   onSuccess: () => void;
@@ -9,13 +9,13 @@ interface useTxErrorProps {
 }
 
 export default function useTxError({ onSuccess, onError }: useTxErrorProps) {
+  const { api } = useSubstrateContext();
+
   const toast = useToast({
     position: 'top-right',
     isClosable: true,
     duration: 3000,
   });
-
-  const { api } = useAppSelector(state => state.substrate);
 
   const txError = (result: ISubmittableResult) => {
     const { status, events } = result;

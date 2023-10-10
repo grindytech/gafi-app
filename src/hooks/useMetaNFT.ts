@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
-import { TypeMetadataOfItem } from 'types';
+
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 import { Option } from '@polkadot/types';
 import { PalletNftsItemMetadata } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { TypeMetaNFT } from 'types/meta.type.ts';
 
 export interface useMetaNFTProps {
   filter: 'entries' | 'collection_id';
@@ -12,15 +13,15 @@ export interface useMetaNFTProps {
   key: string | string[] | number | number[];
 }
 
-interface MetaNFTFieldProps extends TypeMetadataOfItem {
+interface MetaNFTFieldProps extends TypeMetaNFT {
   collection_id: number;
   nft_id: number;
 }
 
 export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
-  const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
+  const { api } = useSubstrateContext();
 
-  const { api } = useAppSelector(state => state.substrate);
+  const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
 
   const { data, refetch } = useQuery({
     queryKey: ['itemMetadataOf', key],
@@ -34,7 +35,7 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
 
             const metadata = JSON.parse(
               String(meta.value.data.toHuman())
-            ) as TypeMetadataOfItem;
+            ) as TypeMetaNFT;
 
             return {
               title: metadata.title,
@@ -60,7 +61,7 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
 
               const metadata = JSON.parse(
                 String(service.value.data.toHuman())
-              ) as TypeMetadataOfItem;
+              ) as TypeMetaNFT;
 
               return {
                 title: metadata.title || 'unknown',

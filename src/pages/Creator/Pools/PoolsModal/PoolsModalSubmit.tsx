@@ -1,10 +1,11 @@
 import { UseFormGetValues } from 'react-hook-form';
 import { PoolsFieldProps } from '..';
 import { Button } from '@chakra-ui/react';
-import { useAppSelector } from 'hooks/useRedux';
 
 import useBlockTime from 'hooks/useBlockTime';
-import { unitGAFI } from 'utils/utils';
+import { unitGAFI } from 'utils';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface PoolsModalSubmitProps {
   get_value_type?: {
@@ -24,8 +25,8 @@ export default ({
   get_value_type,
   getValues,
 }: PoolsModalSubmitProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
 
   const {
     general_title,
@@ -46,7 +47,7 @@ export default ({
       isLoading={isLoading}
       _hover={{}}
       onClick={() => {
-        if (account?.address && get_value_type?.length) {
+        if (account.current?.address && get_value_type?.length) {
           const start = general_duration?.time ? blockNumber : null;
 
           const end = general_duration?.time

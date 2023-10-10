@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletNftsItemDetails } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface useNFTsItemProps {
   filter?: 'entries' | 'collection_id' | 'nft_id';
@@ -10,7 +10,7 @@ interface useNFTsItemProps {
 }
 
 export default function useNFTsItem({ filter, key, arg }: useNFTsItemProps) {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['nfts_item', key],

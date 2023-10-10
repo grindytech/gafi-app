@@ -14,19 +14,14 @@ import {
 } from '@chakra-ui/react';
 import { UseFormGetValues } from 'react-hook-form';
 import { colors } from 'theme/theme';
-import {
-  CalculatorOfRarity,
-  convertHex,
-  formatGAFI,
-  unitGAFI,
-} from 'utils/utils';
+import { CalculatorOfRarity, convertHex, formatGAFI, unitGAFI } from 'utils';
 import { PoolsFieldProps } from '..';
 
 import PoolsModalCard from './PoolsModalCard';
 import React from 'react';
 import PoolsModalSubmit from './PoolsModalSubmit';
 import useSignAndSend from 'hooks/useSignAndSend';
-import { useAppSelector } from 'hooks/useRedux';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface PoolsModalProps {
   isDisabled: boolean;
@@ -35,8 +30,9 @@ interface PoolsModalProps {
 }
 
 export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
+  const { account } = useAccountContext();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { account } = useAppSelector(state => state.injected.polkadot);
 
   const {
     add_item_failed,
@@ -77,7 +73,7 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
 
   const { mutation, isLoading } = useSignAndSend({
     key: [`creator_pool_create/${general_type}`],
-    address: account?.address as string,
+    address: account.current?.address as string,
     onSuccess() {
       onSuccess();
       onClose();

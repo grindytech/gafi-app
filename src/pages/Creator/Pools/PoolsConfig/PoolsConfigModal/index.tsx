@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import RatioPicture from 'components/RatioPicture';
 import { colors } from 'theme/theme';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import CloseIcon from 'public/assets/fill/close.svg';
 import { PropsWithChildren } from 'react';
 import SearchIcon from 'public/assets/line/search.svg';

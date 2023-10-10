@@ -11,15 +11,16 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import { colors } from 'theme/theme';
 import { NFTsFieldProps } from '..';
 import useSignAndSend from 'hooks/useSignAndSend';
-import { useAppSelector } from 'hooks/useRedux';
 import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
 } from 'axios/cloudinary_axios';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface CollectionsModalProps {
   isDisabled: boolean;
@@ -32,6 +33,9 @@ export default ({
   getValues,
   isDisabled,
 }: CollectionsModalProps) => {
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
+
   const {
     general_nft_id,
     general_amount,
@@ -43,12 +47,10 @@ export default ({
   } = getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { api } = useAppSelector(state => state.substrate);
-  const { account } = useAppSelector(state => state.injected.polkadot);
 
   const { isLoading, setIsLoading, mutation } = useSignAndSend({
-    key: [`create_nft`, account?.address as string],
-    address: account?.address as string,
+    key: [`create_nft`, account.current?.address as string],
+    address: account.current?.address as string,
     onSuccess() {
       onSuccess();
       onClose();

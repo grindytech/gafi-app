@@ -17,6 +17,9 @@ module.exports = {
       // Tells eslint-plugin-react to automatically detect the version of React to use.
       version: 'detect',
     },
+    linterOptions: {
+      exclude: ['src/interfaces/*'],
+    },
     // Tells eslint how to resolve imports
     'import/resolver': {
       node: {

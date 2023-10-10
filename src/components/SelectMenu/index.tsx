@@ -7,7 +7,7 @@ import {
   MenuList,
   Text,
 } from '@chakra-ui/react';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 
 import MenuIcon from 'public/assets/line/menu.svg';
 import React from 'react';

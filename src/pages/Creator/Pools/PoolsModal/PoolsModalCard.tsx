@@ -5,7 +5,7 @@ import RatioPicture from 'components/RatioPicture';
 
 import BlockIcon from 'public/assets/line/block.svg';
 import EmptyIcon from 'public/assets/fill/empty.svg';
-import { ColorOfRarity, convertHex } from 'utils/utils';
+import { ColorOfRarity, convertHex } from 'utils';
 
 interface PoolsModalCardProps {
   sx?: BoxProps;

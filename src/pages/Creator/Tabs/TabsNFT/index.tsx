@@ -3,7 +3,9 @@ import { Option } from '@polkadot/types';
 import { PalletNftsItemDetails } from '@polkadot/types/lookup';
 import { isNull } from '@polkadot/util';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from 'hooks/useRedux';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+
 import { CreatorLoadingProps } from 'pages/Creator';
 import { useEffect } from 'react';
 
@@ -19,13 +21,13 @@ interface TabsCollectionProps {
 }
 
 export default ({ setLoading }: TabsCollectionProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['creator_tab_nft', account?.address],
+    queryKey: ['creator_tab_nft', account.current?.address],
     queryFn: async () => {
-      if (api && account?.address) {
+      if (api && account.current?.address) {
         const service = await api.query.nfts.item.entries();
 
         return Promise.all(
@@ -41,11 +43,12 @@ export default ({ setLoading }: TabsCollectionProps) => {
               nft_id.args[0].toNumber()
             );
 
-            const getOwner = option.value.owner.toString() === account.address;
+            const getOwner =
+              option.value.owner.toString() === account.current?.address;
 
             if (
               getOwner ||
-              getRole[0][0].args[1].toString() === account.address
+              getRole[0][0].args[1].toString() === account.current?.address
             ) {
               return {
                 collection_id: nft_id.args[0].toNumber(),
@@ -63,7 +66,7 @@ export default ({ setLoading }: TabsCollectionProps) => {
       // not found
       return [];
     },
-    enabled: !!api?.query.nfts,
+    enabled: !!(account.current?.address && api?.query.nfts),
   });
 
   useEffect(() => {

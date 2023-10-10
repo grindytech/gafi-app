@@ -3,7 +3,7 @@ import { PoolsFieldProps } from '..';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Flex, Text, useDisclosure } from '@chakra-ui/react';
-import { BLOCK_TIME } from 'utils/constants';
+import { BLOCK_TIME } from 'utils/utils.contants';
 
 interface PoolsDurationProps {
   setValue: UseFormSetValue<PoolsFieldProps>;

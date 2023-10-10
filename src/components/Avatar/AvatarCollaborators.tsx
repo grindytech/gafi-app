@@ -1,11 +1,11 @@
 import { Box, Center, Flex, FlexProps, Text } from '@chakra-ui/react';
 import AvatarJazzicon from './AvatarJazzicon';
-import ButtonCopy from 'components/ButtonCopy';
 
-import { ColorOfCollaborator, convertHex, shorten } from 'utils/utils';
+import { ColorOfCollaborator, convertHex, shorten } from 'utils';
 
 import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
 import React from 'react';
+import Clipboard from 'components/Clipboard';
 
 interface AvatarProfileProps {
   role: TypeCollaboratorsRole;
@@ -17,10 +17,7 @@ interface AvatarProfileProps {
 export default ({ role, account, changeRole, sx }: AvatarProfileProps) => {
   return (
     <Flex gap={4} {...sx}>
-      <AvatarJazzicon
-        address={account.address}
-        sx={{ width: '2.25rem', height: '2.25rem' }}
-      />
+      <AvatarJazzicon value={account.address} size={36} />
 
       <Box fontWeight="bold">
         <Flex gap={2}>
@@ -41,7 +38,7 @@ export default ({ role, account, changeRole, sx }: AvatarProfileProps) => {
 
         <Flex gap={2} mt={2} color="shader.a.400" fontSize="sm">
           {shorten(account.address, 12)}
-          <ButtonCopy value={account.address} />
+          <Clipboard value={account.address} />
         </Flex>
       </Box>
     </Flex>

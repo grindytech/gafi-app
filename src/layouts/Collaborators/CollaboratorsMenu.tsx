@@ -12,14 +12,14 @@ import {
 } from '@chakra-ui/react';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
 
-import { useAppSelector } from 'hooks/useRedux';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { convertHex, shorten } from 'utils/utils';
+import { convertHex, shorten } from 'utils';
 import AddIcon from 'public/assets/line/add.svg';
 import JohnPopover from 'layouts/John/JohnPopover';
 import { TypeCollaboratorsState } from './CollaboratorsUtils';
 import UserIcon from 'public/assets/line/user.svg';
 import { colors } from 'theme/theme';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface CollaboratorsMenuProps {
   address: string;
@@ -32,15 +32,16 @@ export default ({
   address,
   setCollaborators,
 }: CollaboratorsMenuProps) => {
+  const { account } = useAccountContext();
+
   const toast = useToast();
+
   const { isOpen, onClose, onToggle } = useDisclosure();
   const {
     isOpen: isError,
     onOpen: onError,
     onClose: closeError,
   } = useDisclosure();
-
-  const { allAccount } = useAppSelector(state => state.injected.polkadot);
 
   const [text, setText] = useState('');
 
@@ -74,7 +75,7 @@ export default ({
 
   return (
     <>
-      {allAccount?.length ? (
+      {account.all?.length ? (
         <>
           <JohnPopover
             isOpen={isOpen}
@@ -89,7 +90,7 @@ export default ({
                   color: 'primary.a.300',
                 },
                 '.chakra-popover__content': {
-                  height: allAccount.length > 3 ? 72 : 'auto',
+                  height: account.all.length > 3 ? 72 : 'auto',
                   bg: 'shader.a.900',
                 },
               },
@@ -141,7 +142,7 @@ export default ({
               </InputGroup>
             </Box>
 
-            {allAccount
+            {account.all
               .filter(meta => meta.address !== address)
               .map(meta => (
                 <Flex
@@ -156,10 +157,7 @@ export default ({
                     bg: 'shader.a.700',
                   }}
                 >
-                  <AvatarJazzicon
-                    address={meta.address}
-                    sx={{ width: '2.25rem', height: '2.25rem' }}
-                  />
+                  <AvatarJazzicon value={meta.address} size={36} />
 
                   <Box fontWeight="bold">
                     <Text color="white">{meta.name}</Text>

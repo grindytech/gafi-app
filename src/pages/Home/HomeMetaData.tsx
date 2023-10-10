@@ -13,10 +13,10 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { Metadata } from '@polkadot/types/metadata';
-import { useAppSelector } from 'hooks/useRedux';
 import SettingIcon from 'public/assets/line/setting.svg';
 import ReactJson from 'react-json-view';
 import { useState, useEffect } from 'react';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface MetadataProps {
   data: Metadata | undefined;
@@ -24,22 +24,27 @@ interface MetadataProps {
 }
 
 export default function HomeMetaData() {
+  const { api } = useSubstrateContext();
+
   const [metadata, setMetadata] = useState<MetadataProps>();
-  const { api } = useAppSelector(state => state.substrate);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    const getMetadata = async () => {
-      try {
-        const data = await api?.rpc.state.getMetadata();
-        if (data) {
-          setMetadata({ data, version: data?.version ? data?.version : 0 });
+    if (api?.isConnected) {
+      const getMetadata = async () => {
+        try {
+          const data = await api?.rpc.state.getMetadata();
+          if (data) {
+            setMetadata({ data, version: data?.version ? data?.version : 0 });
+          }
+        } catch (e) {
+          console.error(e);
         }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    getMetadata();
+      };
+
+      getMetadata();
+    }
   }, [api?.rpc.state]);
 
   return (
@@ -76,9 +81,12 @@ export default function HomeMetaData() {
         size="6xl"
       >
         <ModalOverlay />
+
         <ModalContent bg="white">
           <ModalHeader color="primary.a.500">Runtime Data</ModalHeader>
+
           <ModalCloseButton color="black" />
+
           <ModalBody>
             <ReactJson
               collapsed={4}

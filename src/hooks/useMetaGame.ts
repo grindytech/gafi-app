@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
-import { TypeMetadataOfGame } from 'types';
+
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { TypeMetaGame } from 'types/meta.type.ts';
 
 export interface useMetaGameProps {
   filter: 'entries' | 'game_id';
@@ -10,12 +11,12 @@ export interface useMetaGameProps {
   key: string | string[] | number | number[];
 }
 
-interface MetaGameFieldProps extends TypeMetadataOfGame {
+interface MetaGameFieldProps extends TypeMetaGame {
   game_id: number;
 }
 
 export default ({ filter, arg, key }: useMetaGameProps) => {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
     queryKey: [`gameMetadataOf`, key],
@@ -31,7 +32,7 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
             ]) => {
               const metadata = JSON.parse(
                 String(meta.value.data.toHuman())
-              ) as TypeMetadataOfGame;
+              ) as TypeMetaGame;
 
               return {
                 title: metadata.title || 'unknown',
@@ -58,7 +59,7 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
 
               const metadata = JSON.parse(
                 String(service.value.data.toHuman())
-              ) as TypeMetadataOfGame;
+              ) as TypeMetaGame;
 
               return {
                 title: metadata.title,

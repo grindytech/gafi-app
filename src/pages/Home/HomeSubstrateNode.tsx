@@ -1,13 +1,12 @@
 import { Text as PolText } from '@polkadot/types';
-import { Text, HStack, Select, Icon, IconProps, Box } from '@chakra-ui/react';
+import { Text, HStack, Select, Icon, Box } from '@chakra-ui/react';
 
 import { useState, useEffect } from 'react';
 import SettingIcon from 'public/assets/line/setting.svg';
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import config from 'config';
-import { setConnectSocket } from 'redux/substrate';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import { colors } from 'theme/theme';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface nodeInfoProps {
   chain: PolText;
@@ -16,53 +15,37 @@ interface nodeInfoProps {
   peers: number;
 }
 
-export const CircleIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 200 200" {...props}>
-    <path
-      fill="currentColor"
-      d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-    />
-  </Icon>
-);
-
 export default function HomeSubstrateNode() {
+  const { api, PROVIDER_SOCKET, setSubstrate } = useSubstrateContext();
+
   const [nodeInfo, setNodeInfo] = useState<nodeInfoProps>();
-  const { api, socket } = useAppSelector(state => state.substrate);
 
   useEffect(() => {
-    const getInfo = async () => {
-      try {
-        const [chain, nodeName, nodeVersion, health] = await Promise.all([
-          api?.rpc.system.chain(),
-          api?.rpc.system.name(),
-          api?.rpc.system.version(),
-          api?.rpc.system.health(),
-        ]);
+    if (api?.isConnected) {
+      const getInfo = async () => {
+        try {
+          const [chain, nodeName, nodeVersion, health] = await Promise.all([
+            api?.rpc.system.chain(),
+            api?.rpc.system.name(),
+            api?.rpc.system.version(),
+            api?.rpc.system.health(),
+          ]);
 
-        if (chain && nodeName && nodeVersion)
-          setNodeInfo({
-            chain,
-            nodeName,
-            nodeVersion,
-            peers: (health?.peers.toNumber() || 0) + 1,
-          });
-      } catch (e) {
-        /*    console.error(e); */
-      }
-    };
-    getInfo();
+          if (chain && nodeName && nodeVersion)
+            setNodeInfo({
+              chain,
+              nodeName,
+              nodeVersion,
+              peers: (health?.peers.toNumber() || 0) + 1,
+            });
+        } catch (e) {
+          /*    console.error(e); */
+        }
+      };
+
+      getInfo();
+    }
   }, [api?.rpc.system]);
-  const dispatch = useAppDispatch();
-
-  const setConnect = async (value: string) => {
-    dispatch(
-      setConnectSocket({
-        apiState: undefined,
-        socket: value,
-        payload: null,
-      })
-    );
-  };
 
   return (
     <Box
@@ -95,7 +78,7 @@ export default function HomeSubstrateNode() {
 
       <Box>
         <Select
-          defaultValue={socket}
+          defaultValue={PROVIDER_SOCKET}
           color="white"
           fontWeight="medium"
           borderColor="shader.a.800"
@@ -103,7 +86,10 @@ export default function HomeSubstrateNode() {
           borderRadius="xl"
           outline="unset"
           onChange={event => {
-            setConnect(event.target.value);
+            setSubstrate(prev => ({
+              ...prev,
+              PROVIDER_SOCKET: event.target.value,
+            }));
           }}
         >
           {config.PROVIDER_SOCKETS?.map((socketAddress: string) => (

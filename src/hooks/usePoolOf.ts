@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
 
 import { Option, StorageKey, u32 } from '@polkadot/types';
 import { PalletGamePoolDetails } from '@polkadot/types/lookup';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface poolOfProps {
   pool_id: number;
@@ -19,7 +19,7 @@ export interface usePoolOfProps {
 }
 
 export default ({ filter, arg, key }: usePoolOfProps) => {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data, isLoading } = useQuery({
     queryKey: ['poolOf', key],

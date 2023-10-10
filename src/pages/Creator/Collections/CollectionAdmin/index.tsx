@@ -1,6 +1,5 @@
 import { Center, Icon, Stack } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
-import { useAppSelector } from 'hooks/useRedux';
 import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
 import {
   TypeCollaboratorsRole,
@@ -14,6 +13,8 @@ import CloseIcon from 'public/assets/fill/close.svg';
 import CollaboratorsAdd from 'layouts/Collaborators/CollaboratorsAdd';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { CollectionsFieldProps } from '..';
+import { useAccountContext } from 'contexts/contexts.account';
+import { InjectedAccount } from 'types/polkadot.type';
 
 interface CollectionAdminProps {
   setValue: UseFormSetValue<CollectionsFieldProps>;
@@ -21,20 +22,17 @@ interface CollectionAdminProps {
 }
 
 interface CollectionAdminServiceProps extends CollectionAdminProps {
-  account: {
-    address: string;
-    name: string;
-  };
+  account: InjectedAccount;
 }
 
 export default ({ setValue, watch }: CollectionAdminProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { account } = useAccountContext();
 
   return (
     <>
-      {account?.address && account.name && (
+      {account.current?.address && (
         <CollectionAdminService
-          account={account as CollectionAdminServiceProps['account']}
+          account={account.current}
           setValue={setValue}
           watch={watch}
         />
@@ -58,7 +56,15 @@ function CollectionAdminService({
   // when reset form hook & initial value for 'collaborators'
   useEffect(() => {
     if (!watch_collaborator) {
-      setCollaborators([{ role: 'Admin', account }]);
+      setCollaborators([
+        {
+          role: 'Admin',
+          account: {
+            address: account.address,
+            name: account.name as string,
+          },
+        },
+      ]);
     }
   }, [watch_collaborator]);
 

@@ -9,9 +9,10 @@ import {
   PopoverTrigger,
   Text,
 } from '@chakra-ui/react';
-import ButtonCopy from 'components/ButtonCopy';
-import { shorten } from 'utils/utils';
+
+import { shorten } from 'utils';
 import AvatarJazzicon from './AvatarJazzicon';
+import Clipboard from 'components/Clipboard';
 
 interface AvatarPopoverProps extends React.PropsWithChildren {
   type: 'Owner' | 'Admin';
@@ -47,20 +48,18 @@ export default function AvatarPopover({
           <Text>{type}</Text>
 
           <HStack spacing={3} mt={3}>
-            <AvatarJazzicon address={address} />
+            <AvatarJazzicon value={address} />
 
             <Box>
               <Text>{name}</Text>
 
               <Text display="flex" alignItems="center" gap={1}>
                 {shorten(address, 12)}
-                <ButtonCopy
+                <Clipboard
                   value={address}
                   sx={{
-                    'aria-label': 'copy-icon',
-                    sx: {
-                      svg: { width: 4, height: 4 },
-                    },
+                    width: 4,
+                    height: 4,
                   }}
                 />
               </Text>

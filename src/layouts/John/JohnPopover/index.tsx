@@ -12,7 +12,7 @@ import {
 
 import Chevron01Icon from 'public/assets/line/chevron-01.svg';
 
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 import { colors } from 'theme/theme';
 import { PropsWithChildren, useRef } from 'react';
 

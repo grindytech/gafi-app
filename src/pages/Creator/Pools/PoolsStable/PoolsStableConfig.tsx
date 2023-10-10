@@ -5,7 +5,7 @@ import {
 } from 'react-hook-form';
 import { PoolsFieldProps } from '..';
 import { useDisclosure, useToast } from '@chakra-ui/react';
-import { useAppSelector } from 'hooks/useRedux';
+
 import PoolsStable from '.';
 import PoolsConfigEdit from '../PoolsConfig/PoolsConfigEdit';
 import PoolsConfigSelect from '../PoolsConfig/PoolsConfigSelect';
@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { Option, u8 } from '@polkadot/types';
 import { useQuery } from '@tanstack/react-query';
 import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
+import { useAccountContext } from 'contexts/contexts.account';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 interface PoolsDynamicConfigProps {
   setValue: UseFormSetValue<PoolsFieldProps>;
@@ -22,23 +24,26 @@ interface PoolsDynamicConfigProps {
 }
 
 export default ({ setValue, watch, register }: PoolsDynamicConfigProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
-  const { api } = useAppSelector(state => state.substrate);
+  const { account } = useAccountContext();
+  const { api } = useSubstrateContext();
+
   const { isOpen, onToggle, onClose } = useDisclosure();
+
   const { add_item_failed, add_item_stable } = watch();
+
   const toast = useToast();
 
   const { data: supplyOf } = useQuery({
-    queryKey: ['creator_create_pool', account?.address],
+    queryKey: ['creator_create_pool', account.current?.address],
     queryFn: async () => {
-      if (api && account?.address) {
+      if (api && account.current?.address) {
         const service = await api.query.game.supplyOf.entries();
 
         return Promise.all(
           service.map(async ([{ args }, supply]) => {
             const getRole = (await api.query.nfts.collectionRoleOf(
               args[0].toNumber(),
-              account.address
+              account.current?.address
             )) as Option<u8>;
 
             const getOwner = (
@@ -48,7 +53,7 @@ export default ({ setValue, watch, register }: PoolsDynamicConfigProps) => {
             ).value.owner.toString();
 
             if (!supply.toHuman()) {
-              if (getRole.isSome || getOwner === account.address) {
+              if (getRole.isSome || getOwner === account.current?.address) {
                 return {
                   collection_id: args[0].toNumber(),
                   nft_id: args[1].toNumber(),

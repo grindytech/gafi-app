@@ -1,6 +1,6 @@
 import { Text, useDisclosure } from '@chakra-ui/react';
 import JohnPopover from 'layouts/John/JohnPopover';
-import { ColorOfCollaborator, convertHex } from 'utils/utils';
+import { ColorOfCollaborator, convertHex } from 'utils';
 import {
   TypeCollaboratorsRole,
   TypeCollaboratorsState,

@@ -5,12 +5,13 @@ import {
   TypeCollaboratorsState,
 } from './CollaboratorsUtils';
 import { Dispatch, SetStateAction } from 'react';
+import { InjectedAccount } from 'types/polkadot.type';
 
 interface CollaboratorsAddProps {
   options: TypeCollaboratorsRole[];
   collaborators: TypeCollaboratorsState;
   setCollaborators: Dispatch<SetStateAction<TypeCollaboratorsState>>;
-  account: { address: string; name: string };
+  account: InjectedAccount;
 }
 
 export default ({
@@ -47,7 +48,13 @@ export default ({
             if (!map_existed) {
               setCollaborators(prev => [
                 ...prev,
-                { role: options[i], account },
+                {
+                  role: options[i],
+                  account: {
+                    address: account.address,
+                    name: account.name as string,
+                  },
+                },
               ]);
               break;
             }

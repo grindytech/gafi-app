@@ -1,6 +1,5 @@
 import { Center } from '@chakra-ui/react';
 import AvatarCollaborators from 'components/Avatar/AvatarCollaborators';
-import { useAppSelector } from 'hooks/useRedux';
 
 import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
 import { useEffect, useState } from 'react';
@@ -8,51 +7,35 @@ import { useEffect, useState } from 'react';
 import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { PoolsFieldProps } from '..';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface PoolsAdminProps {
   setValue: UseFormSetValue<PoolsFieldProps>;
   watch: UseFormWatch<PoolsFieldProps>;
 }
 
-interface PoolsAdminServiceProps extends PoolsAdminProps {
-  account: {
-    address: string;
-    name: string;
-  };
-}
-
 export default ({ setValue, watch }: PoolsAdminProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { collaborator } = watch();
 
-  return (
-    <>
-      {account?.address && account.name ? (
-        <GamesCollaboratorsService
-          account={account as PoolsAdminServiceProps['account']}
-          setValue={setValue}
-          watch={watch}
-        />
-      ) : null}
-    </>
-  );
-};
-
-function GamesCollaboratorsService({
-  account,
-  setValue,
-  watch,
-}: PoolsAdminServiceProps) {
-  const { collaborator: watch_collaborator } = watch();
   const [collaborators, setCollaborators] = useState<TypeCollaboratorsState>(
     []
   );
+  const { account } = useAccountContext();
 
   // when reset form hook & initial value for 'collaborators'
   useEffect(() => {
-    if (!watch_collaborator) {
-      setCollaborators([{ role: 'Admin', account }]);
+    if (!collaborator && account.current) {
+      setCollaborators([
+        {
+          role: 'Admin',
+          account: {
+            address: account.current.address,
+            name: account.current.name as string,
+          },
+        },
+      ]);
     }
-  }, [watch_collaborator]);
+  }, [collaborator, account.current]);
 
   useEffect(() => {
     setValue(`collaborator`, collaborators[0]);
@@ -73,13 +56,15 @@ function GamesCollaboratorsService({
         >
           <AvatarCollaborators account={meta.account} role={meta.role} />
 
-          <CollaboratorsMenu
-            address={account.address}
-            index={index}
-            setCollaborators={setCollaborators}
-          />
+          {account.current?.address ? (
+            <CollaboratorsMenu
+              address={account.current.address}
+              index={index}
+              setCollaborators={setCollaborators}
+            />
+          ) : null}
         </Center>
       ))}
     </>
   );
-}
+};

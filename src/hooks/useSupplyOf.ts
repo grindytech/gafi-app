@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from './useRedux';
 import { StorageKey, u32 } from '@polkadot/types';
 import { Codec } from '@polkadot/types/types';
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface SupplyOfProps {
   collection_id: number;
@@ -16,7 +16,7 @@ interface useSupplyOfProps {
 }
 
 export default function useSupplyOf({ filter, key, arg }: useSupplyOfProps) {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['supplyOf', key],

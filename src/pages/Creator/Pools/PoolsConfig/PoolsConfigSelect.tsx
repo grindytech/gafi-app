@@ -11,7 +11,7 @@ import {
 import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 import { colors } from 'theme/theme';
-import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils/utils';
+import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils';
 import { PoolsFieldProps } from '..';
 import { UseFormRegister } from 'react-hook-form';
 

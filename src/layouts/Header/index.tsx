@@ -13,12 +13,12 @@ const ListHeader = [
   },
   {
     title: 'Blockchain',
-    link: 'https://gafi-market-fe-demo.web.app/blockchain/pools',
+    link: 'https://market.gafi.network/blockchain',
     target: '_blank',
   },
   {
     title: 'Market Place',
-    link: 'https://gafi-market-fe-demo.web.app/',
+    link: 'https://market.gafi.network/',
     target: '_blank',
   },
 ];

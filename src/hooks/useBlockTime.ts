@@ -1,17 +1,18 @@
+import { useSubstrateContext } from 'contexts/contexts.substrate';
 import React from 'react';
-import { useAppSelector } from './useRedux';
 
 export type TypeUseBlockTime = 'bestNumberFinalized' | 'bestNumber';
 
 export default function useBlockTime(number: TypeUseBlockTime) {
-  const { api } = useAppSelector(state => state.substrate);
+  const { api } = useSubstrateContext();
 
   const chainBlock = api?.derive.chain[number];
+
   const [blockNumber, setBlockNumber] = React.useState(0);
 
   React.useEffect(() => {
     const subscribe = () => {
-      if (chainBlock) {
+      if (chainBlock && api.isConnected) {
         chainBlock(number => setBlockNumber(number.toNumber()));
       }
     };
@@ -19,7 +20,7 @@ export default function useBlockTime(number: TypeUseBlockTime) {
     subscribe();
 
     return () => subscribe();
-  }, [blockNumber]);
+  }, [blockNumber, api]);
 
   return {
     blockNumber,

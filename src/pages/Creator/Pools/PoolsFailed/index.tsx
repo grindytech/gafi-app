@@ -15,7 +15,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { colors } from 'theme/theme';
-import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils/utils';
+import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils';
 import { PoolsFieldProps } from '..';
 import { useEffect } from 'react';
 import SwitchMode from 'components/SwitchMode';

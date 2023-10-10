@@ -10,16 +10,18 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { GAFI_WALLET_ACCOUNT_KEY } from 'utils/constants';
-import { InjectedAccount } from '@polkadot/extension-inject/types';
-import { useDispatch } from 'react-redux';
-import { injectedAccount } from 'redux/injected';
 import AvatarJazzicon from 'components/Avatar/AvatarJazzicon';
-import ButtonCopy from 'components/ButtonCopy';
-import { convertHex, shorten } from 'utils/utils';
+
 import Swap02Icon from 'public/assets/line/swap-02.svg';
 import { colors } from 'theme/theme';
 import UploadIcon from 'public/assets/line/upload.svg';
+import { InjectedAccount } from 'types/polkadot.type';
+import { convertHex, shorten } from 'utils';
+import { useAccountContext } from 'contexts/contexts.account';
+import Clipboard from 'components/Clipboard';
+import { deleteCookie } from 'utils/utils.cookie';
+
+import { INJECTED_ACCOUNT_CONNECTED } from 'utils/utils.injected';
 
 interface ConnectWalletSwitchProps {
   accounts: InjectedAccount[];
@@ -28,7 +30,7 @@ interface ConnectWalletSwitchProps {
 export default function ConnectWalletSwitch({
   accounts,
 }: ConnectWalletSwitchProps) {
-  const dispatch = useDispatch();
+  const { setAccount, setAccountContext } = useAccountContext();
 
   return (
     <Box
@@ -64,62 +66,43 @@ export default function ConnectWalletSwitch({
               bg="transparent"
               color="shader.a.400"
               transitionDuration="ultra-slow"
-              px={4}
+              px={8}
               py={2}
+              gap={3}
+              alignItems="unset"
               _hover={{
                 bg: convertHex(colors.shader.a[800], 0.25),
               }}
+              onClick={() => setAccount({ address, name })}
             >
-              <Flex
-                key={address}
-                gap={3}
-                width="full"
-                onClick={() => {
-                  localStorage.setItem(
-                    GAFI_WALLET_ACCOUNT_KEY,
-                    JSON.stringify({ address, name })
-                  );
+              <Box>
+                <AvatarJazzicon value={address} size={36} />
+              </Box>
 
-                  dispatch(
-                    injectedAccount({
-                      polkadot: { account: { address, name } },
-                    })
-                  );
-                }}
-              >
-                <Box>
-                  <AvatarJazzicon
-                    address={address}
-                    sx={{ width: '2.25rem', height: '2.25rem' }}
+              <Box>
+                <Text color="white" fontWeight="medium">
+                  {name || 'unknown'}
+                </Text>
+
+                <Flex gap={2} color="shader.a.500" fontSize="sm">
+                  {shorten(address, 6)}
+
+                  <Clipboard
+                    value={address}
+                    sx={{
+                      width: 4,
+                      height: 4,
+                    }}
                   />
-                </Box>
-
-                <Box>
-                  <Text color="white" fontWeight="medium">
-                    {name || 'unknown'}
-                  </Text>
-
-                  <Flex gap={2} color="shader.a.500" fontSize="sm">
-                    {shorten(address, 6)}
-
-                    <ButtonCopy
-                      value={address}
-                      sx={{
-                        as: 'div',
-                        'aria-label': 'copy-icon',
-                        sx: { svg: { width: 4, height: 4 } },
-                      }}
-                    />
-                  </Flex>
-                </Box>
-              </Flex>
+                </Flex>
+              </Box>
             </MenuItem>
           ))}
 
           <MenuItem
             bg="transparent"
             color="shader.a.400"
-            px={10}
+            px={8}
             py={4}
             icon={
               <Icon
@@ -130,8 +113,8 @@ export default function ConnectWalletSwitch({
               />
             }
             onClick={() => {
-              dispatch(injectedAccount({ polkadot: { account: {} } }));
-              localStorage.removeItem(GAFI_WALLET_ACCOUNT_KEY);
+              deleteCookie(INJECTED_ACCOUNT_CONNECTED);
+              setAccountContext(prev => ({ all: prev.all }));
             }}
           >
             Log out

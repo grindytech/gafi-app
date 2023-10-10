@@ -1,7 +1,7 @@
 import { Text, TextProps } from '@chakra-ui/react';
 import { secondsToHours, secondsToMinutes } from 'date-fns';
 import useBlockTime from 'hooks/useBlockTime';
-import { BLOCK_TIME } from 'utils/constants';
+import { BLOCK_TIME } from 'utils/utils.contants';
 
 interface DateBlockProps {
   endBlock: number;

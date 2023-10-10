@@ -2,19 +2,16 @@ import { ChakraProvider } from '@chakra-ui/react';
 import * as ReactDOM from 'react-dom/client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import 'swiper/css/bundle';
-import 'cropperjs/dist/cropper.css';
-
 import '@fontsource-variable/lexend';
 
 import theme from 'theme/theme';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import getQueryClient from 'utils/queryClient';
+import getQueryClient from 'utils/utils.queryClient';
 import App from 'App';
 
-import { Provider } from 'react-redux';
-import { store } from 'redux/store';
+import { AccountContextProvider } from 'contexts/contexts.account';
+import { SubstrateContextProvider } from 'contexts/contexts.substrate';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,9 +24,11 @@ root.render(
     ) : null}
 
     <ChakraProvider theme={theme}>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <AccountContextProvider>
+        <SubstrateContextProvider>
+          <App />
+        </SubstrateContextProvider>
+      </AccountContextProvider>
     </ChakraProvider>
   </QueryClientProvider>
 );

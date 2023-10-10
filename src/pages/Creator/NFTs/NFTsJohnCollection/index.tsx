@@ -1,11 +1,10 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-import { useAppSelector } from 'hooks/useRedux';
-
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { NFTsFieldProps } from '..';
 import NFTsJohnCollectionMenu from './NFTsJohnCollectionMenu';
 import John from 'layouts/John';
+import { useAccountContext } from 'contexts/contexts.account';
 
 interface NFTsJohnCollectionProps {
   setValue: UseFormSetValue<NFTsFieldProps>;
@@ -13,7 +12,8 @@ interface NFTsJohnCollectionProps {
 }
 
 export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
-  const { account } = useAppSelector(state => state.injected.polkadot);
+  const { account } = useAccountContext();
+
   const { general_join_collection } = watch();
 
   return (
@@ -37,10 +37,10 @@ export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
         )}
       </Box>
 
-      {account?.address ? (
+      {account.current?.address ? (
         <NFTsJohnCollectionMenu
           setValue={setValue}
-          address={account.address}
+          address={account.current.address}
           watch={watch}
         />
       ) : null}

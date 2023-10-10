@@ -1,6 +1,6 @@
 import { Box, BoxProps, Center, Icon, Input, Text } from '@chakra-ui/react';
 import RatioPicture from 'components/RatioPicture';
-import { convertHex } from 'utils/utils';
+import { convertHex } from 'utils';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 import CameraIcon from 'public/assets/fill/camera.svg';
