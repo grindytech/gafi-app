@@ -11,8 +11,9 @@ import Owner from 'layouts/Owner';
 import NFTsGeneral from './NFTsGeneral';
 
 import NFTsMedia from './NFTsMedia';
-import NFTsModal from './NFTsModal';
+
 import { TypeMetaCollection } from 'types/meta.type.ts';
+import NFTsModal from './NFTsModal';
 
 export interface NFTsFieldProps {
   // general

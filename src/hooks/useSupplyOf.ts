@@ -1,6 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { StorageKey, u32 } from '@polkadot/types';
-import { Codec } from '@polkadot/types/types';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface SupplyOfProps {
@@ -31,7 +29,7 @@ export default function useSupplyOf({ filter, key, arg }: useSupplyOfProps) {
               nft_id: meta.args[1].toNumber(),
               supply: supply.toHuman(),
             };
-          }) as unknown as SupplyOfProps[];
+          }) as SupplyOfProps[];
         }
 
         if (filter === 'collection_id' && arg) {
@@ -41,15 +39,13 @@ export default function useSupplyOf({ filter, key, arg }: useSupplyOfProps) {
                 collection_id
               );
 
-              return service.map(
-                ([key, supply]: [StorageKey<[u32, u32]>, Codec]) => {
-                  return {
-                    collection_id: key.args[0].toNumber(),
-                    nft_id: key.args[1].toNumber(),
-                    supply: supply.toHuman(),
-                  };
-                }
-              );
+              return service.map(([key, supply]) => {
+                return {
+                  collection_id: key.args[0].toNumber(),
+                  nft_id: key.args[1].toNumber(),
+                  supply: supply.toHuman(),
+                };
+              });
             })
           ).then(data => data.filter(meta => !!meta).flat() as SupplyOfProps[]);
         }

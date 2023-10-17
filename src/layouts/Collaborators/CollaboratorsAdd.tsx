@@ -1,16 +1,17 @@
 import { Center, Icon, Text } from '@chakra-ui/react';
 import AddIcon from 'public/assets/line/add.svg';
-import {
-  TypeCollaboratorsRole,
-  TypeCollaboratorsState,
-} from './CollaboratorsUtils';
+
 import { Dispatch, SetStateAction } from 'react';
+import {
+  TypeCollaboratorRoles,
+  TypeCollaboratorState,
+} from 'types/collaborator.type';
 import { InjectedAccount } from 'types/polkadot.type';
 
 interface CollaboratorsAddProps {
-  options: TypeCollaboratorsRole[];
-  collaborators: TypeCollaboratorsState;
-  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorsState>>;
+  options: TypeCollaboratorRoles[];
+  collaborators: TypeCollaboratorState;
+  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorState>>;
   account: InjectedAccount;
 }
 

@@ -8,6 +8,7 @@ import '@polkadot/api-base/types/consts';
 import type { ApiTypes, AugmentedConst } from '@polkadot/api-base/types';
 import type { u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
+import type { FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight } from '@polkadot/types/lookup';
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 
@@ -42,6 +43,16 @@ declare module '@polkadot/api-base/types/consts' {
        * The maximum number of named reserves that can exist on an account.
        **/
       maxReserves: u32 & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
+    };
+    faucet: {
+      /**
+       * Maximum number of fundung accounts
+       **/
+      maxFundingAccount: u32 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -96,31 +107,6 @@ declare module '@polkadot/api-base/types/consts' {
        * The basic amount of funds that must be reserved for any upgrade.
        **/
       upgradeDeposit: u128 & AugmentedConst<ApiType>;
-      /**
-       * Generic const
-       **/
-      [key: string]: Codec;
-    };
-    gameRandomness: {
-      palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
-      /**
-       * Number of attempts to re-randomize in order to reduce modulus bias.
-       **/
-      randomAttemps: u32 & AugmentedConst<ApiType>;
-      /**
-       * Number of blocks of cooldown after unsigned transaction is included.
-       * 
-       * This ensures that we only accept unsigned transactions once, every `UnsignedInterval`
-       * blocks.
-       **/
-      unsignedInterval: u32 & AugmentedConst<ApiType>;
-      /**
-       * A configuration for base priority of unsigned transactions.
-       * 
-       * This is exposed so that it can be tuned for particular runtime, when
-       * multiple pallets send unsigned transactions.
-       **/
-      unsignedPriority: u64 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -203,6 +189,30 @@ declare module '@polkadot/api-base/types/consts' {
        * The maximum length of an attribute value.
        **/
       valueLimit: u32 & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
+    };
+    oracleRandomness: {
+      maxRandomURL: u32 & AugmentedConst<ApiType>;
+      randomAttemps: u32 & AugmentedConst<ApiType>;
+      randomURLLength: u32 & AugmentedConst<ApiType>;
+      seedLength: u32 & AugmentedConst<ApiType>;
+      /**
+       * Number of blocks of cooldown after unsigned transaction is included.
+       * 
+       * This ensures that we only accept unsigned transactions once, every `UnsignedInterval`
+       * blocks.
+       **/
+      unsignedInterval: u32 & AugmentedConst<ApiType>;
+      /**
+       * A configuration for base priority of unsigned transactions.
+       * 
+       * This is exposed so that it can be tuned for particular runtime, when
+       * multiple pallets send unsigned transactions.
+       **/
+      unsignedPriority: u64 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/

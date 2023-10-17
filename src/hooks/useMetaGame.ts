@@ -1,7 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { Option, StorageKey, u32 } from '@polkadot/types';
-import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 import { TypeMetaGame } from 'types/meta.type.ts';
 
@@ -25,29 +23,24 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
         if (filter === 'entries') {
           const service = await api.query.game.gameMetadataOf.entries();
 
-          return service.map(
-            ([game_id, meta]: [
-              StorageKey<[u32]>,
-              Option<PalletNftsCollectionMetadata>
-            ]) => {
-              const metadata = JSON.parse(
-                String(meta.value.data.toHuman())
-              ) as TypeMetaGame;
+          return service.map(([game_id, meta]) => {
+            const metadata = JSON.parse(
+              String(meta.value.data.toHuman())
+            ) as TypeMetaGame;
 
-              return {
-                title: metadata.title || 'unknown',
-                categories: metadata.categories || 'unknown',
-                description: metadata.description || 'unknown',
-                website: metadata.website || 'unknown',
-                twitter: metadata.twitter || 'unknown',
-                discord: metadata.discord || 'unknown',
-                avatar: metadata.avatar,
-                banner: metadata.banner,
-                cover: metadata.cover,
-                game_id: game_id.args[0].toNumber(),
-              } as MetaGameFieldProps;
-            }
-          );
+            return {
+              title: metadata.title,
+              categories: metadata.categories,
+              description: metadata.description,
+              website: metadata.website,
+              twitter: metadata.twitter,
+              discord: metadata.discord,
+              avatar: metadata.avatar,
+              banner: metadata.banner,
+              cover: metadata.cover,
+              game_id: game_id.args[0].toNumber(),
+            } as MetaGameFieldProps;
+          });
         }
 
         if (filter === 'game_id' && arg) {

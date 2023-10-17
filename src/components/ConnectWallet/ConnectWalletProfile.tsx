@@ -38,8 +38,6 @@ export default ({ account, accounts }: ConnectWalletProfileProps) => {
     account: account.address,
   });
 
-  console.log(balance);
-
   return (
     <Popover placement="bottom-end">
       <PopoverTrigger>

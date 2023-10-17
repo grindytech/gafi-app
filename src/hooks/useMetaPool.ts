@@ -32,8 +32,8 @@ export default ({ filter, arg, key }: useMetaPoolProps) => {
               ) as TypeMetaPool;
 
               return {
-                title: metadata.title || 'unknown',
-                description: metadata.description || 'unknown',
+                title: metadata.title,
+                description: metadata.description,
                 pool_id,
               } as MetaPoolFieldProps;
             })

@@ -88,7 +88,7 @@ const useAccountContext = () => {
 
     // update cookie for account
     setCookie({
-      expires: `${getDate}`,
+      expires: getDate,
       key: INJECTED_ACCOUNT_CONNECTED,
       value: JSON.stringify({ address: account.address, name: account.name }),
     });
@@ -103,4 +103,4 @@ const useAccountContext = () => {
   };
 };
 
-export { AccountContextProvider, useAccountContext };
+export { AccountContextProvider, useAccountContext, AccountContext };

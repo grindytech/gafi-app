@@ -2,4 +2,5 @@
 /* eslint-disable */
 
 export * from './signaling/types';
+export * from './treasuryRewards/types';
 export * from './voting/types';

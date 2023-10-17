@@ -1,7 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { GafiSupportGameTypesLoot } from '@polkadot/types/lookup';
-import { Vec } from '@polkadot/types';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface lootTableOfProps {
@@ -48,9 +46,7 @@ export default function useLootTableOf({
         if (filter === 'pool_id' && arg) {
           return Promise.all(
             arg.map(async pool_id => {
-              const service = (await api.query.game.lootTableOf(
-                pool_id
-              )) as Vec<GafiSupportGameTypesLoot>;
+              const service = await api.query.game.lootTableOf(pool_id);
 
               return service.map(meta => ({
                 weight: meta.weight.toNumber(),

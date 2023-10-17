@@ -6,9 +6,10 @@
 import '@polkadot/api-base/types/submittable';
 
 import type { ApiTypes, AugmentedSubmittable, SubmittableExtrinsic, SubmittableExtrinsicFunction } from '@polkadot/api-base/types';
-import type { Bytes, Compact, Option, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Compact, Option, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { AnyNumber, IMethod, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, Call, MultiAddress } from '@polkadot/types/interfaces/runtime';
+import type { GafiSupportGameTypesLoot, GafiSupportGameTypesMintSettings, GafiSupportGameTypesPackage, GafiSupportGameTypesTradeType, PalletNftsAttributeNamespace, PalletNftsItemConfig, SpConsensusGrandpaEquivocationProof, SpCoreVoid, SpWeightsWeightV2Weight } from '@polkadot/types/lookup';
 
 export type __AugmentedSubmittable = AugmentedSubmittable<() => unknown>;
 export type __SubmittableExtrinsic<ApiType extends ApiTypes> = SubmittableExtrinsic<ApiType>;
@@ -18,83 +19,39 @@ declare module '@polkadot/api-base/types/submittable' {
   interface AugmentedSubmittables<ApiType extends ApiTypes> {
     balances: {
       /**
-       * Set the regular balance of a given account.
-       * 
-       * The dispatch origin for this call is `root`.
+       * See [`Pallet::force_set_balance`].
        **/
       forceSetBalance: AugmentedSubmittable<(who: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, newFree: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Compact<u128>]>;
       /**
-       * Exactly as `transfer_allow_death`, except the origin must be root and the source account
-       * may be specified.
+       * See [`Pallet::force_transfer`].
        **/
       forceTransfer: AugmentedSubmittable<(source: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, value: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, MultiAddress, Compact<u128>]>;
       /**
-       * Unreserve some balance from a user by force.
-       * 
-       * Can only be called by ROOT.
+       * See [`Pallet::force_unreserve`].
        **/
       forceUnreserve: AugmentedSubmittable<(who: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, u128]>;
       /**
-       * Set the regular balance of a given account; it also takes a reserved balance but this
-       * must be the same as the account's current reserved balance.
-       * 
-       * The dispatch origin for this call is `root`.
-       * 
-       * WARNING: This call is DEPRECATED! Use `force_set_balance` instead.
+       * See [`Pallet::set_balance_deprecated`].
        **/
       setBalanceDeprecated: AugmentedSubmittable<(who: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, newFree: Compact<u128> | AnyNumber | Uint8Array, oldReserved: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Compact<u128>, Compact<u128>]>;
       /**
-       * Alias for `transfer_allow_death`, provided only for name-wise compatibility.
-       * 
-       * WARNING: DEPRECATED! Will be released in approximately 3 months.
+       * See [`Pallet::transfer`].
        **/
       transfer: AugmentedSubmittable<(dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, value: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Compact<u128>]>;
       /**
-       * Transfer the entire transferable balance from the caller account.
-       * 
-       * NOTE: This function only attempts to transfer _transferable_ balances. This means that
-       * any locked, reserved, or existential deposits (when `keep_alive` is `true`), will not be
-       * transferred by this function. To ensure that this function results in a killed account,
-       * you might need to prepare the account by removing any reference counters, storage
-       * deposits, etc...
-       * 
-       * The dispatch origin of this call must be Signed.
-       * 
-       * - `dest`: The recipient of the transfer.
-       * - `keep_alive`: A boolean to determine if the `transfer_all` operation should send all
-       * of the funds the account has, causing the sender account to be killed (false), or
-       * transfer everything except at least the existential deposit, which will guarantee to
-       * keep the sender account alive (true).
+       * See [`Pallet::transfer_all`].
        **/
       transferAll: AugmentedSubmittable<(dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, keepAlive: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, bool]>;
       /**
-       * Transfer some liquid free balance to another account.
-       * 
-       * `transfer_allow_death` will set the `FreeBalance` of the sender and receiver.
-       * If the sender's account is below the existential deposit as a result
-       * of the transfer, the account will be reaped.
-       * 
-       * The dispatch origin for this call must be `Signed` by the transactor.
+       * See [`Pallet::transfer_allow_death`].
        **/
       transferAllowDeath: AugmentedSubmittable<(dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, value: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Compact<u128>]>;
       /**
-       * Same as the [`transfer_allow_death`] call, but with a check that the transfer will not
-       * kill the origin account.
-       * 
-       * 99% of the time you want [`transfer_allow_death`] instead.
-       * 
-       * [`transfer_allow_death`]: struct.Pallet.html#method.transfer
+       * See [`Pallet::transfer_keep_alive`].
        **/
       transferKeepAlive: AugmentedSubmittable<(dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, value: Compact<u128> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Compact<u128>]>;
       /**
-       * Upgrade a specified account.
-       * 
-       * - `origin`: Must be `Signed`.
-       * - `who`: The account to be upgraded.
-       * 
-       * This will waive the transaction fee if at least all but 10% of the accounts needed to
-       * be upgraded. (We let some not have to be upgraded just in order to allow for the
-       * possibililty of churn).
+       * See [`Pallet::upgrade_accounts`].
        **/
       upgradeAccounts: AugmentedSubmittable<(who: Vec<AccountId32> | (AccountId32 | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [Vec<AccountId32>]>;
       /**
@@ -104,24 +61,17 @@ declare module '@polkadot/api-base/types/submittable' {
     };
     faucet: {
       /**
-       * donate
-       * 
-       * The origin must be Signed
-       * 
-       * Parameters:
-       * - `amount`: donation amount
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::donate`].
        **/
       donate: AugmentedSubmittable<(amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128]>;
       /**
-       * faucet
-       * 
-       * The origin must be Signed
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::faucet`].
        **/
       faucet: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      /**
+       * See [`Pallet::new_funding_accounts`].
+       **/
+      newFundingAccounts: AugmentedSubmittable<(accounts: Vec<AccountId32> | (AccountId32 | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [Vec<AccountId32>]>;
       /**
        * Generic tx
        **/
@@ -129,748 +79,195 @@ declare module '@polkadot/api-base/types/submittable' {
     };
     game: {
       /**
-       * Add a collection to the game.
-       * 
-       * The origin must be Signed and the sender should be the Admin of the `game`.
-       * 
-       * Parameters:
-       * - `game`: Game ID.
-       * - `collection`: Collection ID.
-       * 
-       * Emits `CollectionAdded`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::add_game_collection`].
        **/
       addGameCollection: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array, collection: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Add more items to set the price in `set_price`.
-       * 
-       * Origin must be Signed and must be the owner of the `trade`.
-       * 
-       * - `trade`: The set_price trade id.
-       * - `supply`: The number of items to be added.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::add_set_price`].
        **/
       addSetPrice: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, supply: GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, GafiSupportGameTypesPackage]>;
       /**
-       * 
-       * Origin must be signed and have permission. Item's supply must not be infinite.
-       * 
-       * # Parameters
-       * 
-       * - `origin`: Signed origin of the transaction.
-       * - `collection`: Identifier of the collection.
-       * - `item`: Identifier of the item.
-       * - `amount`: Amount to add to balance and finite supply.
-       * 
-       * Emits `ItemAdded` event when successful.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::add_supply`].
        **/
       addSupply: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u32]>;
       /**
-       * Make a bid for the auction.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: The auction id.
-       * - `bid`: The bid, `bid` must be higher than the minimum bid and higher than the previous
-       * bid.
-       * 
-       * Emits `Bid`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::bid_auction`].
        **/
       bidAuction: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, bid: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u128]>;
       /**
-       * Burn amount of item.
-       * 
-       * The origin must conform to `ForceOrigin` or must be Signed and the signing account must
-       * be the owner of the `item` and has sufficient item balance.
-       * 
-       * - `collection`: The collection of the item to be burned.
-       * - `item`: The item to be burned.
-       * - `amount`: The amount of item to be burned.
-       * 
-       * Emits `Burned`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::burn`].
        **/
       burn: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u32]>;
       /**
-       * Buy a bundle from `set_bundle`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: set_bundle trade id.
-       * - `bid_price`: The price the sender is willing to pay.
-       * 
-       * Emits `BundleSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::buy_bundle`].
        **/
       buyBundle: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, bidPrice: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u128]>;
       /**
-       * Buy certain number of items from `set_price`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: The set_price trade id.
-       * - `amount`: Number of items to buy.
-       * - `bid_price`: Bid for each item, `bid_price` must be equal to or higher than
-       * `price_unit`.
-       * 
-       * Emits `ItemBought`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::buy_item`].
        **/
       buyItem: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array, bidPrice: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u128]>;
       /**
-       * Cancel a trade in `trade_type` by id `trade`.
-       * 
-       * Origin must be Signed and signer must be the trade owner.
-       * 
-       * - `trade`: Trade id.
-       * - `trade_type`: Trade type.
-       * 
-       * Emits `TradeCanceled`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::cancel_trade`].
        **/
       cancelTrade: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, tradeType: GafiSupportGameTypesTradeType | 'SetPrice' | 'SetBuy' | 'Bundle' | 'Wishlist' | 'Auction' | 'Swap' | number | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, GafiSupportGameTypesTradeType]>;
       /**
-       * Clear an attribute for a collection or item.
-       * 
-       * Simply re-call `clear_attribute` of `pallet-nfts`.
-       * 
-       * Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the
-       * attribute.
-       * 
-       * Any deposit is freed for the collection's owner.
-       * 
-       * - `collection`: The identifier of the collection whose item's metadata to clear.
-       * - `maybe_item`: The identifier of the item whose metadata to clear.
-       * - `namespace`: Attribute's namespace.
-       * - `key`: The key of the attribute.
-       * 
-       * Emits `AttributeCleared`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::clear_attribute`].
        **/
       clearAttribute: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, maybeItem: Option<u32> | null | Uint8Array | u32 | AnyNumber, namespace: PalletNftsAttributeNamespace | { Pallet: any } | { CollectionOwner: any } | { ItemOwner: any } | { Account: any } | string | Uint8Array, key: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Option<u32>, PalletNftsAttributeNamespace, Bytes]>;
       /**
-       * Clear the metadata for a collection.
-       * 
-       * Simply re-call `clear_collection_metadata` of `pallet-nfts`.
-       * 
-       * Origin must be either `ForceOrigin` or `Signed` and the sender should be the Admin of
-       * the `collection`.
-       * 
-       * Any deposit is freed for the collection's owner.
-       * 
-       * - `collection`: The identifier of the collection whose metadata to clear.
-       * 
-       * Emits `CollectionMetadataCleared`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::clear_collection_metadata`].
        **/
       clearCollectionMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
-       * Clears the metadata for a game.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       * See [`Pallet::clear_game_metadata`].
        **/
       clearGameMetadata: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
-       * Clear the metadata for an item.
-       * 
-       * Simply re-call `clear_metadata` of `pallet-nfts`.
-       * 
-       * Origin must be either `ForceOrigin` or Signed and the sender should be the Admin of the
-       * `collection`.
-       * 
-       * Any deposit is freed for the collection's owner.
-       * 
-       * - `collection`: The identifier of the collection whose item's metadata to clear.
-       * - `item`: The identifier of the item whose metadata to clear.
-       * 
-       * Emits `ItemMetadataCleared`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::clear_metadata`].
        **/
       clearMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Sets the metadata for a pool.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * * `pool` - The ID of the pool.
-       * * `data` - The data to set as the pool metadata.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       * See [`Pallet::clear_pool_metadata`].
        **/
       clearPoolMetadata: AugmentedSubmittable<(pool: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
-       * Handling an auction after it's over.
-       * 
-       * The last bidder will win the auction.
-       * If there is no bid, the NFT in the auction will be refunded.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: The auction id.
-       * 
-       * Emits `AuctionClaimed`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::close_auction`].
        **/
       closeAuction: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
-       * Create a new collection.
-       * 
-       * This new collection has no items initially and its owner is the origin.
-       * 
-       * The origin must be Signed and the sender must have sufficient funds free.
-       * 
-       * `CollectionDeposit` funds of sender are reserved.
-       * 
-       * Parameters:
-       * - `admin`: The admin of this collection. The admin is the initial address of each
-       * member of the collection's admin team.
-       * 
-       * Emits `CollectionCreated`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_collection`].
        **/
       createCollection: AugmentedSubmittable<(admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress]>;
       /**
-       * Creates a new collection with the provided data and sets the collection metadata and
-       * team.
-       * 
-       * - `origin`: The account origin of the caller.
-       * - `admin`: The admin account lookup.
-       * - `data`: The collection metadata.
-       * - `issuer`: The optional account lookup for the issuer.
-       * - `freezer`: The optional account lookup for the freezer.
-       * 
-       * Returns `Ok(())` if the collection is created and the metadata and team are set
-       * successfully.
+       * See [`Pallet::create_collection_with_data`].
        **/
       createCollectionWithData: AugmentedSubmittable<(data: Bytes | string | Uint8Array, admin: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, issuer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, freezer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, game: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Bytes, Option<MultiAddress>, Option<MultiAddress>, Option<MultiAddress>, Option<u32>]>;
       /**
-       * Create a dynamic minting pool.
-       * 
-       * Origin must be Signed and the sender should have sufficient items in the `loot_table`.
-       * 
-       * Note: The minting chance will be changed after each NFT is minted.
-       * 
-       * - `loot_table`: A bundle of NFTs for minting.
-       * - `admin`: The Admin of this minting pool.
-       * - `mint_settings`: The minting pool settings.
-       * 
-       * Emits `MiningPoolCreated`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_dynamic_pool`].
        **/
       createDynamicPool: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings]>;
       /**
-       * Creates a dynamic pool with the specified data.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * * `loot_table` - The loot table associated with the pool.
-       * * `admin` - The admin account for the pool.
-       * * `mint_settings` - The mint settings for the pool.
-       * * `data` - The data to set as the pool metadata.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(DispatchResultWithPostInfo)` if the operation was successful. Otherwise, an
-       * error is returned.
+       * See [`Pallet::create_dynamic_pool_with_data`].
        **/
       createDynamicPoolWithData: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings, Bytes]>;
       /**
-       * Create a new game.
-       * 
-       * Origin must be Signed.
-       * 
-       * If the origin is Signed, then funds of signer are reserved: `GameDeposit`.
-       * 
-       * - `admin`: the admin of the game.
-       * 
-       * Emits `GameCreated`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_game`].
        **/
       createGame: AugmentedSubmittable<(admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress]>;
       /**
-       * Create a collection in the game.
-       * 
-       * Origin must be Signed and the sender should be the Admin the the `game`.
-       * 
-       * If the origin is Signed, then funds of signer are reserved: `CollectionDeposit`.
-       * 
-       * - `game`: the game id.
-       * 
-       * Emits `CollectionCreated`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_game_collection`].
        **/
       createGameCollection: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
-       * This function creates a new game with the provided metadata. It requires the account
-       * origin of the caller, the lookup of the admin account, and the metadata of the game.
-       * 
-       * - origin: The account origin of the caller.
-       * - admin: The lookup of the admin account.
-       * - data: The metadata of the game.
-       * 
-       * Return Ok(()) if the game is created and the metadata is set successfully.
+       * See [`Pallet::create_game_with_data`].
        **/
       createGameWithData: AugmentedSubmittable<(admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Bytes]>;
       /**
-       * Create an certain amount of item for a particular collection.
-       * 
-       * The origin must be Signed and the sender should be the Admin of `collection`.
-       * 
-       * - `collection`: The collection of the item to be minted.
-       * - `item`: An identifier of the new item.
-       * - `config`: Item Config.
-       * - `maybe_supply`: Item supply, None indicates the infinite supply.
-       * 
-       * Emits `ItemCreated` event when successful.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_item`].
        **/
       createItem: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, maybeSupply: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [u32, u32, Option<u32>]>;
       /**
-       * Creates a new item with the provided data and sets the item metadata.
-       * 
-       * - origin: The account origin of the caller.
-       * - collection: The collection ID of the item's collection.
-       * - item: The unique ID of the item.
-       * - maybe_supply: The optional supply of the item.
-       * - data: The item metadata.
-       * 
-       * Returns Ok(()) if the item is created and the metadata is set successfully.
+       * See [`Pallet::create_item_with_data`].
        **/
       createItemWithData: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, maybeSupply: Option<u32> | null | Uint8Array | u32 | AnyNumber, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, Option<u32>, Bytes]>;
       /**
-       * Create a stable minting pool.
-       * 
-       * Origin must be Signed and the sender should be the owner of all collections in the
-       * `loot_table`. Collection in `loot_table` must be infinite supply.
-       * 
-       * Note: The minting chance will not be changed after each NFT is minted.
-       * 
-       * - `loot_table`: A bundle of NFTs for minting.
-       * - `admin`: The Admin of this minting pool.
-       * - `mint_settings`: The minting pool settings.
-       * 
-       * Emits `MiningPoolCreated`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_stable_pool`].
        **/
       createStablePool: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings]>;
       /**
-       * Creates a stable pool with the specified data.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * * `loot_table` - The loot table associated with the pool.
-       * * `admin` - The admin account for the pool.
-       * * `mint_settings` - The mint settings for the pool.
-       * * `data` - The data to set as the pool metadata.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(DispatchResultWithPostInfo)` if the operation was successful. Otherwise, an
-       * error is returned.
+       * See [`Pallet::create_stable_pool_with_data`].
        **/
       createStablePoolWithData: AugmentedSubmittable<(lootTable: Vec<GafiSupportGameTypesLoot> | (GafiSupportGameTypesLoot | { maybeNft?: any; weight?: any } | string | Uint8Array)[], admin: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, mintSettings: GafiSupportGameTypesMintSettings | { mintType?: any; price?: any; startBlock?: any; endBlock?: any } | string | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesLoot>, MultiAddress, GafiSupportGameTypesMintSettings, Bytes]>;
       /**
-       * Set a swap to exchange `source` to `required`.
-       * 
-       * Origin must be Signed and the sender must be the owner of `source`.
-       * 
-       * - `source`: Bundle in.
-       * - `required`: Bundle out.
-       * - `maybe_price`: Maybe the price that sender willing to accept.
-       * - `start_block`: The block to start set swap, `None` indicates the current block.
-       * - `end_block`: The block to end set swap, `None` indicates no end.
-       * 
-       * Emits `SwapSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::create_swap`].
        **/
       createSwap: AugmentedSubmittable<(source: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], required: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], maybePrice: Option<u128> | null | Uint8Array | u128 | AnyNumber, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesPackage>, Vec<GafiSupportGameTypesPackage>, Option<u128>, Option<u32>, Option<u32>]>;
       /**
-       * Disallow further unprivileged transfer or trade of an item.
-       * Simply re-call `lock_item_transfer` of `pallet-nfts`.
-       * 
-       * Origin must be Signed and the sender should be the Freezer of the `collection`.
-       * 
-       * - `collection`: The collection of the item to be changed.
-       * - `item`: The item to become non-transferable.
-       * 
-       * Emits `ItemTransferLocked`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::lock_item_transfer`].
        **/
       lockItemTransfer: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Make an exchange for `create_swap`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: The create_swap trade id.
-       * - `maybe_bid_price`: Maybe a price sender willing to pay.
-       * 
-       * Emits `SwapClaimed`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::make_swap`].
        **/
       makeSwap: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, maybeBidPrice: Option<u128> | null | Uint8Array | u128 | AnyNumber) => SubmittableExtrinsic<ApiType>, [u32, Option<u128>]>;
       /**
-       * Set up a purchase for `bundle`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `bundle`:  A group of items may be from different collections want to buy.
-       * - `price`: The price the sender is willing to pay.
-       * - `start_block`: The block to start set wishlist, `None` indicates the current block.
-       * - `end_block`: The block to end set wishlist, `None` indicates no end.
-       * 
-       * Emits `WishlistSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::order_bundle`].
        **/
       orderBundle: AugmentedSubmittable<(bundle: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], price: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesPackage>, u128, Option<u32>, Option<u32>]>;
       /**
-       * Remove a collection in the game.
-       * 
-       * Origin must be Signed and signer should be the Admin of the game or collection.
-       * 
-       * - `game`:  The game id.
-       * - `ask_price`: The collection id.
-       * 
-       * Emits `CollectionRemoved`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::remove_collection`].
        **/
       removeCollection: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array, collection: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Mint an amount of item on a particular minting pool.
-       * 
-       * The origin must be Signed and the sender must comply with the `mint_settings` rules.
-       * 
-       * - `pool`: The pool to be minted.
-       * - `mint_to`: Account into which the item will be minted.
-       * - `amount`: The amount may be minted.
-       * 
-       * Emits `Minted` event when successful.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::request_mint`].
        **/
       requestMint: AugmentedSubmittable<(pool: u32 | AnyNumber | Uint8Array, mintTo: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, MultiAddress, u32]>;
       /**
-       * Sell the bundle for `order_bundle`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`:  The order_bundle trade id.
-       * - `ask_price`: The price the sender is willing to accept.
-       * 
-       * Emits `WishlistFilled`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::sell_bundle`].
        **/
       sellBundle: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, askPrice: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u128]>;
       /**
-       * Sell ​​`amount` of the item for `set_order`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `trade`: The set_order trade id.
-       * - `amount`: The amount of items to sell.
-       * - `ask_price`: The price that the sender willing to accept.
-       * 
-       * Emits `BuySet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::sell_item`].
        **/
       sellItem: AugmentedSubmittable<(trade: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array, askPrice: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u128]>;
       /**
-       * Set acceptance of ownership for a particular account.
-       * 
-       * Origin must be `Signed` and the sender should be the Admin of `collection`.
-       * 
-       * - `game`: Game ID.
-       * - `collection`: Collection ID.
-       * 
-       * Emits `AddingAcceptanceSet`.
+       * See [`Pallet::set_accept_adding`].
        **/
       setAcceptAdding: AugmentedSubmittable<(game: u32 | AnyNumber | Uint8Array, collection: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Set an attribute for a collection or item.
-       * 
-       * Simply re-call `set_attribute` of `pallet-nfts`.
-       * 
-       * Origin must be Signed and must conform to the namespace ruleset:
-       * - `CollectionOwner` namespace could be modified by the `collection` Admin only;
-       * - `ItemOwner` namespace could be modified by the `maybe_item` owner only. `maybe_item`
-       * should be set in that case;
-       * - `Account(AccountId)` namespace could be modified only when the `origin` was given a
-       * permission to do so;
-       * 
-       * The funds of `origin` are reserved according to the formula:
-       * `AttributeDepositBase + DepositPerByte * (key.len + value.len)` taking into
-       * account any already reserved funds.
-       * 
-       * - `collection`: The identifier of the collection whose item's metadata to set.
-       * - `maybe_item`: The identifier of the item whose metadata to set.
-       * - `namespace`: Attribute's namespace.
-       * - `key`: The key of the attribute.
-       * - `value`: The value to which to set the attribute.
-       * 
-       * Emits `AttributeSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_attribute`].
        **/
       setAttribute: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, maybeItem: Option<u32> | null | Uint8Array | u32 | AnyNumber, namespace: PalletNftsAttributeNamespace | { Pallet: any } | { CollectionOwner: any } | { ItemOwner: any } | { Account: any } | string | Uint8Array, key: Bytes | string | Uint8Array, value: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Option<u32>, PalletNftsAttributeNamespace, Bytes, Bytes]>;
       /**
-       * Create a auction for `source`.
-       * 
-       * Origin must be Signed and signer must be the owner of the `source`.
-       * The last bidder will win the auction.
-       * 
-       * - `source`: The bundle for auction.
-       * - `maybe_price`: Maybe a minimum bid.
-       * - `start_block`: The block to start the auction, `None` indicates the current block.
-       * - `duration`: The duration of the auction measured by the number of blocks.
-       * 
-       * Emits `AuctionSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_auction`].
        **/
       setAuction: AugmentedSubmittable<(source: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], maybePrice: Option<u128> | null | Uint8Array | u128 | AnyNumber, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, duration: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesPackage>, Option<u128>, Option<u32>, u32]>;
       /**
-       * Set the price for the `bundle`.
-       * 
-       * Origin must be Signed and must be the owner of the `bundle`.
-       * 
-       * - `bundle`: A group of items may be from different collections to set price for.
-       * - `price`: The price the `bundle`.
-       * - `start_block`: The block to start setting the price, `None` indicates the current
-       * block.
-       * - `end_block`: The block to end setting the price, `None` indicates no end.
-       * 
-       * Emits `BundleSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_bundle`].
        **/
       setBundle: AugmentedSubmittable<(bundle: Vec<GafiSupportGameTypesPackage> | (GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array)[], price: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [Vec<GafiSupportGameTypesPackage>, u128, Option<u32>, Option<u32>]>;
       /**
-       * Set the metadata for a collection.
-       * 
-       * Simply re-call `set_collection_metadata` of `pallet-nfts`.
-       * 
-       * Origin must be either `ForceOrigin` or `Signed` and the sender should be the Admin of
-       * the `collection`.
-       * 
-       * If the origin is `Signed`, then funds of signer are reserved according to the formula:
-       * `MetadataDepositBase + DepositPerByte * data.len` taking into
-       * account any already reserved funds.
-       * 
-       * - `collection`: The identifier of the item whose metadata to update.
-       * - `data`: The general information of this item. Limited in length by `StringLimit`.
-       * 
-       * Emits `CollectionMetadataSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_collection_metadata`].
        **/
       setCollectionMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Bytes]>;
       /**
-       * Sets the metadata for a game.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * * `data` - The metadata to set for the game, bounded by the `StringLimit` associated
-       * type.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       * See [`Pallet::set_game_metadata`].
        **/
       setGameMetadata: AugmentedSubmittable<(data: Bytes | string | Uint8Array, game: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, u32]>;
       /**
-       * Set the metadata for an item.
-       * 
-       * Simply re-call `set_metadata` of `pallet-nfts`.
-       * 
-       * 
-       * Origin must be either `ForceOrigin` or Signed and the sender should be the Admin of the
-       * `collection`.
-       * 
-       * If the origin is Signed, then funds of signer are reserved according to the formula:
-       * `MetadataDepositBase + DepositPerByte * data.len` taking into
-       * account any already reserved funds.
-       * 
-       * - `collection`: The identifier of the collection whose item's metadata to set.
-       * - `item`: The identifier of the item whose metadata to set.
-       * - `data`: The general information of this item. Limited in length by `StringLimit`.
-       * 
-       * Emits `ItemMetadataSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_metadata`].
        **/
       setMetadata: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, Bytes]>;
       /**
-       * Set up a purchase for `package`.
-       * 
-       * It is possible to trade for a small part of the `package`.
-       * 
-       * Origin must be Signed.
-       * 
-       * - `package`: A number of an item in a collection want to buy.
-       * - `unit_price`: The price of each item the sender is willing to pay.
-       * - `start_block`: The block to start set buy.
-       * - `end_block`: The block to end set buy.
-       * 
-       * Emits `BuySet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_order`].
        **/
       setOrder: AugmentedSubmittable<(package: GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array, unitPrice: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [GafiSupportGameTypesPackage, u128, Option<u32>, Option<u32>]>;
       /**
-       * Sets the metadata for a pool.
-       * 
-       * # Arguments
-       * 
-       * * `origin` - The origin of the transaction.
-       * * `pool` - The ID of the pool.
-       * * `data` - The data to set as the pool metadata.
-       * 
-       * # Returns
-       * 
-       * Returns `Ok(())` if the operation was successful. Otherwise, an error is returned.
+       * See [`Pallet::set_pool_metadata`].
        **/
       setPoolMetadata: AugmentedSubmittable<(pool: u32 | AnyNumber | Uint8Array, data: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Bytes]>;
       /**
-       * Set the price for NFTs within a collection.
-       * 
-       * Origin must be Signed and must be the owner of the `item`.
-       * 
-       * - `package`: a number of an item in a collection to set the price for.
-       * - `unit_price`: The price for each item.
-       * - `start_block`: The block to start setting the price, `None` indicates the current
-       * block.
-       * - `end_block`: The block to end setting the price, `None` indicates no end.
-       * 
-       * Emits `PriceSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_price`].
        **/
       setPrice: AugmentedSubmittable<(package: GafiSupportGameTypesPackage | { collection?: any; item?: any; amount?: any } | string | Uint8Array, unitPrice: u128 | AnyNumber | Uint8Array, startBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber, endBlock: Option<u32> | null | Uint8Array | u32 | AnyNumber) => SubmittableExtrinsic<ApiType>, [GafiSupportGameTypesPackage, u128, Option<u32>, Option<u32>]>;
       /**
-       * Change the Issuer, Admin and Freezer of a collection.
-       * 
-       * Simply re-call `set_team` of `pallet-nfts`.
-       * 
-       * Origin must be either `ForceOrigin` or Signed and the sender should be the Owner of the
-       * `collection`.
-       * 
-       * Note: by setting the role to `None` only the `ForceOrigin` will be able to change it
-       * after to `Some(account)`.
-       * 
-       * - `collection`: The collection whose team should be changed.
-       * - `issuer`: The new Issuer of this collection.
-       * - `admin`: The new Admin of this collection.
-       * - `freezer`: The new Freezer of this collection.
-       * 
-       * Emits `TeamChanged`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_team`].
        **/
       setTeam: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, issuer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, admin: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string, freezer: Option<MultiAddress> | null | Uint8Array | MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string) => SubmittableExtrinsic<ApiType>, [u32, Option<MultiAddress>, Option<MultiAddress>, Option<MultiAddress>]>;
       /**
-       * Set upgrade rule for item.
-       * 
-       * Origin must be Signed and signer should be the Admin of `collection`.
-       * 
-       * Arguments:
-       * - `collection`: The collection of the item to be upgrade-rule set.
-       * - `item`: The item to be upgrade-rule set.
-       * - `new_item`: An identifier of the new item.
-       * - `config`: Item config of `new_item`.
-       * - `data`: `new_item` metadata.
-       * - `level`: Upgrade level.
-       * - `fee`: Upgrade fee.
-       * 
-       * Emits `UpgradeSet`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::set_upgrade_item`].
        **/
       setUpgradeItem: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, newItem: u32 | AnyNumber | Uint8Array, config: PalletNftsItemConfig | { settings?: any } | string | Uint8Array, data: Bytes | string | Uint8Array, level: u32 | AnyNumber | Uint8Array, fee: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u32, PalletNftsItemConfig, Bytes, u32, u128]>;
       /**
-       * Transfers a specified amount of an item between accounts within a collection.
-       * 
-       * # Parameters
-       * 
-       * - `origin`: Origin must be signed, indicating the sender.
-       * - `collection`: Collection identifier.
-       * - `item`: Item identifier.
-       * - `dest`: Destination account lookup.
-       * - `amount`: Amount of the item to transfer.
-       * 
-       * 
-       * Emits `Transferred`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::transfer`].
        **/
       transfer: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, dest: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, MultiAddress, u32]>;
       /**
-       * Re-allow unprivileged transfer of an item.
-       * Simply re-call `unlock_item_transfer` of `pallet-nfts`.
-       * 
-       * Origin must be Signed and the sender should be the Freezer of the `collection`.
-       * 
-       * - `collection`: The collection of the item to be changed.
-       * - `item`: The item to become transferable.
-       * 
-       * Emits `ItemTransferUnlocked`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::unlock_item_transfer`].
        **/
       unlockItemTransfer: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Upgrade certain number of items.
-       * 
-       * The origin must be signed and the signer must have a sufficient `amount` of `items`.
-       * 
-       * Signer must pay `fee` * `amount` to upgrade the item.
-       * 
-       * Arguments:
-       * - `collection`: The collection of the item to be upgraded.
-       * - `item`: The item to be upgraded.
-       * - `amount`: The amount of `item` to be upgraded.
-       * 
-       * Emits `Upgraded`.
-       * 
-       * Weight: `O(1)`
+       * See [`Pallet::upgrade_item`].
        **/
       upgradeItem: AugmentedSubmittable<(collection: u32 | AnyNumber | Uint8Array, item: u32 | AnyNumber | Uint8Array, amount: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, u32]>;
       /**
@@ -878,57 +275,17 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    gameRandomness: {
-      /**
-       * Submit a new random seed.
-       * 
-       * This function sets a new `seed` for randomness in every `T::UnsignedInterval` blocks.
-       * 
-       * # Parameters
-       * 
-       * - `origin`: Accepted only by the off-chain worker.
-       * - `block_number`: Current block number.
-       * - `seed`: New random seed.
-       **/
-      submitRandomSeedUnsigned: AugmentedSubmittable<(blockNumber: u32 | AnyNumber | Uint8Array, seed: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, U8aFixed]>;
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
     grandpa: {
       /**
-       * Note that the current authority set of the GRANDPA finality gadget has stalled.
-       * 
-       * This will trigger a forced authority set change at the beginning of the next session, to
-       * be enacted `delay` blocks after that. The `delay` should be high enough to safely assume
-       * that the block signalling the forced change will not be re-orged e.g. 1000 blocks.
-       * The block production rate (which may be slowed down because of finality lagging) should
-       * be taken into account when choosing the `delay`. The GRANDPA voters based on the new
-       * authority will start voting on top of `best_finalized_block_number` for new finalized
-       * blocks. `best_finalized_block_number` should be the highest of the latest finalized
-       * block of all validators of the new authority set.
-       * 
-       * Only callable by root.
+       * See [`Pallet::note_stalled`].
        **/
       noteStalled: AugmentedSubmittable<(delay: u32 | AnyNumber | Uint8Array, bestFinalizedBlockNumber: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
       /**
-       * Report voter equivocation/misbehavior. This method will verify the
-       * equivocation proof and validate the given key ownership proof
-       * against the extracted offender. If both are valid, the offence
-       * will be reported.
+       * See [`Pallet::report_equivocation`].
        **/
       reportEquivocation: AugmentedSubmittable<(equivocationProof: SpConsensusGrandpaEquivocationProof | { setId?: any; equivocation?: any } | string | Uint8Array, keyOwnerProof: SpCoreVoid | null) => SubmittableExtrinsic<ApiType>, [SpConsensusGrandpaEquivocationProof, SpCoreVoid]>;
       /**
-       * Report voter equivocation/misbehavior. This method will verify the
-       * equivocation proof and validate the given key ownership proof
-       * against the extracted offender. If both are valid, the offence
-       * will be reported.
-       * 
-       * This extrinsic must be called unsigned and it is expected that only
-       * block authors will call it (validated in `ValidateUnsigned`), as such
-       * if the block author is defined it will be defined as the equivocation
-       * reporter.
+       * See [`Pallet::report_equivocation_unsigned`].
        **/
       reportEquivocationUnsigned: AugmentedSubmittable<(equivocationProof: SpConsensusGrandpaEquivocationProof | { setId?: any; equivocation?: any } | string | Uint8Array, keyOwnerProof: SpCoreVoid | null) => SubmittableExtrinsic<ApiType>, [SpConsensusGrandpaEquivocationProof, SpCoreVoid]>;
       /**
@@ -936,45 +293,41 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
+    oracleRandomness: {
+      /**
+       * See [`Pallet::set_new_random_urls`].
+       **/
+      setNewRandomUrls: AugmentedSubmittable<(urls: Vec<Bytes> | (Bytes | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [Vec<Bytes>]>;
+      /**
+       * See [`Pallet::submit_random_seed_unsigned`].
+       **/
+      submitRandomSeedUnsigned: AugmentedSubmittable<(blockNumber: u32 | AnyNumber | Uint8Array, seed: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, Bytes]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
+    palletCache: {
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
     sudo: {
       /**
-       * Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo
-       * key.
-       * 
-       * The dispatch origin for this call must be _Signed_.
-       * 
-       * ## Complexity
-       * - O(1).
+       * See [`Pallet::set_key`].
        **/
       setKey: AugmentedSubmittable<(updated: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress]>;
       /**
-       * Authenticates the sudo key and dispatches a function call with `Root` origin.
-       * 
-       * The dispatch origin for this call must be _Signed_.
-       * 
-       * ## Complexity
-       * - O(1).
+       * See [`Pallet::sudo`].
        **/
       sudo: AugmentedSubmittable<(call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Call]>;
       /**
-       * Authenticates the sudo key and dispatches a function call with `Signed` origin from
-       * a given account.
-       * 
-       * The dispatch origin for this call must be _Signed_.
-       * 
-       * ## Complexity
-       * - O(1).
+       * See [`Pallet::sudo_as`].
        **/
       sudoAs: AugmentedSubmittable<(who: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Call]>;
       /**
-       * Authenticates the sudo key and dispatches a function call with `Root` origin.
-       * This function does not check the weight of the call, and instead allows the
-       * Sudo user to specify the weight of the call.
-       * 
-       * The dispatch origin for this call must be _Signed_.
-       * 
-       * ## Complexity
-       * - O(1).
+       * See [`Pallet::sudo_unchecked_weight`].
        **/
       sudoUncheckedWeight: AugmentedSubmittable<(call: Call | IMethod | string | Uint8Array, weight: SpWeightsWeightV2Weight | { refTime?: any; proofSize?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Call, SpWeightsWeightV2Weight]>;
       /**
@@ -984,47 +337,35 @@ declare module '@polkadot/api-base/types/submittable' {
     };
     system: {
       /**
-       * Kill all storage items with a key that starts with the given prefix.
-       * 
-       * **NOTE:** We rely on the Root origin to provide us the number of subkeys under
-       * the prefix we are removing to accurately calculate the weight of this function.
+       * See [`Pallet::kill_prefix`].
        **/
       killPrefix: AugmentedSubmittable<(prefix: Bytes | string | Uint8Array, subkeys: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, u32]>;
       /**
-       * Kill some items from storage.
+       * See [`Pallet::kill_storage`].
        **/
       killStorage: AugmentedSubmittable<(keys: Vec<Bytes> | (Bytes | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [Vec<Bytes>]>;
       /**
-       * Make some on-chain remark.
-       * 
-       * ## Complexity
-       * - `O(1)`
+       * See [`Pallet::remark`].
        **/
       remark: AugmentedSubmittable<(remark: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
       /**
-       * Make some on-chain remark and emit event.
+       * See [`Pallet::remark_with_event`].
        **/
       remarkWithEvent: AugmentedSubmittable<(remark: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
       /**
-       * Set the new runtime code.
-       * 
-       * ## Complexity
-       * - `O(C + S)` where `C` length of `code` and `S` complexity of `can_set_code`
+       * See [`Pallet::set_code`].
        **/
       setCode: AugmentedSubmittable<(code: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
       /**
-       * Set the new runtime code without doing any checks of the given `code`.
-       * 
-       * ## Complexity
-       * - `O(C)` where `C` length of `code`
+       * See [`Pallet::set_code_without_checks`].
        **/
       setCodeWithoutChecks: AugmentedSubmittable<(code: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
       /**
-       * Set the number of pages in the WebAssembly environment's heap.
+       * See [`Pallet::set_heap_pages`].
        **/
       setHeapPages: AugmentedSubmittable<(pages: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
       /**
-       * Set some items of storage.
+       * See [`Pallet::set_storage`].
        **/
       setStorage: AugmentedSubmittable<(items: Vec<ITuple<[Bytes, Bytes]>> | ([Bytes | string | Uint8Array, Bytes | string | Uint8Array])[]) => SubmittableExtrinsic<ApiType>, [Vec<ITuple<[Bytes, Bytes]>>]>;
       /**
@@ -1032,23 +373,23 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
+    templateModule: {
+      /**
+       * See [`Pallet::cause_error`].
+       **/
+      causeError: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      /**
+       * See [`Pallet::do_something`].
+       **/
+      doSomething: AugmentedSubmittable<(something: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
     timestamp: {
       /**
-       * Set the current time.
-       * 
-       * This call should be invoked exactly once per block. It will panic at the finalization
-       * phase, if this call hasn't been invoked by that time.
-       * 
-       * The timestamp should be greater than the previous one by the amount specified by
-       * `MinimumPeriod`.
-       * 
-       * The dispatch origin for this call must be `Inherent`.
-       * 
-       * ## Complexity
-       * - `O(1)` (Note that implementations of `OnTimestampSet` must also be `O(1)`)
-       * - 1 storage read and 1 storage mutation (codec `O(1)`). (because of `DidUpdate::take` in
-       * `on_finalize`)
-       * - 1 event handler `on_timestamp_set`. Must be `O(1)`.
+       * See [`Pallet::set`].
        **/
       set: AugmentedSubmittable<(now: Compact<u64> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Compact<u64>]>;
       /**

@@ -1,5 +1,4 @@
 import { ComponentStyleConfig, extendTheme } from '@chakra-ui/react';
-import { convertHex } from 'utils';
 
 export const backgrounds = {
   gradient: {
@@ -49,7 +48,7 @@ export const colors = {
 export const styles = {
   global: () => ({
     body: {
-      bg: '#18181B',
+      bg: colors.shader.a[1000],
       overflowX: 'hidden',
       lineHeight: 'normal',
     },
@@ -114,7 +113,8 @@ const Button: ComponentStyleConfig = {
       },
 
       _hover: {
-        bg: convertHex(colors.primary.a[500], 0.65),
+        // bg: convertHex(colors.primary.a[500], 0.65),
+        bg: 'rgba(42, 122, 215, 0.65)',
       },
     },
   },

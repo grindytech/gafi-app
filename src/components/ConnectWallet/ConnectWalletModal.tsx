@@ -128,7 +128,7 @@ export default ({ setAccount, onClose }: ConnectWalletModalProps) => {
 
                       // update cookie for extension injected
                       setCookie({
-                        expires: `${getDate}`,
+                        expires: getDate,
                         key: INJECTED_EXTENSION_CONNECTED,
                         value: meta.extension as string,
                       });

@@ -2,8 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import useSubscribeSystem from './useSubscribeSystem';
 import { useEffect } from 'react';
-import { Option, StorageKey, u32 } from '@polkadot/types';
-import { PalletNftsCollectionMetadata } from '@polkadot/types/lookup';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 import { TypeMetaCollection } from 'types/meta.type.ts';
 
@@ -32,26 +30,21 @@ export default function useMetaCollection({
         if (filter === 'entries') {
           const service = await api.query.nfts.collectionMetadataOf.entries();
 
-          return service.map(
-            ([collection_id, meta]: [
-              StorageKey<[u32]>,
-              Option<PalletNftsCollectionMetadata>
-            ]) => {
-              const metadata = JSON.parse(
-                String(meta.value.data.toHuman())
-              ) as TypeMetaCollection;
+          return service.map(([collection_id, meta]) => {
+            const metadata = JSON.parse(
+              String(meta.value.data.toHuman())
+            ) as TypeMetaCollection;
 
-              return {
-                title: metadata.title || 'unknown',
-                description: metadata.description || 'unknown',
-                external_url: metadata.external_url || 'unknown',
-                avatar: metadata.avatar,
-                banner: metadata.banner,
-                cover: metadata.cover,
-                collection_id: collection_id.args[0].toNumber(),
-              } as MetaCollectionFieldProps;
-            }
-          );
+            return {
+              title: metadata.title || 'unknown',
+              description: metadata.description || 'unknown',
+              external_url: metadata.external_url || 'unknown',
+              avatar: metadata.avatar,
+              banner: metadata.banner,
+              cover: metadata.cover,
+              collection_id: collection_id.args[0].toNumber(),
+            } as MetaCollectionFieldProps;
+          });
         }
 
         if (filter === 'collection_id' && arg) {

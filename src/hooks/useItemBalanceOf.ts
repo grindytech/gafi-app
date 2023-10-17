@@ -1,7 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { StorageKey, u32 } from '@polkadot/types';
-import { AccountId32 } from '@polkadot/types/interfaces';
-import { Codec } from '@polkadot/types/types';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 
 export interface ItemBalanceOfProps {
@@ -48,19 +45,14 @@ export default function useItemBalanceOf({
                 address
               );
 
-              return service.map(
-                ([option, meta]: [
-                  StorageKey<[AccountId32, u32, u32]>,
-                  Codec
-                ]) => {
-                  return {
-                    owner: option.args[0].toString(),
-                    collection_id: option.args[1].toNumber(),
-                    nft_id: option.args[2].toNumber(),
-                    amount: meta.toHuman() as string,
-                  };
-                }
-              );
+              return service.map(([option, meta]) => {
+                return {
+                  owner: option.args[0].toString(),
+                  collection_id: option.args[1].toNumber(),
+                  nft_id: option.args[2].toNumber(),
+                  amount: meta.toHuman() as string,
+                };
+              });
             })
           ).then(meta => meta.flat() as ItemBalanceOfProps[]);
         }
