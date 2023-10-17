@@ -56,8 +56,6 @@ describe('setCookie', () => {
 
 describe('deleteCookie', () => {
   it('should return correctly string', () => {
-    expect(deleteCookie('layout')).toBe(
-      'layout=; expires=Thu Jan 01 1970 08:00:00 GMT+0800 (Indochina Time); path=/'
-    );
+    expect(deleteCookie('layout')).toBe('layout');
   });
 });

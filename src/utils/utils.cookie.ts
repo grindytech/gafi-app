@@ -21,5 +21,7 @@ export const setCookie = ({
 };
 
 export const deleteCookie = (key: string) => {
-  return (document.cookie = `${key}=; expires=${new Date(1)}; path=/`);
+  document.cookie = `${key}=; expires=${new Date(1)}; path=/`;
+
+  return key;
 };
