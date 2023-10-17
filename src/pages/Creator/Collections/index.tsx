@@ -21,8 +21,9 @@ import CollectionsModal from './CollectionsModal';
 import Owner from 'layouts/Owner';
 
 import CollectionAdmin from './CollectionAdmin';
-import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
+
 import { TypeMetaGame } from 'types/meta.type.ts';
+import { TypeCollaboratorState } from 'types/collaborator.type';
 
 export interface CollectionsFieldProps {
   general_collection_title: string;
@@ -34,7 +35,7 @@ export interface CollectionsFieldProps {
   };
 
   // role
-  collaborator: TypeCollaboratorsState;
+  collaborator: TypeCollaboratorState;
 
   // media
   media_avatar: File;

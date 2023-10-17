@@ -10,11 +10,13 @@
     "paths": {
       "*": ["src/*"],
       "public/*": ["public/*"],
+
       // this is the package name we use (in the interface imports, --package for generators)
-      "gafi-dashboard/*": ["src/interfaces"],
+      "gafi-dashboard/*": ["src/*"],
+      // here we replace the @polkadot/api augmentation with our own, generated from chain
+      "@polkadot/api/augment": ["src/interfaces/augment-api.ts"],
       // replace the augmented types with our own, as generated from definitions
-      "@polkadot/types/augment": ["src/interfaces/augment-types.ts"],
-      "@polkadot/types/lookup": ["src/interfaces/types-lookup.ts"]
+      "@polkadot/types/augment": ["src/interfaces/augment-types.ts"]
     },
 
     /* Bundler mode */

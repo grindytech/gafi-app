@@ -21,7 +21,7 @@ import GoBack from 'components/GoBack';
 import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import GamesCollaborator from './GamesCollaborator';
-import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
+import { TypeCollaboratorState } from 'types/collaborator.type';
 
 export interface GamesFieldProps {
   general_game_title: string;
@@ -36,7 +36,7 @@ export interface GamesFieldProps {
   media_banner: File | undefined;
   media_cover: File | undefined;
 
-  collaborator: TypeCollaboratorsState[number];
+  collaborator: TypeCollaboratorState[number];
 }
 
 export interface fieldsSetProps {

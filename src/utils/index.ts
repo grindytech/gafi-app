@@ -1,9 +1,9 @@
 import config from 'config';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
-import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
 import { chainDecimal } from './utils.contants';
 import { InjectedWindowProvider } from 'types/polkadot.type';
+import { TypeCollaboratorRoles } from 'types/collaborator.type';
 
 /** 
   @function convertHex(color: string, opacity: number)
@@ -45,9 +45,9 @@ export const shorten = (hash: string, length = 6) => {
 };
 
 export const getInjectedWeb3 = async (extension: string) => {
-  const result: InjectedWindowProvider = await window.injectedWeb3[extension];
+  const result: InjectedWindowProvider = await window.injectedWeb3?.[extension];
 
-  if (result.enable) {
+  if (result?.enable) {
     return result.enable(config.APP_NAME);
   }
 };
@@ -106,7 +106,7 @@ export const CalculatorOfRarity = (weight: number, weights: number[]) => {
   return suffixed ? Number(calculatorTotal).toFixed(1) : prefix;
 };
 
-export const ColorOfCollaborator = (type: TypeCollaboratorsRole): string => {
+export const ColorOfCollaborator = (type: TypeCollaboratorRoles): string => {
   if (type === 'Admin') return colors.primary.a[300];
   if (type === 'Freezer') return '#ffffff';
   if (type === 'Issuer') return '#ff7b00';

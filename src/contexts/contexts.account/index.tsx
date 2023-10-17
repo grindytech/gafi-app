@@ -103,4 +103,4 @@ const useAccountContext = () => {
   };
 };
 
-export { AccountContextProvider, useAccountContext };
+export { AccountContextProvider, useAccountContext, AccountContext };

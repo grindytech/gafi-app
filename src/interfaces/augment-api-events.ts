@@ -6,9 +6,10 @@
 import '@polkadot/api-base/types/events';
 
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
-import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
+import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscBalanceStatus, GafiSupportGameTypesLoot, GafiSupportGameTypesNft, GafiSupportGameTypesPackage, GafiSupportGameTypesPoolType, PalletNftsAttributeNamespace, PalletNftsPalletAttributes, PalletNftsPriceWithDirection, SpConsensusGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -146,16 +147,6 @@ declare module '@polkadot/api-base/types/events' {
       UpgradeSet: AugmentedEvent<ApiType, [who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32], { who: AccountId32, collection: u32, item: u32, newItem: u32, level: u32 }>;
       WishlistFilled: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, askPrice: u128], { trade: u32, who: AccountId32, askPrice: u128 }>;
       WishlistSet: AugmentedEvent<ApiType, [trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32>], { trade: u32, who: AccountId32, wishlist: Vec<GafiSupportGameTypesPackage>, price: u128, startBlock: Option<u32>, endBlock: Option<u32> }>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
-    gameRandomness: {
-      /**
-       * Event generated when a new price is submitted.
-       **/
-      NewSeed: AugmentedEvent<ApiType, [blockNumber: u32, seed: U8aFixed], { blockNumber: u32, seed: U8aFixed }>;
       /**
        * Generic event
        **/
@@ -340,6 +331,14 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    oracleRandomness: {
+      NewOracleRandomnessSeed: AugmentedEvent<ApiType, [seed: Bytes], { seed: Bytes }>;
+      NewOracleRandomnessURL: AugmentedEvent<ApiType, [urls: Vec<Bytes>], { urls: Vec<Bytes> }>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     palletCache: {
       /**
        * Generic event
@@ -389,6 +388,17 @@ declare module '@polkadot/api-base/types/events' {
        * On on-chain remark happened.
        **/
       Remarked: AugmentedEvent<ApiType, [sender: AccountId32, hash_: H256], { sender: AccountId32, hash_: H256 }>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    templateModule: {
+      /**
+       * Event documentation should end with an array that provides descriptive names for event
+       * parameters. [something, who]
+       **/
+      SomethingStored: AugmentedEvent<ApiType, [something: u32, who: AccountId32], { something: u32, who: AccountId32 }>;
       /**
        * Generic event
        **/

@@ -18,9 +18,9 @@ import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import PoolsGeneral from './PoolsGeneral';
 import PoolsAddItem from './PoolsAddItem';
-import PoolsModal from './PoolsModal';
+import PoolsModal from './PoolModal/PoolsModal';
 import PoolsAdmin from './PoolsAdmin';
-import { TypeCollaboratorsState } from 'layouts/Collaborators/CollaboratorsUtils';
+import { TypeCollaboratorState } from 'types/collaborator.type';
 
 export interface PoolsFieldProps {
   // general
@@ -32,7 +32,7 @@ export interface PoolsFieldProps {
   };
   general_description: string;
 
-  collaborator: TypeCollaboratorsState[number];
+  collaborator: TypeCollaboratorState[number];
 
   // Add item
   add_item_fee: number;

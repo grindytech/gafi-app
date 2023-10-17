@@ -3,12 +3,12 @@ import AvatarJazzicon from './AvatarJazzicon';
 
 import { ColorOfCollaborator, convertHex, shorten } from 'utils';
 
-import { TypeCollaboratorsRole } from 'layouts/Collaborators/CollaboratorsUtils';
 import React from 'react';
 import Clipboard from 'components/Clipboard';
+import { TypeCollaboratorRoles } from 'types/collaborator.type';
 
 interface AvatarProfileProps {
-  role: TypeCollaboratorsRole;
+  role: TypeCollaboratorRoles;
   account: { address: string; name: string };
   changeRole?: React.ReactNode;
   sx?: FlexProps;

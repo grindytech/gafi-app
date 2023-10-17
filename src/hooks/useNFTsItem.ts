@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Option, StorageKey, u32 } from '@polkadot/types';
+import { Option } from '@polkadot/types';
 import { PalletNftsItemDetails } from '@polkadot/types/lookup';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 
@@ -37,18 +37,13 @@ export default function useNFTsItem({ filter, key, arg }: useNFTsItemProps) {
 
               const service = await api.query.nfts.item.entries(collection_id);
 
-              return service.map(
-                ([option, meta]: [
-                  StorageKey<[u32, u32]>,
-                  Option<PalletNftsItemDetails>
-                ]) => {
-                  return {
-                    collection_id: option.args[0].toNumber(),
-                    nft_id: option.args[1].toNumber(),
-                    owner: meta.value.owner.toString(),
-                  };
-                }
-              );
+              return service.map(([option, meta]) => {
+                return {
+                  collection_id: option.args[0].toNumber(),
+                  nft_id: option.args[1].toNumber(),
+                  owner: meta.value.owner.toString(),
+                };
+              });
             })
           ).then(data => data.flat());
         }
@@ -58,10 +53,7 @@ export default function useNFTsItem({ filter, key, arg }: useNFTsItemProps) {
             arg.map(async option => {
               const [collection_id, nft_id] = option as number[];
 
-              const service = (await api.query.nfts.item(
-                nft_id,
-                collection_id
-              )) as Option<PalletNftsItemDetails>;
+              const service = await api.query.nfts.item(nft_id, collection_id);
 
               return {
                 collection_id,
