@@ -13,7 +13,7 @@ export const setCookie = ({
   key,
   value,
 }: {
-  expires: string | number;
+  expires: string | number | Date;
   key: string;
   value: string;
 }) => {
