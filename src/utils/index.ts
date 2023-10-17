@@ -15,7 +15,7 @@ import { InjectedWindowProvider } from 'types/polkadot.type';
         convert to 'base 16'
         the latest adding alpha  
 */
-export const convertHex = (color: string, opacity: number) => {
+export const convertHex = (color: string, opacity = 1) => {
   const hexColorToRGBA = `${parseInt(color.substring(1, 3), 16)}, ${parseInt(
     color.substring(3, 5),
     16
@@ -72,7 +72,7 @@ export const formatCurrency = (value: number, currency?: string) => {
 };
 
 export const unitGAFI = (fee: string) => {
-  return fee.replace('.', '') + '0'.repeat(chainDecimal);
+  return fee.replace('.', '') + '0'.repeat(chainDecimal - 1);
 };
 
 export const ColorOfRarity = (weight: number | string) => {
