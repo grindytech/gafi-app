@@ -1,22 +1,23 @@
 import { Text, useDisclosure } from '@chakra-ui/react';
-import JohnPopover from 'layouts/John/JohnPopover';
+import JohnPopover from 'layouts/JohnPopover';
 import { ColorOfCollaborator, convertHex } from 'utils';
-import {
-  TypeCollaboratorsRole,
-  TypeCollaboratorsState,
-} from './CollaboratorsUtils';
+
 import { Dispatch, SetStateAction } from 'react';
+import {
+  TypeCollaboratorRoles,
+  TypeCollaboratorState,
+} from 'types/collaborator.type';
 
 interface CollaboratorsRoleSwitchProps {
-  options: TypeCollaboratorsRole[];
-  role: TypeCollaboratorsRole;
+  options: TypeCollaboratorRoles[];
+  roleOf: TypeCollaboratorRoles;
   index: number;
-  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorsState>>;
+  setCollaborators: Dispatch<SetStateAction<TypeCollaboratorState>>;
 }
 
 export default ({
   options,
-  role,
+  roleOf,
   index,
   setCollaborators,
 }: CollaboratorsRoleSwitchProps) => {
@@ -33,7 +34,7 @@ export default ({
             svg: {
               width: 5,
               height: 5,
-              color: ColorOfCollaborator(role),
+              color: ColorOfCollaborator(roleOf),
             },
           },
           '.chakra-popover__content': {

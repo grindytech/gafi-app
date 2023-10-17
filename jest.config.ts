@@ -7,6 +7,10 @@ module.exports = {
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/src/__mocks__/svgrMock.tsx',
   },
+  setupFilesAfterEnv: [
+    // is not part of RTL
+    '@testing-library/jest-dom/extend-expect',
+  ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
