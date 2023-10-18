@@ -13,15 +13,15 @@ const development = {
   // PROVIDER_SOCKETS: ['ws://0.0.0.0:9944'],
   // PROVIDER_SOCKETS: ['wss://ws-testnet.gafi.network'],
   PROVIDER_SOCKETS: [
-    'wss://ws-testnet.gafi.network',
     'wss://ws-test.gafi.network',
+    // 'wss://ws-testnet.gafi.network',
   ],
 };
 
 const production = {
   PROVIDER_SOCKETS: [
-    'wss://ws-testnet.gafi.network',
     'wss://ws-test.gafi.network',
+    // 'wss://ws-testnet.gafi.network',
   ],
 };
 
