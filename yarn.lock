@@ -1815,7 +1815,7 @@
     "@polkadot/util-crypto" "^10.4.2"
     rxjs "^7.8.0"
 
-"@polkadot/api@9.14.2", "@polkadot/api@^9.3.1":
+"@polkadot/api@9.14.2", "@polkadot/api@^9.4.2":
   version "9.14.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-9.14.2.tgz#d5cee02236654c6063d7c4b70c78c290db5aba8d"
   integrity sha512-R3eYFj2JgY1zRb+OCYQxNlJXCs2FA+AU4uIEiVcXnVLmR3M55tkRNEwYAZmiFxx0pQmegGgPMc33q7TWGdw24A==
@@ -1933,7 +1933,7 @@
   optionalDependencies:
     "@substrate/connect" "0.7.19"
 
-"@polkadot/typegen@^9.3.1":
+"@polkadot/typegen@^9.4.2":
   version "9.14.2"
   resolved "https://registry.yarnpkg.com/@polkadot/typegen/-/typegen-9.14.2.tgz#223fd8b986e05845a80d300f0348abaa82cf67d5"
   integrity sha512-j5ZOSz106ocDrmYOENnIPvuI5j7Cg458D31U1hZz0fdv090QowtTHjpe5+RBBaS3W0Dnk8Fh+LkIzIiQPp4gjA==
