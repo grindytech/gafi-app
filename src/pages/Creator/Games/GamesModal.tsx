@@ -19,6 +19,7 @@ import useSignAndSend from 'hooks/useSignAndSend';
 import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
+  cloundinary_link,
 } from 'axios/cloudinary_axios';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
 import { useAccountContext } from 'contexts/contexts.account';
@@ -34,16 +35,14 @@ export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
   const { api } = useSubstrateContext();
 
   const {
+    category,
     collaborator,
-    general_categories,
-    general_description,
-    general_discord,
-    general_game_title,
-    general_twitter,
-    general_website,
-    media_avatar,
-    media_banner,
-    media_cover,
+    description,
+    discord,
+    logo,
+    name,
+    twitter,
+    website,
   } = getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -63,7 +62,12 @@ export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
         Sign & Submit
       </Button>
 
-      <Modal isOpen={isOpen} size="lg" onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        size="lg"
+        onClose={onClose}
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
 
         <ModalContent borderRadius="xl" bg="shader.a.900">
@@ -107,7 +111,7 @@ export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
               onClick={() => {
                 if (api) {
                   const formData = new FormData();
-                  formData.append('file', media_avatar);
+                  formData.append('file', logo);
                   formData.append(
                     'upload_preset',
                     String(cloudinary_config.preset_key)
@@ -118,22 +122,34 @@ export default ({ onSuccess, getValues, isDisabled }: GamesModalProps) => {
                   cloudinary_axios
                     .post(cloudinary_upload_type.image, formData)
                     .then(item => {
-                      const parse = JSON.stringify({
-                        title: general_game_title,
-                        categories: general_categories,
-                        description: general_description,
-                        website: general_website,
-                        twitter: general_twitter,
-                        discord: general_discord,
-                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
-                        banner: media_banner,
-                        cover: media_cover,
-                      });
+                      const parse: Omit<
+                        GamesFieldProps,
+                        'logo' | 'banner' | 'cover' | 'collaborator'
+                      > & {
+                        logo: string;
+                        banner?: string;
+                        cover?: string;
+                      } = {
+                        // general
+                        name,
+                        category,
+                        description,
+                        website,
+                        twitter,
+                        discord,
+
+                        // media
+                        logo: cloundinary_link(
+                          `v${item.data.version}/${item.data.public_id}.${item.data.format}`
+                        ),
+                        banner: undefined,
+                        cover: undefined,
+                      };
 
                       mutation(
                         api?.tx.game.createGameWithData(
                           collaborator.account.address,
-                          parse
+                          JSON.stringify(parse)
                         )
                       );
                     });

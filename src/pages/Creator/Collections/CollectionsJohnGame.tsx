@@ -14,7 +14,7 @@ interface CollectionsJohnGameProps {
 export default ({ setValue, watch }: CollectionsJohnGameProps) => {
   const { account } = useAccountContext();
 
-  const { general_join_game } = watch();
+  const { john_game } = watch();
 
   return (
     <Flex
@@ -26,13 +26,13 @@ export default ({ setValue, watch }: CollectionsJohnGameProps) => {
       alignItems="flex-start"
     >
       <Box flex={1}>
-        {general_join_game ? (
+        {john_game ? (
           <John
-            name={general_join_game.option?.title}
-            image={general_join_game.option?.avatar}
-            id={general_join_game.game_id}
+            name={john_game.meta?.name}
+            image={john_game.meta?.logo}
+            id={john_game.id}
             remove={() => {
-              setValue(`general_join_game`, undefined);
+              setValue(`john_game`, undefined);
             }}
           />
         ) : (

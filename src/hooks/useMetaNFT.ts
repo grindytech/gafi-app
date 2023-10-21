@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-
 import { useEffect } from 'react';
 import useSubscribeSystem from './useSubscribeSystem';
 import { Option } from '@polkadot/types';
@@ -11,19 +10,24 @@ export interface useMetaNFTProps {
   filter: 'entries' | 'collection_id';
   arg?: { collection_id: number; nft_id: number }[];
   key: string | string[] | number | number[];
+  async?: boolean;
 }
 
-interface MetaNFTFieldProps extends TypeMetaNFT {
+export interface MetaNFTFieldProps extends TypeMetaNFT {
   collection_id: number;
   nft_id: number;
 }
 
-export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
+export default function useMetaNFT({
+  filter,
+  arg,
+  key,
+  async,
+}: useMetaNFTProps) {
+  const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
   const { api } = useSubstrateContext();
 
-  const { event, setEvent } = useSubscribeSystem('nfts::ItemMetadataSet');
-
-  const { data, refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['itemMetadataOf', key],
     queryFn: async () => {
       if (api) {
@@ -38,10 +42,7 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
             ) as TypeMetaNFT;
 
             return {
-              title: metadata.title,
-              description: metadata.description,
-              external_url: metadata.external_url,
-              avatar: metadata.avatar,
+              ...metadata,
               collection_id: key.args[0].toNumber(),
               nft_id: key.args[1].toNumber(),
             } as MetaNFTFieldProps;
@@ -51,10 +52,10 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
         if (filter === 'collection_id' && arg) {
           return Promise.all(
             arg.map(async ({ collection_id, nft_id }) => {
-              const service = (await api.query.nfts.itemMetadataOf(
+              const service = await api.query.nfts.itemMetadataOf(
                 collection_id,
                 nft_id
-              )) as Option<PalletNftsItemMetadata>;
+              );
 
               // not found
               if (service.isEmpty) return;
@@ -64,10 +65,7 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
               ) as TypeMetaNFT;
 
               return {
-                title: metadata.title || 'unknown',
-                description: metadata.description || 'unknown',
-                external_url: metadata.external_url || 'unknown',
-                avatar: metadata.avatar,
+                ...metadata,
                 collection_id,
                 nft_id,
               } as MetaNFTFieldProps;
@@ -109,7 +107,14 @@ export default function useMetaNFT({ filter, arg, key }: useMetaNFTProps) {
     }
   }, [event]);
 
+  useEffect(() => {
+    if (!async && !isLoading) {
+      refetch();
+    }
+  }, [async, isLoading]);
+
   return {
     metaNFT: data,
+    isLoading,
   };
 }

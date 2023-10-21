@@ -1,6 +1,5 @@
 import { Box, BoxProps, Center, Flex, Icon, Text } from '@chakra-ui/react';
 import { isUndefined } from '@polkadot/util';
-import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 
 import BlockIcon from 'public/assets/line/block.svg';
@@ -15,9 +14,9 @@ interface PoolsModalCardProps {
   nft: {
     name: string;
     id: number;
-    image: string | null;
+    image: string;
   };
-  amount: number | string;
+  amount: number | null;
   rarity: string;
 }
 
@@ -29,7 +28,7 @@ export default ({
   sx,
 }: PoolsModalCardProps) => {
   const isFailed = isUndefined(amount);
-  const isInfinity = amount === 'infinity';
+  const isInfinity = !amount;
 
   return (
     <Box
@@ -67,10 +66,7 @@ export default ({
         </>
       ) : (
         <>
-          <RatioPicture
-            src={nft?.image ? cloundinary_link(nft.image) : null}
-            sx={{ width: 'full' }}
-          />
+          <RatioPicture src={nft?.image || null} sx={{ width: 'full' }} />
 
           <Box px={4} py={3}>
             <Text fontSize="xs" color="shader.a.400" fontWeight="normal">

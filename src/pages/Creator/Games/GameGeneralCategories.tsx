@@ -18,9 +18,9 @@ interface GamesCategoriesProps {
 }
 
 export default ({ setValue, watch }: GamesCategoriesProps) => {
-  const categories = watch('general_categories');
+  const categories = watch('category');
 
-  const ListCategories = [
+  const ListCategories: GamesFieldProps['category'][] = [
     'Art',
     'Domain Names',
     'Gaming',
@@ -73,7 +73,7 @@ export default ({ setValue, watch }: GamesCategoriesProps) => {
                   padding={4}
                   fontSize="sm"
                   transitionDuration="ultra-slow"
-                  onClick={() => setValue('general_categories', meta)}
+                  onClick={() => setValue('category', meta)}
                   _hover={{
                     bg: 'shader.a.600',
                   }}

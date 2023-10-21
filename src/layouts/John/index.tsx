@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, Icon, IconButton, Text } from '@chakra-ui/react';
-import { cloundinary_link } from 'axios/cloudinary_axios';
+
 import RatioPicture from 'components/RatioPicture';
 import CloseIcon from 'public/assets/fill/close.svg';
 
@@ -23,10 +23,7 @@ export default ({ image, name, id, remove, sx }: JohnProps) => {
       bg="shader.a.800"
       {...sx}
     >
-      <RatioPicture
-        src={image ? cloundinary_link(image) : null}
-        sx={{ width: 10 }}
-      />
+      <RatioPicture src={image || null} sx={{ width: 10 }} />
 
       <Box>
         <Text fontSize="sm" color="white" fontWeight="medium" lineHeight={4}>

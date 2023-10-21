@@ -12,23 +12,30 @@ import NFTsGeneral from './NFTsGeneral';
 
 import NFTsMedia from './NFTsMedia';
 
-import { TypeMetaCollection } from 'types/meta.type.ts';
+import { TypeMetaCollection, TypeMetaNFT } from 'types/meta.type.ts';
 import NFTsModal from './NFTsModal';
 
-export interface NFTsFieldProps {
+export interface NFTsFieldProps extends Omit<TypeMetaNFT, 'image'> {
   // general
-  general_nft_title: string;
-  general_nft_id: number;
-  general_amount: number | null;
-  general_description: string;
-  general_external_url: string;
-  general_join_collection: {
-    collection_id: number;
-    option?: TypeMetaCollection;
+  id: number;
+  amount: number | null;
+  description: string;
+  external_url: string;
+  john_collection: {
+    id: number;
+    meta?: TypeMetaCollection;
   };
 
-  // media
-  media_avatar: File;
+  // // media
+  image: File;
+}
+
+export interface NFTsFieldSetProps {
+  label: string;
+  fieldName: keyof NFTsFieldProps;
+  form: JSX.Element;
+  isRequired?: boolean;
+  isValue?: boolean;
 }
 
 export default () => {

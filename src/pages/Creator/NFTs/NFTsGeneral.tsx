@@ -13,9 +13,11 @@ import {
 } from '@chakra-ui/react';
 import theme from 'theme/theme';
 
-import { NFTsFieldProps } from '.';
+import { NFTsFieldProps, NFTsFieldSetProps } from '.';
 import NFTsAmount from './NFTsAmount';
 import NFTsJohnCollection from './NFTsJohnCollection';
+import { useEffect } from 'react';
+import { validateLength } from 'utils/utils.validate';
 
 interface CollectionsGeneralProps {
   register: UseFormRegister<NFTsFieldProps>;
@@ -25,13 +27,6 @@ interface CollectionsGeneralProps {
   setRequired: React.Dispatch<React.SetStateAction<Record<number, number>>>;
 }
 
-interface fieldsSetProps {
-  label: string;
-  fieldName: keyof NFTsFieldProps;
-  form: JSX.Element;
-  isRequired?: boolean;
-}
-
 export default ({
   register,
   setValue,
@@ -39,78 +34,83 @@ export default ({
   errors,
   setRequired,
 }: CollectionsGeneralProps) => {
-  const fieldsSet: fieldsSetProps[] = [
+  const fieldsSet: NFTsFieldSetProps[] = [
     {
-      label: 'NFT Title',
-      fieldName: 'general_nft_title',
+      label: 'Name',
+      fieldName: 'name',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="Heroes & Empires"
-          {...register('general_nft_title', { required: true })}
+          {...register('name', { required: true })}
         />
       ),
     },
     {
       label: 'NFT ID',
-      fieldName: 'general_nft_id',
+      fieldName: 'id',
       isRequired: true,
+      isValue: true,
       form: (
         <Input
           variant="validate"
           placeholder="Ex: 0"
-          {...register('general_nft_id', { required: true })}
+          {...register('id', {
+            required: true,
+            valueAsNumber: true,
+          })}
         />
       ),
     },
     {
       label: 'Amount',
-      fieldName: 'general_amount',
+      fieldName: 'amount',
       form: <NFTsAmount register={register} setValue={setValue} />,
     },
     {
       label: 'Description',
-      fieldName: 'general_description',
+      fieldName: 'description',
       isRequired: true,
       form: (
         <Textarea
           {...theme.components.Input.variants.validate.field}
           placeholder="Write about your NFT."
           resize="none"
-          {...register('general_description')}
+          {...register('description')}
         />
       ),
     },
     {
       label: 'External URL',
-      fieldName: 'general_external_url',
+      fieldName: 'external_url',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="https://songaming.vn"
-          {...register('general_external_url', { required: true })}
+          {...register('external_url', { required: true })}
         />
       ),
     },
     {
-      fieldName: 'general_join_collection',
       label: 'Join collection',
+      fieldName: 'john_collection',
       isRequired: true,
       form: <NFTsJohnCollection setValue={setValue} watch={watch} />,
     },
   ];
 
-  watch(meta => {
-    const fieldsRequired = fieldsSet.filter(
-      ({ fieldName, isRequired }) => !meta[fieldName] && isRequired
-    );
+  const { name, id, description, external_url, john_collection } = watch();
 
-    setRequired({
-      0: fieldsRequired.length,
+  useEffect(() => {
+    validateLength({
+      watch,
+      fieldsSet,
+      setRequired,
+      step: 0,
     });
-  });
+  }, [name, id, description, external_url, john_collection]);
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

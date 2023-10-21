@@ -2,7 +2,6 @@ import config from 'config';
 import { formatBalance } from '@polkadot/util';
 import { colors } from 'theme/theme';
 import { chainDecimal } from './utils.contants';
-import { InjectedWindowProvider } from 'types/polkadot.type';
 import { TypeCollaboratorRoles } from 'types/collaborator.type';
 
 /** 
@@ -45,15 +44,15 @@ export const shorten = (hash: string, length = 6) => {
 };
 
 export const getInjectedWeb3 = async (extension: string) => {
-  const result: InjectedWindowProvider = await window.injectedWeb3?.[extension];
+  const result = await window.injectedWeb3[extension];
 
-  if (result?.enable) {
+  if (result.enable) {
     return result.enable(config.APP_NAME);
   }
 };
 
 export const formatGAFI = (fee: Parameters<typeof formatBalance>[0]) => {
-  const formatNumber = formatBalance(fee, {
+  const formatNumber = formatBalance(removeStringComma(String(fee)), {
     withSi: false,
     forceUnit: '-',
     decimals: chainDecimal,
@@ -63,16 +62,15 @@ export const formatGAFI = (fee: Parameters<typeof formatBalance>[0]) => {
   return formatNumber;
 };
 
-export const formatCurrency = (value: number, currency?: string) => {
-  return Intl.NumberFormat(undefined, {
+export const formatCurrency = (
+  value: number | bigint | string,
+  currency?: string
+) => {
+  return new Intl.NumberFormat(undefined, {
     style: 'currency',
     currencyDisplay: 'narrowSymbol',
     currency: currency || 'usd',
-  }).format(value);
-};
-
-export const unitGAFI = (fee: string) => {
-  return fee.replace('.', '') + '0'.repeat(chainDecimal - 1);
+  }).format(removeStringComma(String(value)) as never);
 };
 
 export const ColorOfRarity = (weight: number | string) => {
@@ -106,6 +104,9 @@ export const CalculatorOfRarity = (weight: number, weights: number[]) => {
   return suffixed ? Number(calculatorTotal).toFixed(1) : prefix;
 };
 
+export const removeStringComma = (string: string) =>
+  string.replaceAll(',', '').replaceAll('.', '');
+
 export const ColorOfCollaborator = (type: TypeCollaboratorRoles): string => {
   if (type === 'Admin') return colors.primary.a[300];
   if (type === 'Freezer') return '#ffffff';
@@ -113,3 +114,6 @@ export const ColorOfCollaborator = (type: TypeCollaboratorRoles): string => {
 
   return 'undefined';
 };
+
+export const unitGAFI = (fee: string | number) =>
+  `${fee}${'0'.repeat(chainDecimal)}`; // -1 mean 1 + N-chainDecimal

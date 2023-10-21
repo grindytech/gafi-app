@@ -7,32 +7,30 @@ import { PoolsFieldProps } from '..';
 import SwitchMode from 'components/SwitchMode';
 
 interface PoolsConfigStateProps extends PropsWithChildren {
-  watch: PoolsFieldProps['add_item_supply'] | null;
+  value: boolean;
   setValue: UseFormSetValue<PoolsFieldProps>;
-  add_key: keyof PoolsFieldProps;
+  add_key: PoolsFieldProps['type_pool'];
 }
 
 export default ({
   children,
-  watch,
+  value,
   setValue,
   add_key,
 }: PoolsConfigStateProps) => {
   const { isOpen, onToggle } = useDisclosure({
-    defaultIsOpen: !!watch,
+    defaultIsOpen: !!value,
   });
 
   useEffect(() => {
-    // null mean variable not exist
     if (!isOpen) {
-      setValue(add_key, null);
+      setValue(`supply.${add_key}`, null);
     }
 
-    // undefined mean variable exist but not have value
-    if (isOpen && !watch) {
-      setValue(add_key, undefined);
+    if (isOpen && !value) {
+      setValue(`supply.${add_key}`, undefined);
     }
-  }, [isOpen, watch]);
+  }, [isOpen, value]);
 
   return (
     <>

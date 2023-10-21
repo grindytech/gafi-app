@@ -22,23 +22,24 @@ import CloseIcon from 'public/assets/fill/close.svg';
 import { PropsWithChildren } from 'react';
 import SearchIcon from 'public/assets/line/search.svg';
 import { UseFormSetValue } from 'react-hook-form';
-import { cloundinary_link } from 'axios/cloudinary_axios';
-import { PoolsFieldProps } from '..';
+import { PoolsFieldProps, PoolsProductType } from '..';
 
 interface PoolsConfigModalProps extends PropsWithChildren {
+  product: PoolsProductType[];
+  pool_type: PoolsFieldProps['type_pool'];
+
   onClose: () => void;
   setValue: UseFormSetValue<PoolsFieldProps>;
-  product: PoolsFieldProps['add_item_supply'];
-  add_key: keyof PoolsFieldProps;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default ({
+  product,
+  pool_type,
+  children,
+
   onClose,
   setValue,
-  children,
-  add_key,
-  product,
   setSearch,
 }: PoolsConfigModalProps) => {
   return (
@@ -127,7 +128,7 @@ export default ({
               px={6}
               py={3}
               onClick={() => {
-                setValue(add_key, undefined);
+                setValue(`supply.${pool_type}`, undefined);
               }}
             >
               Clear selected ({product?.length})
@@ -162,7 +163,7 @@ export default ({
               }}
             >
               {product.map(({ collection, nft }) => {
-                const key = `${add_key}.${collection.id}/${nft.id}`;
+                const key = `supply.${pool_type}.${collection.id}/${nft.id}`;
 
                 return (
                   <Box
@@ -174,7 +175,7 @@ export default ({
                     bg="shader.a.800"
                   >
                     <RatioPicture
-                      src={nft?.image ? cloundinary_link(nft.image) : null}
+                      src={nft.image || null}
                       sx={{
                         sx: {
                           '> div': { height: 12 },
@@ -192,10 +193,7 @@ export default ({
                       cursor="pointer"
                       color="shader.a.400"
                       onClick={() => {
-                        setValue(
-                          key as unknown as keyof PoolsFieldProps,
-                          undefined
-                        );
+                        setValue(key as never, undefined as never);
                       }}
                     />
                   </Box>

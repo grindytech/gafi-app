@@ -1,22 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useSubstrateContext } from 'contexts/contexts.substrate';
+import { useEffect } from 'react';
 import { TypeMetaGame } from 'types/meta.type.ts';
 
 export interface useMetaGameProps {
   filter: 'entries' | 'game_id';
   arg?: number[];
   key: string | string[] | number | number[];
+  async?: boolean;
 }
 
 interface MetaGameFieldProps extends TypeMetaGame {
   game_id: number;
 }
 
-export default ({ filter, arg, key }: useMetaGameProps) => {
+export default ({ filter, arg, key, async }: useMetaGameProps) => {
   const { api } = useSubstrateContext();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [`gameMetadataOf`, key],
     queryFn: async () => {
       if (api) {
@@ -29,15 +31,7 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
             ) as TypeMetaGame;
 
             return {
-              title: metadata.title,
-              categories: metadata.categories,
-              description: metadata.description,
-              website: metadata.website,
-              twitter: metadata.twitter,
-              discord: metadata.discord,
-              avatar: metadata.avatar,
-              banner: metadata.banner,
-              cover: metadata.cover,
+              ...metadata,
               game_id: game_id.args[0].toNumber(),
             } as MetaGameFieldProps;
           });
@@ -55,15 +49,7 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
               ) as TypeMetaGame;
 
               return {
-                title: metadata.title,
-                categories: metadata.categories,
-                description: metadata.description,
-                website: metadata.website,
-                twitter: metadata.twitter,
-                discord: metadata.discord,
-                avatar: metadata.avatar,
-                banner: metadata.banner,
-                cover: metadata.cover,
+                ...metadata,
                 game_id,
               } as MetaGameFieldProps;
             })
@@ -78,6 +64,12 @@ export default ({ filter, arg, key }: useMetaGameProps) => {
     },
     enabled: !!filter,
   });
+
+  useEffect(() => {
+    if (async && !isLoading) {
+      refetch();
+    }
+  }, [isLoading]);
 
   return {
     MetaGame: data,

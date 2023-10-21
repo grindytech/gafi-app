@@ -18,6 +18,7 @@ import useSignAndSend from 'hooks/useSignAndSend';
 import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
+  cloundinary_link,
 } from 'axios/cloudinary_axios';
 import { useAccountContext } from 'contexts/contexts.account';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
@@ -37,13 +38,15 @@ export default ({
   const { api } = useSubstrateContext();
 
   const {
-    general_nft_id,
-    general_amount,
-    general_description,
-    general_external_url,
-    general_nft_title,
-    media_avatar,
-    general_join_collection,
+    amount,
+    animation_url,
+    attributes,
+    description,
+    external_url,
+    id,
+    image,
+    john_collection,
+    name,
   } = getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -107,7 +110,7 @@ export default ({
               onClick={() => {
                 if (api) {
                   const formData = new FormData();
-                  formData.append('file', media_avatar);
+                  formData.append('file', image);
                   formData.append(
                     'upload_preset',
                     String(cloudinary_config.preset_key)
@@ -118,19 +121,31 @@ export default ({
                   cloudinary_axios
                     .post(cloudinary_upload_type.image, formData)
                     .then(item => {
-                      const parse = JSON.stringify({
-                        title: general_nft_title,
-                        description: general_description,
-                        external_url: general_external_url,
-                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
-                      });
+                      const parse: Omit<
+                        NFTsFieldProps,
+                        'image' | 'amount' | 'john_collection' | 'id'
+                      > & {
+                        image: string;
+                      } = {
+                        // general
+                        name,
+                        description,
+                        external_url,
+                        attributes: attributes || {}, // tạm thời cho {}
+                        animation_url,
+
+                        // media
+                        image: cloundinary_link(
+                          `v${item.data.version}/${item.data.public_id}.${item.data.format}`
+                        ),
+                      };
 
                       mutation(
                         api.tx.game.createItemWithData(
-                          general_join_collection.collection_id,
-                          general_nft_id,
-                          general_amount,
-                          parse
+                          john_collection.id,
+                          id,
+                          amount,
+                          JSON.stringify(parse)
                         )
                       );
                     });

@@ -1,5 +1,4 @@
 import { Box, Flex, FlexProps, Text } from '@chakra-ui/react';
-import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 
 interface JohnPopoverJSXProps {
@@ -24,10 +23,7 @@ export default ({ image, name, id, onClick, sx }: JohnPopoverJSXProps) => {
       }}
       {...sx}
     >
-      <RatioPicture
-        src={image ? cloundinary_link(image) : null}
-        sx={{ width: 10, height: 10 }}
-      />
+      <RatioPicture src={image || null} sx={{ width: 10, height: 10 }} />
 
       <Box flex={1}>
         <Text fontWeight="medium" color="white">
