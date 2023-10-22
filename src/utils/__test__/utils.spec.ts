@@ -75,7 +75,7 @@ describe('formatCurrency', () => {
 
 describe('unitGAFI', () => {
   it('should return 1e9', () => {
-    expect(unitGAFI('1')).toBe(`${Number(1e9)}`);
+    expect(unitGAFI('1')).toBe(`${Number(1e9)}0`); // last 0 of tobe mean value '1' (1 & 000...n)
   });
 });
 

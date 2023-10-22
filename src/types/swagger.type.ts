@@ -1,3 +1,5 @@
+import { TypeMetaGame } from './meta.type.ts';
+
 // collection
 export type TypeSwaggerSearchCollectionData = {
   message: string;
@@ -13,6 +15,7 @@ export type TypeSwaggerSearchCollectionData = {
       name: string;
       category: string;
       external_url: string;
+      description: string;
 
       collection_id: number;
       created_at: number;
@@ -52,7 +55,7 @@ export type TypeSwaggerSearchGameData = {
       cover: string;
       logo: string;
 
-      category: string;
+      category: TypeMetaGame['category'];
       description: string;
       name: string;
 
@@ -61,11 +64,9 @@ export type TypeSwaggerSearchGameData = {
       id: number;
       is_verified: boolean;
       owner: string;
-      social: {
-        discord: string;
-        twitter: string;
-        web: string;
-      };
+      discord: string;
+      twitter: string;
+      website: string;
       updated_at: number;
     }
   ];
@@ -178,8 +179,8 @@ export type TypeSwaggerNFTRequest = {
   desc: boolean;
   query: Partial<{
     name: string;
-    token_id: string;
-    collection_id: string;
+    token_id: number;
+    collection_id: number;
     created_by: string;
     price: string;
     attributes: [
@@ -218,7 +219,7 @@ export type TypeSwaggerNFTData = {
       price: string;
       status: string;
       supply: number;
-      token_id: string;
+      token_id: number;
       updated_at: number;
       visitor_count: number;
     }

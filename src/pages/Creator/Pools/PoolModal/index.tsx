@@ -198,8 +198,8 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
                       weight: meta.weight,
                       maybeNft: meta?.collection
                         ? {
-                            collection: meta.collection.id,
-                            item: meta.nft.id,
+                            collection: Number(meta.collection.id),
+                            item: Number(meta.nft.id),
                           }
                         : null,
                     }));
@@ -207,7 +207,7 @@ export default ({ onSuccess, getValues, isDisabled }: PoolsModalProps) => {
                     const method =
                       type_pool === 'Dynamic Pool'
                         ? 'createDynamicPoolWithData'
-                        : 'createDynamicPoolWithData';
+                        : 'createStablePoolWithData';
 
                     mutation(
                       api.tx.game[method](

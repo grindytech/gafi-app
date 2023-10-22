@@ -43,7 +43,9 @@ export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
           address={account.current.address}
           watch={watch}
         />
-      ) : null}
+      ) : (
+        <Text color="shader.a.600">Empty</Text>
+      )}
     </Flex>
   );
 };

@@ -8,14 +8,13 @@ import {
 import { PoolsFieldProps } from '..';
 import { useAccountContext } from 'contexts/contexts.account';
 
-import PoolsDynamic from '../PoolsConfig/PoolsConfigProduct';
-import { useSubstrateContext } from 'contexts/contexts.substrate';
 import { useQuery } from '@tanstack/react-query';
-import { Option, u8 } from '@polkadot/types';
 import PoolsConfigState from '../PoolsConfig/PoolsConfigState';
 import { useDisclosure, useToast } from '@chakra-ui/react';
-import useItemBalanceOf from 'hooks/useItemBalanceOf';
 import { useEffect } from 'react';
+import swaggerAxios from 'axios/swagger.axios';
+import { TypeSwaggerNFTData } from 'types/swagger.type';
+import PoolsConfigProduct from '../PoolsConfig/PoolsConfigProduct';
 
 interface PoolsNormalProps {
   setValue: UseFormSetValue<PoolsFieldProps>;
@@ -24,7 +23,6 @@ interface PoolsNormalProps {
 }
 
 export default ({ watch, register, setValue }: PoolsNormalProps) => {
-  const { api } = useSubstrateContext();
   const { account } = useAccountContext();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -32,42 +30,28 @@ export default ({ watch, register, setValue }: PoolsNormalProps) => {
 
   const { failed, supply, type_pool } = watch();
 
-  const { itemBalanceOf } = useItemBalanceOf({
-    filter: 'address',
-    key: `${type_pool}/${account.current?.address}`,
-    arg: [account.current?.address as string],
-  });
-
-  const { data: supplyOf } = useQuery({
-    queryKey: [`type_pool/${account.current?.address}`],
+  const { data } = useQuery({
+    queryKey: [`type_pool_nft/${account.current?.address}/${type_pool}`],
     queryFn: async () => {
-      if (api && account.current?.address) {
-        const service = await api.query.game.supplyOf.entries();
+      if (account.current?.address) {
+        const service = await swaggerAxios.nftSearch({
+          body: {
+            query: {
+              created_by: account.current.address,
+            },
+          },
+        });
 
-        return Promise.all(
-          service.map(async ([{ args }, supply]) => {
-            const getRole = (await api.query.nfts.collectionRoleOf(
-              args[0].toNumber(),
-              account.current?.address
-            )) as Option<u8>;
+        if (type_pool === 'Dynamic Pool') {
+          return service.data.filter(meta => !!meta?.supply);
+        }
 
-            const getOwner = (
-              await api.query.nfts.collection(args[0].toNumber())
-            ).value.owner.toString();
-
-            if (!supply.toHuman()) {
-              if (getRole.isSome || getOwner === account.current?.address) {
-                return {
-                  collection_id: args[0].toNumber(),
-                  nft_id: args[1].toNumber(),
-                };
-              }
-            }
-          })
-        ).then(data =>
-          data.filter((meta): meta is NonNullable<typeof meta> => !!meta)
-        );
+        if (type_pool === 'Stable Pool') {
+          return service.data.filter(meta => !meta?.supply);
+        }
       }
+
+      return [];
     },
   });
 
@@ -78,7 +62,7 @@ export default ({ watch, register, setValue }: PoolsNormalProps) => {
   ).filter(meta => !!meta);
 
   useEffect(() => {
-    if (isOpen && (!supplyOf?.length || !itemBalanceOf?.length)) {
+    if (isOpen && !data?.length) {
       toast({
         description: "you don't have items",
         status: 'error',
@@ -87,7 +71,7 @@ export default ({ watch, register, setValue }: PoolsNormalProps) => {
       });
       onClose();
     }
-  }, [isOpen, supplyOf, itemBalanceOf]);
+  }, [isOpen, data]);
 
   return (
     <>
@@ -107,27 +91,13 @@ export default ({ watch, register, setValue }: PoolsNormalProps) => {
         />
       </PoolsConfigState>
 
-      {isOpen && (supplyOf?.length || itemBalanceOf?.length) ? (
-        <PoolsDynamic
+      {isOpen && data?.length ? (
+        <PoolsConfigProduct
           pool_type={type_pool}
           setValue={setValue}
           onClose={onClose}
           product={product}
-          supply={
-            itemBalanceOf?.length && type_pool === 'Dynamic Pool'
-              ? itemBalanceOf.map(({ collection_id, nft_id, amount }) => ({
-                  collection_id,
-                  nft_id,
-                  amount,
-                }))
-              : supplyOf?.length && type_pool === 'Stable Pool'
-              ? supplyOf.map(({ collection_id, nft_id }) => ({
-                  collection_id,
-                  nft_id,
-                  amount: null,
-                }))
-              : undefined
-          }
+          supply={data as TypeSwaggerNFTData['data']}
         />
       ) : null}
     </>

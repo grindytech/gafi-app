@@ -7,8 +7,10 @@ import JohnPopover from 'layouts/JohnPopover';
 import JohnPopoverJSX from 'layouts/JohnPopover/JohnPopoverJSX';
 import JohnPopoverEmpty from 'layouts/JohnPopover/JohnPopoverEmpty';
 import { useDisclosure } from '@chakra-ui/react';
-import useMetaGame from 'hooks/useMetaGame';
+
 import swaggerAxios from 'axios/swagger.axios';
+import { useAccountContext } from 'contexts/contexts.account';
+import { TypeSwaggerSearchGameData } from 'types/swagger.type';
 
 interface CollectionsJohnGameMenuProps {
   setValue: UseFormSetValue<CollectionsFieldProps>;
@@ -19,19 +21,23 @@ interface CollectionsJohnGameMenuProps {
 export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
   const { isOpen, onClose, onToggle } = useDisclosure();
   const { john_game } = watch();
+  const { account } = useAccountContext();
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['creator_collection_menu', address],
     queryFn: async () => {
-      return swaggerAxios.gameSearch({});
-    },
-  });
+      if (account.current?.address) {
+        return swaggerAxios.gameSearch({
+          body: {
+            query: {
+              owner: account.current.address,
+            },
+          },
+        });
+      }
 
-  const { MetaGame } = useMetaGame({
-    key: `creator_create_collection`,
-    filter: 'game_id',
-    arg: data?.data.map(meta => Number(meta.game_id)),
-    async: isLoading,
+      return [] as Partial<TypeSwaggerSearchGameData>;
+    },
   });
 
   const unique_john_game = data?.data?.filter(
@@ -53,27 +59,46 @@ export default ({ setValue, address, watch }: CollectionsJohnGameMenuProps) => {
             },
           }}
         >
-          {unique_john_game.map(({ game_id }) => {
-            const currentMetaGame = MetaGame?.find(
-              meta => meta.game_id === game_id
-            );
-
-            return (
-              <JohnPopoverJSX
-                key={game_id}
-                id={game_id}
-                image={currentMetaGame?.logo}
-                name={currentMetaGame?.name}
-                onClick={() => {
-                  onClose();
-                  setValue(`john_game`, {
-                    id: game_id,
-                    meta: currentMetaGame,
-                  });
-                }}
-              />
-            );
-          })}
+          {unique_john_game.map(
+            ({
+              game_id,
+              logo,
+              name,
+              banner,
+              category,
+              cover,
+              description,
+              discord,
+              website,
+              twitter,
+            }) => {
+              return (
+                <JohnPopoverJSX
+                  key={game_id}
+                  id={game_id}
+                  image={logo}
+                  name={name}
+                  onClick={() => {
+                    onClose();
+                    setValue(`john_game`, {
+                      id: game_id,
+                      meta: {
+                        category,
+                        description,
+                        discord,
+                        logo,
+                        name,
+                        twitter,
+                        website,
+                        banner,
+                        cover,
+                      },
+                    });
+                  }}
+                />
+              );
+            }
+          )}
         </JohnPopover>
       ) : (
         <JohnPopoverEmpty />
