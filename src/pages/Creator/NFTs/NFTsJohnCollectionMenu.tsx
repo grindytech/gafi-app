@@ -1,5 +1,3 @@
-import { Option, StorageKey, u32 } from '@polkadot/types';
-import { PalletNftsCollectionDetails } from '@polkadot/types/lookup';
 import { useQuery } from '@tanstack/react-query';
 
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
@@ -10,13 +8,10 @@ import JohnPopover from 'layouts/JohnPopover';
 import JohnPopoverEmpty from 'layouts/JohnPopover/JohnPopoverEmpty';
 import JohnPopoverJSX from 'layouts/JohnPopover/JohnPopoverJSX';
 import { useDisclosure } from '@chakra-ui/react';
-import useMetaCollection from 'hooks/useMetaCollection';
-import { useSubstrateContext } from 'contexts/contexts.substrate';
 
-interface NFTsJohnCollectionServiceProps
-  extends Omit<NFTsJohnCollectionProps, 'address'> {
-  data: { collection_id: number }[];
-}
+import swaggerAxios from 'axios/swagger.axios';
+import { useAccountContext } from 'contexts/contexts.account';
+import { TypeSwaggerSearchCollectionData } from 'types/swagger.type';
 
 interface NFTsJohnCollectionProps {
   setValue: UseFormSetValue<NFTsFieldProps>;
@@ -25,113 +20,87 @@ interface NFTsJohnCollectionProps {
 }
 
 export default ({ setValue, watch, address }: NFTsJohnCollectionProps) => {
-  const { api } = useSubstrateContext();
+  const { isOpen, onClose, onToggle } = useDisclosure();
+  const { john_collection } = watch();
+  const { account } = useAccountContext();
 
   const { data } = useQuery({
     queryKey: ['creator_create_nft_menu', address],
     queryFn: async () => {
-      if (api && address) {
-        const service = await api.query.nfts.collection.entries();
-
-        return Promise.all(
-          service.map(
-            async ([collection_id, option]: [
-              StorageKey<[u32]>,
-              Option<PalletNftsCollectionDetails>
-            ]) => {
-              const getOwner = option.value.owner.toString() === address;
-              const getRole = await api.query.nfts.collectionRoleOf(
-                collection_id.args[0].toNumber(),
-                address
-              );
-
-              if (getOwner || getRole.isSome) {
-                return {
-                  collection_id: collection_id.args[0].toNumber(),
-                };
-              }
-            }
-          )
-        ).then(data =>
-          data.filter((meta): meta is NonNullable<typeof meta> => !!meta)
-        );
+      if (account.current?.address) {
+        return swaggerAxios.collectionSearch({
+          body: {
+            query: {
+              owner: account.current.address,
+            },
+          },
+        });
       }
 
-      // not found
-      return [];
+      return [] as Partial<TypeSwaggerSearchCollectionData>;
     },
-    enabled: !!api?.query.nfts,
   });
+
+  const unique_john_collection = data?.data?.filter(
+    ({ collection_id }) => john_collection?.id !== collection_id
+  );
 
   return (
     <>
-      {data?.length ? (
-        <NFTsJohnCollectionService
-          watch={watch}
-          data={data}
-          setValue={setValue}
-        />
+      {unique_john_collection?.length ? (
+        <JohnPopover
+          isOpen={isOpen}
+          onToggle={onToggle}
+          onClose={onClose}
+          sx={{
+            sx: {
+              '.chakra-popover__content': {
+                height:
+                  unique_john_collection.length >= 3 ? '10rem' : 'fit-content',
+              },
+            },
+          }}
+        >
+          {unique_john_collection.map(
+            ({
+              banner,
+              collection_id,
+              cover,
+              external_url,
+              games,
+              logo,
+              name,
+              description,
+            }) => {
+              return (
+                <JohnPopoverJSX
+                  key={collection_id}
+                  id={collection_id}
+                  name={name}
+                  image={logo}
+                  onClick={() => {
+                    onClose();
+                    setValue(`john_collection`, {
+                      id: collection_id,
+                      meta: {
+                        description,
+                        external_url,
+                        game: games,
+                        logo,
+                        name,
+                        banner,
+                        cover,
+                      },
+                    });
+                  }}
+                />
+              );
+            }
+          )}
+        </JohnPopover>
       ) : (
         <JohnPopoverEmpty />
       )}
     </>
   );
 };
-
-function NFTsJohnCollectionService({
-  data,
-  setValue,
-  watch,
-}: NFTsJohnCollectionServiceProps) {
-  const { isOpen, onClose, onToggle } = useDisclosure();
-  const { general_join_collection } = watch();
-
-  const unique_john_collection = data.filter(
-    ({ collection_id }) =>
-      general_join_collection?.collection_id !== collection_id
-  );
-
-  const { MetaCollection } = useMetaCollection({
-    key: `creator_create_nft`,
-    filter: 'collection_id',
-    arg: data.map(({ collection_id }) => collection_id),
-  });
-
-  return (
-    <JohnPopover
-      isOpen={isOpen}
-      onToggle={onToggle}
-      onClose={onClose}
-      sx={{
-        sx: {
-          '.chakra-popover__content': {
-            height:
-              unique_john_collection.length >= 3 ? '10rem' : 'fit-content',
-          },
-        },
-      }}
-    >
-      {unique_john_collection.map(({ collection_id }) => {
-        const currentMetaCollection = MetaCollection?.find(
-          meta => meta.collection_id === collection_id
-        );
-
-        return (
-          <JohnPopoverJSX
-            key={collection_id}
-            id={collection_id}
-            name={currentMetaCollection?.title || 'unknown'}
-            image={currentMetaCollection?.avatar}
-            onClick={() => {
-              onClose();
-              setValue(`general_join_collection`, {
-                collection_id,
-                option: currentMetaCollection,
-              });
-            }}
-          />
-        );
-      })}
-    </JohnPopover>
-  );
-}

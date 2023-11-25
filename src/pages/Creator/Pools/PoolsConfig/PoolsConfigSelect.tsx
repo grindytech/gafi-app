@@ -8,39 +8,40 @@ import {
   InputRightAddon,
   Text,
 } from '@chakra-ui/react';
-import { cloundinary_link } from 'axios/cloudinary_axios';
 import RatioPicture from 'components/RatioPicture';
 import { colors } from 'theme/theme';
 import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils';
-import { PoolsFieldProps } from '..';
+import { PoolsFieldProps, PoolsProductType } from '..';
 import { UseFormRegister } from 'react-hook-form';
 
 interface PoolsConfigSelectProps {
-  onToggle: () => void;
-  product: PoolsFieldProps['add_item_supply'];
   register: UseFormRegister<PoolsFieldProps>;
-  add_key: keyof PoolsFieldProps;
-  add_item_failed: number | null | undefined;
+  onToggle: () => void;
+
+  product: PoolsProductType[];
+  type_pool: PoolsFieldProps['type_pool'];
+  failed: number | null | undefined;
 }
 
 export default ({
-  onToggle,
-  product,
   register,
-  add_key,
-  add_item_failed,
+  onToggle,
+
+  product,
+  type_pool,
+  failed,
 }: PoolsConfigSelectProps) => {
   return (
     <>
       {product?.length ? (
         product.map(({ collection, nft, amount, weight }) => {
-          const key = `${add_key}.${collection.id}/${nft.id}.weight` as any;
+          const key = `supply.${type_pool}.${collection.id}/${nft.id}.weight`;
 
           const getWeight = CalculatorOfRarity(
             weight,
             product
-              .concat({ weight: add_item_failed || 0 } as never)
-              .map(meta => meta.weight)
+              .concat({ weight: failed || 0 } as never)
+              .map(meta => meta.weight || 0)
           );
 
           return (
@@ -60,7 +61,7 @@ export default ({
             >
               <Flex gap={2}>
                 <RatioPicture
-                  src={nft.image ? cloundinary_link(nft.image) : null}
+                  src={nft.image || null}
                   sx={{
                     padding: 2,
                     borderRadius: 'lg',
@@ -73,10 +74,10 @@ export default ({
 
                 <Box fontSize="sm">
                   <Text color="shader.a.300" fontSize="xs">
-                    {collection?.title}
+                    {collection?.name}
                   </Text>
                   <Text color="white" fontWeight="medium">
-                    {nft?.title}
+                    {nft?.name}
                   </Text>
 
                   <Text color="primary.a.300">
@@ -99,14 +100,17 @@ export default ({
                   variant="unstyled"
                   px={4}
                   placeholder="Enter weight"
+                  fontSize="sm"
                   color="shader.a.300"
                   width={{
                     base: 'full',
                     md: 28,
                   }}
-                  fontSize="sm"
                   _placeholder={{ color: 'shader.a.500' }}
-                  {...register(key, { required: true })}
+                  {...register(key as never, {
+                    required: true,
+                    valueAsNumber: true,
+                  })}
                 />
 
                 <InputRightAddon

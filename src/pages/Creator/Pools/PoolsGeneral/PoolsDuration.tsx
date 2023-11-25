@@ -1,5 +1,5 @@
 import JohnPopover from 'layouts/JohnPopover';
-import { PoolsFieldProps } from '.';
+import { PoolsFieldProps } from '..';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Flex, Text, useDisclosure } from '@chakra-ui/react';
@@ -11,7 +11,7 @@ interface PoolsDurationProps {
 }
 
 export default ({ setValue, watch }: PoolsDurationProps) => {
-  const { general_duration } = watch();
+  const { duration } = watch();
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   const ListDuration = [
@@ -46,8 +46,8 @@ export default ({ setValue, watch }: PoolsDurationProps) => {
   ];
 
   useEffect(() => {
-    if (!general_duration) {
-      setValue(`general_duration`, ListDuration[0]);
+    if (!duration) {
+      setValue(`duration`, ListDuration[0]);
     }
   }, []);
 
@@ -59,7 +59,7 @@ export default ({ setValue, watch }: PoolsDurationProps) => {
       bg="shader.a.900"
     >
       <Text color="shader.a.300" fontWeight="medium" flex={1}>
-        {general_duration?.text}
+        {duration?.text}
       </Text>
 
       <JohnPopover isOpen={isOpen} onToggle={onToggle} onClose={onClose}>
@@ -73,7 +73,7 @@ export default ({ setValue, watch }: PoolsDurationProps) => {
             fontWeight="medium"
             transitionDuration="ultra-slow"
             onClick={() => {
-              setValue(`general_duration`, meta);
+              setValue(`duration`, meta);
               onClose();
             }}
             _hover={{

@@ -22,10 +22,9 @@ export default function useBalance({ account }: useBalanceProps) {
 
   React.useEffect(() => {
     const getBalance = () => {
-      if (event) {
+      if (event && !balance) {
         event.forEach(({ eventValue }) => {
           const [address] = JSON.parse(eventValue);
-
           if (address === account) {
             getBalance();
           }
@@ -35,8 +34,10 @@ export default function useBalance({ account }: useBalanceProps) {
       const callback = async () => {
         if (api?.query.system && account) {
           const res = await api.query.system.account(account);
-
           const getBalance = res.toPrimitive() as TypeGetBalance;
+
+          console.log('get', getBalance.data.free);
+          // 15000000000000 // 1500
 
           setBalance(formatGAFI(getBalance.data.free));
         }
@@ -46,7 +47,6 @@ export default function useBalance({ account }: useBalanceProps) {
     };
 
     getBalance();
-
     return () => getBalance();
   }, [event, account, api]);
 

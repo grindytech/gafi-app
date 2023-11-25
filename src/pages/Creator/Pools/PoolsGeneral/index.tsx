@@ -12,9 +12,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import theme from 'theme/theme';
-import { PoolsFieldProps } from '.';
+import { PoolsFieldProps, PoolsFieldSetProps } from '..';
 import PoolsDuration from './PoolsDuration';
 import { useEffect } from 'react';
+import { validateLength } from 'utils/utils.validate';
 
 interface PoolsGeneralProps {
   register: UseFormRegister<PoolsFieldProps>;
@@ -24,13 +25,6 @@ interface PoolsGeneralProps {
   setRequired: React.Dispatch<React.SetStateAction<Record<number, number>>>;
 }
 
-interface fieldsSetProps {
-  label: string;
-  fieldName: keyof PoolsFieldProps;
-  form: JSX.Element;
-  isRequired?: boolean;
-}
-
 export default ({
   register,
   setValue,
@@ -38,53 +32,49 @@ export default ({
   errors,
   setRequired,
 }: PoolsGeneralProps) => {
-  const fieldsSet: fieldsSetProps[] = [
+  const fieldsSet: PoolsFieldSetProps[] = [
     {
-      label: 'Pool title',
-      fieldName: 'general_title',
+      label: 'Title',
+      fieldName: 'title',
+      isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="Heroes & Empires"
-          {...register('general_title', { required: true })}
+          {...register('title', { required: true })}
         />
       ),
     },
     {
       label: 'Duration',
-      fieldName: 'general_duration',
+      fieldName: 'duration',
       isRequired: true,
       form: <PoolsDuration setValue={setValue} watch={watch} />,
     },
     {
       label: 'Description',
-      fieldName: 'general_description',
+      fieldName: 'description',
       form: (
         <Textarea
           {...theme.components.Input.variants.validate.field}
           placeholder="Write about your pool."
           resize="none"
-          {...register('general_description')}
+          {...register('description')}
         />
       ),
     },
   ];
 
-  const { general_type, general_duration } = watch();
+  const { title, duration } = watch();
 
   useEffect(() => {
-    const fieldsRequired = () => {
-      const findRequired = fieldsSet.filter(
-        meta => meta.isRequired && !watch()[meta.fieldName]
-      );
-
-      return findRequired.length;
-    };
-
-    setRequired({
-      0: fieldsRequired(),
+    validateLength({
+      watch,
+      fieldsSet,
+      setRequired,
+      step: 0,
     });
-  }, [general_type, general_duration]);
+  }, [title, duration]);
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

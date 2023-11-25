@@ -9,6 +9,7 @@ export interface useMetaCollectionProps {
   filter: 'entries' | 'collection_id';
   arg?: number[];
   key: string | string[] | number | number[];
+  async?: boolean;
 }
 
 export interface MetaCollectionFieldProps extends TypeMetaCollection {
@@ -19,6 +20,7 @@ export default function useMetaCollection({
   filter,
   arg,
   key,
+  async,
 }: useMetaCollectionProps) {
   const { api } = useSubstrateContext();
   const { event, setEvent } = useSubscribeSystem('nfts::CollectionMetadataSet');
@@ -36,12 +38,7 @@ export default function useMetaCollection({
             ) as TypeMetaCollection;
 
             return {
-              title: metadata.title || 'unknown',
-              description: metadata.description || 'unknown',
-              external_url: metadata.external_url || 'unknown',
-              avatar: metadata.avatar,
-              banner: metadata.banner,
-              cover: metadata.cover,
+              ...metadata,
               collection_id: collection_id.args[0].toNumber(),
             } as MetaCollectionFieldProps;
           });
@@ -61,12 +58,7 @@ export default function useMetaCollection({
               ) as TypeMetaCollection;
 
               return {
-                title: metadata.title,
-                description: metadata.description,
-                external_url: metadata.external_url,
-                avatar: metadata.avatar,
-                banner: metadata.banner,
-                cover: metadata.cover,
+                ...metadata,
                 collection_id,
               } as MetaCollectionFieldProps;
             })
@@ -81,6 +73,12 @@ export default function useMetaCollection({
     },
     enabled: !!filter,
   });
+
+  useEffect(() => {
+    if (async && !isLoading) {
+      refetch();
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (event) {

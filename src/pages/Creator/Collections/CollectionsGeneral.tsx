@@ -15,7 +15,8 @@ import theme from 'theme/theme';
 
 import { useEffect } from 'react';
 import CollectionsJohnGame from './CollectionsJohnGame';
-import { CollectionsFieldProps } from '.';
+import { CollectionsFieldProps, CollectionsFieldSetProps } from '.';
+import { validateLength } from 'utils/utils.validate';
 
 interface CollectionsGeneralProps {
   register: UseFormRegister<CollectionsFieldProps>;
@@ -25,13 +26,6 @@ interface CollectionsGeneralProps {
   setRequired: React.Dispatch<React.SetStateAction<Record<number, number>>>;
 }
 
-interface fieldsSetProps {
-  label: string;
-  fieldName: keyof CollectionsFieldProps;
-  form: JSX.Element;
-  isRequired?: boolean;
-}
-
 export default ({
   register,
   setValue,
@@ -39,70 +33,60 @@ export default ({
   errors,
   setRequired,
 }: CollectionsGeneralProps) => {
-  const fieldsSet: fieldsSetProps[] = [
+  const fieldsSet: CollectionsFieldSetProps[] = [
     {
-      label: 'Collection tittle',
-      fieldName: 'general_collection_title',
+      label: 'Name',
+      fieldName: 'name',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="Heroes & Empires"
-          {...register('general_collection_title', { required: true })}
+          {...register('name', { required: true })}
         />
       ),
     },
     {
       label: 'Description',
-      fieldName: 'general_description',
+      fieldName: 'description',
       isRequired: true,
       form: (
         <Textarea
           {...theme.components.Input.variants.validate.field}
           placeholder="Write about your collection."
           resize="none"
-          {...register('general_description')}
+          {...register('description')}
         />
       ),
     },
     {
       label: 'External URL',
-      fieldName: 'general_external_url',
-      isRequired: true,
+      fieldName: 'external_url',
       form: (
         <Input
           variant="validate"
           placeholder="https://songaming.vn"
-          {...register('general_external_url', { required: true })}
+          {...register('external_url')}
         />
       ),
     },
     {
       label: 'Join game',
-      fieldName: 'general_join_game',
+      fieldName: 'john_game',
       form: <CollectionsJohnGame watch={watch} setValue={setValue} />,
     },
   ];
 
-  const {
-    general_collection_title,
-    general_description,
-    general_external_url,
-  } = watch();
+  const { name, description } = watch();
 
   useEffect(() => {
-    const fieldsRequired = () => {
-      const findRequired = fieldsSet.filter(
-        meta => meta.isRequired && !watch()[meta.fieldName]
-      );
-
-      return findRequired.length;
-    };
-
-    setRequired({
-      0: fieldsRequired(),
+    validateLength({
+      watch,
+      fieldsSet,
+      setRequired,
+      step: 0,
     });
-  }, [general_collection_title, general_description, general_external_url]);
+  }, [name, description]);
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

@@ -14,7 +14,7 @@ interface NFTsJohnCollectionProps {
 export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
   const { account } = useAccountContext();
 
-  const { general_join_collection } = watch();
+  const { john_collection } = watch();
 
   return (
     <Flex
@@ -26,11 +26,11 @@ export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
       alignItems="flex-start"
     >
       <Box flex={1}>
-        {general_join_collection ? (
+        {john_collection ? (
           <John
-            name={general_join_collection.option?.title}
-            id={general_join_collection.collection_id}
-            image={general_join_collection.option?.avatar}
+            name={john_collection.meta?.name}
+            image={john_collection.meta?.logo}
+            id={john_collection.id}
           />
         ) : (
           <Text color="shader.a.600">Choose a collection to join</Text>
@@ -43,7 +43,9 @@ export default ({ setValue, watch }: NFTsJohnCollectionProps) => {
           address={account.current.address}
           watch={watch}
         />
-      ) : null}
+      ) : (
+        <Text color="shader.a.600">Empty</Text>
+      )}
     </Flex>
   );
 };

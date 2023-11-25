@@ -22,25 +22,32 @@ import Owner from 'layouts/Owner';
 
 import CollectionAdmin from './CollectionAdmin';
 
-import { TypeMetaGame } from 'types/meta.type.ts';
+import { TypeMetaCollection, TypeMetaGame } from 'types/meta.type.ts';
 import { TypeCollaboratorState } from 'types/collaborator.type';
 
-export interface CollectionsFieldProps {
-  general_collection_title: string;
-  general_description: string;
-  general_external_url: string;
-  general_join_game?: {
-    game_id: number;
-    option?: TypeMetaGame;
+export interface CollectionsFieldProps
+  extends Omit<TypeMetaCollection, 'logo' | 'banner' | 'cover' | 'game'> {
+  //general
+  john_game?: {
+    id: number;
+    meta?: TypeMetaGame;
   };
 
-  // role
-  collaborator: TypeCollaboratorState;
-
   // media
-  media_avatar: File;
-  media_banner: File | undefined;
-  media_cover: File | undefined;
+  logo: File;
+  banner?: File;
+  cover?: File;
+
+  // common
+  collaborator: TypeCollaboratorState;
+}
+
+export interface CollectionsFieldSetProps {
+  label: string;
+  fieldName: keyof CollectionsFieldProps;
+  form: JSX.Element;
+  isRequired?: boolean;
+  isValue?: boolean;
 }
 
 export default () => {

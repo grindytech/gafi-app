@@ -4,10 +4,11 @@ import { convertHex } from 'utils';
 
 import CloseIcon from 'public/assets/fill/close.svg';
 import CameraIcon from 'public/assets/fill/camera.svg';
+import { useRef } from 'react';
 
-export interface BackgroundAvatarProps {
-  name: 'Background Avatar' | 'Background Banner' | 'Background Cover';
-  size: '320x320px' | '320x192px' | '512x512px' | '1400x280px';
+export interface BackgroundUploadProps {
+  name: 'Background Logo' | 'Background Banner' | 'Background Cover';
+  size: '350x350px' | '512x512px' | '1400x280px';
   background: File | undefined;
   setBackground: React.Dispatch<React.SetStateAction<File | undefined>>;
   isRequired?: boolean;
@@ -21,16 +22,16 @@ export default ({
   setBackground,
   isRequired,
   sx,
-}: BackgroundAvatarProps) => {
-  const handleUpload = (file: FileList | null) => {
-    if (background) URL.revokeObjectURL(background as never);
+}: BackgroundUploadProps) => {
+  const ref = useRef<HTMLInputElement>(null);
 
-    if (file) {
-      setBackground(file[0]);
-    }
+  const handleUpload = (file: FileList) => {
+    if (background) URL.revokeObjectURL(String(background));
+    setBackground(file[0]);
   };
 
   const handleRemove = () => {
+    ref.current!.value = ''; // to remove you need have so '!' possible
     URL.revokeObjectURL(background as never);
     setBackground(undefined);
   };
@@ -125,13 +126,18 @@ export default ({
         </Box>
 
         <Input
+          ref={ref}
           variant="unstyled"
           position="absolute"
           inset="0"
           type="file"
           cursor="pointer"
           opacity={0}
-          onChange={event => handleUpload(event.target.files)}
+          onChange={event => {
+            if (event.target.files?.length) {
+              handleUpload(event.target.files);
+            }
+          }}
         />
       </Center>
     </Box>

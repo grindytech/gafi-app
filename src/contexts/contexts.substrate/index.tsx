@@ -32,11 +32,8 @@ const SubstrateContextProvider = ({ children }: PropsWithChildren) => {
   const [substrate, setSubstrate] = useState<SubstrateStateProps>();
 
   const provider = useMemo(
-    () =>
-      new WsProvider(
-        substrate?.PROVIDER_SOCKET || config.PROVIDER_SOCKETS?.[0]
-      ),
-    [substrate?.PROVIDER_SOCKET]
+    () => new WsProvider(config.PROVIDER_SOCKETS?.[0]),
+    []
   );
 
   const api = useMemo(
@@ -45,7 +42,7 @@ const SubstrateContextProvider = ({ children }: PropsWithChildren) => {
         provider,
         rpc: jsonrpc,
       }),
-    [provider]
+    []
   );
 
   useEffect(() => {

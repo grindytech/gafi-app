@@ -17,7 +17,7 @@ export default ({ register, setValue }: NFTsAmountProps) => {
   const { isOpen, onToggle } = useDisclosure();
 
   useEffect(() => {
-    setValue(`general_amount`, null);
+    setValue(`amount`, null);
   }, [isOpen]);
 
   return (
@@ -62,7 +62,9 @@ export default ({ register, setValue }: NFTsAmountProps) => {
               border="0.0625rem solid"
               borderColor="shader.a.800"
               bg={convertHex(colors.shader.a[800], 0.25)}
-              {...register('general_amount')}
+              {...register('amount', {
+                valueAsNumber: true,
+              })}
             />
           </ChakraBox>
         ) : null}

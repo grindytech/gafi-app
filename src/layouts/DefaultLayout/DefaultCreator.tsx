@@ -1,4 +1,11 @@
-import { Box, Center, Icon, SimpleGrid, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Icon,
+  SimpleGrid,
+  SimpleGridProps,
+  Text,
+} from '@chakra-ui/react';
 import LineAddIcon from 'public/assets/line/add.svg';
 import React, { PropsWithChildren } from 'react';
 
@@ -59,7 +66,11 @@ export const ListCreatorItem = [
   },
 ];
 
-export default ({ children }: PropsWithChildren) => {
+interface DefaultCreatorProps extends PropsWithChildren {
+  sx?: SimpleGridProps;
+}
+
+export default ({ children, sx }: DefaultCreatorProps) => {
   return (
     <>
       <SimpleGrid
@@ -71,6 +82,7 @@ export default ({ children }: PropsWithChildren) => {
         gap={4}
         mt={5}
         mb={12}
+        {...sx}
       >
         {React.Children.toArray(
           ListCreatorItem.map(project => (

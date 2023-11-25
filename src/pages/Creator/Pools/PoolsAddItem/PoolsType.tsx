@@ -1,5 +1,5 @@
 import JohnPopover from 'layouts/JohnPopover';
-import { PoolsFieldProps } from '.';
+import { PoolsFieldProps } from '..';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Flex, Text, useDisclosure } from '@chakra-ui/react';
@@ -10,16 +10,16 @@ interface PoolsTypeProps {
 }
 
 export default ({ setValue, watch }: PoolsTypeProps) => {
-  const { general_type } = watch();
+  const { type_pool } = watch();
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const type: Array<PoolsFieldProps['general_type']> = [
+  const type: Array<PoolsFieldProps['type_pool']> = [
     'Dynamic Pool',
     'Stable Pool',
   ];
 
   useEffect(() => {
-    if (!general_type) {
-      setValue(`general_type`, 'Dynamic Pool');
+    if (!type_pool) {
+      setValue(`type_pool`, 'Dynamic Pool');
     }
   }, []);
 
@@ -31,7 +31,7 @@ export default ({ setValue, watch }: PoolsTypeProps) => {
       bg="shader.a.900"
     >
       <Text color="shader.a.300" fontWeight="medium" flex={1}>
-        {general_type}
+        {type_pool}
       </Text>
 
       <JohnPopover
@@ -54,7 +54,7 @@ export default ({ setValue, watch }: PoolsTypeProps) => {
             fontWeight="medium"
             transitionDuration="ultra-slow"
             onClick={() => {
-              setValue(`general_type`, meta);
+              setValue(`type_pool`, meta);
               onClose();
             }}
             _hover={{

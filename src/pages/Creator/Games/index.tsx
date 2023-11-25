@@ -14,7 +14,6 @@ import StepValidate from 'components/StepValidate';
 import React from 'react';
 
 import GamesGeneral from './GamesGeneral';
-import GamesMeta from './GamesMeta';
 import GamesModal from './GamesModal';
 
 import GoBack from 'components/GoBack';
@@ -22,28 +21,26 @@ import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import GamesCollaborator from './GamesCollaborator';
 import { TypeCollaboratorState } from 'types/collaborator.type';
+import { TypeMetaGame } from 'types/meta.type.ts';
+import GamesMedia from './GamesMedia';
 
-export interface GamesFieldProps {
-  general_game_title: string;
-  general_categories: string;
-  general_description: string;
-  general_website: string;
-  general_twitter: string;
-  general_discord: string;
-
+export interface GamesFieldProps
+  extends Omit<TypeMetaGame, 'logo' | 'banner' | 'cover'> {
   // media
-  media_avatar: File;
-  media_banner: File | undefined;
-  media_cover: File | undefined;
+  logo: File;
+  banner?: File;
+  cover?: File;
 
+  // common
   collaborator: TypeCollaboratorState[number];
 }
 
-export interface fieldsSetProps {
+export interface GamesFieldSetProps {
   label: string;
   fieldName: keyof GamesFieldProps;
   form: JSX.Element;
   isRequired?: boolean;
+  isValue?: boolean;
 }
 
 export default () => {
@@ -76,7 +73,7 @@ export default () => {
       id: 1,
       heading: 'Media data',
       element: (
-        <GamesMeta
+        <GamesMedia
           setValue={setValue}
           watch={watch}
           setRequired={setRequired}

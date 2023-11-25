@@ -1,11 +1,12 @@
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { GamesFieldProps, fieldsSetProps } from '.';
+import { GamesFieldProps } from '.';
 import { BoxProps, Flex } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
 import BackgroundUpload, {
-  BackgroundAvatarProps,
+  BackgroundUploadProps,
 } from 'components/BackgroundUpload';
+import { validateLength } from 'utils/utils.validate';
 
 interface GamesMetaProps {
   setValue: UseFormSetValue<GamesFieldProps>;
@@ -13,29 +14,31 @@ interface GamesMetaProps {
   setRequired: React.Dispatch<React.SetStateAction<Record<number, number>>>;
 }
 
-interface fieldsSetMediaProps extends Pick<fieldsSetProps, 'isRequired'> {
+interface fieldsSetMediaProps {
   fieldName: keyof GamesFieldProps;
-  size: BackgroundAvatarProps['size'];
-  name: BackgroundAvatarProps['name'];
+  isRequired?: boolean;
+  size: BackgroundUploadProps['size'];
+  name: BackgroundUploadProps['name'];
   onChange: React.Dispatch<React.SetStateAction<File | undefined>>;
   value: File | undefined;
   sx?: BoxProps;
 }
 
 export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
-  const { media_avatar, media_banner, media_cover } = watch();
-  const [avatar, setAvatar] = useState(media_avatar);
-  const [banner, setBanner] = useState(media_banner);
-  const [cover, setCover] = useState(media_cover);
+  const { logo, banner, cover } = watch();
+
+  const [backgrounLogo, setBackgrounLogo] = useState(logo);
+  const [backgroundBanner, setBackgroundBanner] = useState(banner);
+  const [backgroundCover, setBackgroundCover] = useState(cover);
 
   const fieldsSet: fieldsSetMediaProps[] = [
     {
-      fieldName: 'media_avatar',
+      fieldName: 'logo',
       isRequired: true,
-      name: 'Background Avatar',
-      size: '320x320px',
-      onChange: setAvatar as never,
-      value: avatar,
+      name: 'Background Logo',
+      size: '350x350px',
+      onChange: setBackgrounLogo as typeof setBackgroundBanner,
+      value: backgrounLogo,
       sx: {
         width: { base: 'full', md: '11.25rem' },
         sx: {
@@ -44,11 +47,11 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
       },
     },
     {
-      fieldName: 'media_banner',
+      fieldName: 'banner',
       name: 'Background Banner',
-      size: '320x192px',
-      onChange: setBanner,
-      value: banner,
+      size: '512x512px',
+      onChange: setBackgroundBanner,
+      value: backgroundBanner,
       sx: {
         width: { base: 'full', md: 80 },
         sx: {
@@ -57,11 +60,11 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
       },
     },
     {
-      fieldName: 'media_cover',
+      fieldName: 'cover',
       name: 'Background Cover',
       size: '1400x280px',
-      onChange: setCover,
-      value: cover,
+      onChange: setBackgroundCover,
+      value: backgroundCover,
       sx: {
         width: 'full',
         sx: {
@@ -71,28 +74,22 @@ export default ({ setValue, watch, setRequired }: GamesMetaProps) => {
     },
   ];
 
-  // update setValue
+  // update setValue when useState change
   useEffect(() => {
-    setValue('media_avatar', avatar);
-    setValue('media_banner', banner);
-    setValue('media_cover', cover);
-  }, [avatar, banner, cover]);
+    setValue('logo', backgrounLogo);
+    setValue('banner', backgroundBanner);
+    setValue('cover', backgroundCover);
+  }, [backgrounLogo, backgroundBanner, backgroundCover]);
 
-  // update setRequired
+  // update setRequired when watch existed
   useEffect(() => {
-    const fieldsRequired = () => {
-      const findRequired = fieldsSet.filter(
-        meta => meta.isRequired && !watch()[meta.fieldName]
-      );
-
-      return findRequired.length;
-    };
-
-    setRequired(prev => ({
-      ...prev,
-      1: fieldsRequired(),
-    }));
-  }, [media_avatar, media_banner, media_cover]);
+    validateLength({
+      watch,
+      fieldsSet,
+      setRequired,
+      step: 1,
+    });
+  }, [logo, banner, cover]);
 
   return (
     <Flex width="full" gap={6} flexWrap="wrap">

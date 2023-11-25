@@ -16,7 +16,7 @@ import {
 } from 'react-hook-form';
 import { colors } from 'theme/theme';
 import { CalculatorOfRarity, ColorOfRarity, convertHex } from 'utils';
-import { PoolsFieldProps } from '.';
+import { PoolsFieldProps } from '..';
 import { useEffect } from 'react';
 import SwitchMode from 'components/SwitchMode';
 
@@ -27,41 +27,37 @@ interface NFTsAmountProps {
 }
 
 export default ({ register, setValue, watch }: NFTsAmountProps) => {
-  const { general_type, add_item_failed, add_item_dynamic, add_item_stable } =
-    watch();
+  const { supply, type_pool, failed } = watch();
 
   const { isOpen, onToggle } = useDisclosure({
-    defaultIsOpen: !!add_item_failed,
+    defaultIsOpen:
+      type_pool === 'Dynamic Pool'
+        ? !!supply?.['Dynamic Pool']?.length
+        : !!supply?.['Stable Pool']?.length,
   });
 
   const RarityWeight = () => {
     const type =
-      general_type === 'Dynamic Pool'
-        ? add_item_dynamic || []
-        : add_item_stable || [];
+      type_pool === 'Dynamic Pool'
+        ? supply?.['Dynamic Pool'] || []
+        : supply?.['Stable Pool'] || [];
 
     const product = Object.values(type)
       .filter(meta => !!meta)
-      .concat({ weight: add_item_failed } as never)
+      .concat({ weight: failed } as never)
       .map(meta => ({ ...meta, weight: meta.weight || 0 }));
 
     return CalculatorOfRarity(
-      add_item_failed as number,
+      failed as number,
       product.map(meta => meta.weight)
     );
   };
 
   useEffect(() => {
-    // null mean variable not exist
     if (!isOpen) {
-      setValue(`add_item_failed`, null);
+      setValue(`failed`, null);
     }
-
-    // undefined mean variable exist but not have value
-    if (isOpen && !add_item_failed) {
-      setValue(`add_item_failed`, undefined);
-    }
-  }, [isOpen, add_item_failed]);
+  }, [isOpen]);
 
   return (
     <>
@@ -114,7 +110,9 @@ export default ({ register, setValue, watch }: NFTsAmountProps) => {
                 px={3}
                 color="shader.a.300"
                 _placeholder={{ color: 'shader.a.500' }}
-                {...register('add_item_failed')}
+                {...register('failed', {
+                  valueAsNumber: true,
+                })}
               />
 
               <InputRightAddon

@@ -18,41 +18,54 @@ import DefaultForm from 'layouts/DefaultLayout/DefaultForm';
 import Owner from 'layouts/Owner';
 import PoolsGeneral from './PoolsGeneral';
 import PoolsAddItem from './PoolsAddItem';
-import PoolsModal from './PoolModal/PoolsModal';
+import PoolsModal from './PoolModal';
 import PoolsAdmin from './PoolsAdmin';
 import { TypeCollaboratorState } from 'types/collaborator.type';
+import {
+  TypeMetaCollection,
+  TypeMetaNFT,
+  TypeMetaPool,
+} from 'types/meta.type.ts';
 
-export interface PoolsFieldProps {
+export type PoolsProductType = {
+  weight: number; // failed
+  amount: number | null;
+  nft: TypeMetaNFT & {
+    id: number;
+  };
+  collection: TypeMetaCollection & {
+    id: number;
+  };
+};
+
+export interface PoolsFieldProps
+  extends Omit<TypeMetaPool, 'supply' | 'begin_at' | 'end_at'> {
   // general
-  general_type: 'Dynamic Pool' | 'Stable Pool';
-  general_title: string;
-  general_duration: {
+  duration: {
     time: number;
     text: string;
   };
-  general_description: string;
 
+  // common
   collaborator: TypeCollaboratorState[number];
 
   // Add item
-  add_item_fee: number;
-  add_item_failed: number | undefined | null;
-  add_item_supply?: {
-    weight: number;
-    amount: number | string;
-    nft: {
-      id: number;
-      title: string;
-      image: string;
-    };
-    collection: {
-      id: number;
-      title: string;
-      image: string;
-    };
-  }[];
-  add_item_dynamic?: PoolsFieldProps['add_item_supply'] | null;
-  add_item_stable?: PoolsFieldProps['add_item_supply'] | null;
+  failed: number | undefined | null;
+
+  supply?: Record<
+    TypeMetaPool['type_pool'],
+    | PoolsProductType[]
+    | null // null mean variable not exist
+    | undefined // undefined mean variable exist but not have value
+  >;
+}
+
+export interface PoolsFieldSetProps {
+  label: string;
+  fieldName: keyof PoolsFieldProps;
+  form: JSX.Element;
+  isRequired?: boolean;
+  isValue?: boolean;
 }
 
 export default () => {

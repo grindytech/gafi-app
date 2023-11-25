@@ -5,7 +5,7 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { GamesFieldProps, fieldsSetProps } from '.';
+import { GamesFieldProps, GamesFieldSetProps } from '.';
 
 import {
   FieldErrors,
@@ -16,6 +16,7 @@ import {
 import theme from 'theme/theme';
 import { useEffect } from 'react';
 import GameGeneralCategories from './GameGeneralCategories';
+import { validateLength } from 'utils/utils.validate';
 
 interface GamesGeneralProps {
   register: UseFormRegister<GamesFieldProps>;
@@ -32,108 +33,85 @@ export default ({
   errors,
   setRequired,
 }: GamesGeneralProps) => {
-  const fieldsSet: fieldsSetProps[] = [
+  const fieldsSet: GamesFieldSetProps[] = [
     {
-      label: 'Game tittle',
-      fieldName: 'general_game_title',
+      label: 'Name',
+      fieldName: 'name',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="Heroes & Empires"
-          {...register('general_game_title', { required: true })}
+          {...register('name', { required: true })}
         />
       ),
     },
     {
       label: 'Categories',
-      fieldName: 'general_categories',
+      fieldName: 'category',
       isRequired: true,
       form: <GameGeneralCategories setValue={setValue} watch={watch} />,
     },
     {
       label: 'Description',
-      fieldName: 'general_description',
+      fieldName: 'description',
+      isRequired: true,
       form: (
         <Textarea
           {...theme.components.Input.variants.validate.field}
           placeholder="Write about your game."
           resize="none"
-          {...register('general_description')}
+          {...register('description', { required: true })}
         />
       ),
     },
     {
       label: 'Website',
-      fieldName: 'general_website',
+      fieldName: 'website',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="https://gafi.network"
-          {...register('general_website')}
+          {...register('website', { required: true })}
         />
       ),
     },
     {
       label: 'Twitter',
-      fieldName: 'general_twitter',
+      fieldName: 'twitter',
       isRequired: true,
       form: (
         <Input
           variant="validate"
           placeholder="https://twitter.com/gafi.network"
-          {...register('general_twitter')}
+          {...register('twitter', { required: true })}
         />
       ),
     },
     {
       label: 'Discord',
-      fieldName: 'general_discord',
+      fieldName: 'discord',
       form: (
         <Input
           variant="validate"
           placeholder="https://gafi.network"
-          {...register('general_discord')}
+          {...register('discord')}
         />
       ),
     },
   ];
 
-  const {
-    general_game_title,
-    general_categories,
-    general_website,
-    general_twitter,
-  } = watch();
+  const { name, category, description, website, twitter } = watch();
 
   useEffect(() => {
-    const fieldsRequired = () => {
-      /* 
-        Find every field contains the required
-        Check 'fieldName' of the watch is not None, that should length >= 1
-        so length = 0, this means you can next step
-        Ex: 
-          isRequired = [true, true, true]
-          fieldName = ['something', 'something']
-          result = [true true] 
-      */
-      const findRequired = fieldsSet.filter(
-        meta => meta.isRequired && !watch()[meta.fieldName]
-      );
-
-      return findRequired.length;
-    };
-
-    setRequired({
-      0: fieldsRequired(),
+    validateLength({
+      watch,
+      fieldsSet,
+      setRequired,
+      step: 0,
     });
-  }, [
-    general_game_title,
-    general_categories,
-    general_website,
-    general_twitter,
-  ]);
+  }, [name, category, description, website, twitter]);
 
   return fieldsSet.map(meta => (
     <FormControl isInvalid={!!errors[meta.fieldName]} key={meta.fieldName}>

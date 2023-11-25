@@ -5,7 +5,7 @@ import CollaboratorsMenu from 'layouts/Collaborators/CollaboratorsMenu';
 import { useEffect, useState } from 'react';
 
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { PoolsFieldProps } from '.';
+import { PoolsFieldProps } from '..';
 import { useAccountContext } from 'contexts/contexts.account';
 import { TypeCollaboratorState } from 'types/collaborator.type';
 

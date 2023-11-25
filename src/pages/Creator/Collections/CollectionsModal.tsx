@@ -19,6 +19,7 @@ import useSignAndSend from 'hooks/useSignAndSend';
 import cloudinary_axios, {
   cloudinary_config,
   cloudinary_upload_type,
+  cloundinary_link,
 } from 'axios/cloudinary_axios';
 import { useAccountContext } from 'contexts/contexts.account';
 import { useSubstrateContext } from 'contexts/contexts.substrate';
@@ -38,16 +39,8 @@ export default ({
   const { account } = useAccountContext();
   const { api } = useSubstrateContext();
 
-  const {
-    general_collection_title,
-    general_description,
-    general_external_url,
-    media_avatar,
-    media_banner,
-    media_cover,
-    collaborator,
-    general_join_game,
-  } = getValues();
+  const { collaborator, description, external_url, logo, name, john_game } =
+    getValues();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -66,7 +59,12 @@ export default ({
         Sign & Submit
       </Button>
 
-      <Modal isOpen={isOpen} size="lg" onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        size="lg"
+        onClose={onClose}
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
 
         <ModalContent borderRadius="xl" bg="shader.a.900">
@@ -102,7 +100,6 @@ export default ({
                 50,6895 GAFI
               </Text>
             </Center>
-
             <Button
               width="full"
               variant="primary"
@@ -110,7 +107,7 @@ export default ({
               onClick={() => {
                 if (api) {
                   const formData = new FormData();
-                  formData.append('file', media_avatar);
+                  formData.append('file', logo);
                   formData.append(
                     'upload_preset',
                     String(cloudinary_config.preset_key)
@@ -121,22 +118,33 @@ export default ({
                   cloudinary_axios
                     .post(cloudinary_upload_type.image, formData)
                     .then(item => {
-                      const parse = JSON.stringify({
-                        title: general_collection_title,
-                        description: general_description,
-                        external_url: general_external_url,
-                        avatar: `v${item.data.version}/${item.data.public_id}.${item.data.format}`,
-                        banner: media_banner,
-                        cover: media_cover,
-                      });
+                      const parse: Omit<
+                        CollectionsFieldProps,
+                        'logo' | 'banner' | 'cover' | 'collaborator'
+                      > & {
+                        logo: string;
+                        banner?: string;
+                        cover?: string;
+                      } = {
+                        name,
+                        description,
+                        external_url,
+
+                        // media
+                        logo: cloundinary_link(
+                          `v${item.data.version}/${item.data.public_id}.${item.data.format}`
+                        ),
+                        banner: undefined,
+                        cover: undefined,
+                      };
 
                       mutation(
                         api?.tx.game.createCollectionWithData(
-                          parse,
+                          JSON.stringify(parse),
                           group('Admin'),
                           group('Issuer'),
                           group('Freezer'),
-                          general_join_game?.game_id || null
+                          john_game?.id || null
                         )
                       );
                     });
