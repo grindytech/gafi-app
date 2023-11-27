@@ -120,7 +120,7 @@ export type TypeSwaggerTradeRequest = {
   desc: boolean;
   query: Partial<{
     trade_id: number;
-    token_id: number | string;
+    nft_id: number | string;
     trade_type: 'SetPrice' | 'SetAuction';
   }>;
 };
@@ -179,7 +179,7 @@ export type TypeSwaggerNFTRequest = {
   desc: boolean;
   query: Partial<{
     name: string;
-    token_id: number;
+    nft_id: number;
     collection_id: number;
     created_by: string;
     price: string;
@@ -219,7 +219,7 @@ export type TypeSwaggerNFTData = {
       price: string;
       status: string;
       supply: number;
-      token_id: number;
+      nft_id: number;
       updated_at: number;
       visitor_count: number;
     }

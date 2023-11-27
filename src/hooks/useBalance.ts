@@ -21,33 +21,20 @@ export default function useBalance({ account }: useBalanceProps) {
   const [balance, setBalance] = useState<string | undefined>();
 
   React.useEffect(() => {
-    const getBalance = () => {
-      if (event && !balance) {
-        event.forEach(({ eventValue }) => {
-          const [address] = JSON.parse(eventValue);
-          if (address === account) {
-            getBalance();
-          }
-        });
-      }
+    if (account && api?.query.system) {
+      const getBalance = async () => {
+        const res = await api.query.system.account(account);
+        const getBalance = res.toPrimitive() as TypeGetBalance;
 
-      const callback = async () => {
-        if (api?.query.system && account) {
-          const res = await api.query.system.account(account);
-          const getBalance = res.toPrimitive() as TypeGetBalance;
-
-          console.log('get', getBalance.data.free);
-          // 15000000000000 // 1500
-
-          setBalance(formatGAFI(getBalance.data.free));
-        }
+        setBalance(formatGAFI(getBalance.data.free));
       };
 
-      callback();
-    };
+      getBalance();
 
-    getBalance();
-    return () => getBalance();
+      return () => {
+        getBalance();
+      };
+    }
   }, [event, account, api]);
 
   return {

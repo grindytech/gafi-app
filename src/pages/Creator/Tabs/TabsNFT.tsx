@@ -100,7 +100,7 @@ export default ({ type, setLoading }: TabsArgumentProps) => {
                     <Text color="shader.a.500" fontSize="sm">
                       ID:&nbsp;
                       <Text as="span" color="white">
-                        {meta.token_id}
+                        {meta.nft_id}
                       </Text>
                     </Text>
                   </Flex>

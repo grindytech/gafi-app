@@ -104,14 +104,14 @@ export default ({
               gap={3}
             >
               {React.Children.toArray(
-                meta.map(({ collection_id, token_id, supply, image, name }) => {
+                meta.map(({ collection_id, nft_id, supply, image, name }) => {
                   const isActive = product?.find(
                     meta =>
                       meta?.collection?.id === collection_id &&
-                      meta?.nft?.id === token_id
+                      meta?.nft?.id === nft_id
                   );
 
-                  const add_key = `supply.${pool_type}.${collection_id}/${token_id}`;
+                  const add_key = `supply.${pool_type}.${collection_id}/${nft_id}`;
 
                   return (
                     <Box
@@ -127,7 +127,7 @@ export default ({
                           const parse = {
                             amount: supply,
                             nft: {
-                              id: token_id,
+                              id: nft_id,
                               name: name,
                               image: image,
                             },
@@ -161,7 +161,7 @@ export default ({
                         <Text color="shader.a.500" fontSize="sm">
                           ID:&nbsp;
                           <Text as="span" color="white">
-                            {token_id}
+                            {nft_id}
                           </Text>
                         </Text>
                       </Flex>
